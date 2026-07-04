@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+:root {
+  /* Colors */
+  --n-surface: #E7E5E4; /* Extruded/surface base */
+  --n-primary: #006666; /* Main brand */
+  --n-text: #1E2938; 
+  --n-text-muted: #576574;
+  
+  --n-success: #00A63D;
+  --n-warning: #FE9900;
+  --n-danger: #FF2157;
+  
+  /* Drop Shadows for Extruded Neumorphism Effect */
+  /* For #E7E5E4, highlight is #f8f6f5 (lighter) and shadow is #c4c3c2 (darker) */
+  --n-shadow-light: #ffffff;
+  --n-shadow-dark: #cccecf;
+  
+  --n-shadow-out: 8px 8px 16px var(--n-shadow-dark), -8px -8px 16px var(--n-shadow-light);
+  --n-shadow-out-sm: 4px 4px 8px var(--n-shadow-dark), -4px -4px 8px var(--n-shadow-light);
+  
+  /* Pressed state shadow */
+  --n-shadow-in: inset 6px 6px 12px var(--n-shadow-dark), inset -6px -6px 12px var(--n-shadow-light);
+  
+  /* Fonts */
+  --font-primary: 'Space Mono', monospace;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 50%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--n-surface);
+  color: var(--n-text);
+  font-family: var(--font-primary);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  direction: rtl; /* Support Arabic layout natively */
+}
+
+/* Typography elements */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--n-text);
+  margin-top: 0;
+}
+
+/* Cards */
+.n-card {
+  background: var(--n-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--n-shadow-out);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+/* Buttons */
+.n-btn {
+  background: var(--n-surface);
+  color: var(--n-text);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 12px 24px;
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: var(--n-shadow-out-sm);
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.n-btn:hover {
+  transform: translateY(-2px);
+}
+
+.n-btn:active {
+  transform: translateY(0);
+  box-shadow: var(--n-shadow-in);
+}
+
+/* Primary Button Modifier */
+.n-btn-primary {
+  color: var(--n-primary);
+}
+
+/* Circular Icon Buttons */
+.n-btn-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-full);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.n-btn-icon svg {
+  width: 28px;
+  height: 28px;
+  fill: var(--n-primary);
+}
+
+/* Inputs */
+.n-input {
+  width: 100%;
+  padding: 16px;
+  background: var(--n-surface);
+  border: none;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--n-shadow-in);
+  color: var(--n-primary);
+  font-family: var(--font-mono); /* Use JetBrains Mono for inputs commonly */
+  font-size: 18px;
+  font-weight: 600;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.n-input::placeholder {
+  color: var(--n-text-muted);
+  font-weight: 400;
+}
+
+.n-input:focus {
+  /* Adding a very subtle border instead of shadow shift to indicate focus */
+  border: 1px solid var(--n-primary);
+}
+
+/* Badge */
+.n-badge {
+  background: var(--n-surface);
+  box-shadow: var(--n-shadow-out-sm);
+  padding: 8px 16px;
+  border-radius: var(--radius-lg);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--n-primary);
+  display: inline-block;
+}
+
+/* Value Display (JetBrains Mono for amounts) */
+.n-amount {
+  font-family: var(--font-mono);
+  color: var(--n-primary);
+  font-weight: 700;
+}
+
+/* Flex utilities */
+.n-flex-col { display: flex; flex-direction: column; }
+.n-flex-row { display: flex; flex-direction: row; }
+.n-center { align-items: center; justify-content: center; }
+.n-gap-sm { gap: 8px; }
+.n-gap-md { gap: 16px; }
+.n-gap-lg { gap: 24px; }
+.mt-4 { margin-top: 16px; }
+.mb-4 { margin-bottom: 16px; }

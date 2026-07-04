@@ -1,0 +1,109 @@
+{% extends 'custom_admin/dashboard_base.html' %}
+{% load i18n %}
+{% block title %}طلبات الفعاليات | {{ global_system_vendor.name|default:'النظام' }}{% endblock %}
+
+{% block extra_head %}
+<style>
+    .status-badge {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        display: inline-block;
+    }
+    .status-PENDING { background: #fff8e1; color: #f57f17; }
+    .status-APPROVED { background: #e8f5e9; color: #2e7d32; }
+    .status-REJECTED { background: #ffebee; color: #c62828; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px;">
+    <div>
+        <h1 style="margin: 0 0 5px 0; font-size: 1.8rem; font-weight: 900; color: var(--primary);">{% trans 'طلبات الفعاليات' %}</h1>
+        <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem; font-weight: 600;">{% trans 'مراجعة واعتماد طلبات الفعاليات المقدمة من الشركات والمناديب' %}</p>
+    </div>
+</div>
+
+<div class="card-premium">
+    <table class="data-table" style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th style="padding: 15px; border-bottom: 2px solid #eee; text-align: right; color: var(--text-muted);">{% trans 'الرقم' %}</th>
+                <th style="padding: 15px; border-bottom: 2px solid #eee; text-align: right; color: var(--text-muted);">{% trans 'مقدم الطلب' %}</th>
+                <th style="padding: 15px; border-bottom: 2px solid #eee; text-align: right; color: var(--text-muted);">{% trans 'اسم الفعالية' %}</th>
+                <th style="padding: 15px; border-bottom: 2px solid #eee; text-align: right; color: var(--text-muted);">{% trans 'تاريخ الفعالية' %}</th>
+                <th style="padding: 15px; border-bottom: 2px solid #eee; text-align: right; color: var(--text-muted);">{% trans 'الـ Budget' %}</th>
+                <th style="padding: 15px; border-bottom: 2px solid #eee; text-align: right; color: var(--text-muted);">{% trans 'الحالة' %}</th>
+                <th style="padding: 15px; border-bottom: 2px solid #eee; text-align: right; color: var(--text-muted);">{% trans 'إجراء' %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for req in object_list %}
+            <tr>
+                <td style="padding: 15px; border-bottom: 1px solid #f5f5f5; font-weight: bold;">#{{ req.id }}</td>
+                <td style="padding: 15px; border-bottom: 1px solid #f5f5f5;">
+                    {% if req.company %}
+                        <div style="font-weight: 800; color: var(--primary);">{{ req.company.clean_name }}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">{% trans 'شركة' %}</div>
+                    {% elif req.delegate %}
+                        <div style="font-weight: 800; color: var(--primary);">{{ req.delegate.name }}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">{% trans 'مندوب' %}</div>
+                    {% else %}
+                        <div style="font-weight: 800; color: var(--primary);">{{ req.requester_user.username }}</div>
+                    {% endif %}
+                </td>
+                <td style="padding: 15px; border-bottom: 1px solid #f5f5f5; font-weight: 700;">{{ req.name }}</td>
+                <td style="padding: 15px; border-bottom: 1px solid #f5f5f5;" class="num-font">{{ req.date|date:"Y-m-d" }}</td>
+                <td style="padding: 15px; border-bottom: 1px solid #f5f5f5;" class="num-font">{{ req.max_budget|floatformat:0 }} </td>
+                <td style="padding: 15px; border-bottom: 1px solid #f5f5f5;">
+                    <span class="status-badge status-{{ req.status }}">{{ req.get_status_display }}</span>
+                </td>
+                <td style="padding: 15px; border-bottom: 1px solid #f5f5f5;">
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <a href="{% url 'admin_event_request_detail' req.id %}" style="background: var(--surface); color: var(--primary); padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; text-decoration: none; border: 1px solid var(--outline);">
+                            <i class="fa-solid fa-eye"></i> {% trans 'التفاصيل' %}
+                        </a>
+                        {% if req.status == 'PENDING' %}
+                        <form method="POST" action="{% url 'admin_event_request_approve' req.id %}" onsubmit="return confirm('{% trans "هل أنت متأكد من اعتماد الفعالية؟" %}');" style="margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" style="background: #2e7d32; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; cursor: pointer;">
+                                <i class="fa-solid fa-check"></i>
+                            </button>
+                        </form>
+                        <form method="POST" action="{% url 'admin_event_request_reject' req.id %}" onsubmit="return confirm('{% trans "هل أنت متأكد من رفض الفعالية؟" %}');" style="margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" style="background: #c62828; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; cursor: pointer;">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" style="padding: 50px; text-align: center; color: var(--text-muted);">
+                    <i class="fa-solid fa-folder-open" style="font-size: 3rem; color: #ddd; margin-bottom: 10px;"></i>
+                    <p style="font-weight: bold;">{% trans 'لا توجد طلبات فعاليات حتى الآن.' %}</p>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    {% if is_paginated %}
+    <div style="display: flex; justify-content: center; gap: 5px; margin-top: 30px; direction: ltr;">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="pagination-btn"><i class="fa-solid fa-chevron-left"></i></a>
+        {% endif %}
+        {% for num in page_obj.paginator.page_range %}
+            <a href="?page={{ num }}" class="pagination-btn {% if page_obj.number == num %}active{% endif %}">{{ num }}</a>
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="pagination-btn"><i class="fa-solid fa-chevron-right"></i></a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

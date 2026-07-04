@@ -1,0 +1,78 @@
+{% extends 'custom_admin/dashboard_base.html' %}
+{% load i18n %}
+
+{% block title %}القسم المالي / الإشعارات - Arabic Retail Standard{% endblock %}
+
+{% block page_title %}الإشعارات{% endblock %}
+{% block page_subtitle %}تتبع جميع التنبيهات والأحداث الخاصة بالنظام.{% endblock %}
+{% block page_icon %}fa-bell{% endblock %}
+
+{% block content %}
+<div class="mt-xl">
+    <div style="background: white; border-radius: 1.25rem; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid var(--surface-container-highest);">
+        
+        <div class="flex-row justify-between items-center mb-md">
+            <h2 class="headline-sm" style="margin: 0;">{% trans 'كل الإشعارات' %}</h2>
+            <form method="POST" action="{% url 'mark_notification_as_read' 0 %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline" style="border-radius: var(--radius-md);">
+                    <i class="fa-solid fa-check-double"></i> {% trans 'تحديد الكل كمقروء' %}
+                </button>
+            </form>
+        </div>
+
+        <div class="list-container">
+            {% for notif in notifications_page %}
+                <div class="list-row {% if not notif.is_read %}status-pending{% endif %}" style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--surface-container-highest);">
+                    <div class="flex-row items-start gap-md w-full">
+                        <div style="width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+                            {% if notif.notification_type == 'SETTLEMENT' %}background: #e8f5e9; color: #2e7d32;
+                            {% elif notif.notification_type == 'VOUCHER' %}background: #e3f2fd; color: #1565c0;
+                            {% elif notif.notification_type == 'ACCOUNT' %}background: #fff3e0; color: #e65100;
+                            {% else %}background: #f3e5f5; color: #6a1b9a;{% endif %}">
+                            <i class="fa-solid {% if notif.notification_type == 'SETTLEMENT' %}fa-wallet
+                                             {% elif notif.notification_type == 'VOUCHER' %}fa-gift
+                                             {% elif notif.notification_type == 'ACCOUNT' %}fa-user-plus
+                                             {% else %}fa-info{% endif %}" style="font-size: 1.2rem;"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <p style="margin: 0 0 5px 0; font-size: 1rem; color: var(--on-surface); {% if not notif.is_read %}font-weight: 700;{% endif %}">
+                                {{ notif.message }}
+                            </p>
+                            <span class="label-md">{{ notif.created_at|date:"Y-m-d h:i A" }} ({{ notif.created_at|timesince }} {% trans 'مضت' %})</span>
+                        </div>
+                        <div style="text-align: left; display: flex; align-items: center; gap: 10px;">
+                            {% if notif.link %}
+                            <a href="{{ notif.link }}" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.8rem; border-radius: 6px;">{% trans 'عرض' %}</a>
+                            {% endif %}
+                            {% if not notif.is_read %}
+                                <div style="width: 10px; height: 10px; border-radius: 50%; background: var(--primary);"></div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div style="padding: 3rem 1.75rem; text-align: center; color: var(--on-surface-variant);">
+                    <i class="fa-solid fa-bell-slash" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                    <p class="title-md">{% trans 'لا توجد إشعارات' %}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if notifications_page.has_other_pages %}
+        <div class="pagination mt-xl" style="display: flex; justify-content: center; gap: 5px;">
+            {% if notifications_page.has_previous %}
+                <a href="?page={{ notifications_page.previous_page_number }}" class="btn btn-outline" style="padding: 8px 15px;">السابق</a>
+            {% endif %}
+            
+            <span class="btn btn-primary" style="padding: 8px 15px; pointer-events: none;">{{ notifications_page.number }} / {{ notifications_page.paginator.num_pages }}</span>
+            
+            {% if notifications_page.has_next %}
+                <a href="?page={{ notifications_page.next_page_number }}" class="btn btn-outline" style="padding: 8px 15px;">التالي</a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

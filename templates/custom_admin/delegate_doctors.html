@@ -1,0 +1,191 @@
+{% extends 'custom_admin/portal_base.html' %}
+{% load i18n %}
+
+{% block title %}الأطباء والشركات | {{ global_system_vendor.name|default:'النظام' }}{% endblock %}
+
+{# -------- Sidebar Identity -------- #}
+{% block portal_icon %}fa-user-tie{% endblock %}
+{% block portal_title %}{% trans 'بوابة المندوب التنفيذي' %}{% endblock %}
+{% block portal_subtitle %}{{ delegate_profile.name }}{% endblock %}
+
+{# -------- Sidebar Nav Links -------- #}
+{% block sidebar_nav %}
+{% include 'custom_admin/includes/delegate_sidebar_nav_full.html' %}
+{% endblock %}
+
+{# -------- Settings URL -------- #}
+{% block settings_url %}{% url 'delegate_portal_settings' %}{% endblock %}
+
+{# -------- User Role -------- #}
+{% block user_role_label %}{% trans 'مندوب تنفيذي' %}{% endblock %}
+
+{# -------- Header -------- #}
+{% block header_icon %}fa-user-doctor{% endblock %}
+{% block header_title %}{% trans 'الأطباء والشركات الدوائية' %}{% endblock %}
+{% block header_subtitle %}{{ delegate_profile.name }}{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'custom_event_request_create' %}" style="
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 18px; border-radius: 10px;
+    background: linear-gradient(135deg, #005353, #007a7a); color: white;
+    font-size: 0.82rem; font-weight: 700; text-decoration: none;
+    transition: opacity 0.2s;
+" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+    <i class="fa-solid fa-plus"></i> {% trans 'طلب فعالية جديدة' %}
+</a>
+{% endblock %}
+
+{# -------- Extra CSS -------- #}
+{% block extra_head %}
+{{ block.super }}
+{% include 'custom_admin/includes/portal_common_styles.html' %}
+{% endblock %}
+
+{# -------- Main Portal Content -------- #}
+{% block portal_content %}
+
+{# Stats Cards #}
+<div class="stats-grid">
+    <div class="stat-card stat-card-clickable" onclick="switchSubTab('doctors')" role="button" tabindex="0">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.78rem; font-weight:700; color:#6e7979;">{% trans 'إجمالي الأطباء' %}</span>
+            <div class="stat-icon" style="background:#e0f2f1; color:#00796b;"><i class="fa-solid fa-user-doctor"></i></div>
+        </div>
+        <h2 style="font-size:1.6rem; font-weight:900; margin:4px 0 0 0; color:#00796b; font-family:'Inter',sans-serif;">{{ doctors_list|length }}</h2>
+    </div>
+    <div class="stat-card stat-card-clickable" onclick="switchSubTab('companies')" role="button" tabindex="0">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.78rem; font-weight:700; color:#6e7979;">{% trans 'الشركات الدوائية' %}</span>
+            <div class="stat-icon" style="background:rgba(0,83,83,0.07); color:#005353;"><i class="fa-solid fa-building"></i></div>
+        </div>
+        <h2 style="font-size:1.6rem; font-weight:900; margin:4px 0 0 0; color:#005353; font-family:'Inter',sans-serif;">{{ companies_list|length }}</h2>
+    </div>
+</div>
+
+{# Portal Internal Navigation #}
+{% include 'custom_admin/includes/delegate_portal_internal_nav.html' with active_tab='team' %}
+
+{# Local Sub-Tabs #}
+<div id="portal-sub-tabs" class="portal-sub-tabs">
+    <button class="portal-tab-btn portal-sub-tab-btn active" id="btn-doctors" onclick="switchSubTab('doctors')">
+        <i class="fa-solid fa-user-doctor"></i> {% trans 'الأطباء' %}
+    </button>
+    <button class="portal-tab-btn portal-sub-tab-btn" id="btn-companies" onclick="switchSubTab('companies')">
+        <i class="fa-solid fa-building"></i> {% trans 'الشركات الدوائية' %}
+    </button>
+</div>
+
+{# Tab 1: Doctors #}
+<div id="tab-doctors">
+    <div class="table-container">
+        <table class="v-table">
+            <thead>
+                <tr>
+                    <th>{% trans 'اسم الطبيب' %}</th>
+                    <th>{% trans 'رقم الهاتف' %}</th>
+                    <th>{% trans 'التخصص' %}</th>
+                    <th>{% trans 'القسائم النشطة' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doctor in doctors_list %}
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div class="avatar-circle" style="background: linear-gradient(135deg, #00796b, #004d40);">{{ doctor.name|make_list|first }}</div>
+                            <div style="font-weight: 800; color: #005353;">د. {{ doctor.name }}</div>
+                        </div>
+                    </td>
+                    <td style="font-family:'Inter',sans-serif;">{{ doctor.clean_phone }}</td>
+                    <td>
+                        {% if doctor.specialty %}
+                        <span style="background: #e8eaf6; color: #3f51b5; font-size: 0.72rem; padding: 4px 10px; border-radius: 20px; font-weight: 700;">{{ doctor.specialty.name }}</span>
+                        {% else %}
+                        <span style="color: #aaa;">-</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% with active_vouchers_count=doctor.vouchers.count %}
+                        <span style="background: #fff8e1; color: #f57f17; font-size: 0.72rem; padding: 4px 10px; border-radius: 20px; font-weight: 700;">{{ active_vouchers_count }} {% trans 'قسيمة' %}</span>
+                        {% endwith %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" style="text-align:center; padding:40px; color:#aaa;">{% trans 'لا يوجد أطباء مرتبطين بفعالياتكم.' %}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{# Tab 2: Companies #}
+<div id="tab-companies" style="display:none;">
+    <div class="table-container">
+        <table class="v-table">
+            <thead>
+                <tr>
+                    <th>{% trans 'اسم الشركة' %}</th>
+                    <th>{% trans 'الشعار' %}</th>
+                    <th>{% trans 'الفعاليات المشتركة' %}</th>
+                    <th>{% trans 'الحالة' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for company in companies_list %}
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            {% if company.logo %}
+                            <img src="{{ company.logo.url }}" alt="{{ company.name }}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                            {% else %}
+                            <div class="avatar-circle">{{ company.name|make_list|first }}</div>
+                            {% endif %}
+                            <div style="font-weight: 800; color: #005353;">{{ company.name }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        {% if company.logo %}
+                        <span style="background: #e8f5e9; color: #2e7d32; font-size: 0.72rem; padding: 4px 10px; border-radius: 20px; font-weight: 700;">{% trans 'متوفر' %}</span>
+                        {% else %}
+                        <span style="color: #aaa;">-</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span style="background: #e0f2f1; color: #00796b; font-size: 0.72rem; padding: 4px 10px; border-radius: 20px; font-weight: 700;">{{ company.shared_events_count }} {% trans 'فعالية' %}</span>
+                    </td>
+                    <td>
+                        {% if company.is_active %}
+                            <span style="background: #e8f5e9; color: #2e7d32; font-size: 0.72rem; padding: 4px 10px; border-radius: 20px; font-weight: 800;">{% trans 'نشط' %}</span>
+                        {% else %}
+                            <span style="background: #ffebee; color: #c62828; font-size: 0.72rem; padding: 4px 10px; border-radius: 20px; font-weight: 800;">{% trans 'غير نشط' %}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" style="text-align:center; padding:40px; color:#aaa;">{% trans 'لا يوجد شركات دوائية مرتبطة بفعالياتكم.' %}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+const subTabs = ['doctors', 'companies'];
+function switchSubTab(tabId) {
+    subTabs.forEach(t => {
+        document.getElementById('tab-' + t).style.display = t === tabId ? 'block' : 'none';
+        const btn = document.getElementById('btn-' + t);
+        if (btn) btn.classList.toggle('active', t === tabId);
+    });
+    document.getElementById('portal-sub-tabs')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const tabParam = new URLSearchParams(window.location.search).get('tab');
+    if (tabParam && subTabs.includes(tabParam)) {
+        switchSubTab(tabParam);
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% load i18n %}
+{% with current=request.resolver_match.url_name tab=request.GET.tab|default:'' %}
+<a href="{% url 'custom_company_portal' %}" style="
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; margin: 3px 10px; border-radius: 10px;
+    color: {% if current == 'custom_company_portal' and not tab %}#005353{% else %}#3e4948{% endif %};
+    text-decoration: none; font-size: 0.85rem;
+    font-weight: {% if current == 'custom_company_portal' and not tab %}700{% else %}600{% endif %};
+    background: {% if current == 'custom_company_portal' and not tab %}rgba(0,83,83,0.07){% else %}transparent{% endif %};
+    transition: background 0.2s;
+" onmouseover="this.style.background='#f0f8f8'" onmouseout="this.style.background='{% if current == 'custom_company_portal' and not tab %}rgba(0,83,83,0.07){% else %}transparent{% endif %}'">
+    <div style="width: 32px; height: 32px; border-radius: 8px; background: #e0f2f1; display: flex; align-items: center; justify-content: center; color: #00796b;">
+        <i class="fa-solid fa-gauge-high" style="font-size: 0.85rem;"></i>
+    </div>
+    {% trans 'الرئيسية' %}
+</a>
+<a href="{% url 'company_delegates_doctors' %}" style="
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; margin: 3px 10px; border-radius: 10px;
+    color: {% if current == 'company_delegates_doctors' %}#005353{% else %}#3e4948{% endif %};
+    text-decoration: none; font-size: 0.85rem;
+    font-weight: {% if current == 'company_delegates_doctors' %}700{% else %}600{% endif %};
+    background: {% if current == 'company_delegates_doctors' %}rgba(0,83,83,0.07){% else %}transparent{% endif %};
+    transition: background 0.2s;
+" onmouseover="this.style.background='#f0f8f8'" onmouseout="this.style.background='{% if current == 'company_delegates_doctors' %}rgba(0,83,83,0.07){% else %}transparent{% endif %}'">
+    <div style="width: 32px; height: 32px; border-radius: 8px; background: #e8eaf6; display: flex; align-items: center; justify-content: center; color: #3f51b5;">
+        <i class="fa-solid fa-users-gear" style="font-size: 0.85rem;"></i>
+    </div>
+    {% trans 'المندوبون والأطباء' %}
+</a>
+<a href="{% url 'custom_company_portal' %}?tab=events" style="
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; margin: 3px 10px; border-radius: 10px;
+    color: {% if current == 'custom_company_portal' and tab == 'events' %}#005353{% else %}#3e4948{% endif %};
+    text-decoration: none; font-size: 0.85rem;
+    font-weight: {% if current == 'custom_company_portal' and tab == 'events' %}700{% else %}600{% endif %};
+    background: {% if current == 'custom_company_portal' and tab == 'events' %}rgba(0,83,83,0.07){% else %}transparent{% endif %};
+    transition: background 0.2s;
+" onmouseover="this.style.background='#f0f8f8'" onmouseout="this.style.background='{% if current == 'custom_company_portal' and tab == 'events' %}rgba(0,83,83,0.07){% else %}transparent{% endif %}'">
+    <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(0,83,83,0.1); display: flex; align-items: center; justify-content: center; color: #005353;">
+        <i class="fa-solid fa-calendar-days" style="font-size: 0.85rem;"></i>
+    </div>
+    {% trans 'الفعاليات المعتمدة' %}
+</a>
+<a href="{% url 'custom_company_portal' %}?tab=requests" style="
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; margin: 3px 10px; border-radius: 10px;
+    color: {% if current == 'custom_company_portal' and tab == 'requests' %}#005353{% else %}#3e4948{% endif %};
+    text-decoration: none; font-size: 0.85rem;
+    font-weight: {% if current == 'custom_company_portal' and tab == 'requests' %}700{% else %}600{% endif %};
+    background: {% if current == 'custom_company_portal' and tab == 'requests' %}rgba(0,83,83,0.07){% else %}transparent{% endif %};
+    transition: background 0.2s;
+" onmouseover="this.style.background='#f0f8f8'" onmouseout="this.style.background='{% if current == 'custom_company_portal' and tab == 'requests' %}rgba(0,83,83,0.07){% else %}transparent{% endif %}'">
+    <div style="width: 32px; height: 32px; border-radius: 8px; background: #fff8e1; display: flex; align-items: center; justify-content: center; color: #f57f17;">
+        <i class="fa-solid fa-code-pull-request" style="font-size: 0.85rem;"></i>
+    </div>
+    {% trans 'طلبات الفعاليات' %}
+    {% if event_requests %}
+    <span style="background: #f57f17; color: white; border-radius: 12px; padding: 2px 7px; font-size: 0.68rem; font-weight: 800; margin-right: auto;">{{ event_requests|length }}</span>
+    {% endif %}
+</a>
+<a href="{% url 'custom_company_portal' %}?tab=vouchers" style="
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; margin: 3px 10px; border-radius: 10px;
+    color: {% if current == 'custom_company_portal' and tab == 'vouchers' %}#005353{% else %}#3e4948{% endif %};
+    text-decoration: none; font-size: 0.85rem;
+    font-weight: {% if current == 'custom_company_portal' and tab == 'vouchers' %}700{% else %}600{% endif %};
+    background: {% if current == 'custom_company_portal' and tab == 'vouchers' %}rgba(0,83,83,0.07){% else %}transparent{% endif %};
+    transition: background 0.2s;
+" onmouseover="this.style.background='#f0f8f8'" onmouseout="this.style.background='{% if current == 'custom_company_portal' and tab == 'vouchers' %}rgba(0,83,83,0.07){% else %}transparent{% endif %}'">
+    <div style="width: 32px; height: 32px; border-radius: 8px; background: #e0f2f1; display: flex; align-items: center; justify-content: center; color: #00796b;">
+        <i class="fa-solid fa-users" style="font-size: 0.85rem;"></i>
+    </div>
+    {% trans 'الأطباء والقسائم' %}
+</a>
+<a href="{% url 'custom_company_portal' %}?tab=settlements" style="
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; margin: 3px 10px; border-radius: 10px;
+    color: {% if current == 'custom_company_portal' and tab == 'settlements' %}#005353{% else %}#3e4948{% endif %};
+    text-decoration: none; font-size: 0.85rem;
+    font-weight: {% if current == 'custom_company_portal' and tab == 'settlements' %}700{% else %}600{% endif %};
+    background: {% if current == 'custom_company_portal' and tab == 'settlements' %}rgba(0,83,83,0.07){% else %}transparent{% endif %};
+    transition: background 0.2s;
+" onmouseover="this.style.background='#f0f8f8'" onmouseout="this.style.background='{% if current == 'custom_company_portal' and tab == 'settlements' %}rgba(0,83,83,0.07){% else %}transparent{% endif %}'">
+    <div style="width: 32px; height: 32px; border-radius: 8px; background: #e8eaf6; display: flex; align-items: center; justify-content: center; color: #3f51b5;">
+        <i class="fa-solid fa-file-invoice-dollar" style="font-size: 0.85rem;"></i>
+    </div>
+    {% trans 'التسويات والمدفوعات' %}
+</a>
+{% endwith %}

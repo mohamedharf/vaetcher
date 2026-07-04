@@ -1,0 +1,1012 @@
+{% extends 'custom_admin/dashboard_base.html' %}
+{% load i18n %}
+
+{% block title %}القسم المالي / التسويات - Arabic Retail Standard{% endblock %}
+
+{% block sidebar %}
+    {% include 'custom_admin/includes/sidebar.html' with active_page='settlements' %}
+{% endblock %}
+
+{% block extra_head %}
+    <style>
+        /* Shared Styles */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .settlement-tabs {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-xl);
+            border-bottom: 1px solid var(--surface-container-highest);
+            padding-bottom: 10px;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            color: var(--on-surface-variant);
+            cursor: pointer;
+            border-radius: var(--radius-md) var(--radius-md) 0 0;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+            font-weight: 700;
+        }
+        .tab-btn:hover:not(.active) {
+            background: var(--surface-container-highest);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        .list-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .list-row {
+            background-color: var(--surface-container-lowest);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .list-row:hover {
+            transform: scale(1.01);
+            box-shadow: var(--shadow-ambient);
+        }
+        .list-row.status-pending::before {
+            content: ''; position: absolute; top:0; bottom:0; right:0; width: 6px;
+            background-color: var(--danger);
+        }
+
+        .avatar-box {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-lg);
+            background: var(--surface-container);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .settlement-calculator {
+            background: var(--surface-container-lowest);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xxl);
+            box-shadow: var(--shadow-lg);
+            width: 90%;
+            max-width: 500px;
+            transform: translateY(20px);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .glass-overlay.active .settlement-calculator {
+            transform: translateY(0);
+        }
+
+        .calc-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px dashed var(--surface-container-highest);
+        }
+        .calc-row:last-of-type {
+            border-bottom: none;
+            margin-top: 10px;
+            padding-top: 20px;
+            border-top: 2px solid var(--surface-container-highest);
+        }
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--on-surface-variant);
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--outline-variant);
+            border-radius: var(--radius-sm);
+        }
+    </style>
+{% endblock %}
+
+{% block page_title %}القسم المالي / التسويات{% endblock %}
+{% block page_subtitle %}إدارة وتتبع التسويات المالية.{% endblock %}
+{% block page_icon %}fa-file-invoice-dollar{% endblock %}
+
+{% block search_bar %}
+<!-- No general search bar needed here as each tab has its own search -->
+{% endblock %}
+
+{% block quick_actions %}
+<button class="qa-btn qa-btn-outline" onclick="exportActiveTabToCSV()">
+    <i class="fa-solid fa-file-export"></i> {% trans 'تصدير إكسيل' %}
+</button>
+{% endblock %}
+
+{% block content %}
+
+    {% if messages %}
+        <div class="mt-md">
+            {% for message in messages %}
+                <div style="padding: 15px; margin-bottom: 10px; border-radius: 8px; 
+                            background-color: {% if message.tags == 'success' %}#e8f5e9{% else %}#ffebee{% endif %};
+                            color: {% if message.tags == 'success' %}#1b5e20{% else %}#b71c1c{% endif %};">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div>
+        <div class="metrics-grid mt-xl">
+            <div class="pos-card pos-card-ambient relative overflow-hidden">
+                <div style="position: absolute; left: -20px; top: -20px; font-size: 8rem; opacity: 0.03; color: var(--danger);">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                </div>
+                <span class="title-sm" style="color: var(--on-surface-variant);">{% trans 'إجمالي الديون المعلقة (للموردين)' %}</span>
+                <div class="display-lg num-font mt-md" style="color: var(--on-surface);">
+                    {{ pending_vendor_debts|floatformat:2 }} <span class="title-md"></span>
+                </div>
+            </div>
+            <div class="pos-card relative overflow-hidden" style="background-color: var(--primary); color: white;">
+                <div style="position: absolute; left: -20px; top: -20px; font-size: 8rem; opacity: 0.1; color: white;">
+                    <i class="fa-solid fa-percent"></i>
+                </div>
+                <span class="title-sm" style="color: rgba(255,255,255,0.7);">{% trans 'الرسوم الإدارية المتوقعة' %}</span>
+                <div class="display-lg num-font mt-md">
+                    {{ expected_admin_fees|floatformat:2 }} <span class="title-md"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="settlement-tabs mt-xl">
+            <button class="tab-btn active" onclick="switchTab('vendors', this)">{% trans 'تسويات الموردين' %}</button>
+            <button class="tab-btn" onclick="switchTab('companies', this)">{% trans 'تسويات الشركات' %}</button>
+            <button class="tab-btn" onclick="switchTab('delegates', this)">{% trans 'تسويات المناديب' %}</button>
+        </div>
+
+        <!-- VENDORS TAB -->
+        <div id="tab-vendors" class="tab-content active">
+            <div class="flex-row justify-between items-center mb-md gap-md">
+                <h2 class="headline-sm" style="margin: 0;">{% trans 'الموردين المستحقين' %}</h2>
+                <div class="flex-row items-center gap-sm">
+                    <button class="btn btn-primary" onclick="openSettlementModal('vendor_settlement', '', '', '', '')" style="padding: 8px 15px; border-radius: var(--radius-md);">
+                        <i class="fa-solid fa-plus"></i> {% trans 'تسوية لتاجر' %}
+                    </button>
+                    <div style="position: relative; width: 300px;">
+                        <input type="text" id="vendorSearchInput" placeholder="{% trans 'البحث باسم المورد...' %}" 
+                               style="width: 100%; padding: 8px 12px 8px 35px; border: 1px solid var(--outline-variant); border-radius: var(--radius-md);"
+                               onkeyup="filterVendorsList()">
+                        <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--on-surface-variant); opacity: 0.5;"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="list-container">
+                {% for data in pending_vendors %}
+                <div class="list-row status-pending">
+                    <div class="flex-row items-center gap-xl">
+                        <div class="avatar-box" style="background:#fff3e0; color:#e65100;">
+                            <i class="fa-solid fa-utensils"></i>
+                        </div>
+                        <div>
+                            <h3 class="title-md" style="margin: 0; font-size: 1.2rem;">{{ data.vendor.name }}</h3>
+                            <p class="label-md" style="margin: 5px 0 0 0;">كود: #VND-{{ data.vendor.id }}</p>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <p class="label-md mb-sm">{% trans 'عدد الفواتير' %}</p>
+                        <span class="title-sm num-font" style="background:var(--surface-container-high); padding: 4px 12px; border-radius: var(--radius-full);">{{ data.invoices_count }}</span>
+                    </div>
+                    <div style="text-align: right; min-width: 150px;">
+                        <p class="label-md mb-sm">{% trans 'الإجمالي غير المسدد' %}</p>
+                        <div class="title-md num-font" style="font-size: 1.5rem; font-weight: 700;">{{ data.debt|floatformat:2 }} </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" style="padding: 0.8rem 1.5rem; border-radius: var(--radius-md);" 
+                                onclick="openSettlementModal('vendor_settlement', '{{ data.vendor.id }}', '{{ data.vendor.name|escapejs }}', '{{ data.debt|stringformat:'f' }}', '{{ data.invoices_count }}')">
+                            {% trans 'محاسبة وإصدار إيصال' %}
+                        </button>
+                    </div>
+                </div>
+                {% empty %}
+                <p>{% trans 'لا يوجد موردين لديهم مديونيات معلقة حالياً.' %}</p>
+                {% endfor %}
+            </div>
+            
+            <div class="mt-xl">
+                <h3 class="title-md mb-md">{% trans 'سجل تسويات الموردين السابقة' %}</h3>
+                <table style="width: 100%; border-collapse: collapse; text-align: right; background: white; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-sm);">
+                    <tr style="border-bottom: 2px solid var(--outline-variant); background: var(--surface-container-lowest);">
+                        <th style="padding: 15px;">{% trans 'المورد' %}</th>
+                        <th style="padding: 15px;">{% trans 'المبلغ' %}</th>
+                        <th style="padding: 15px;">{% trans 'التاريخ' %}</th>
+                        <th style="padding: 15px;">{% trans 'طريقة الدفع' %}</th>
+                        <th style="padding: 15px;">{% trans 'الحالة' %}</th>
+                        <th style="padding: 15px;">{% trans 'الإيصال' %}</th>
+                    </tr>
+                    {% for st in vendor_settlements %}
+                    <tr style="border-bottom: 1px solid var(--surface-container-highest);">
+                        <td style="padding: 15px;">{{ st.vendor.name }}</td>
+                        <td style="padding: 15px; font-weight: bold;">{{ st.amount_settled }}</td>
+                        <td style="padding: 15px;">{{ st.settlement_date }}</td>
+                        <td style="padding: 15px;">{{ st.get_payment_method_display }}</td>
+                        <td style="padding: 15px;">
+                            <span style="background: var(--success); color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem;">{{ st.get_settlement_status_display }}</span>
+                        </td>
+                        <td style="padding: 15px;">
+                            {% if st.receipt_image %}
+                                <a href="{{ st.receipt_image.url }}" target="_blank" style="color: var(--primary); font-weight: bold;"><i class="fa-solid fa-image"></i> {% trans 'عرض' %}</a>
+                            {% else %}
+                                <span style="color: var(--on-surface-variant); opacity: 0.5;">{% trans 'لا يوجد' %}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" style="padding: 15px;">{% trans 'لا توجد تسويات سابقة.' %}</td></tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <!-- COMPANIES TAB -->
+        <div id="tab-companies" class="tab-content">
+            <div class="flex-row justify-between items-center mb-md gap-md">
+                <h2 class="headline-sm" style="margin: 0;">{% trans 'تسويات الشركات الدوائية' %}</h2>
+                <div class="flex-row items-center gap-md">
+                    <div style="position: relative; width: 250px;">
+                        <input type="text" id="companySearchInput" placeholder="{% trans 'البحث باسم الشركة...' %}" 
+                               style="width: 100%; padding: 8px 12px 8px 35px; border: 1px solid var(--outline-variant); border-radius: var(--radius-md);"
+                               onkeyup="filterCompaniesTable()">
+                        <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--on-surface-variant); opacity: 0.5;"></i>
+                    </div>
+                    <button class="btn btn-primary" onclick="openSettlementModal('company_settlement', '', '', 0, 0)">
+                        <i class="fa-solid fa-plus"></i> {% trans 'تسوية شركة جديدة' %}
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pending Companies Cards -->
+            {% if pending_companies %}
+            <h3 class="title-md mb-md" style="color: var(--danger);">
+                <i class="fa-solid fa-clock" style="margin-left:6px;"></i>
+                {% trans 'شركات بمستحقات معلقة' %} ({{ pending_companies|length }})
+            </h3>
+            <div class="list-container" style="margin-bottom: 30px;">
+                {% for data in pending_companies %}
+                <div class="list-row status-pending">
+                    <div class="flex-row items-center gap-xl">
+                        <div class="avatar-box" style="background:#e8eaf6; color:#3949ab;">
+                            <i class="fa-solid fa-building"></i>
+                        </div>
+                        <div>
+                            <h3 class="title-md" style="margin: 0; font-size: 1.1rem;">{{ data.company.clean_name }}</h3>
+                            <p class="label-md" style="margin: 4px 0 0 0; color: var(--on-surface-variant);">
+                                <i class="fa-solid fa-calendar-check" style="font-size:0.75rem;"></i> {{ data.events_count }} {% trans 'فعالية' %} &nbsp;|&nbsp;
+                                <i class="fa-solid fa-ticket" style="font-size:0.75rem;"></i> {{ data.vouchers_count }} {% trans 'قسيمة' %}
+                            </p>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <p class="label-md mb-sm">{% trans 'إجمالي الاستهلاك' %}</p>
+                        <span class="title-sm num-font" style="background:var(--surface-container-high); padding: 4px 12px; border-radius: var(--radius-full);">{{ data.total_consumed|floatformat:2 }} </span>
+                    </div>
+                    <div style="text-align: center;">
+                        <p class="label-md mb-sm">{% trans 'تم تسويته' %}</p>
+                        <span class="title-sm num-font" style="background:#e8f5e9; color:#2e7d32; padding: 4px 12px; border-radius: var(--radius-full);">{{ data.total_settled|floatformat:2 }} </span>
+                    </div>
+                    <div style="text-align: right; min-width: 150px;">
+                        <p class="label-md mb-sm">{% trans 'المستحق المتبقي' %}</p>
+                        <div class="title-md num-font" style="font-size: 1.5rem; font-weight: 700; color: var(--danger);">{{ data.due_balance|floatformat:2 }} </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" style="padding: 0.8rem 1.5rem; border-radius: var(--radius-md);"
+                                onclick="openSettlementModal('company_settlement', '{{ data.company.id }}', '{{ data.company.clean_name|escapejs }}', '{{ data.due_balance|stringformat:'f' }}', '{{ data.events_count }} فعاليات')">
+                            {% trans 'محاسبة وإصدار إيصال' %}
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div style="background:#e8f5e9; border-radius: 12px; padding: 15px 20px; margin-bottom: 20px; color:#2e7d32; display:flex; align-items:center; gap:10px;">
+                <i class="fa-solid fa-circle-check fa-lg"></i>
+                <span>{% trans 'لا توجد شركات بمستحقات معلقة حالياً.' %}</span>
+            </div>
+            {% endif %}
+
+            <!-- Companies History Table -->
+            <h3 class="title-md mb-md">{% trans 'سجل تسويات الشركات السابقة' %}</h3>
+            <div class="list-container">
+                <table style="width: 100%; border-collapse: collapse; text-align: right; background: white; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-sm);">
+                    <tr style="border-bottom: 2px solid var(--outline-variant); background: var(--surface-container-lowest);">
+                        <th style="padding: 15px;">{% trans 'النوع' %}</th>
+                        <th style="padding: 15px;">{% trans 'الشركة' %}</th>
+                        <th style="padding: 15px;">{% trans 'المندوب' %}</th>
+                        <th style="padding: 15px;">{% trans 'المبلغ المسدد' %}</th>
+                        <th style="padding: 15px;">{% trans 'التاريخ' %}</th>
+                        <th style="padding: 15px;">{% trans 'الحالة' %}</th>
+                        <th style="padding: 15px;">{% trans 'الإيصال' %}</th>
+                        <th style="padding: 15px;">{% trans 'إجراءات' %}</th>
+                    </tr>
+                    {% for st in all_company_related_settlements %}
+                    <tr style="border-bottom: 1px solid var(--surface-container-highest);">
+                        <td style="padding: 15px;">
+                            {% if st.type == 'company' %}
+                                <span style="background: #e3f2fd; color: #1565c0; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">{% trans 'تسوية شركة' %}</span>
+                            {% else %}
+                                <span style="background: #fff3e0; color: #e65100; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">{% trans 'تسوية مندوب' %}</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 15px;">{{ st.company.clean_name }}</td>
+                        <td style="padding: 15px;">{% if st.type == 'delegate' %}{{ st.other.name }}{% else %}-{% endif %}</td>
+                        <td style="padding: 15px; font-weight: bold; color: var(--primary);" class="num-font">{{ st.amount|floatformat:2 }} </td>
+                        <td style="padding: 15px;" class="num-font">{{ st.date }}</td>
+                        <td style="padding: 15px;">
+                            {% if st.status == 'PENDING' %}
+                                <span style="background:#fff8e1; color:#f57f17; font-size:0.8rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'معلق' %}</span>
+                            {% elif st.status == 'COMPLETED' or st.status == 'COMPLETED' %}
+                                <span style="background:#e8f5e9; color:#2e7d32; font-size:0.8rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'مكتمل' %}</span>
+                            {% else %}
+                                <span style="background:#ffebee; color:#c62828; font-size:0.8rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'مرفوض' %}</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 15px;">
+                            {% if st.receipt %}
+                                <a href="{{ st.receipt.url }}" target="_blank" style="color: var(--primary); font-weight: bold;"><i class="fa-solid fa-image"></i> {% trans 'عرض' %}</a>
+                            {% else %}
+                                <span style="color: var(--on-surface-variant); opacity: 0.5;">{% trans 'لا يوجد' %}</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 15px;">
+                            {% if st.type == 'company' and st.status == 'PENDING' %}
+                                <form method="POST" style="display:inline-block; margin-left: 5px;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="update_company_settlement">
+                                    <input type="hidden" name="settlement_id" value="{{ st.id }}">
+                                    <input type="hidden" name="status" value="COMPLETED">
+                                    <button type="submit" style="padding: 6px 12px; font-size: 0.8rem; border-radius: 6px; border: none; cursor: pointer; background: #2e7d32; color: white;" title="موافقة"><i class="fa-solid fa-check"></i></button>
+                                </form>
+                                <form method="POST" style="display:inline-block;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="update_company_settlement">
+                                    <input type="hidden" name="settlement_id" value="{{ st.id }}">
+                                    <input type="hidden" name="status" value="REJECTED">
+                                    <button type="submit" style="padding: 6px 12px; font-size: 0.8rem; border-radius: 6px; border: none; cursor: pointer; background: #c62828; color: white;" title="رفض"><i class="fa-solid fa-xmark"></i></button>
+                                </form>
+                            {% else %}
+                                <span style="color: var(--on-surface-variant); opacity: 0.5;">-</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="8" style="padding: 15px; text-align:center; color: var(--on-surface-variant);">{% trans 'لا توجد تسويات شركات سابقة.' %}</td></tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <!-- DELEGATES TAB -->
+        <div id="tab-delegates" class="tab-content">
+            <div class="flex-row justify-between items-center mb-md gap-md">
+                <h2 class="headline-sm" style="margin: 0;">{% trans 'تسويات المناديب' %}</h2>
+                <div class="flex-row items-center gap-md">
+                    <div style="position: relative; width: 250px;">
+                        <input type="text" id="delegateSearchInput" placeholder="{% trans 'البحث باسم المندوب...' %}" 
+                               style="width: 100%; padding: 8px 12px 8px 35px; border: 1px solid var(--outline-variant); border-radius: var(--radius-md);"
+                               onkeyup="filterDelegatesTable()">
+                        <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--on-surface-variant); opacity: 0.5;"></i>
+                    </div>
+                    <button class="btn btn-primary" onclick="openSettlementModal('delegate_settlement', '', '', 0, 0)">
+                        <i class="fa-solid fa-plus"></i> {% trans 'تسوية مندوب جديدة' %}
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pending Delegates Cards -->
+            {% if pending_delegates %}
+            <h3 class="title-md mb-md" style="color: var(--danger);">
+                <i class="fa-solid fa-clock" style="margin-left:6px;"></i>
+                {% trans 'مناديب بمستحقات معلقة' %} ({{ pending_delegates|length }})
+            </h3>
+            <div class="list-container" style="margin-bottom: 30px;">
+                {% for data in pending_delegates %}
+                <div class="list-row status-pending">
+                    <div class="flex-row items-center gap-xl">
+                        <div class="avatar-box" style="background:#fce4ec; color:#c62828;">
+                            <i class="fa-solid fa-user-tie"></i>
+                        </div>
+                        <div>
+                            <h3 class="title-md" style="margin: 0; font-size: 1.1rem;">{{ data.delegate.name }}</h3>
+                            <p class="label-md" style="margin: 4px 0 0 0; color: var(--on-surface-variant);">
+                                <i class="fa-solid fa-calendar-check" style="font-size:0.75rem;"></i> {{ data.events_count }} {% trans 'فعالية' %} &nbsp;|&nbsp;
+                                <i class="fa-solid fa-user-doctor" style="font-size:0.75rem;"></i> {{ data.doctors_count }} {% trans 'طبيب' %}
+                            </p>
+                            {% if data.companies_detail %}
+                            <div style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 5px;">
+                                {% for cd in data.companies_detail %}
+                                <span style="background: #e8eaf6; color: #3949ab; font-size: 0.72rem; padding: 2px 8px; border-radius: 20px; font-weight: 700;">
+                                    {{ cd.company.clean_name }}: {{ cd.due|floatformat:0 }} 
+                                </span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <p class="label-md mb-sm">{% trans 'إجمالي الاستهلاك' %}</p>
+                        <span class="title-sm num-font" style="background:var(--surface-container-high); padding: 4px 12px; border-radius: var(--radius-full);">{{ data.total_consumed|floatformat:2 }} </span>
+                    </div>
+                    <div style="text-align: center;">
+                        <p class="label-md mb-sm">{% trans 'تم تسويته' %}</p>
+                        <span class="title-sm num-font" style="background:#e8f5e9; color:#2e7d32; padding: 4px 12px; border-radius: var(--radius-full);">{{ data.total_settled|floatformat:2 }} </span>
+                    </div>
+                    <div style="text-align: right; min-width: 150px;">
+                        <p class="label-md mb-sm">{% trans 'المستحق المتبقي' %}</p>
+                        <div class="title-md num-font" style="font-size: 1.5rem; font-weight: 700; color: var(--danger);">{{ data.due_balance|floatformat:2 }} </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" style="padding: 0.8rem 1.5rem; border-radius: var(--radius-md);"
+                                onclick="openSettlementModal('delegate_settlement', '{{ data.delegate.id }}', '{{ data.delegate.name|escapejs }}', '{{ data.due_balance|stringformat:'f' }}', '{{ data.events_count }} فعاليات')">
+                            {% trans 'محاسبة وإصدار إيصال' %}
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div style="background:#e8f5e9; border-radius: 12px; padding: 15px 20px; margin-bottom: 20px; color:#2e7d32; display:flex; align-items:center; gap:10px;">
+                <i class="fa-solid fa-circle-check fa-lg"></i>
+                <span>{% trans 'لا توجد مناديب بمستحقات معلقة حالياً.' %}</span>
+            </div>
+            {% endif %}
+
+            <!-- Delegates History Table -->
+            <h3 class="title-md mb-md">{% trans 'سجل تسويات المناديب السابقة' %}</h3>
+            <div class="list-container">
+                <table style="width: 100%; border-collapse: collapse; text-align: right; background: white; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-sm);">
+                    <tr style="border-bottom: 2px solid var(--outline-variant); background: var(--surface-container-lowest);">
+                        <th style="padding: 15px;">{% trans 'المندوب' %}</th>
+                        <th style="padding: 15px;">{% trans 'الشركة' %}</th>
+                        <th style="padding: 15px;">{% trans 'المبلغ المسدد' %}</th>
+                        <th style="padding: 15px;">{% trans 'التاريخ' %}</th>
+                        <th style="padding: 15px;">{% trans 'الحالة' %}</th>
+                        <th style="padding: 15px;">{% trans 'الإيصال' %}</th>
+                    </tr>
+                    {% for st in delegate_settlements %}
+                    <tr style="border-bottom: 1px solid var(--surface-container-highest);">
+                        <td style="padding: 15px; font-weight: bold;">{{ st.delegate.name }}</td>
+                        <td style="padding: 15px;">{% if st.company %}{{ st.company.clean_name }}{% else %}-{% endif %}</td>
+                        <td style="padding: 15px; font-weight: bold; color: var(--primary);" class="num-font">{{ st.settlement_amount|floatformat:2 }} </td>
+                        <td style="padding: 15px;" class="num-font">{{ st.settlement_date }}</td>
+                        <td style="padding: 15px;">
+                            {% if st.settlement_status == 'PENDING' %}
+                                <span style="background:#fff8e1; color:#f57f17; font-size:0.8rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'معلق' %}</span>
+                            {% elif st.settlement_status == 'COMPLETED' %}
+                                <span style="background:#e8f5e9; color:#2e7d32; font-size:0.8rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'مكتمل' %}</span>
+                            {% else %}
+                                <span style="background:#ffebee; color:#c62828; font-size:0.8rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'مرفوض' %}</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 15px;">
+                            {% if st.receipt_image %}
+                                <a href="{{ st.receipt_image.url }}" target="_blank" style="color: var(--primary); font-weight: bold;"><i class="fa-solid fa-image"></i> {% trans 'عرض' %}</a>
+                            {% else %}
+                                <span style="color: var(--on-surface-variant); opacity: 0.5;">{% trans 'لا يوجد' %}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6" style="padding: 15px; text-align:center; color: var(--on-surface-variant);">{% trans 'لا توجد تسويات مناديب سابقة.' %}</td></tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Unified Settlement Form Modal -->
+    <div class="glass-overlay" id="settlementOverlay">
+        <div class="settlement-calculator">
+            <button class="close-btn" type="button" style="position:absolute; top:20px; left:20px; background:transparent; border:none; font-size:1.5rem; cursor:pointer; color: var(--on-surface-variant);" onclick="closeSettlementModal()"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="width: 60px; height: 60px; background: var(--secondary-container); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 10px auto;">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                </div>
+                <h2 class="headline-sm" style="margin: 0; color: var(--on-surface);">{% trans 'إيصال تصفية' %}</h2>
+                <p class="title-sm" id="modalTargetName" style="color: var(--primary);">---</p>
+                <span class="label-md" style="background: #e2e2e2; padding: 2px 8px; border-radius: 4px;" id="modalExtraInfo">---</span>
+            </div>
+            
+            <form method="POST" enctype="multipart/form-data" id="settlementForm" onsubmit="return validateSettlementForm()">
+                {% csrf_token %}
+                <input type="hidden" name="action" id="modalActionType">
+                <input type="hidden" name="vendor_id" id="modalVendorId">
+                <input type="hidden" name="company_id" id="modalCompanyIdHidden">
+                <input type="hidden" name="delegate_id" id="modalDelegateIdHidden">
+                
+                <div id="vendorSelectGroup" style="display: none;" class="form-group">
+                    <label>{% trans 'المورد:' %}</label>
+                    <input type="text" id="modalVendorSearch" placeholder="{% trans 'ابحث عن التاجر هنا...' %}" onkeyup="filterModalVendorSelect()" style="margin-bottom: 8px; width: 100%; padding: 8px; border: 1px solid var(--outline-variant); border-radius: var(--radius-sm);">
+                    <select id="modalVendorIdSelect" onchange="updateVendorAmount(this)" size="5" style="width: 100%; padding: 8px; border: 1px solid var(--outline-variant); border-radius: var(--radius-sm); overflow-y: auto;">
+                        <option value="">{% trans '-- اختر المورد --' %}</option>
+                        {% for v_data in all_vendors_list %}
+                        <option value="{{ v_data.vendor.id }}" data-debt="{{ v_data.debt|stringformat:'f' }}">{{ v_data.vendor.name }} - كود: {{ v_data.vendor.id }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div id="companyDelegateInputs" style="display: none;">
+                    <div class="form-group" id="companySelectGroup">
+                        <label id="companySelectLabel">{% trans 'الشركة الدوائية:' %}</label>
+                        <select id="modalCompanyId" onchange="onCompanySelectChanged(this)" style="width:100%; padding:10px; border:1px solid var(--outline-variant); border-radius:var(--radius-sm);">
+                            <option value="">— {% trans 'اختر الشركة' %} —</option>
+                        </select>
+                        <div id="selectedCompanyBalance" style="display:none; margin-top:8px; padding:8px 12px; background:#e8f5e9; border-radius:8px; color:#2e7d32; font-weight:bold; font-size:0.85rem;">
+                            <i class="fa-solid fa-circle-info"></i>
+                            <span id="selectedCompanyBalanceText"></span>
+                        </div>
+                    </div>
+                    <div class="form-group" id="delegateIdGroup">
+                        <label>{% trans 'المندوب:' %}</label>
+                        <select id="modalDelegateId" onchange="document.getElementById('modalDelegateIdHidden').value=this.value">
+                            <option value="">{% trans '-- اختر المندوب --' %}</option>
+                            {% for delegate in delegates_list %}
+                            <option value="{{ delegate.id }}">{{ delegate.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>{% trans 'المبلغ المستحق :' %}</label>
+                    <input type="number" step="0.01" name="amount" id="modalAmount" required>
+                    <small style="display:block; margin-top:5px; color:var(--primary); font-weight:bold; font-size:0.8rem; background:#e0f2f1; padding:5px 8px; border-radius:4px;">
+                        <i class="fa-solid fa-circle-info"></i> {% trans 'ملاحظة: المبالغ الظاهرة هي المبالغ الصافية بعد خصم نسبة عمولة المنصة' %}
+                    </small>
+                </div>
+                
+                <div class="form-group">
+                    <label>{% trans 'تاريخ التسوية:' %}</label>
+                    <input type="date" name="date" id="modalDate" required>
+                </div>
+                
+                <div class="form-group" id="paymentMethodGroup">
+                    <label>{% trans 'طريقة الدفع:' %}</label>
+                    <select name="payment_method">
+                        <option value="CASH">{% trans 'نقدي' %}</option>
+                        <option value="BANK">{% trans 'تحويل بنكي' %}</option>
+                        <option value="CHECK">{% trans 'شيك' %}</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>{% trans 'ملاحظات (اختياري):' %}</label>
+                    <textarea name="notes" rows="2"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>{% trans 'إرفاق صورة الإيصال (اختياري):' %}</label>
+                    <input type="file" name="receipt_image" accept="image/*" style="border: none; padding: 5px 0;">
+                </div>
+
+                <div class="flex-row gap-sm mt-md">
+                    <button type="button" class="btn btn-secondary" style="flex:1; border-radius: var(--radius-md);" onclick="closeSettlementModal()">{% trans 'إلغاء' %}</button>
+                    <button type="submit" class="btn btn-primary" style="flex:2; border-radius: var(--radius-md);">
+                        <i class="fa-solid fa-check-double"></i> {% trans 'اعتماد وحفظ' %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <!-- Delegate-Company map: { delegateId: [{company_id, company_name, due, consumed, settled, events, doctors},...] } -->
+    <script>
+        const delegateCompaniesMap = {
+            {% for data in all_delegates_list %}
+            "{{ data.delegate.id }}": [
+                {% for cd in data.companies_detail %}
+                {
+                    company_id: "{{ cd.company.id }}",
+                    company_name: "{{ cd.company.clean_name|escapejs }}",
+                    due: parseFloat("{{ cd.due|stringformat:'f' }}") || 0,
+                    consumed: parseFloat("{{ cd.consumed|stringformat:'f' }}") || 0,
+                    settled: parseFloat("{{ cd.settled|stringformat:'f' }}") || 0,
+                    events_count: {{ cd.events_count|default:0 }},
+                    doctors_count: {{ cd.doctors_count|default:0 }}
+                }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ]{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        };
+    </script>
+    <script>
+        // Set today's date in modal by default
+        document.getElementById('modalDate').valueAsDate = new Date();
+        
+        // Setup Tab Persistence
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabId).classList.add('active');
+            if(btnElement) btnElement.classList.add('active');
+            
+            localStorage.setItem('activeSettlementsTab', tabId);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const activeTab = localStorage.getItem('activeSettlementsTab');
+            if (activeTab) {
+                const btn = document.querySelector(`.tab-btn[onclick*="${activeTab}"]`);
+                if (btn) switchTab(activeTab, btn);
+            }
+        });
+
+        function updateVendorAmount(selectElem) {
+            const selectedOption = selectElem.options[selectElem.selectedIndex];
+            if (selectedOption && selectedOption.value) {
+                document.getElementById('modalVendorId').value = selectedOption.value;
+                document.getElementById('modalAmount').value = selectedOption.getAttribute('data-debt') || '';
+            } else {
+                document.getElementById('modalVendorId').value = '';
+                document.getElementById('modalAmount').value = '';
+            }
+        }
+
+        function openSettlementModal(type, targetId, targetName, amount, extraInfo) {
+            // Reset all fields
+            document.getElementById('modalVendorId').value = '';
+            document.getElementById('modalCompanyIdHidden').value = '';
+            document.getElementById('modalDelegateIdHidden').value = '';
+            document.getElementById('modalCompanyId').value = '';
+            document.getElementById('modalDelegateId').value = '';
+
+            document.getElementById('modalActionType').value = type;
+            document.getElementById('modalAmount').value = parseFloat(amount) || '';
+            
+            if (type === 'vendor_settlement') {
+                document.getElementById('companyDelegateInputs').style.display = 'none';
+                document.getElementById('paymentMethodGroup').style.display = 'block';
+                document.getElementById('vendorSelectGroup').style.display = targetId ? 'none' : 'block';
+
+                if (targetId) {
+                    document.getElementById('modalTargetName').innerText = targetName;
+                    document.getElementById('modalExtraInfo').innerText = extraInfo + ' فواتير معلقة';
+                    document.getElementById('modalExtraInfo').style.display = 'inline-block';
+                    document.getElementById('modalVendorId').value = targetId;
+                } else {
+                    document.getElementById('modalTargetName').innerText = 'تسوية مورد جديدة';
+                    document.getElementById('modalExtraInfo').style.display = 'none';
+                }
+
+            } else if (type === 'company_settlement') {
+                document.getElementById('vendorSelectGroup').style.display = 'none';
+                document.getElementById('companyDelegateInputs').style.display = 'block';
+                document.getElementById('delegateIdGroup').style.display = 'none';
+                document.getElementById('paymentMethodGroup').style.display = 'none';
+                document.getElementById('selectedCompanyBalance').style.display = 'none';
+                document.getElementById('companySelectGroup').style.display = targetId ? 'none' : 'block';
+
+                // Mark select as company mode (not delegate)
+                document.getElementById('modalCompanyId').dataset.mode = 'company';
+
+                if (targetId) {
+                    document.getElementById('modalTargetName').innerText = targetName;
+                    document.getElementById('modalExtraInfo').innerText = extraInfo;
+                    document.getElementById('modalExtraInfo').style.display = 'inline-block';
+                    document.getElementById('modalCompanyIdHidden').value = targetId;
+                } else {
+                    // Populate with all companies for manual pick
+                    const companySelect = document.getElementById('modalCompanyId');
+                    companySelect.innerHTML = '<option value="">— اختر الشركة —</option>';
+                    {% for company in companies_list %}
+                    companySelect.innerHTML += '<option value="{{ company.id }}">{{ company.clean_name|escapejs }}</option>';
+                    {% endfor %}
+                    document.getElementById('modalTargetName').innerText = 'تسوية شركة جديدة';
+                    document.getElementById('modalExtraInfo').innerText = 'برجاء اختيار الشركة وإدخال المبلغ';
+                    document.getElementById('modalExtraInfo').style.display = 'inline-block';
+                }
+
+            } else if (type === 'delegate_settlement') {
+                document.getElementById('vendorSelectGroup').style.display = 'none';
+                document.getElementById('companyDelegateInputs').style.display = 'block';
+                document.getElementById('companySelectGroup').style.display = 'block';
+                document.getElementById('paymentMethodGroup').style.display = 'none';
+                document.getElementById('selectedCompanyBalance').style.display = 'none';
+
+                // Mark select as delegate mode
+                document.getElementById('modalCompanyId').dataset.mode = 'delegate';
+
+                if (targetId) {
+                    document.getElementById('delegateIdGroup').style.display = 'none';
+                    document.getElementById('modalTargetName').innerText = targetName;
+                    document.getElementById('modalDelegateIdHidden').value = targetId;
+
+                    const companySelect = document.getElementById('modalCompanyId');
+                    companySelect.innerHTML = '<option value="">— اختر الشركة —</option>';
+                    const delegateCompanies = delegateCompaniesMap[targetId] || [];
+
+                    if (delegateCompanies.length === 0) {
+                        companySelect.innerHTML += '<option value="" disabled>لا توجد شركات بمستحقات معلقة</option>';
+                        document.getElementById('modalExtraInfo').innerText = 'لا توجد مستحقات معلقة لهذا المندوب';
+                        document.getElementById('modalExtraInfo').style.display = 'inline-block';
+                    } else {
+                        let totalDue = 0;
+                        delegateCompanies.forEach(c => {
+                            totalDue += parseFloat(c.due) || 0;
+                            const opt = document.createElement('option');
+                            opt.value = c.company_id;
+                            opt.dataset.due = c.due;
+                            opt.dataset.consumed = c.consumed;
+                            opt.dataset.settled = c.settled;
+                            opt.dataset.events = c.events_count;
+                            opt.dataset.doctors = c.doctors_count;
+                            opt.text = `${c.company_name}  —  مستحق: ${parseFloat(c.due).toFixed(2)} ج`;
+                            companySelect.appendChild(opt);
+                        });
+                        if (delegateCompanies.length > 1) {
+                            const allOpt = document.createElement('option');
+                            allOpt.value = '__ALL__';
+                            allOpt.dataset.due = totalDue.toFixed(2);
+                            allOpt.text = `★ تسوية جميع الشركات (${delegateCompanies.length}) — إجمالي: ${totalDue.toFixed(2)} ج`;
+                            companySelect.appendChild(allOpt);
+                        }
+                        document.getElementById('modalExtraInfo').innerText = extraInfo;
+                        document.getElementById('modalExtraInfo').style.display = 'inline-block';
+                        document.getElementById('modalAmount').value = '';
+                    }
+                } else {
+                    document.getElementById('delegateIdGroup').style.display = 'block';
+                    document.getElementById('modalTargetName').innerText = 'تسوية مندوب جديدة';
+                    document.getElementById('modalExtraInfo').innerText = 'برجاء اختيار المندوب والشركة';
+                    document.getElementById('modalExtraInfo').style.display = 'inline-block';
+                    const companySelect = document.getElementById('modalCompanyId');
+                    companySelect.innerHTML = '<option value="">— اختر الشركة —</option>';
+                    {% for company in companies_list %}
+                    companySelect.innerHTML += '<option value="{{ company.id }}">{{ company.clean_name|escapejs }}</option>';
+                    {% endfor %}
+                }
+            }
+
+            document.getElementById('settlementOverlay').classList.add('active');
+        }
+
+        function closeSettlementModal() {
+            document.getElementById('settlementOverlay').classList.remove('active');
+        }
+
+        // Unified company select handler — behaves differently per modal type
+        function onCompanySelectChanged(selectElem) {
+            const mode = selectElem.dataset.mode || 'company';
+            if (mode === 'delegate') {
+                onDelegateCompanySelected(selectElem);
+            } else {
+                // Company settlement: just update hidden input
+                document.getElementById('modalCompanyIdHidden').value = selectElem.value;
+            }
+        }
+
+        // Called when user picks a company in delegate settlement modal
+        function onDelegateCompanySelected(selectElem) {
+            const selected = selectElem.options[selectElem.selectedIndex];
+            const balanceChip = document.getElementById('selectedCompanyBalance');
+            const balanceText = document.getElementById('selectedCompanyBalanceText');
+            const amountInput = document.getElementById('modalAmount');
+
+            if (!selected || !selected.value) {
+                balanceChip.style.display = 'none';
+                amountInput.value = '';
+                document.getElementById('modalCompanyIdHidden').value = '';
+                return;
+            }
+
+            if (selected.value === '__ALL__') {
+                const totalDue = parseFloat(selected.dataset.due) || 0;
+                document.getElementById('modalActionType').value = 'delegate_settlement_all';
+                document.getElementById('modalCompanyIdHidden').value = '__ALL__';
+                amountInput.value = totalDue.toFixed(2);
+                balanceText.textContent = `تسوية كاملة لجميع الشركات — إجمالي: ${totalDue.toFixed(2)} ج`;
+                balanceChip.style.background = '#e8eaf6';
+                balanceChip.style.color = '#3949ab';
+                balanceChip.style.display = 'block';
+            } else {
+                const due = parseFloat(selected.dataset.due) || 0;
+                const consumed = parseFloat(selected.dataset.consumed) || 0;
+                const settled = parseFloat(selected.dataset.settled) || 0;
+                document.getElementById('modalActionType').value = 'delegate_settlement';
+                document.getElementById('modalCompanyIdHidden').value = selected.value;
+                amountInput.value = due.toFixed(2);
+                balanceText.textContent = `استهلاك: ${consumed.toFixed(2)} ج | تسوية سابقة: ${settled.toFixed(2)} ج | متبقي: ${due.toFixed(2)} ج`;
+                balanceChip.style.background = '#e8f5e9';
+                balanceChip.style.color = '#2e7d32';
+                balanceChip.style.display = 'block';
+            }
+        }
+
+        function filterModalVendorSelect() {
+            const query = document.getElementById('modalVendorSearch').value.toLowerCase();
+            const selectElem = document.getElementById('modalVendorIdSelect');
+            const options = selectElem.options;
+            
+            for (let i = 1; i < options.length; i++) { // Skip the first option (empty/placeholder)
+                const text = options[i].text.toLowerCase();
+                if (text.includes(query)) {
+                    options[i].style.display = '';
+                } else {
+                    options[i].style.display = 'none';
+                }
+            }
+        }
+
+        // Live Search Filter for Vendors List
+        function filterVendorsList() {
+            const query = document.getElementById('vendorSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#tab-vendors .list-row');
+            rows.forEach(row => {
+                const name = row.querySelector('.title-md').innerText.toLowerCase();
+                const code = row.querySelector('.label-md').innerText.toLowerCase();
+                if (name.includes(query) || code.includes(query)) {
+                    row.style.display = 'flex';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Live Search Filter for Companies (cards + table)
+        function filterCompaniesTable() {
+            const query = document.getElementById('companySearchInput').value.toLowerCase();
+            // Filter pending cards
+            document.querySelectorAll('#tab-companies .list-row').forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(query) ? 'flex' : 'none';
+            });
+            // Filter history table rows
+            const rows = document.querySelectorAll('#tab-companies table tr');
+            rows.forEach((row, index) => {
+                if (index === 0) return;
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        }
+
+        // Live Search Filter for Delegates (cards + table)
+        function filterDelegatesTable() {
+            const query = document.getElementById('delegateSearchInput').value.toLowerCase();
+            // Filter pending cards
+            document.querySelectorAll('#tab-delegates .list-row').forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(query) ? 'flex' : 'none';
+            });
+            // Filter history table rows
+            const rows = document.querySelectorAll('#tab-delegates table tr');
+            rows.forEach((row, index) => {
+                if (index === 0) return;
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        }
+
+        // Client-side CSV Exporter
+        function exportActiveTabToCSV() {
+            const activeTab = localStorage.getItem('activeSettlementsTab') || 'vendors';
+            let table = null;
+            let filename = '';
+            
+            if (activeTab === 'vendors') {
+                table = document.querySelector('#tab-vendors table');
+                filename = 'vendor_settlements.csv';
+            } else if (activeTab === 'companies') {
+                table = document.querySelector('#tab-companies table');
+                filename = 'company_settlements.csv';
+            } else if (activeTab === 'delegates') {
+                table = document.querySelector('#tab-delegates table');
+                filename = 'delegate_settlements.csv';
+            }
+            
+            if (!table) return;
+            
+            let csv = [];
+            const rows = table.querySelectorAll('tr');
+            for (let i = 0; i < rows.length; i++) {
+                const row = [], cols = rows[i].querySelectorAll('td, th');
+                for (let j = 0; j < cols.length; j++) {
+                    if (j === cols.length - 1 && i > 0) continue; // skip image column
+                    let text = cols[j].innerText.trim().replace(/"/g, '""');
+                    row.push('"' + text + '"');
+                }
+                csv.push(row.join(','));
+            }
+            
+            const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + csv.join("\n");
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Validate before submit
+        function validateSettlementForm() {
+            const type = document.getElementById('modalActionType').value;
+            const amount = parseFloat(document.getElementById('modalAmount').value);
+
+            if (!amount || amount <= 0) {
+                alert('يرجى إدخال مبلغ صحيح.');
+                return false;
+            }
+
+            if (type === 'delegate_settlement' || type === 'delegate_settlement_all') {
+                const delegateHidden = document.getElementById('modalDelegateIdHidden').value;
+                const delegateSelect = document.getElementById('modalDelegateId').value;
+                const delegateId = delegateHidden || delegateSelect;
+                if (!delegateId) {
+                    alert('يرجى تحديد المندوب أولاً.');
+                    return false;
+                }
+                // Sync delegate hidden
+                document.getElementById('modalDelegateIdHidden').value = delegateId;
+
+                if (type === 'delegate_settlement') {
+                    // Single company — company is mandatory
+                    const companyId = document.getElementById('modalCompanyIdHidden').value;
+                    if (!companyId || companyId === '__ALL__') {
+                        alert('يرجى تحديد الشركة الدوائية — هذا الحقل إلزامي.');
+                        return false;
+                    }
+                }
+                // For __ALL__, server handles the loop — no extra validation needed
+            }
+
+            if (type === 'company_settlement') {
+                const companyId = document.getElementById('modalCompanyIdHidden').value ||
+                                  document.getElementById('modalCompanyId').value;
+                if (!companyId) {
+                    alert('يرجى تحديد الشركة.');
+                    return false;
+                }
+                document.getElementById('modalCompanyIdHidden').value = companyId;
+            }
+
+            return true;
+        }
+
+        document.getElementById('settlementOverlay').addEventListener('click', function(e) {
+            if(e.target === this) {
+                closeSettlementModal();
+            }
+        });
+    </script>
+{% endblock %}

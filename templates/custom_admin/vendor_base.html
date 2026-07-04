@@ -1,0 +1,232 @@
+{% extends 'custom_admin/base.html' %}
+{% load i18n %}
+
+{% block body %}
+    <style>
+        .header-notif-btn {
+            background: none; border: none; color: #a8a29e; font-size: 1.25rem; position: relative;
+            cursor: pointer; transition: color 0.2s; display: flex; align-items: center; justify-content: center;
+        }
+        .header-notif-btn:hover { color: #0d9488; }
+        .dropdown-menu {
+            position: absolute; top: 110%; left: 0; background: #fff; min-width: 150px;
+            border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); border: 1px solid #eee;
+            opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.2s; z-index: 1000;
+        }
+        .group:hover .dropdown-menu {
+            opacity: 1; visibility: visible; transform: translateY(0);
+        }
+        .dropdown-item {
+            display: block; width: 100%; text-align: right; padding: 10px 15px; font-size: 0.85rem; font-weight: 600;
+            color: #1c1917; border: none; background: transparent; cursor: pointer; transition: 0.2s;
+        }
+        .dropdown-item:hover { background: #f5f5f5; color: #005353; }
+        .notif-dropdown { min-width: 320px; max-height: 400px; overflow-y: auto; padding: 0; }
+        
+        [dir="ltr"] .dropdown-menu { left: auto; right: 0; }
+        [dir="ltr"] .dropdown-item { text-align: left; }
+    </style>
+    <!-- Sidebar (Standard Vendor View) -->
+    <aside class="h-screen w-64 fixed right-0 top-0 bg-stone-50 flex flex-col py-8 px-4 z-50 border-l border-stone-200 shadow-sm">
+        <div class="mb-10 px-2 flex items-center gap-3">
+            <div class="w-12 h-12 rounded-[1rem] bg-primary/10 flex items-center justify-center text-primary overflow-hidden shadow-sm flex-shrink-0">
+                {% if vendor.logo %}
+                <img src="{{ vendor.logo.url }}" class="w-full h-full object-cover">
+                {% else %}
+                <span class="material-symbols-outlined text-2xl">storefront</span>
+                {% endif %}
+            </div>
+            <div class="overflow-hidden">
+                <h1 class="text-lg font-bold text-teal-900 tracking-tight truncate">{{ vendor.name }}</h1>
+                <p class="text-[10px] font-bold tracking-wide text-stone-500 mt-1 uppercase truncate">{% trans 'بوابة الشركاء' %}</p>
+            </div>
+        </div>
+
+        <nav class="flex-1 space-y-2" id="sidebarNav">
+            <a onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-item active flex items-center gap-3 px-4 py-3 text-teal-900 font-bold border-r-4 border-teal-700 bg-stone-200/50 transition-all cursor-pointer">
+                <span class="material-symbols-outlined">dashboard</span> <span class="text-sm">{% trans 'لوحة التحكم' %}</span>
+            </a>
+            <a onclick="switchTab('pos')" id="nav-pos" class="nav-item flex items-center gap-3 px-4 py-3 text-stone-500 hover:bg-stone-200 transition-colors duration-200 cursor-pointer">
+                <span class="material-symbols-outlined">point_of_sale</span> <span class="text-sm">{% trans 'الخصم (POS)' %}</span>
+            </a>
+            <a onclick="switchTab('invoices')" id="nav-invoices" class="nav-item flex items-center gap-3 px-4 py-3 text-stone-500 hover:bg-stone-200 transition-colors duration-200 cursor-pointer">
+                <span class="material-symbols-outlined">description</span> <span class="text-sm">{% trans 'الفواتير' %}</span>
+            </a>
+            {% if vendor.role == 'ADMIN' %}
+            <a onclick="switchTab('settlements')" id="nav-settlements" class="nav-item flex items-center gap-3 px-4 py-3 text-stone-500 hover:bg-stone-200 transition-colors duration-200 cursor-pointer">
+                <span class="material-symbols-outlined">account_balance_wallet</span> <span class="text-sm">{% trans 'التسويات' %}</span>
+            </a>
+            <a onclick="switchTab('cashiers')" id="nav-cashiers" class="nav-item flex items-center gap-3 px-4 py-3 text-stone-500 hover:bg-stone-200 transition-colors duration-200 cursor-pointer">
+                <span class="material-symbols-outlined">badge</span> <span class="text-sm">{% trans 'الكاشيرات' %}</span>
+            </a>
+            <a onclick="switchTab('settings')" id="nav-settings" class="nav-item flex items-center gap-3 px-4 py-3 text-stone-500 hover:bg-stone-200 transition-colors duration-200 cursor-pointer">
+                <span class="material-symbols-outlined">settings</span> <span class="text-sm">{% trans 'الإعدادات' %}</span>
+            </a>
+            {% endif %}
+        </nav>
+
+        <div class="mt-auto space-y-2 border-t border-stone-100 pt-6">
+            <button onclick="switchTab('pos')" class="w-full bg-primary text-on-primary py-3 rounded-xl font-semibold mb-4 hover:bg-primary-container transition-all flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-sm">add</span> {% trans 'قسيمة جديدة' %}
+            </button>
+            <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                {% csrf_token %}
+            </form>
+            <a href="javascript:void(0)" onclick="document.getElementById('logout-form').submit();" class="flex items-center gap-3 px-4 py-2 text-stone-500 hover:text-error transition-colors">
+                <span class="material-symbols-outlined text-error">logout</span> <span class="text-xs font-medium text-error">{% trans 'تسجيل خروج' %}</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Header (Standard Vendor View) -->
+    <header class="fixed top-0 right-64 left-0 h-20 bg-white/80 backdrop-blur-xl flex items-center justify-between px-8 z-40 border-b border-stone-100 shadow-sm">
+        <div class="flex items-center gap-6 flex-1">
+            <!-- Global Search -->
+            <div class="relative hidden md:block w-full max-w-lg">
+                <input type="text" id="headerGlobalSearch" placeholder="{% trans 'بحث باسم أو موبايل...' %}" class="w-full bg-surface-container-high border-none rounded-full py-2.5 pr-11 pl-11 text-sm focus:ring-2 focus:ring-primary shadow-inner">
+                <span class="material-symbols-outlined absolute right-4 top-2.5 text-stone-400 text-xl">search</span>
+                <button onclick="startQRScanner()" class="absolute left-1.5 top-1.5 w-8 h-8 flex items-center justify-center bg-white rounded-full text-primary hover:bg-stone-100 transition-colors shadow-sm tooltip" aria-label="مسح الباركود">
+                    <span class="material-symbols-outlined text-sm">qr_code_scanner</span>
+                </button>
+                <div id="headerSearchResults" class="search-results"></div>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <!-- Language Dropdown -->
+            {% get_current_language as CURRENT_LANG %}
+            <div class="relative group" style="position: relative;">
+                <button class="header-notif-btn" style="width: auto; padding: 0 12px; gap: 6px; font-weight: 700; font-size: 0.85rem;">
+                    <span class="material-symbols-outlined text-xl">language</span>
+                </button>
+                <div class="dropdown-menu">
+                    <form action="{% url 'set_language' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="language" value="ar">
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        <button type="submit" class="dropdown-item">🇸🇦 عربي</button>
+                    </form>
+                    <form action="{% url 'set_language' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="language" value="en">
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        <button type="submit" class="dropdown-item">🇬🇧 English</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Notifications Dropdown -->
+            <div class="relative group" style="position: relative;">
+                <button class="header-notif-btn">
+                    <span class="material-symbols-outlined">notifications</span>
+                    {% if unread_notifications_count and unread_notifications_count > 0 %}
+                    <span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full notif-badge-dot"></span>
+                    {% endif %}
+                </button>
+                <div class="dropdown-menu notif-dropdown">
+                    <div style="padding: 1rem; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; background: #fafafa;">
+                        <h3 style="margin: 0; font-size: 0.95rem; font-weight: 700;">{% trans 'الإشعارات' %}</h3>
+                        {% if unread_notifications_count and unread_notifications_count > 0 %}
+                            <span style="background: var(--primary, #005353); color: white; border-radius: 20px; padding: 2px 8px; font-size: 0.7rem; font-weight: 700;" class="notif-badge-count">{{ unread_notifications_count }}</span>
+                        {% endif %}
+                    </div>
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        {% if recent_notifications %}
+                            {% for notif in recent_notifications %}
+                            <div id="notif-{{ notif.id }}" onclick="markAsRead({{ notif.id }}, '{{ notif.link }}')"
+                                 style="padding: 1rem; border-bottom: 1px solid #f5f5f5; cursor: pointer; transition: background 0.2s; display: flex; gap: 10px; align-items: flex-start; background: {% if not notif.is_read %}#f0fafa{% else %}#fff{% endif %};"
+                                 onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='{% if not notif.is_read %}#f0fafa{% else %}#fff{% endif %}'">
+                                <div style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+                                    {% if notif.notification_type == 'SETTLEMENT' %}background: #e8f5e9; color: #2e7d32;
+                                    {% elif notif.notification_type == 'VOUCHER' %}background: #e3f2fd; color: #1565c0;
+                                    {% elif notif.notification_type == 'ACCOUNT' %}background: #fff3e0; color: #e65100;
+                                    {% else %}background: #f3e5f5; color: #6a1b9a;{% endif %}">
+                                    {% if notif.notification_type == 'SETTLEMENT' %}<span class="material-symbols-outlined text-sm">account_balance_wallet</span>
+                                    {% elif notif.notification_type == 'VOUCHER' %}<span class="material-symbols-outlined text-sm">card_giftcard</span>
+                                    {% elif notif.notification_type == 'ACCOUNT' %}<span class="material-symbols-outlined text-sm">person_add</span>
+                                    {% else %}<span class="material-symbols-outlined text-sm">info</span>{% endif %}
+                                </div>
+                                <div style="flex: 1; min-width: 0;">
+                                    <p style="margin: 0 0 4px 0; font-size: 0.8rem; color: #1a1c1c; line-height: 1.4; {% if not notif.is_read %}font-weight: 700;{% endif %}">{{ notif.message }}</p>
+                                    <span style="font-size: 0.7rem; color: #888;">{{ notif.created_at|timesince }} مضت</span>
+                                </div>
+                                {% if not notif.is_read %}
+                                <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--primary, #005353); flex-shrink: 0; margin-top: 5px;"></div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div style="padding: 2rem 1rem; text-align: center; color: #aaa;">
+                                <span class="material-symbols-outlined" style="font-size: 2rem; display: block; margin-bottom: 8px;">notifications_off</span>
+                                <p style="margin: 0; font-size: 0.85rem;">{% trans 'لا توجد إشعارات حالياً' %}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% if recent_notifications %}
+                    <div style="padding: 0.75rem; border-top: 1px solid #f0f0f0; text-align: center; background: #fafafa;">
+                        <button onclick="markAllAsRead()" style="background: none; border: none; color: var(--primary, #005353); cursor: pointer; font-size: 0.8rem; font-weight: 700; font-family: inherit;">
+                            {% trans 'تحديد الكل كمقروء' %}
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                {% if vendor.logo %}
+                <img src="{{ vendor.logo.url }}" class="w-10 h-10 rounded-full object-cover border border-stone-200 shadow-sm">
+                {% else %}
+                <span class="material-symbols-outlined text-stone-400 text-[40px]">storefront</span>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- Content Container -->
+    <main class="flex-1 h-screen overflow-y-auto pr-64 pt-24 pb-12 px-8">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+
+
+    <script>
+    function markAsRead(notifId, link) {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]') ? 
+                          document.querySelector('[name=csrfmiddlewaretoken]').value : 
+                          '{{ csrf_token }}';
+        fetch(`/notifications/read/${notifId}/`, {
+            method: 'POST',
+            headers: {'X-CSRFToken': csrfToken, 'Content-Type': 'application/json'},
+        }).then(() => {
+            const el = document.getElementById(`notif-${notifId}`);
+            if (el) {
+                el.style.background = '#fff';
+                const dot = el.querySelector('[style*="border-radius: 50%; background: var(--primary"]');
+                if (dot) dot.remove();
+                const txt = el.querySelector('p');
+                if (txt) txt.style.fontWeight = 'normal';
+            }
+            
+            const badgeDots = document.querySelectorAll('.notif-badge-dot');
+            badgeDots.forEach(b => b.remove);
+            
+            const badgeCount = document.querySelector('.notif-badge-count');
+            if (badgeCount) {
+                let count = parseInt(badgeCount.textContent) - 1;
+                if (count <= 0) badgeCount.remove();
+                else badgeCount.textContent = count + ' جديد';
+            }
+            
+            if (link && link !== 'None' && link !== '') window.location.href = link;
+        });
+    }
+
+    function markAllAsRead() {
+        {% for notif in recent_notifications %}
+        {% if not notif.is_read %}
+        markAsRead({{ notif.id }}, null);
+        {% endif %}
+        {% endfor %}
+    }
+    </script>
+{% endblock %}

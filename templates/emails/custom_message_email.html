@@ -1,0 +1,22 @@
+{% extends 'emails/base_email.html' %}
+{% load i18n %}
+
+{% block header %}
+<div class="header-icon">📩</div>
+<div class="logo-text">{% trans 'إشعار جديد' %}</div>
+<div class="logo-sub">{% trans 'نظام إدارة الفعاليات — حضرموت' %}</div>
+{% endblock %}
+
+{% block body %}
+<div class="greeting">مرحباً، {{ user_name }}</div>
+
+<p class="intro-text" style="white-space: pre-line;">
+{{ message }}
+</p>
+
+<hr class="divider">
+
+<div class="alert-box">
+    {% trans 'إذا كان لديك أي استفسار، يرجى التواصل مع إدارة النظام.' %}
+</div>
+{% endblock %}

@@ -1,0 +1,229 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{% block title %}نظام الإدارة الشامل | {{ global_system_vendor.name|default:'النظام' }}{% endblock %}</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="theme-color" content="#005353">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Hadramout Events">
+    <link rel="apple-touch-icon" href="{% static 'logo.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'logo.png' %}">
+    
+    <!-- External Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Project Styles -->
+    <link rel="stylesheet" href="{% static 'custom_admin/css/retail_standard.css' %}">
+    
+    <!-- Base Configuration & Global Styles -->
+    <style>
+        body { font-family: 'Tajawal', 'Inter', sans-serif; background-color: var(--surface); }
+        .glass-overlay { 
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+            background: rgba(0, 83, 83, 0.2); backdrop-filter: blur(8px); 
+            z-index: 1000; display: none; align-items: center; justify-content: center;
+        }
+        .glass-overlay.active { display: flex; }
+        
+        /* Utility classes shared across components */
+        .flex { display: flex; }
+        .flex-row { display: flex; flex-direction: row; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .font-bold { font-weight: 700; }
+        .block { display: block; }
+    </style>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#005353',
+                        'primary-light': '#007a7a',
+                        'primary-container': '#006d6d',
+                        'on-primary': '#ffffff',
+                        'secondary': '#466463',
+                        'secondary-container': '#c9e9e8',
+                        'tertiary': '#733a1a',
+                        'error': '#ba1a1a',
+                        'success': '#10b981',
+                        'surface': '#f9f9f9',
+                        'surface-container-lowest': '#ffffff',
+                        'surface-container-low': '#f3f3f3',
+                        'surface-container-high': '#e8e8e8',
+                        'surface-container-highest': '#e2e2e2',
+                        'on-surface': '#1a1c1c',
+                        'on-surface-variant': '#3e4948',
+                        'outline': '#6e7979',
+                        'outline-variant': '#bec9c8',
+                        'primary-fixed-dim': '#82d4d4'
+                    },
+                    borderRadius: {
+                        'DEFAULT': '0.25rem',
+                        'lg': '0.5rem',
+                        'xl': '0.75rem',
+                        '2xl': '1.5rem',
+                        '3xl': '2rem',
+                        'full': '9999px'
+                    },
+                    fontFamily: {
+                        'sans': ['IBM Plex Sans Arabic', 'Tajawal', 'Be Vietnam Pro', 'sans-serif'],
+                        'num': ['Inter', 'sans-serif']
+                    },
+                    fontSize: {
+                        'xs': ['0.875rem', { lineHeight: '1.25rem' }],
+                        'sm': ['1.05rem', { lineHeight: '1.6rem' }],
+                        'base': ['1.15rem', { lineHeight: '1.75rem' }],
+                        'lg': ['1.25rem', { lineHeight: '1.85rem' }]
+                    }
+                }
+            }
+        }
+    </script>
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    {% block body %}{% endblock %}
+
+    <!-- Common Utilities -->
+    <script>
+        function openModal(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.remove('hidden');
+            el.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.remove('active');
+            el.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+        // General modal outside-click closer
+        document.querySelectorAll('.glass-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                if(e.target === this) closeModal(this.id);
+            });
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+    
+    <!-- PWA Install Banner -->
+    <div id="pwa-install-banner" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background: linear-gradient(135deg, #005353, #007a7a); color: white; padding: 12px 20px; z-index: 9999; box-shadow: 0 -4px 20px rgba(0,0,0,0.15); align-items: center; justify-content: space-between; gap: 16px;">
+        <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
+            <div style="width: 40px; height: 40px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <img src="{% static 'logo.png' %}" alt="Logo" style="width: 32px; height: 32px; object-fit: contain;">
+            </div>
+            <div style="flex: 1;">
+                <p style="margin: 0; font-size: 0.9rem; font-weight: 700;">{% trans 'تثبيت تطبيق حضرموت' %}</p>
+                <p style="margin: 0; font-size: 0.75rem; opacity: 0.9;">{% trans 'أضف التطبيق لشاشتك الرئيسية لتجربة أفضل' %}</p>
+            </div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <button onclick="dismissPWAInstallBanner()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+                {% trans 'لاحقاً' %}
+            </button>
+            <button id="pwa-install-btn" onclick="installPWA()" style="background: white; border: none; color: #005353; padding: 8px 20px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                {% trans 'تثبيت' %}
+            </button>
+        </div>
+    </div>
+
+    <style>
+        @media (min-width: 769px) {
+            #pwa-install-banner {
+                display: none !important;
+            }
+        }
+        @media (max-width: 768px) {
+            #pwa-install-banner.show {
+                display: flex !important;
+            }
+        }
+    </style>
+
+    <!-- Service Worker Registration for PWA -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('{% static "sw.js" %}').then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function(err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+
+    <!-- PWA Install Logic -->
+    <script>
+        let deferredPrompt;
+        const installBanner = document.getElementById('pwa-install-banner');
+        const installBtn = document.getElementById('pwa-install-btn');
+
+        // Check if banner was dismissed
+        if (localStorage.getItem('pwaInstallDismissed')) {
+            if (installBanner) installBanner.classList.remove('show');
+        }
+
+        // Listen for beforeinstallprompt event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show banner only on mobile
+            if (window.innerWidth <= 768 && !localStorage.getItem('pwaInstallDismissed')) {
+                if (installBanner) installBanner.classList.add('show');
+            }
+        });
+
+        // Install button click handler
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    }
+                    deferredPrompt = null;
+                    if (installBanner) installBanner.classList.remove('show');
+                });
+            } else {
+                // Fallback for iOS
+                alert('لتثبيت التطبيق: اضغط على زر المشاركة في المتصفح ثم اختر "إضافة إلى الشاشة الرئيسية"');
+            }
+        }
+
+        // Dismiss banner handler
+        function dismissPWAInstallBanner() {
+            if (installBanner) installBanner.classList.remove('show');
+            localStorage.setItem('pwaInstallDismissed', 'true');
+        }
+
+        // Show banner on mobile after delay if not installed
+        setTimeout(() => {
+            if (window.innerWidth <= 768 && 
+                !localStorage.getItem('pwaInstallDismissed') && 
+                !window.matchMedia('(display-mode: standalone)').matches) {
+                if (installBanner) installBanner.classList.add('show');
+            }
+        }, 3000);
+    </script>
+</body>
+</html>

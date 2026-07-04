@@ -1,0 +1,56 @@
+{% extends 'emails/base_email.html' %}
+{% load i18n %}
+
+{% block header %}
+<div class="header-icon">👋</div>
+<div class="logo-text">{% trans 'نظام إدارة الفعاليات' %}</div>
+<div class="logo-sub">{% trans 'حضرموت ميت غمر' %}</div>
+{% endblock %}
+
+{% block body %}
+<div class="greeting">مرحباً بك، {{ doctor_name }} 🎉</div>
+
+<p class="intro-text">
+    {% trans 'يسعدنا أن نُعلمك بأنه تم إنشاء حسابك بنجاح في' %} <strong>{% trans 'نظام قسائم حضرموت' %}</strong>{% trans '. يمكنك الآن الدخول للنظام ومتابعة قسائمك وعملياتك المالية بسهولة.' %}
+</p>
+
+<div class="success-box">
+    {% trans '✅ تم تسجيل حسابك وهو جاهز للاستخدام الآن!' %}
+</div>
+
+<div class="info-card">
+    <div class="card-title">{% trans '📋 بيانات حسابك' %}</div>
+    <div class="info-row">
+        <span class="label">{% trans 'اسم المستخدم' %}</span>
+        <span class="value">{{ username }}</span>
+    </div>
+    {% if email %}
+    <div class="info-row">
+        <span class="label">{% trans 'البريد الإلكتروني' %}</span>
+        <span class="value" dir="ltr">{{ email }}</span>
+    </div>
+    {% endif %}
+    {% if phone %}
+    <div class="info-row">
+        <span class="label">{% trans 'رقم الهاتف' %}</span>
+        <span class="value" dir="ltr">{{ phone }}</span>
+    </div>
+    {% endif %}
+    {% if specialty %}
+    <div class="info-row">
+        <span class="label">{% trans 'التخصص' %}</span>
+        <span class="value">{{ specialty }}</span>
+    </div>
+    {% endif %}
+</div>
+
+<a href="{{ site_url }}" class="cta-button">
+    {% trans '🚀 الدخول للنظام الآن' %}
+</a>
+
+<hr class="divider">
+
+<div class="alert-box">
+    {% trans '⚠️ احتفظ ببيانات دخولك في مكان آمن. في حال نسيت كلمة المرور يرجى التواصل مع مسؤول النظام.' %}
+</div>
+{% endblock %}

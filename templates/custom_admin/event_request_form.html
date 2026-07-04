@@ -1,0 +1,575 @@
+{% extends 'custom_admin/portal_base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans 'طلب فعالية جديدة' %} | {{ global_system_vendor.name|default:'النظام' }}{% endblock %}
+
+{# -------- Sidebar Identity -------- #}
+{% block portal_icon %}fa-code-pull-request{% endblock %}
+{% block portal_title %}{% trans 'طلب فعالية جديدة' %}{% endblock %}
+{% block portal_subtitle %}{% trans 'تعبئة بيانات الفعالية والأطباء' %}{% endblock %}
+
+{# -------- Sidebar Nav Links -------- #}
+{% block sidebar_nav %}
+{% if request.user.company_profile %}
+<a href="{% url 'custom_company_portal' %}" style="
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; margin: 3px 10px; border-radius: 10px;
+    color: #3e4948; text-decoration: none; font-size: 0.85rem; font-weight: 600;
+    background: transparent; transition: background 0.2s;
+" onmouseover="this.style.background='#f0f8f8'" onmouseout="this.style.background='transparent'">
+    <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(0,83,83,0.08); display: flex; align-items: center; justify-content: center; color: #005353;">
+        <i class="fa-solid fa-gauge-high" style="font-size: 0.85rem;"></i>
+    </div>
+    {% trans 'لوحة التحكم' %}
+</a>
+{% elif request.user.delegate_profile %}
+<a href="{% url 'custom_delegate_portal' %}" style="
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; margin: 3px 10px; border-radius: 10px;
+    color: #3e4948; text-decoration: none; font-size: 0.85rem; font-weight: 600;
+    background: transparent; transition: background 0.2s;
+" onmouseover="this.style.background='#f0f8f8'" onmouseout="this.style.background='transparent'">
+    <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(0,83,83,0.08); display: flex; align-items: center; justify-content: center; color: #005353;">
+        <i class="fa-solid fa-gauge-high" style="font-size: 0.85rem;"></i>
+    </div>
+    {% trans 'لوحة التحكم' %}
+</a>
+{% endif %}
+<a href="#" style="
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; margin: 3px 10px; border-radius: 10px;
+    color: #005353; text-decoration: none; font-size: 0.85rem; font-weight: 700;
+    background: rgba(0,83,83,0.07); transition: background 0.2s;
+">
+    <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(0,83,83,0.1); display: flex; align-items: center; justify-content: center; color: #005353;">
+        <i class="fa-solid fa-code-pull-request" style="font-size: 0.85rem;"></i>
+    </div>
+    {% trans 'طلب جديد' %}
+</a>
+{% endblock %}
+
+{# -------- Settings URL -------- #}
+{% block settings_url %}
+{% if request.user.company_profile %}{% url 'company_portal_settings' %}{% elif request.user.delegate_profile %}{% url 'delegate_portal_settings' %}{% else %}#{% endif %}
+{% endblock %}
+
+{# -------- User Role -------- #}
+{% block user_role_label %}
+{% if request.user.company_profile %}{% trans 'شريك تجاري' %}{% elif request.user.delegate_profile %}{% trans 'مندوب' %}{% endif %}
+{% endblock %}
+
+{# -------- Header -------- #}
+{% block header_icon %}fa-code-pull-request{% endblock %}
+{% block header_title %}{% trans 'طلب فعالية جديدة' %}{% endblock %}
+{% block header_subtitle %}{% trans 'تعبئة بيانات الفعالية وإرفاق الأطباء المطلوبين' %}{% endblock %}
+
+{# -------- Header Actions -------- #}
+{% block header_actions %}
+{% if request.user.company_profile %}
+<a href="{% url 'custom_company_portal' %}" style="
+    display: flex; align-items: center; gap: 8px; padding: 9px 18px;
+    background: #f0f4f4; border-radius: 10px; color: #3e4948;
+    text-decoration: none; font-size: 0.85rem; font-weight: 700;
+    border: 1px solid #e0e8e8; transition: all 0.2s;
+" onmouseover="this.style.background='#e0ecec'" onmouseout="this.style.background='#f0f4f4'">
+    <i class="fa-solid fa-arrow-right"></i> {% trans 'رجوع للوحة' %}
+</a>
+{% elif request.user.delegate_profile %}
+<a href="{% url 'custom_delegate_portal' %}" style="
+    display: flex; align-items: center; gap: 8px; padding: 9px 18px;
+    background: #f0f4f4; border-radius: 10px; color: #3e4948;
+    text-decoration: none; font-size: 0.85rem; font-weight: 700;
+    border: 1px solid #e0e8e8; transition: all 0.2s;
+" onmouseover="this.style.background='#e0ecec'" onmouseout="this.style.background='#f0f4f4'">
+    <i class="fa-solid fa-arrow-right"></i> {% trans 'رجوع للوحة' %}
+</a>
+{% endif %}
+{% endblock %}
+
+{# -------- Main Content -------- #}
+{% block portal_content %}
+
+{# Messages #}
+{% if messages %}
+<div style="margin-bottom: 20px;">
+{% for message in messages %}
+<div style="
+    padding: 14px 18px; border-radius: 10px; margin-bottom: 10px;
+    font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 10px;
+    {% if message.tags == 'success' %}background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7;
+    {% elif message.tags == 'error' %}background: #ffebee; color: #c62828; border: 1px solid #ef9a9a;
+    {% else %}background: #e3f2fd; color: #1565c0; border: 1px solid #90caf9;{% endif %}
+">
+    <i class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% elif message.tags == 'error' %}fa-circle-exclamation{% else %}fa-circle-info{% endif %}"></i>
+    {{ message }}
+</div>
+{% endfor %}
+</div>
+{% endif %}
+
+<form id="eventRequestForm" method="POST" action="{% url 'custom_event_request_create' %}">
+    {% csrf_token %}
+
+    {# === Section 1: Basic Event Data === #}
+    <div style="
+        background: #fff; border: 1px solid rgba(0,83,83,0.07);
+        border-radius: 16px; padding: 28px; box-shadow: 0 2px 12px rgba(0,83,83,0.04);
+        margin-bottom: 24px;
+    ">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 22px;">
+            <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(0,83,83,0.08); display: flex; align-items: center; justify-content: center; color: #005353;">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <h3 style="margin: 0; font-size: 1rem; font-weight: 800; color: #005353;">1. {% trans 'البيانات الأساسية للفعالية' %}</h3>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+            <div>
+                <label style="display: block; margin-bottom: 7px; font-size: 0.85rem; font-weight: 700; color: #1a1c1c;">
+                    {% trans 'اسم الفعالية' %} <span style="color: #c62828;">*</span>
+                </label>
+                <input type="text" name="name" id="field_name" required
+                    placeholder="{% trans 'مثال: مؤتمر أطباء القلب السنوي' %}"
+                    style="width: 100%; padding: 11px 14px; border: 1.5px solid #dde3e3; border-radius: 9px;
+                           font-family: inherit; font-size: 0.9rem; transition: border-color 0.2s; box-sizing: border-box;"
+                    onfocus="this.style.borderColor='#005353'" onblur="this.style.borderColor='#dde3e3'">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 7px; font-size: 0.85rem; font-weight: 700; color: #1a1c1c;">
+                    {% trans 'تاريخ الفعالية' %} <span style="color: #c62828;">*</span>
+                </label>
+                <input type="date" name="date" id="field_date" required
+                    style="width: 100%; padding: 11px 14px; border: 1.5px solid #dde3e3; border-radius: 9px;
+                           font-family: inherit; font-size: 0.9rem; transition: border-color 0.2s; box-sizing: border-box;"
+                    onfocus="this.style.borderColor='#005353'" onblur="this.style.borderColor='#dde3e3'">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 7px; font-size: 0.85rem; font-weight: 700; color: #1a1c1c;">
+                    {% trans 'قيمة القسيمة للطبيب الواحد ' %} <span style="color: #c62828;">*</span>
+                </label>
+                <input type="number" step="0.01" min="1" name="voucher_value" id="field_voucher_value" required
+                    placeholder="0.00"
+                    style="width: 100%; padding: 11px 14px; border: 1.5px solid #dde3e3; border-radius: 9px;
+                           font-family: inherit; font-size: 0.9rem; transition: border-color 0.2s; box-sizing: border-box;"
+                    onfocus="this.style.borderColor='#005353'" onblur="this.style.borderColor='#dde3e3'">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 7px; font-size: 0.85rem; font-weight: 700; color: #1a1c1c;">
+                    {% trans 'الحد الأقصى للميزانية ' %} <span style="color: #c62828;">*</span>
+                </label>
+                <input type="number" step="0.01" min="1" name="max_budget" id="field_max_budget" required
+                    placeholder="0.00"
+                    style="width: 100%; padding: 11px 14px; border: 1.5px solid #dde3e3; border-radius: 9px;
+                           font-family: inherit; font-size: 0.9rem; transition: border-color 0.2s; box-sizing: border-box;"
+                    onfocus="this.style.borderColor='#005353'" onblur="this.style.borderColor='#dde3e3'">
+            </div>
+        </div>
+
+        <div style="margin-top: 18px;">
+            <label style="display: block; margin-bottom: 7px; font-size: 0.85rem; font-weight: 700; color: #1a1c1c;">
+                {% trans 'ملاحظات وتفاصيل إضافية' %}
+            </label>
+            <textarea name="notes" rows="3"
+                placeholder="{% trans 'أي ملاحظات ترغب بإيصالها للإدارة...' %}"
+                style="width: 100%; padding: 11px 14px; border: 1.5px solid #dde3e3; border-radius: 9px;
+                       font-family: inherit; font-size: 0.9rem; resize: vertical; transition: border-color 0.2s; box-sizing: border-box;"
+                onfocus="this.style.borderColor='#005353'" onblur="this.style.borderColor='#dde3e3'"></textarea>
+        </div>
+    </div>
+
+    {# === Section 2: Doctors List === #}
+    <div style="
+        background: #fff; border: 1px solid rgba(0,83,83,0.07);
+        border-radius: 16px; padding: 28px; box-shadow: 0 2px 12px rgba(0,83,83,0.04);
+        margin-bottom: 24px;
+    ">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 22px;">
+            <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(0,83,83,0.08); display: flex; align-items: center; justify-content: center; color: #005353;">
+                <i class="fa-solid fa-user-doctor"></i>
+            </div>
+            <h3 style="margin: 0; font-size: 1rem; font-weight: 800; color: #005353;">2. {% trans 'قائمة الأطباء المستهدفين' %}</h3>
+        </div>
+
+        {# Search Box #}
+        <div style="background: #f5f8f8; padding: 20px; border-radius: 12px; border: 1px solid #e0e8e8; margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 10px; font-size: 0.85rem; font-weight: 700; color: #005353;">
+                <i class="fa-solid fa-magnifying-glass" style="margin-left: 6px;"></i>
+                {% trans 'البحث عن طبيب (بالاسم أو رقم الهاتف)' %}
+            </label>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="doc_search_phone"
+                    placeholder="{% trans 'أدخل اسم أو رقم هاتف الطبيب...' %}"
+                    style="flex: 1; max-width: 300px; padding: 11px 14px; border: 1.5px solid #dde3e3;
+                           border-radius: 9px; font-family: inherit; font-size: 0.9rem;"
+                    onkeypress="if(event.key==='Enter'){event.preventDefault(); searchDoctor();}"
+                    onfocus="this.style.borderColor='#005353'" onblur="this.style.borderColor='#dde3e3'">
+                <button type="button" onclick="searchDoctor()" style="
+                    background: #005353; color: white; padding: 11px 20px;
+                    border: none; border-radius: 9px; font-weight: 700;
+                    cursor: pointer; font-family: inherit; font-size: 0.85rem;
+                    display: flex; align-items: center; gap: 8px; transition: opacity 0.2s;
+                " onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                    <i class="fa-solid fa-magnifying-glass"></i> {% trans 'بحث' %}
+                </button>
+            </div>
+            <div id="doc_search_result" style="margin-top: 10px; font-size: 0.88rem; font-weight: 600; min-height: 24px;"></div>
+
+            {# New Doctor Form - hidden by default #}
+            <div id="new_doc_form" style="display: none; margin-top: 20px; border-top: 1px dashed #ccc; padding-top: 18px;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px;">
+                    <i class="fa-solid fa-circle-exclamation" style="color: #e65100;"></i>
+                    <p style="margin: 0; color: #c62828; font-weight: 700; font-size: 0.88rem;">
+                        {% trans 'الطبيب غير مسجل في النظام. يرجى إدخال بياناته أدناه — سيتم إنشاء حسابه لاحقاً من قبل الإدارة.' %}
+                    </p>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-size: 0.8rem; font-weight: 700; color: #3e4948;">{% trans 'رقم الهاتف' %} <span style="color: #c62828;">*</span></label>
+                        <input type="text" id="new_doc_phone_display"
+                            style="width: 100%; padding: 10px 13px; border: 1.5px solid #dde3e3; border-radius: 8px;
+                                   font-family: inherit; font-size: 0.88rem; background: #fff; box-sizing: border-box; color: #333;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-size: 0.8rem; font-weight: 700; color: #3e4948;">{% trans 'اسم الطبيب' %} <span style="color: #c62828;">*</span></label>
+                        <input type="text" id="new_doc_name"
+                            placeholder="{% trans 'الاسم الكامل' %}"
+                            style="width: 100%; padding: 10px 13px; border: 1.5px solid #dde3e3; border-radius: 8px;
+                                   font-family: inherit; font-size: 0.88rem; box-sizing: border-box;"
+                            onfocus="this.style.borderColor='#005353'" onblur="this.style.borderColor='#dde3e3'">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-size: 0.8rem; font-weight: 700; color: #3e4948;">{% trans 'البريد الإلكتروني' %}</label>
+                        <input type="email" id="new_doc_email"
+                            placeholder="{% trans 'اختياري' %}"
+                            style="width: 100%; padding: 10px 13px; border: 1.5px solid #dde3e3; border-radius: 8px;
+                                   font-family: inherit; font-size: 0.88rem; box-sizing: border-box;"
+                            onfocus="this.style.borderColor='#005353'" onblur="this.style.borderColor='#dde3e3'">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-size: 0.8rem; font-weight: 700; color: #3e4948;">{% trans 'التخصص' %}</label>
+                        <input type="text" id="new_doc_specialty"
+                            placeholder="{% trans 'مثال: قلب، عظام...' %}"
+                            style="width: 100%; padding: 10px 13px; border: 1.5px solid #dde3e3; border-radius: 8px;
+                                   font-family: inherit; font-size: 0.88rem; box-sizing: border-box;"
+                            onfocus="this.style.borderColor='#005353'" onblur="this.style.borderColor='#dde3e3'">
+                    </div>
+                </div>
+                <button type="button" onclick="addNewDoctorToList()" style="
+                    margin-top: 14px; background: #466463; color: white; padding: 10px 20px;
+                    border: none; border-radius: 9px; font-weight: 700; cursor: pointer;
+                    font-family: inherit; font-size: 0.85rem;
+                    display: flex; align-items: center; gap: 8px; transition: opacity 0.2s;
+                " onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                    <i class="fa-solid fa-user-plus"></i> {% trans 'إضافة الطبيب الجديد للقائمة' %}
+                </button>
+            </div>
+        </div>
+
+        {# Doctors Table #}
+        <div id="doctorsTableWrapper">
+            <div id="emptyDoctorsMsg" style="text-align: center; padding: 30px; color: #aaa; background: #fafafa; border-radius: 10px; border: 1px dashed #ddd;">
+                <i class="fa-solid fa-user-slash" style="font-size: 1.8rem; display: block; margin-bottom: 8px; opacity: 0.4;"></i>
+                <span style="font-size: 0.88rem;">{% trans 'لم يتم إضافة أطباء بعد.' %}</span>
+            </div>
+            <table id="doctorsListTable" style="width: 100%; border-collapse: collapse; display: none;">
+                <thead>
+                    <tr style="background: #f5f8f8;">
+                        <th style="padding: 11px 14px; text-align: right; font-size: 0.78rem; color: #6e7979; font-weight: 700; border-bottom: 1px solid #eee;">{% trans 'الاسم' %}</th>
+                        <th style="padding: 11px 14px; text-align: right; font-size: 0.78rem; color: #6e7979; font-weight: 700; border-bottom: 1px solid #eee;">{% trans 'رقم الهاتف' %}</th>
+                        <th style="padding: 11px 14px; text-align: right; font-size: 0.78rem; color: #6e7979; font-weight: 700; border-bottom: 1px solid #eee;">{% trans 'التخصص' %}</th>
+                        <th style="padding: 11px 14px; text-align: right; font-size: 0.78rem; color: #6e7979; font-weight: 700; border-bottom: 1px solid #eee;">{% trans 'الحالة' %}</th>
+                        <th style="padding: 11px 14px; text-align: center; font-size: 0.78rem; color: #6e7979; font-weight: 700; border-bottom: 1px solid #eee;">{% trans 'حذف' %}</th>
+                    </tr>
+                </thead>
+                <tbody id="doctorsTableBody"></tbody>
+            </table>
+            <div id="doctorsCountBadge" style="display: none; margin-top: 10px; text-align: left;">
+                <span style="background: #e8f5e9; color: #2e7d32; padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 700;">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <span id="doctorsCountText"></span>
+                </span>
+            </div>
+        </div>
+
+        {# Hidden input for JSON #}
+        <input type="hidden" name="doctors_data" id="doctorsDataInput" value="[]">
+    </div>
+
+    {# === Submit Button === #}
+    <div style="display: flex; justify-content: flex-end; gap: 12px;">
+        {% if request.user.company_profile %}
+        <a href="{% url 'custom_company_portal' %}" style="
+            padding: 13px 24px; border-radius: 10px; background: #f0f4f4;
+            color: #3e4948; text-decoration: none; font-weight: 700; font-size: 0.95rem;
+            border: 1px solid #e0e8e8; transition: background 0.2s;
+        " onmouseover="this.style.background='#e0ecec'" onmouseout="this.style.background='#f0f4f4'">
+            {% trans 'إلغاء' %}
+        </a>
+        {% elif request.user.delegate_profile %}
+        <a href="{% url 'custom_delegate_portal' %}" style="
+            padding: 13px 24px; border-radius: 10px; background: #f0f4f4;
+            color: #3e4948; text-decoration: none; font-weight: 700; font-size: 0.95rem;
+            border: 1px solid #e0e8e8; transition: background 0.2s;
+        " onmouseover="this.style.background='#e0ecec'" onmouseout="this.style.background='#f0f4f4'">
+            {% trans 'إلغاء' %}
+        </a>
+        {% endif %}
+
+        <button type="submit" id="submitBtn" style="
+            background: linear-gradient(135deg, #005353, #007a7a);
+            color: white; padding: 13px 30px; border: none; border-radius: 10px;
+            font-weight: 800; cursor: pointer; font-family: inherit; font-size: 0.95rem;
+            display: flex; align-items: center; gap: 10px; transition: opacity 0.2s;
+            box-shadow: 0 4px 15px rgba(0,83,83,0.3);
+        " onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">
+            <i class="fa-solid fa-paper-plane"></i> {% trans 'إرسال طلب الفعالية للإدارة' %}
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let doctorsData = [];
+    // Use Django language prefix for AJAX
+    const LANG_PREFIX = '/{{ request.LANGUAGE_CODE }}';
+
+    function updateTable() {
+        const tbody = document.getElementById('doctorsTableBody');
+        const emptyMsg = document.getElementById('emptyDoctorsMsg');
+        const table = document.getElementById('doctorsListTable');
+        const countBadge = document.getElementById('doctorsCountBadge');
+        const countText = document.getElementById('doctorsCountText');
+
+        tbody.innerHTML = '';
+
+        if (doctorsData.length === 0) {
+            emptyMsg.style.display = 'block';
+            table.style.display = 'none';
+            countBadge.style.display = 'none';
+        } else {
+            emptyMsg.style.display = 'none';
+            table.style.display = 'table';
+            countBadge.style.display = 'block';
+            countText.textContent = `${doctorsData.length} {% trans 'طبيب/أطباء مضافون' %}`;
+
+            doctorsData.forEach((doc, index) => {
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid #f0f0f0';
+                tr.style.transition = 'background 0.15s';
+                tr.onmouseover = () => tr.style.background = '#f9fbfb';
+                tr.onmouseout = () => tr.style.background = '';
+
+                const statusBadge = doc.type === 'existing'
+                    ? '<span style="background:#e8f5e9;color:#2e7d32;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">✓ {% trans "مسجل بالنظام" %}</span>'
+                    : '<span style="background:#fff3e0;color:#e65100;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">+ {% trans "طبيب جديد" %}</span>';
+
+                tr.innerHTML = `
+                    <td style="padding:12px 14px;font-weight:700;color:#005353;">${doc.name}</td>
+                    <td style="padding:12px 14px;color:#3e4948;direction:ltr;text-align:right;">${doc.phone}</td>
+                    <td style="padding:12px 14px;color:#6e7979;">${doc.specialty || '-'}</td>
+                    <td style="padding:12px 14px;">${statusBadge}</td>
+                    <td style="padding:12px 14px;text-align:center;">
+                        <button type="button" onclick="removeDoctor(${index})" style="
+                            background:none; border:none; cursor:pointer; color:#c62828;
+                            width:30px; height:30px; border-radius:50%; display:inline-flex;
+                            align-items:center; justify-content:center;
+                            transition: background 0.2s;
+                        " onmouseover="this.style.background='#ffebee'" onmouseout="this.style.background='none'">
+                            <i class="fa-solid fa-trash" style="font-size:0.8rem;"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        document.getElementById('doctorsDataInput').value = JSON.stringify(doctorsData);
+    }
+
+    function removeDoctor(index) {
+        doctorsData.splice(index, 1);
+        updateTable();
+    }
+
+    window.selectDoctorFromSearch = function(doc) {
+        if (doctorsData.some(d => d.phone === doc.phone)) {
+            alert('{% trans "هذا الطبيب مضاف بالفعل في القائمة." %}');
+            return;
+        }
+        
+        doctorsData.push({
+            type: doc.id ? 'existing' : 'new',
+            id: doc.id || null,
+            name: doc.name,
+            phone: doc.phone,
+            specialty: doc.specialty,
+            email: doc.email
+        });
+        updateTable();
+        document.getElementById('doc_search_phone').value = '';
+        document.getElementById('doc_search_result').innerHTML = `<span style="color:#2e7d32;"><i class="fa-solid fa-circle-check"></i> {% trans "تم إضافة الطبيب:" %} <strong>${doc.name}</strong></span>`;
+        setTimeout(() => document.getElementById('doc_search_result').innerHTML = '', 3000);
+    };
+
+    window.showNewDoctorForm = function(query) {
+        const newDocForm = document.getElementById('new_doc_form');
+        document.getElementById('doc_search_result').innerHTML = ''; // clear results
+        
+        let phoneVal = '';
+        if (/^[\d\s\+\-]+$/.test(query) && query.length >= 8) {
+            phoneVal = query;
+        }
+        
+        document.getElementById('new_doc_phone_display').value = phoneVal;
+        document.getElementById('new_doc_name').value = /^[\d\s\+\-]+$/.test(query) ? '' : query; // if it was a name search, pre-fill name
+        document.getElementById('new_doc_email').value = '';
+        document.getElementById('new_doc_specialty').value = '';
+        newDocForm.style.display = 'block';
+        
+        if (!phoneVal) {
+            document.getElementById('new_doc_phone_display').focus();
+        } else {
+            document.getElementById('new_doc_name').focus();
+        }
+    };
+
+    function searchDoctor() {
+        const phoneInput = document.getElementById('doc_search_phone');
+        const phone = phoneInput.value.trim();
+        const resDiv = document.getElementById('doc_search_result');
+        const newDocForm = document.getElementById('new_doc_form');
+
+        if (!phone) {
+            resDiv.innerHTML = '<span style="color:#c62828;">{% trans "يرجى إدخال اسم أو رقم الهاتف أولاً." %}</span>';
+            return;
+        }
+
+        // Exact duplicate check only if it looks exactly like a phone number
+        if (/^[\d\s\+\-]+$/.test(phone) && doctorsData.some(d => d.phone === phone)) {
+            resDiv.innerHTML = '<span style="color:#e65100;"><i class="fa-solid fa-circle-exclamation"></i> {% trans "هذا الطبيب مضاف بالفعل في القائمة أدناه." %}</span>';
+            newDocForm.style.display = 'none';
+            return;
+        }
+
+        resDiv.innerHTML = '<span style="color:#005353;"><i class="fa-solid fa-spinner fa-spin"></i> {% trans "جاري البحث..." %}</span>';
+        newDocForm.style.display = 'none';
+
+        fetch(`${LANG_PREFIX}/api/portal/doctor-search/?q=${encodeURIComponent(phone)}`, {
+            headers: {'X-Requested-With': 'XMLHttpRequest'}
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.exists && data.results && data.results.length > 0) {
+                let html = '<div style="background:#f9f9f9; border:1px solid #ddd; border-radius:8px; padding:10px; max-height:200px; overflow-y:auto;">';
+                html += '<p style="margin:0 0 10px 0; font-size:0.8rem; color:#666;">{% trans "نتائج البحث (اختر الطبيب):" %}</p>';
+                data.results.forEach(doc => {
+                    const docJson = JSON.stringify(doc).replace(/"/g, '&quot;');
+                    html += `
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding:8px; border-bottom:1px solid #eee;">
+                            <div>
+                                <strong style="color:#005353;">${doc.name}</strong> <span style="font-size:0.75rem; color:#888;" dir="ltr">(${doc.phone})</span><br>
+                                <span style="font-size:0.75rem; color:#555;">${doc.specialty || '{% trans "عام" %}'}</span>
+                            </div>
+                            <button type="button" onclick="selectDoctorFromSearch(${docJson})" style="background:#e8f5e9; color:#2e7d32; border:none; padding:5px 10px; border-radius:5px; font-weight:bold; cursor:pointer; font-size:0.75rem;">
+                                {% trans "إضافة" %}
+                            </button>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                
+                html += `<div style="margin-top:10px; text-align:center;">
+                    <button type="button" onclick="showNewDoctorForm('${phone.replace(/'/g, "\\'")}')" style="background:none; border:none; color:#005353; text-decoration:underline; cursor:pointer; font-size:0.8rem;">
+                        {% trans "لم تجد الطبيب؟ أضف طبيباً جديداً" %}
+                    </button>
+                </div>`;
+                
+                resDiv.innerHTML = html;
+            } else {
+                resDiv.innerHTML = '<span style="color:#e65100;"><i class="fa-solid fa-circle-xmark"></i> {% trans "لم يتم العثور على أطباء مطابقين. يمكنك إضافته كطبيب جديد." %}</span>';
+                showNewDoctorForm(phone);
+            }
+        })
+        .catch((e) => {
+            console.error(e);
+            resDiv.innerHTML = '<span style="color:#c62828;"><i class="fa-solid fa-wifi"></i> {% trans "حدث خطأ أثناء البحث. تأكد من اتصالك بالإنترنت." %}</span>';
+        });
+    }
+
+    function addNewDoctorToList() {
+        const phone = document.getElementById('new_doc_phone_display').value.trim();
+        const name = document.getElementById('new_doc_name').value.trim();
+        const email = document.getElementById('new_doc_email').value.trim();
+        const specialty = document.getElementById('new_doc_specialty').value.trim();
+
+        if (!phone) {
+            alert('{% trans "خطأ: رقم الهاتف مفقود. ابحث برقم الهاتف أولاً." %}');
+            return;
+        }
+        if (!name) {
+            alert('{% trans "يرجى إدخال اسم الطبيب." %}');
+            document.getElementById('new_doc_name').focus();
+            return;
+        }
+
+        // Validate email format if provided
+        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            alert('{% trans "يرجى إدخال بريد إلكتروني صحيح." %}');
+            document.getElementById('new_doc_email').focus();
+            return;
+        }
+
+        doctorsData.push({type: 'new', name, phone, email, specialty});
+        updateTable();
+
+        // Reset
+        document.getElementById('doc_search_phone').value = '';
+        document.getElementById('new_doc_phone_display').value = '';
+        document.getElementById('new_doc_name').value = '';
+        document.getElementById('new_doc_email').value = '';
+        document.getElementById('new_doc_specialty').value = '';
+        document.getElementById('new_doc_form').style.display = 'none';
+        document.getElementById('doc_search_result').innerHTML = '';
+    }
+
+    // Form submit validation
+    document.getElementById('eventRequestForm').addEventListener('submit', function(e) {
+        const name = document.getElementById('field_name').value.trim();
+        const date = document.getElementById('field_date').value;
+        const voucherVal = parseFloat(document.getElementById('field_voucher_value').value);
+        const maxBudget = parseFloat(document.getElementById('field_max_budget').value);
+
+        if (!name || !date) {
+            e.preventDefault();
+            alert('{% trans "يرجى تعبئة جميع الحقول الإلزامية (الاسم والتاريخ)." %}');
+            return;
+        }
+        if (isNaN(voucherVal) || voucherVal <= 0) {
+            e.preventDefault();
+            alert('{% trans "قيمة القسيمة يجب أن تكون أكبر من صفر." %}');
+            return;
+        }
+        if (isNaN(maxBudget) || maxBudget <= 0) {
+            e.preventDefault();
+            alert('{% trans "الحد الأقصى للميزانية يجب أن يكون أكبر من صفر." %}');
+            return;
+        }
+        if (maxBudget < voucherVal) {
+            e.preventDefault();
+            alert('{% trans "الحد الأقصى للميزانية يجب أن يكون أكبر من أو يساوي قيمة القسيمة للطبيب الواحد." %}');
+            return;
+        }
+        if (doctorsData.length === 0) {
+            e.preventDefault();
+            alert('{% trans "يرجى إضافة طبيب واحد على الأقل للقائمة." %}');
+            return;
+        }
+
+        // Show loading state
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> {% trans "جاري الإرسال..." %}';
+    });
+</script>
+{% endblock %}

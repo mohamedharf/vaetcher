@@ -1,0 +1,2411 @@
+# Hadramout Events - Arabic Translations
+# Copyright (C) 2026 Hadramout Events
+# This file is distributed under the same license as the project.
+# Hadramout Events Team, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-02 02:14+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: .\accounts\admin.py:39
+msgid "{} Companies"
+msgstr "شركات {}"
+
+#: .\accounts\admin.py:39
+msgid "General (All Companies)"
+msgstr "عام (جميع الشركات)"
+
+#: .\accounts\admin.py:40 .\accounts\models.py:66
+msgid "Companies"
+msgstr "الشركات"
+
+#: .\accounts\admin.py:44
+msgid "{} Specialties"
+msgstr "تخصصات {}"
+
+#: .\accounts\admin.py:44
+msgid "General (All Specialties)"
+msgstr "عام (جميع التخصصات)"
+
+#: .\accounts\admin.py:45 .\accounts\models.py:57 .\accounts\models.py:67
+#: .\core\models.py:13 .\events\models.py:20
+msgid "Specialties"
+msgstr "التخصصات"
+
+#: .\accounts\admin.py:52 .\accounts\admin.py:59
+msgid "Doctor Profile"
+msgstr "الملف الشخصي للطبيب"
+
+#: .\accounts\admin.py:53 .\accounts\admin.py:60
+msgid "Doctor Profiles"
+msgstr "الملفات الشخصية للأطباء"
+
+#: .\accounts\admin.py:75
+msgid "Personal info"
+msgstr "المعلومات الشخصية"
+
+#: .\accounts\admin.py:76
+#, fuzzy
+#| msgid "User permissions"
+msgid "Permissions"
+msgstr "صلاحيات المستخدم"
+
+#: .\accounts\admin.py:77
+msgid "Important dates"
+msgstr "التواريخ المهمة"
+
+#: .\accounts\admin.py:136
+#, python-brace-format
+msgid "Welcome email sent to {email}"
+msgstr "تم ارسال بريد الترحيب الى {email}"
+
+#: .\accounts\admin.py:156
+msgid "Session"
+msgstr "الحجز"
+
+#: .\accounts\admin.py:157
+#, fuzzy
+#| msgid "Reservations"
+msgid "Sessions"
+msgstr "الحجوزات"
+
+#: .\accounts\admin.py:186 .\accounts\admin.py:428
+msgid "Basic Information"
+msgstr "المعلومات الاساسية"
+
+#: .\accounts\admin.py:188
+msgid "Personal Data"
+msgstr "المعلومات الشخصية"
+
+#: .\accounts\admin.py:189
+msgid "Professional Data"
+msgstr "المعلومات المهنية"
+
+#: .\accounts\admin.py:193
+msgid "Financials"
+msgstr "المعلومات المالية"
+
+#: .\accounts\admin.py:195
+msgid "Balance Summary"
+msgstr "ملخص الرصيد"
+
+#: .\accounts\admin.py:196
+msgid "Vouchers History"
+msgstr "سجل القسائم"
+
+#: .\accounts\admin.py:197
+msgid "Transfers History"
+msgstr "سجل التحويلات"
+
+#: .\accounts\admin.py:198
+msgid "Purchases History"
+msgstr "سجل المشتريات"
+
+#: .\accounts\admin.py:202
+msgid "Attendance"
+msgstr "الحضور"
+
+#: .\accounts\admin.py:204
+msgid "Sessions History"
+msgstr "سجل الجلسات"
+
+#: .\accounts\admin.py:208
+msgid "Business Card"
+msgstr "بطاقة العمل"
+
+#: .\accounts\admin.py:210
+msgid "Preview"
+msgstr "معاينة"
+
+#: .\accounts\admin.py:235 .\accounts\admin.py:486 .\events\models.py:37
+msgid "Current Balance"
+msgstr "الرصيد الحالي"
+
+#: .\accounts\admin.py:239
+msgid "Save the doctor first to see the card."
+msgstr "احفظ الطبيب اولا لترى البطاقة"
+
+#: .\accounts\admin.py:244
+msgid "Card Preview"
+msgstr "معاينة البطاقة"
+
+#: .\accounts\admin.py:246
+msgid "Export Doctor Cards (PDF)"
+msgstr "استخراج بطاقات الاطباء (PDF)"
+
+#: .\accounts\admin.py:312
+msgid "Password (for new User)"
+msgstr "كلمة المرور"
+
+#: .\accounts\admin.py:329
+msgid "Name and Password are required to create the account."
+msgstr "الاسم وكلمة المرور مطلوبان لإنشاء الحساب."
+
+#: .\accounts\admin.py:334
+msgid ""
+"A user with a name that generates the username '{}' already exists. Please "
+"use a slightly different name."
+msgstr ""
+"يوجد مستخدم باسم يُنشئ اسم المستخدم '{}' مسبقاً. يرجى استخدام اسم مختلف "
+"قليلاً."
+
+#: .\accounts\admin.py:338
+msgid "Cashier Password"
+msgstr "كلمة مرور الكاشير"
+
+#: .\accounts\admin.py:357
+msgid "Name and Password required for new cashier."
+msgstr "الاسم وكلمة المرور مطلوبان للكاشير الجديد."
+
+#: .\accounts\admin.py:361
+msgid "Username '{}' already exists."
+msgstr "اسم المستخدم '{}' موجود مسبقاً."
+
+#: .\accounts\admin.py:369
+msgid "Cashier"
+msgstr "كاشير"
+
+#: .\accounts\admin.py:370
+msgid "Cashiers"
+msgstr "كاشيرية"
+
+#: .\accounts\admin.py:398 .\core\models.py:217
+msgid "Transaction"
+msgstr "عملية"
+
+#: .\accounts\admin.py:399 .\core\models.py:218 .\project\settings.py:282
+#: .\templates\admin\index.html:35
+msgid "Transactions"
+msgstr "العمليات"
+
+#: .\accounts\admin.py:405
+msgid "Main Vendor"
+msgstr "التاجر الرئيسي"
+
+#: .\accounts\admin.py:430
+msgid ""
+"The Name field will also be used as the login username (spaces will be "
+"replaced by underscores)."
+msgstr ""
+"سيتم استخدام حقل الاسم أيضاً كاسم مستخدم لتسجيل الدخول (سيتم استبدال المسافات "
+"بشرطات سفلية _)."
+
+#: .\accounts\admin.py:432
+msgid "Access Control"
+msgstr "التحكم في الوصول"
+
+#: .\accounts\admin.py:434
+msgid "Control account activation and management fee settings."
+msgstr "التحكم في تفعيل الحساب وإعدادات رسوم الإدارة."
+
+#: .\accounts\models.py:7
+msgid "Admin"
+msgstr "الادارة"
+
+#: .\accounts\models.py:8 .\accounts\models.py:96 .\core\models.py:196
+#: .\events\models.py:33
+msgid "Doctor"
+msgstr "الطبيب"
+
+#: .\accounts\models.py:9 .\accounts\models.py:166 .\core\models.py:122
+#: .\core\models.py:195
+msgid "Vendor"
+msgstr "التاجر"
+
+#: .\accounts\models.py:10 .\events\models.py:13 .\events\models.py:35
+msgid "Company"
+msgstr "الشركة"
+
+#: .\accounts\models.py:11 .\accounts\models.py:71 .\core\admin.py:11
+msgid "Delegate"
+msgstr "المندوب"
+
+#: .\accounts\models.py:14
+msgid "Type"
+msgstr "النوع"
+
+#: .\accounts\models.py:16
+msgid "Phone Number"
+msgstr "رقم الهاتف"
+
+#: .\accounts\models.py:17
+msgid "email address"
+msgstr "البريد الإلكتروني"
+
+#: .\accounts\models.py:40
+msgid "البريد الإلكتروني مسجل بالفعل لمستخدم آخر في النظام."
+msgstr "البريد الإلكتروني مسجل بالفعل لمستخدم آخر في النظام."
+
+#: .\accounts\models.py:48
+msgid "رقم الهاتف مسجل بالفعل لمستخدم آخر في النظام."
+msgstr "رقم الهاتف مسجل بالفعل لمستخدم آخر في النظام."
+
+#: .\accounts\models.py:53 .\accounts\models.py:64 .\accounts\models.py:85
+#: .\accounts\models.py:137 .\core\models.py:8 .\events\models.py:11
+msgid "Name"
+msgstr "الاسم"
+
+#: .\accounts\models.py:56 .\accounts\models.py:88
+msgid "Specialty"
+msgstr "التخصص"
+
+#: .\accounts\models.py:63 .\accounts\models.py:84 .\accounts\models.py:136
+#: .\core\models.py:7 .\core\models.py:230
+msgid "User"
+msgstr "المستخدم"
+
+#: .\accounts\models.py:65 .\accounts\models.py:86 .\accounts\models.py:139
+#: .\core\models.py:10
+msgid "Phone"
+msgstr "رقم الهاتف"
+
+#: .\accounts\models.py:68 .\accounts\models.py:93 .\accounts\models.py:161
+#: .\core\models.py:16
+msgid "Is Deleted"
+msgstr "تم الحذف"
+
+#: .\accounts\models.py:72 .\core\admin.py:12 .\events\models.py:19
+#: .\project\settings.py:300
+msgid "Delegates"
+msgstr "المناديب"
+
+#: .\accounts\models.py:87 .\accounts\models.py:140 .\core\models.py:11
+msgid "Email"
+msgstr "البريد الالكتروني"
+
+#: .\accounts\models.py:89
+msgid "QR Code"
+msgstr "رمز الاستجابة السريعة"
+
+#: .\accounts\models.py:90
+msgid "Profile Picture"
+msgstr "الصورة الشخصية"
+
+#: .\accounts\models.py:91 .\accounts\models.py:162 .\core\models.py:14
+#: .\core\models.py:68 .\core\models.py:113 .\core\models.py:155
+#: .\core\models.py:235 .\events\models.py:22 .\events\models.py:42
+msgid "Created At"
+msgstr "تاريخ الانشاء"
+
+#: .\accounts\models.py:92 .\accounts\models.py:163 .\core\models.py:15
+#: .\core\models.py:69 .\core\models.py:114 .\events\models.py:23
+#: .\events\models.py:43
+msgid "Updated At"
+msgstr "تاريخ التعديل"
+
+#: .\accounts\models.py:97 .\events\models.py:18 .\project\settings.py:238
+#: .\templates\admin\index.html:71
+msgid "Doctors"
+msgstr "الاطباء"
+
+#: .\accounts\models.py:133
+msgid "Vendor Admin"
+msgstr "التاجر الادمن"
+
+#: .\accounts\models.py:134
+msgid "Vendor Cashier"
+msgstr "التاجر الكاشير"
+
+#: .\accounts\models.py:138 .\core\models.py:9
+msgid "Contact Person"
+msgstr "الشخص المسؤول"
+
+#: .\accounts\models.py:141 .\core\models.py:12
+msgid "Address"
+msgstr "العنوان"
+
+#: .\accounts\models.py:142
+msgid "Category"
+msgstr "التصنيف"
+
+#: .\accounts\models.py:144
+msgid "Role"
+msgstr "الدور"
+
+#: .\accounts\models.py:145
+msgid ""
+"Vendor Admin has full access, Cashier can only process transactions via QR "
+"scan"
+msgstr ""
+"التاجر الادمن لديه صلاحية الوصول الكاملة الى لوحة التحكم والبحث. التاجر "
+"الكاشير يمكنه فقط معالجة المعاملات عبر مسح رمز الاستجابة السريعة."
+
+#: .\accounts\models.py:149
+msgid "Parent Vendor"
+msgstr "التاجر الرئيسي"
+
+#: .\accounts\models.py:150
+msgid "If this is a cashier, specify the parent vendor it belongs to"
+msgstr "إذا كان هذا الكاشير تابعاً، حدد التاجر الرئيسي له"
+
+#: .\accounts\models.py:153
+msgid "Bank Account Info"
+msgstr "بيانات الحساب البنكي"
+
+#: .\accounts\models.py:153
+msgid "Bank name, Account number, etc."
+msgstr "اسم البنك، رقم الحساب، إلخ."
+
+#: .\accounts\models.py:154
+msgid "Electronic Wallet Info"
+msgstr "بيانات المحفظة الإلكترونية"
+
+#: .\accounts\models.py:154
+msgid "Vodafone Cash, etc."
+msgstr "فودافون كاش، إلخ."
+
+#: .\accounts\models.py:155
+msgid "Other Financial Info"
+msgstr "معلومات مالية أخرى"
+
+#: .\accounts\models.py:156
+msgid "Vendor Logo"
+msgstr "شعار التاجر"
+
+#: .\accounts\models.py:158 .\core\models.py:199
+msgid "Management Fee Percentage"
+msgstr "نسبة رسوم الإدارة"
+
+#: .\accounts\models.py:159
+msgid "Has Management Fee"
+msgstr "هل لديه رسوم ادارية"
+
+#: .\accounts\models.py:160 .\events\models.py:40
+msgid "Is Active"
+msgstr "نشط؟"
+
+#: .\accounts\models.py:167 .\project\settings.py:244
+msgid "Vendors"
+msgstr "الموردين"
+
+#: .\core\admin_site.py:9
+msgid "Hadramout Village Administration"
+msgstr "ادارة قرية حضرموت"
+
+#: .\core\admin_site.py:10
+msgid "Hadramout Admin"
+msgstr "ادارة حضرموت"
+
+#: .\core\admin_site.py:11 .\example\project\settings.py:219
+#: .\example\project\settings.py:222 .\project\settings.py:216
+#: .\project\settings.py:219
+msgid "Dashboard"
+msgstr "لوحة التحكم"
+
+#: .\core\models.py:19
+msgid "Pharmaceutical Company"
+msgstr "شركة الادوية"
+
+#: .\core\models.py:20
+msgid "Pharmaceutical Companies"
+msgstr "شركات الادوية"
+
+#: .\core\models.py:45
+msgid "Total Budget Allocated"
+msgstr "إجمالي الميزانية المخصصة"
+
+#: .\core\models.py:46
+msgid "Total Vouchers Distributed"
+msgstr "إجمالي القسائم الموزعة"
+
+#: .\core\models.py:47
+msgid "Total Amount Spent by Doctors"
+msgstr "إجمالي المبالغ المنفقة من الأطباء"
+
+#: .\core\models.py:48
+msgid "Settlement Amount"
+msgstr "مبلغ التسوية"
+
+#: .\core\models.py:49 .\core\models.py:94 .\core\models.py:126
+msgid "Settlement Date"
+msgstr "تاريخ التسوية"
+
+#: .\core\models.py:51 .\core\models.py:96 .\core\models.py:128
+#: .\core\models.py:249
+msgid "Status"
+msgstr "الحالة"
+
+#: .\core\models.py:60 .\core\models.py:105 .\core\models.py:153
+#: .\events\models.py:21 .\events\models.py:41
+msgid "Notes"
+msgstr "ملاحظات"
+
+#: .\core\models.py:61 .\core\models.py:106 .\core\models.py:154
+msgid "Receipt Image"
+msgstr ""
+
+#: .\core\models.py:72
+msgid "Company Settlement"
+msgstr "تسوية الشركة"
+
+#: .\core\models.py:73
+msgid "Company Settlements"
+msgstr "تسويات الشركات"
+
+#: .\core\models.py:90
+msgid "Events Assigned"
+msgstr "الفعاليات المسندة"
+
+#: .\core\models.py:91
+msgid "Doctors Registered"
+msgstr "الأطباء المسجلون"
+
+#: .\core\models.py:92
+msgid "Commission Rate (%)"
+msgstr "نسبة العمولة (%)"
+
+#: .\core\models.py:93
+msgid "Total Commission"
+msgstr "إجمالي العمولة"
+
+#: .\core\models.py:117
+msgid "Delegate Settlement"
+msgstr "تسوية المندوب"
+
+#: .\core\models.py:118
+msgid "Delegate Settlements"
+msgstr "تسويات المناديب"
+
+#: .\core\models.py:123
+msgid "Amount Settled"
+msgstr "المبلغ المسدد"
+
+#: .\core\models.py:124
+msgid "Admin Commission Amount"
+msgstr "مبلغ عمولة الإدارة"
+
+#: .\core\models.py:125
+msgid "Net Amount to Vendor"
+msgstr "المبلغ الصافي للتاجر"
+
+#: .\core\models.py:138
+msgid "Payment Method"
+msgstr "طريقة الدفع"
+
+#: .\core\models.py:151
+msgid "Transactions Settled"
+msgstr "العمليات المسواة"
+
+#: .\core\models.py:158
+msgid "Vendor Settlement"
+msgstr "تسوية التاجر"
+
+#: .\core\models.py:159 .\project\settings.py:288
+msgid "Vendor Settlements"
+msgstr "تسويات التجار"
+
+#: .\core\models.py:194 .\events\models.py:47 .\project\settings.py:269
+msgid "Vouchers"
+msgstr "القسائم"
+
+#: .\core\models.py:197
+msgid "Created By"
+msgstr "من قبل"
+
+#: .\core\models.py:198
+msgid "Amount Spent"
+msgstr "المبلغ المنفق"
+
+#: .\core\models.py:200
+msgid "Management Fee Amount"
+msgstr "قيمة رسوم الإدارة"
+
+#: .\core\models.py:201
+msgid "Total Deducted"
+msgstr "إجمالي المخصوم"
+
+#: .\core\models.py:202
+msgid "Transaction Date"
+msgstr "تاريخ العملية"
+
+#: .\core\models.py:203
+msgid "Items Description"
+msgstr "وصف الأصناف"
+
+#: .\core\models.py:204
+msgid "Invoice Number"
+msgstr "رقم الفاتورة"
+
+#: .\core\models.py:213 .\core\models.py:225
+msgid "Settlement"
+msgstr "تسوية"
+
+#: .\core\models.py:226 .\events\models.py:46 .\events\models.py:71
+msgid "Voucher"
+msgstr "القسيمة"
+
+#: .\core\models.py:227 .\example\project\settings.py:381
+msgid "System"
+msgstr "النظام"
+
+#: .\core\models.py:228
+msgid "Account"
+msgstr "حساب"
+
+#: .\core\models.py:231
+msgid "Message"
+msgstr "رسالة"
+
+#: .\core\models.py:232
+msgid "Notification Type"
+msgstr "نوع الإشعار"
+
+#: .\core\models.py:233
+msgid "Link"
+msgstr "رابط"
+
+#: .\core\models.py:233
+msgid "URL to redirect to when clicked"
+msgstr "رابط التوجيه عند النقر"
+
+#: .\core\models.py:234
+msgid "Is Read"
+msgstr "مقروء"
+
+#: .\core\models.py:238
+msgid "Notification"
+msgstr "إشعار"
+
+#: .\core\models.py:239
+msgid "Notifications"
+msgstr "الإشعارات"
+
+#: .\core\models.py:246
+msgid "Recipient"
+msgstr "المُرسَل إليه"
+
+#: .\core\models.py:247
+msgid "Subject"
+msgstr "الموضوع"
+
+#: .\core\models.py:248
+msgid "Template Used"
+msgstr "القالب المستخدم"
+
+#: .\core\models.py:250
+msgid "Error Message"
+msgstr "رسالة الخطأ"
+
+#: .\core\models.py:251
+msgid "Sent At"
+msgstr "تاريخ الإرسال"
+
+#: .\core\models.py:254
+msgid "Email Log"
+msgstr "سجل البريد الإلكتروني"
+
+#: .\core\models.py:255 .\project\settings.py:319
+msgid "Email Logs"
+msgstr "سجلات البريد الإلكتروني"
+
+#: .\events\models.py:8
+msgid "Cash"
+msgstr "نقدي"
+
+#: .\events\models.py:9
+msgid "Deferred"
+msgstr "آجل"
+
+#: .\events\models.py:12
+msgid "Event Date"
+msgstr "تاريخ الفعالية"
+
+#: .\events\models.py:14
+msgid "Payment Type"
+msgstr "طريقة الدفع"
+
+#: .\events\models.py:15
+msgid "Voucher Value"
+msgstr "قيمة القسيمة"
+
+#: .\events\models.py:16
+msgid "Voucher Expiry Days"
+msgstr "أيام صلاحية القسيمة"
+
+#: .\events\models.py:17
+msgid "Max Budget"
+msgstr "الحد الأقصى للميزانية"
+
+#: .\events\models.py:26 .\events\models.py:34
+msgid "Event"
+msgstr "الندوة"
+
+#: .\events\models.py:27 .\project\settings.py:263
+msgid "Events"
+msgstr "الندوات"
+
+#: .\events\models.py:36
+msgid "Initial Value"
+msgstr "القيمة الأولية"
+
+#: .\events\models.py:38
+msgid "Issue Date"
+msgstr "تاريخ الإصدار"
+
+#: .\events\models.py:39
+msgid "Expiry Date"
+msgstr "تاريخ الانتهاء"
+
+#: .\events\models.py:69
+msgid "From Doctor"
+msgstr "من الطبيب"
+
+#: .\events\models.py:70
+msgid "To Doctor"
+msgstr "إلى الطبيب"
+
+#: .\events\models.py:72
+msgid "Transfer Date"
+msgstr "تاريخ التحويل"
+
+#: .\events\models.py:75
+msgid "Voucher Transfer"
+msgstr "تحويل قسيمة"
+
+#: .\events\models.py:76
+msgid "Voucher Transfers"
+msgstr "تحويلات القسائم"
+
+#: .\example\project\settings.py:125 .\project\settings.py:135
+msgid "English"
+msgstr "الإنجليزية"
+
+#: .\example\project\settings.py:126 .\project\settings.py:134
+msgid "Arabic"
+msgstr "العربية"
+
+#: .\example\project\settings.py:229
+msgid "Menu Management"
+msgstr "إدارة القائمة"
+
+#: .\example\project\settings.py:234
+msgid "Branches"
+msgstr "الفروع"
+
+#: .\example\project\settings.py:239
+msgid "Categories"
+msgstr "التصنيفات"
+
+#: .\example\project\settings.py:244
+msgid "Meals"
+msgstr "الوجبات"
+
+#: .\example\project\settings.py:251 .\example\project\settings.py:256
+msgid "Orders"
+msgstr "الطلبات"
+
+#: .\example\project\settings.py:263 .\example\project\settings.py:273
+msgid "Reservations"
+msgstr "الحجوزات"
+
+#: .\example\project\settings.py:268
+msgid "Staff Dashboard"
+msgstr "لوحة تحكم الموظفين"
+
+#: .\example\project\settings.py:278
+msgid "Tables"
+msgstr "جداول"
+
+#: .\example\project\settings.py:283
+msgid "Waiting List"
+msgstr "قائمة الانتظار"
+
+#: .\example\project\settings.py:288
+msgid "Time Slots"
+msgstr "الفترات الزمنية"
+
+#: .\example\project\settings.py:295
+msgid "Customer Messages"
+msgstr "رسائل العملاء"
+
+#: .\example\project\settings.py:300
+msgid "Contacts"
+msgstr "جهات الاتصال"
+
+#: .\example\project\settings.py:307
+msgid "Page Content"
+msgstr "محتوى الصفحة"
+
+#: .\example\project\settings.py:312
+msgid "Home Banner"
+msgstr "بانر الصفحة الرئيسية"
+
+#: .\example\project\settings.py:317
+msgid "Home Story"
+msgstr "قصة الصفحة الرئيسية"
+
+#: .\example\project\settings.py:322
+msgid "About Banner"
+msgstr "بانر حول"
+
+#: .\example\project\settings.py:327
+msgid "About Story"
+msgstr "حول القصة"
+
+#: .\example\project\settings.py:332
+msgid "Intro Video"
+msgstr "فيديو تعريفي"
+
+#: .\example\project\settings.py:337
+msgid "Why Us Items"
+msgstr "عناصر لماذا نحن"
+
+#: .\example\project\settings.py:342
+msgid "Statistics"
+msgstr "الإحصائيات"
+
+#: .\example\project\settings.py:347
+msgid "Services"
+msgstr "الخدمات"
+
+#: .\example\project\settings.py:352
+msgid "Gallery"
+msgstr "المعرض"
+
+#: .\example\project\settings.py:359
+msgid "Site Settings"
+msgstr "إعدادات الموقع"
+
+#: .\example\project\settings.py:364
+msgid "SEO Settings"
+msgstr "إعدادات SEO"
+
+#: .\example\project\settings.py:369
+msgid "Theme Customization"
+msgstr "تخصيص المظهر"
+
+#: .\example\project\settings.py:374
+msgid "Instagram Images"
+msgstr "صور إنستغرام"
+
+#: .\example\project\settings.py:386 .\project\settings.py:232
+msgid "Users"
+msgstr "المستخدمين"
+
+#: .\example\project\settings.py:391
+msgid "Groups"
+msgstr "المجموعات"
+
+#: .\example\templates\admin\index.html:14
+msgid "Revenue (7d)"
+msgstr "الإيرادات (7 أيام)"
+
+#: .\example\templates\admin\index.html:20
+msgid "payments"
+msgstr "المدفوعات"
+
+#: .\example\templates\admin\index.html:28
+#: .\example\templates\admin\index.html:50
+msgid "vs previous 7 days"
+msgstr "مقابل الـ 7 أيام السابقة"
+
+#: .\example\templates\admin\index.html:36
+msgid "Orders (7d)"
+msgstr "الطلبات (7 أيام)"
+
+#: .\example\templates\admin\index.html:42
+msgid "shopping_cart"
+msgstr "عربة_التسوق"
+
+#: .\example\templates\admin\index.html:58
+msgid "Avg. Order Value"
+msgstr "متوسط قيمة الطلب"
+
+#: .\example\templates\admin\index.html:64
+msgid "receipt_long"
+msgstr "إيصال_طويل"
+
+#: .\example\templates\admin\index.html:68
+msgid "Performance metric"
+msgstr "مقياس الأداء"
+
+#: .\example\templates\admin\index.html:76
+msgid "Active Branches"
+msgstr "الفروع النشطة"
+
+#: .\example\templates\admin\index.html:82
+msgid "store"
+msgstr "متجر"
+
+#: .\example\templates\admin\index.html:86
+msgid "Operating locations"
+msgstr "مواقع التشغيل"
+
+#: .\example\templates\admin\index.html:95 .\templates\admin\index.html:90
+msgid "Revenue Trend (30 Days)"
+msgstr "اتجاه الإيرادات (30 يوماً)"
+
+#: .\example\templates\admin\index.html:103
+msgid "Top 5 Selling Items"
+msgstr "أفضل 5 أصناف مبيعاً"
+
+#: .\example\templates\admin\index.html:113
+msgid "Branch Performance Overview"
+msgstr "نظرة عامة على أداء الفروع"
+
+#: .\example\templates\admin\index.html:114
+msgid "Last 7 Days Activity"
+msgstr "نشاط آخر 7 أيام"
+
+#: .\example\templates\admin\index.html:120
+msgid "Branch Name"
+msgstr "اسم الفرع"
+
+#: .\example\templates\admin\index.html:121
+msgid "Menu Items"
+msgstr "عناصر القائمة"
+
+#: .\example\templates\admin\index.html:122
+msgid "Delivery Orders"
+msgstr "طلبات التوصيل"
+
+#: .\example\templates\admin\index.html:123
+msgid "Dine-in Orders"
+msgstr "طلبات داخل المطعم"
+
+#: .\example\templates\admin\index.html:124
+msgid "Revenue (30d)"
+msgstr "الإيرادات (30 يوماً)"
+
+#: .\project\settings.py:227
+msgid "Accounts"
+msgstr "الحسابات"
+
+#: .\project\settings.py:250
+msgid "Doctor Registration QR"
+msgstr "رمز QR لتسجيل الأطباء"
+
+#: .\project\settings.py:258
+msgid "Events Management"
+msgstr "إدارة الفعاليات"
+
+#: .\project\settings.py:277
+msgid "Transactions & Finance"
+msgstr "العمليات والماليات"
+
+#: .\project\settings.py:294
+msgid "Pharma Companies"
+msgstr "شركات الأدوية"
+
+#: .\project\settings.py:308
+msgid "System Settings & Logs"
+msgstr "إعدادات النظام والسجلات"
+
+#: .\project\settings.py:313
+msgid "System Settings"
+msgstr "إعدادات النظام"
+
+#: .\templates\admin\accounts\doctor\add_voucher_action.html:6
+msgid "Home"
+msgstr "الرئيسية"
+
+#: .\templates\admin\events\event\change_list.html:12
+msgid "Table View"
+msgstr "عرض الجدول"
+
+#: .\templates\admin\events\event\change_list.html:20
+msgid "Calendar View"
+msgstr "التقويم"
+
+#: .\templates\admin\index.html:14
+msgid "Total Revenue"
+msgstr "إجمالي الإيرادات"
+
+#: .\templates\admin\index.html:27
+msgid "vs last 7 days"
+msgstr "مقابل آخر 7 أيام"
+
+#: .\templates\admin\index.html:45
+msgid "in last 7 days"
+msgstr "في آخر 7 أيام"
+
+#: .\templates\admin\index.html:53
+msgid "Active Vouchers"
+msgstr "القسائم النشطة"
+
+#: .\templates\admin\index.html:63
+msgid "Currently valid"
+msgstr "صالح حالياً"
+
+#: .\templates\admin\index.html:81
+msgid "Vendors Participated"
+msgstr "الموردون المشاركون"
+
+#: .\templates\admin\index.html:98
+msgid "Top Vendors"
+msgstr "أفضل الموردين"
+
+#~ msgid "Account Created - Hadramout Events"
+#~ msgstr "تم انشاء حسابك - فعاليات حضرموت"
+
+#~ msgid "Site Maps"
+#~ msgstr "خرائط الموقع"
+
+#~ msgid "Static Files"
+#~ msgstr "الملفات الثابتة"
+
+#~ msgid "…"
+#~ msgstr "…"
+
+#~ msgid "That page number is not an integer"
+#~ msgstr "رقم الصفحة ليس عدداً صحيحاً"
+
+#~ msgid "That page number is less than 1"
+#~ msgstr "رقم الصفحة أقل من 1"
+
+#~ msgid "That page contains no results"
+#~ msgstr "هذه الصفحة لا تحتوي على نتائج"
+
+#~ msgid "Enter a valid value."
+#~ msgstr "أدخل قيمة صالحة."
+
+#~ msgid "Enter a valid domain name."
+#~ msgstr "أدخل اسم نطاق صالحاً."
+
+#~ msgid "Enter a valid URL."
+#~ msgstr "أدخل رابط URL صالحاً."
+
+#~ msgid "Enter a valid integer."
+#~ msgstr "أدخل عدداً صحيحاً صالحاً."
+
+#~ msgid "Enter a valid email address."
+#~ msgstr "أدخل بريداً إلكترونياً صالحاً."
+
+#~ msgid ""
+#~ "Enter a valid “slug” consisting of letters, numbers, underscores or "
+#~ "hyphens."
+#~ msgstr "أدخل “slug” صالحاً يتكون من حروف، أرقام، شرطات سفلية أو شرطات."
+
+#~ msgid ""
+#~ "Enter a valid “slug” consisting of Unicode letters, numbers, underscores, "
+#~ "or hyphens."
+#~ msgstr ""
+#~ "أدخل “slug” صالحاً يتكون من حروف يونيكود، أرقام، شرطات سفلية أو شرطات."
+
+#, python-format
+#~ msgid "Enter a valid %(protocol)s address."
+#~ msgstr "أدخل عنوان %(protocol)s صالحاً."
+
+#~ msgid "IPv4"
+#~ msgstr "IPv4"
+
+#~ msgid "IPv6"
+#~ msgstr "IPv6"
+
+#~ msgid "IPv4 or IPv6"
+#~ msgstr "IPv4 أو IPv6"
+
+#~ msgid "Enter only digits separated by commas."
+#~ msgstr "أدخل أرقاماً فقط مفصولة بفاصلة."
+
+#, python-format
+#~ msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+#~ msgstr "تأكد أن هذه القيمة هي %(limit_value)s (هي حالياً %(show_value)s)."
+
+#, python-format
+#~ msgid "Ensure this value is less than or equal to %(limit_value)s."
+#~ msgstr "تأكد أن هذه القيمة أقل من أو تساوي %(limit_value)s."
+
+#, python-format
+#~ msgid "Ensure this value is greater than or equal to %(limit_value)s."
+#~ msgstr "تأكد أن هذه القيمة أكبر من أو تساوي %(limit_value)s."
+
+#, python-format
+#~ msgid "Ensure this value is a multiple of step size %(limit_value)s."
+#~ msgstr "تأكد أن هذه القيمة من مضاعفات حجم الخطوة %(limit_value)s."
+
+#, python-format
+#~ msgid ""
+#~ "Ensure this value is a multiple of step size %(limit_value)s, starting "
+#~ "from %(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and "
+#~ "so on."
+#~ msgstr ""
+#~ "تأكد أن هذه القيمة من مضاعفات حجم الخطوة %(limit_value)s، بدءاً من "
+#~ "%(offset)s، مثلاً %(offset)s، %(valid_value1)s، %(valid_value2)s، وهكذا."
+
+#~ msgid "Enter a number."
+#~ msgstr "أدخل رقماً."
+
+#, python-format
+#~ msgid ""
+#~ "File extension “%(extension)s” is not allowed. Allowed extensions are: "
+#~ "%(allowed_extensions)s."
+#~ msgstr ""
+#~ "امتداد الملف “%(extension)s” غير مسموح به. الامتدادات المسموحة هي: "
+#~ "%(allowed_extensions)s."
+
+#~ msgid "Null characters are not allowed."
+#~ msgstr "الحروف الفارغة (Null) غير مسموح بها."
+
+#~ msgid "and"
+#~ msgstr "و"
+
+#, python-format
+#~ msgid "%(model_name)s with this %(field_labels)s already exists."
+#~ msgstr "%(model_name)s بهذا الـ %(field_labels)s موجود بالفعل."
+
+#, python-format
+#~ msgid "Constraint “%(name)s” is violated."
+#~ msgstr "تم انتهاك القيد “%(name)s”."
+
+#, python-format
+#~ msgid "Value %(value)r is not a valid choice."
+#~ msgstr "القيمة %(value)r ليست خياراً صالحاً."
+
+#~ msgid "This field cannot be null."
+#~ msgstr "هذا الحقل لا يمكن أن يكون فارغاً (null)."
+
+#~ msgid "This field cannot be blank."
+#~ msgstr "هذا الحقل لا يمكن أن يكون فارغاً."
+
+#, python-format
+#~ msgid "%(model_name)s with this %(field_label)s already exists."
+#~ msgstr "%(model_name)s بهذا الـ %(field_label)s موجود بالفعل."
+
+#, python-format
+#~ msgid ""
+#~ "%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+#~ msgstr ""
+#~ "%(field_label)s يجب أن يكون فريداً لـ %(date_field_label)s %(lookup_type)s."
+
+#, python-format
+#~ msgid "Field of type: %(field_type)s"
+#~ msgstr "حقل من نوع: %(field_type)s"
+
+#, python-format
+#~ msgid "“%(value)s” value must be either True or False."
+#~ msgstr "القيمة “%(value)s” يجب أن تكون إما صواب أو خطأ."
+
+#, python-format
+#~ msgid "“%(value)s” value must be either True, False, or None."
+#~ msgstr "القيمة “%(value)s” يجب أن تكون إما صواب، خطأ، أو لا شيء."
+
+#~ msgid "Boolean (Either True or False)"
+#~ msgstr "منطقي (إما صواب أو خطأ)"
+
+#, python-format
+#~ msgid "String (up to %(max_length)s)"
+#~ msgstr "سلسلة نصية (حتى %(max_length)s)"
+
+#~ msgid "String (unlimited)"
+#~ msgstr "سلسلة نصية (غير محدودة)"
+
+#~ msgid "Comma-separated integers"
+#~ msgstr "أعداد صحيحة مفصولة بفاصلة"
+
+#, python-format
+#~ msgid ""
+#~ "“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
+#~ "format."
+#~ msgstr ""
+#~ "القيمة “%(value)s” لها تنسيق تاريخ غير صالح. يجب أن تكون بتنسيق YYYY-MM-"
+#~ "DD."
+
+#, python-format
+#~ msgid ""
+#~ "“%(value)s” value has the correct format (YYYY-MM-DD) but it is an "
+#~ "invalid date."
+#~ msgstr ""
+#~ "القيمة “%(value)s” لها تنسيق صحيح (YYYY-MM-DD) ولكنها تاريخ غير صالح."
+
+#~ msgid "Date (without time)"
+#~ msgstr "التاريخ (بدون الوقت)"
+
+#, python-format
+#~ msgid ""
+#~ "“%(value)s” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:"
+#~ "ss[.uuuuuu]][TZ] format."
+#~ msgstr ""
+#~ "القيمة “%(value)s” لها تنسيق غير صالح. يجب أن تكون بتنسيق YYYY-MM-DD HH:"
+#~ "MM[:ss[.uuuuuu]][TZ]."
+
+#, python-format
+#~ msgid ""
+#~ "“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
+#~ "[TZ]) but it is an invalid date/time."
+#~ msgstr ""
+#~ "القيمة “%(value)s” لها تنسيق صحيح (YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ]) "
+#~ "ولكنها تاريخ/وقت غير صالح."
+
+#~ msgid "Date (with time)"
+#~ msgstr "التاريخ (مع الوقت)"
+
+#, python-format
+#~ msgid "“%(value)s” value must be a decimal number."
+#~ msgstr "القيمة “%(value)s” يجب أن تكون عدداً عشرياً."
+
+#~ msgid "Decimal number"
+#~ msgstr "عدد عشري"
+
+#, python-format
+#~ msgid ""
+#~ "“%(value)s” value has an invalid format. It must be in [DD] [[HH:]MM:]ss[."
+#~ "uuuuuu] format."
+#~ msgstr ""
+#~ "القيمة “%(value)s” لها تنسيق غير صالح. يجب أن تكون بتنسيق [DD] "
+#~ "[[HH:]MM:]ss[.uuuuuu]."
+
+#~ msgid "Duration"
+#~ msgstr "المدة"
+
+#~ msgid "File path"
+#~ msgstr "مسار الملف"
+
+#, python-format
+#~ msgid "“%(value)s” value must be a float."
+#~ msgstr "القيمة “%(value)s” يجب أن تكون عدداً عشرياً (float)."
+
+#~ msgid "Floating point number"
+#~ msgstr "عدد عشري (Floating point)"
+
+#, python-format
+#~ msgid "“%(value)s” value must be an integer."
+#~ msgstr "القيمة “%(value)s” يجب أن تكون عدداً صحيحاً."
+
+#~ msgid "Integer"
+#~ msgstr "عدد صحيح"
+
+#~ msgid "Big (8 byte) integer"
+#~ msgstr "عدد صحيح كبير (8 بايت)"
+
+#~ msgid "Small integer"
+#~ msgstr "عدد صحيح صغير"
+
+#~ msgid "IPv4 address"
+#~ msgstr "عنوان IPv4"
+
+#~ msgid "IP address"
+#~ msgstr "عنوان IP"
+
+#, python-format
+#~ msgid "“%(value)s” value must be either None, True or False."
+#~ msgstr "القيمة “%(value)s” يجب أن تكون إما لا شيء، صواب أو خطأ."
+
+#~ msgid "Boolean (Either True, False or None)"
+#~ msgstr "منطقي (إما صواب، خطأ أو لا شيء)"
+
+#~ msgid "Positive big integer"
+#~ msgstr "عدد صحيح موجب كبير"
+
+#~ msgid "Positive integer"
+#~ msgstr "عدد صحيح موجب"
+
+#~ msgid "Positive small integer"
+#~ msgstr "عدد صحيح موجب صغير"
+
+#, python-format
+#~ msgid "Slug (up to %(max_length)s)"
+#~ msgstr "Slug (حتى %(max_length)s)"
+
+#~ msgid "Text"
+#~ msgstr "نص"
+
+#, python-format
+#~ msgid ""
+#~ "“%(value)s” value has an invalid format. It must be in HH:MM[:ss[."
+#~ "uuuuuu]] format."
+#~ msgstr ""
+#~ "القيمة “%(value)s” لها تنسيق غير صالح. يجب أن تكون بتنسيق HH:MM[:ss[."
+#~ "uuuuuu]]."
+
+#, python-format
+#~ msgid ""
+#~ "“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is "
+#~ "an invalid time."
+#~ msgstr ""
+#~ "القيمة “%(value)s” لها تنسيق صحيح (HH:MM[:ss[.uuuuuu]]) ولكنها وقت غير "
+#~ "صالح."
+
+#~ msgid "Time"
+#~ msgstr "الوقت"
+
+#~ msgid "URL"
+#~ msgstr "رابط URL"
+
+#~ msgid "Raw binary data"
+#~ msgstr "بيانات ثنائية خام"
+
+#, python-format
+#~ msgid "“%(value)s” is not a valid UUID."
+#~ msgstr "“%(value)s” ليس UUID صالحاً."
+
+#~ msgid "Universally unique identifier"
+#~ msgstr "معرف فريد عالمياً (UUID)"
+
+#~ msgid "File"
+#~ msgstr "ملف"
+
+#~ msgid "Image"
+#~ msgstr "صورة"
+
+#~ msgid "A JSON object"
+#~ msgstr "كائن JSON"
+
+#~ msgid "Value must be valid JSON."
+#~ msgstr "القيمة يجب أن تكون JSON صالحاً."
+
+#, python-format
+#~ msgid "%(model)s instance with %(field)s %(value)r is not a valid choice."
+#~ msgstr "مثيل %(model)s مع %(field)s %(value)r ليس خياراً صالحاً."
+
+#~ msgid "Foreign Key (type determined by related field)"
+#~ msgstr "مفتاح خارجي (النوع يحدده الحقل المرتبط)"
+
+#~ msgid "One-to-one relationship"
+#~ msgstr "علاقة واحد لواحد"
+
+#, python-format
+#~ msgid "%(from)s-%(to)s relationship"
+#~ msgstr "علاقة %(from)s-%(to)s"
+
+#, python-format
+#~ msgid "%(from)s-%(to)s relationships"
+#~ msgstr "علاقات %(from)s-%(to)s"
+
+#~ msgid "Many-to-many relationship"
+#~ msgstr "علاقة متعدد إلى متعدد"
+
+#~ msgid ":?.!"
+#~ msgstr ":?.!"
+
+#~ msgid "This field is required."
+#~ msgstr "هذا الحقل مطلوب."
+
+#~ msgid "Enter a whole number."
+#~ msgstr "أدخل عدداً صحيحاً."
+
+#~ msgid "Enter a valid date."
+#~ msgstr "أدخل تاريخاً صالحاً."
+
+#~ msgid "Enter a valid time."
+#~ msgstr "أدخل وقتاً صالحاً."
+
+#~ msgid "Enter a valid date/time."
+#~ msgstr "أدخل تاريخاً/وقتاً صالحاً."
+
+#~ msgid "Enter a valid duration."
+#~ msgstr "أدخل مدة صالحة."
+
+#, python-brace-format
+#~ msgid "The number of days must be between {min_days} and {max_days}."
+#~ msgstr "عدد الأيام يجب أن يكون بين {min_days} و {max_days}."
+
+#~ msgid "No file was submitted. Check the encoding type on the form."
+#~ msgstr "لم يتم إرسال أي ملف. تحقق من نوع الترميز في النموذج."
+
+#~ msgid "No file was submitted."
+#~ msgstr "لم يتم إرسال أي ملف."
+
+#~ msgid "The submitted file is empty."
+#~ msgstr "الملف المرسل فارغ."
+
+#~ msgid "Please either submit a file or check the clear checkbox, not both."
+#~ msgstr "يرجى إما إرسال ملف أو تحديد خانة المسح، وليس كلاهما."
+
+#~ msgid ""
+#~ "Upload a valid image. The file you uploaded was either not an image or a "
+#~ "corrupted image."
+#~ msgstr "ارفع صورة صالحة. الملف الذي رفعته إما ليس صورة أو صورة تالفة."
+
+#, python-format
+#~ msgid ""
+#~ "Select a valid choice. %(value)s is not one of the available choices."
+#~ msgstr "اختر خياراً صالحاً. %(value)s ليس من الخيارات المتاحة."
+
+#~ msgid "Enter a list of values."
+#~ msgstr "أدخل قائمة من القيم."
+
+#~ msgid "Enter a complete value."
+#~ msgstr "أدخل قيمة كاملة."
+
+#~ msgid "Enter a valid UUID."
+#~ msgstr "أدخل UUID صالحاً."
+
+#~ msgid "Enter a valid JSON."
+#~ msgstr "أدخل JSON صالحاً."
+
+#~ msgid ":"
+#~ msgstr ":"
+
+#, python-format
+#~ msgid "(Hidden field %(name)s) %(error)s"
+#~ msgstr "(حقل مخفي %(name)s) %(error)s"
+
+#, python-format
+#~ msgid ""
+#~ "ManagementForm data is missing or has been tampered with. Missing fields: "
+#~ "%(field_names)s. You may need to file a bug report if the issue persists."
+#~ msgstr ""
+#~ "بيانات ManagementForm مفقودة أو تم التلاعب بها. الحقول المفقودة: "
+#~ "%(field_names)s. قد تحتاج لتقديم تقرير عن خطأ إذا استمرت المشكلة."
+
+#~ msgid "Order"
+#~ msgstr "طلب"
+
+#, python-format
+#~ msgid "Please correct the duplicate data for %(field)s."
+#~ msgstr "يرجى تصحيح البيانات المكررة لـ %(field)s."
+
+#, python-format
+#~ msgid ""
+#~ "Please correct the duplicate data for %(field)s, which must be unique."
+#~ msgstr "يرجى تصحيح البيانات المكررة لـ %(field)s، والتي يجب أن تكون فريدة."
+
+#, python-format
+#~ msgid ""
+#~ "Please correct the duplicate data for %(field_name)s which must be unique "
+#~ "for the %(lookup)s in %(date_field)s."
+#~ msgstr ""
+#~ "يرجى تصحيح البيانات المكررة لـ %(field_name)s والتي يجب أن تكون فريدة لـ "
+#~ "%(lookup)s في %(date_field)s."
+
+#~ msgid "Please correct the duplicate values below."
+#~ msgstr "يرجى تصحيح القيم المكررة أدناه."
+
+#~ msgid "The inline value did not match the parent instance."
+#~ msgstr "القيمة المضمنة لا تطابق المثيل الأب."
+
+#~ msgid ""
+#~ "Select a valid choice. That choice is not one of the available choices."
+#~ msgstr "اختر خياراً صالحاً. هذا الخيار ليس من الخيارات المتاحة."
+
+#, python-format
+#~ msgid "“%(pk)s” is not a valid value."
+#~ msgstr "“%(pk)s” ليست قيمة صالحة."
+
+#, python-format
+#~ msgid ""
+#~ "%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; "
+#~ "it may be ambiguous or it may not exist."
+#~ msgstr ""
+#~ "تعذر تفسير %(datetime)s في المنطقة الزمنية %(current_timezone)s؛ قد يكون "
+#~ "غامضاً أو غير موجود."
+
+#~ msgid "Clear"
+#~ msgstr "مسح"
+
+#~ msgid "Currently"
+#~ msgstr "حالياً"
+
+#~ msgid "Change"
+#~ msgstr "تغيير"
+
+#~ msgid "Unknown"
+#~ msgstr "غير معروف"
+
+#~ msgid "Yes"
+#~ msgstr "نعم"
+
+#~ msgid "No"
+#~ msgstr "لا"
+
+#~ msgid "yes,no,maybe"
+#~ msgstr "نعم، لا، ربما"
+
+#, python-format
+#~ msgid "%s KB"
+#~ msgstr "%s كيلوبايت"
+
+#, python-format
+#~ msgid "%s MB"
+#~ msgstr "%s ميجابايت"
+
+#, python-format
+#~ msgid "%s GB"
+#~ msgstr "%s جيجابايت"
+
+#, python-format
+#~ msgid "%s TB"
+#~ msgstr "%s تيرابايت"
+
+#, python-format
+#~ msgid "%s PB"
+#~ msgstr "%s بيتابايت"
+
+#~ msgid "p.m."
+#~ msgstr "م"
+
+#~ msgid "a.m."
+#~ msgstr "ص"
+
+#~ msgid "PM"
+#~ msgstr "مساءً"
+
+#~ msgid "AM"
+#~ msgstr "صباحاً"
+
+#~ msgid "midnight"
+#~ msgstr "منتصف الليل"
+
+#~ msgid "noon"
+#~ msgstr "ظهراً"
+
+#~ msgid "Monday"
+#~ msgstr "الأثنين"
+
+#~ msgid "Tuesday"
+#~ msgstr "الثلاثاء"
+
+#~ msgid "Wednesday"
+#~ msgstr "الأربعاء"
+
+#~ msgid "Thursday"
+#~ msgstr "الخميس"
+
+#~ msgid "Friday"
+#~ msgstr "الجمعة"
+
+#~ msgid "Saturday"
+#~ msgstr "السبت"
+
+#~ msgid "Sunday"
+#~ msgstr "الأحد"
+
+#~ msgid "Mon"
+#~ msgstr "اثنين"
+
+#~ msgid "Tue"
+#~ msgstr "ثلاثاء"
+
+#~ msgid "Wed"
+#~ msgstr "أربعاء"
+
+#~ msgid "Thu"
+#~ msgstr "خميس"
+
+#~ msgid "Fri"
+#~ msgstr "جمعة"
+
+#~ msgid "Sat"
+#~ msgstr "سبت"
+
+#~ msgid "Sun"
+#~ msgstr "أحد"
+
+#~ msgid "January"
+#~ msgstr "يناير"
+
+#~ msgid "February"
+#~ msgstr "فبراير"
+
+#~ msgid "March"
+#~ msgstr "مارس"
+
+#~ msgid "April"
+#~ msgstr "أبريل"
+
+#~ msgid "May"
+#~ msgstr "مايو"
+
+#~ msgid "June"
+#~ msgstr "يونيو"
+
+#~ msgid "July"
+#~ msgstr "يوليو"
+
+#~ msgid "August"
+#~ msgstr "أغسطس"
+
+#~ msgid "September"
+#~ msgstr "سبتمبر"
+
+#~ msgid "October"
+#~ msgstr "أكتوبر"
+
+#~ msgid "November"
+#~ msgstr "نوفمبر"
+
+#~ msgid "December"
+#~ msgstr "ديسمبر"
+
+#~ msgid "jan"
+#~ msgstr "يناير"
+
+#~ msgid "feb"
+#~ msgstr "فبراير"
+
+#~ msgid "mar"
+#~ msgstr "مارس"
+
+#~ msgid "apr"
+#~ msgstr "أبريل"
+
+#~ msgid "may"
+#~ msgstr "مايو"
+
+#~ msgid "jun"
+#~ msgstr "يونيو"
+
+#~ msgid "jul"
+#~ msgstr "يوليو"
+
+#~ msgid "aug"
+#~ msgstr "أغسطس"
+
+#~ msgid "sep"
+#~ msgstr "سبتمبر"
+
+#~ msgid "oct"
+#~ msgstr "أكتوبر"
+
+#~ msgid "nov"
+#~ msgstr "نوفمبر"
+
+#~ msgid "dec"
+#~ msgstr "ديسمبر"
+
+#~ msgctxt "abbrev. month"
+#~ msgid "Jan."
+#~ msgstr "يناير"
+
+#~ msgctxt "abbrev. month"
+#~ msgid "Feb."
+#~ msgstr "فبراير"
+
+#~ msgctxt "abbrev. month"
+#~ msgid "March"
+#~ msgstr "مارس"
+
+#~ msgctxt "abbrev. month"
+#~ msgid "April"
+#~ msgstr "أبريل"
+
+#~ msgctxt "abbrev. month"
+#~ msgid "May"
+#~ msgstr "مايو"
+
+#~ msgctxt "abbrev. month"
+#~ msgid "June"
+#~ msgstr "يونيو"
+
+#~ msgctxt "abbrev. month"
+#~ msgid "July"
+#~ msgstr "يوليو"
+
+#~ msgctxt "abbrev. month"
+#~ msgid "Aug."
+#~ msgstr "أغسطس"
+
+#~ msgctxt "abbrev. month"
+#~ msgid "Sept."
+#~ msgstr "سبتمبر"
+
+#~ msgctxt "abbrev. month"
+#~ msgid "Oct."
+#~ msgstr "أكتوبر"
+
+#~ msgctxt "abbrev. month"
+#~ msgid "Nov."
+#~ msgstr "نوفمبر"
+
+#~ msgctxt "abbrev. month"
+#~ msgid "Dec."
+#~ msgstr "ديسمبر"
+
+#~ msgctxt "alt. month"
+#~ msgid "January"
+#~ msgstr "يناير"
+
+#~ msgctxt "alt. month"
+#~ msgid "February"
+#~ msgstr "فبراير"
+
+#~ msgctxt "alt. month"
+#~ msgid "March"
+#~ msgstr "مارس"
+
+#~ msgctxt "alt. month"
+#~ msgid "April"
+#~ msgstr "أبريل"
+
+#~ msgctxt "alt. month"
+#~ msgid "May"
+#~ msgstr "مايو"
+
+#~ msgctxt "alt. month"
+#~ msgid "June"
+#~ msgstr "يونيو"
+
+#~ msgctxt "alt. month"
+#~ msgid "July"
+#~ msgstr "يوليو"
+
+#~ msgctxt "alt. month"
+#~ msgid "August"
+#~ msgstr "أغسطس"
+
+#~ msgctxt "alt. month"
+#~ msgid "September"
+#~ msgstr "سبتمبر"
+
+#~ msgctxt "alt. month"
+#~ msgid "October"
+#~ msgstr "أكتوبر"
+
+#~ msgctxt "alt. month"
+#~ msgid "November"
+#~ msgstr "نوفمبر"
+
+#~ msgctxt "alt. month"
+#~ msgid "December"
+#~ msgstr "ديسمبر"
+
+#~ msgid "This is not a valid IPv6 address."
+#~ msgstr "هذا ليس عنوان IPv6 صالحاً."
+
+#, python-format
+#~ msgctxt "String to return when truncating text"
+#~ msgid "%(truncated_text)s…"
+#~ msgstr "%(truncated_text)s…"
+
+#~ msgid "or"
+#~ msgstr "أو"
+
+#~ msgid ", "
+#~ msgstr "، "
+
+#~ msgid "Forbidden"
+#~ msgstr "ممنوع"
+
+#~ msgid "CSRF verification failed. Request aborted."
+#~ msgstr "فشل التحقق من CSRF. تم إيقاف الطلب."
+
+#~ msgid ""
+#~ "You are seeing this message because this HTTPS site requires a “Referer "
+#~ "header” to be sent by your web browser, but none was sent. This header is "
+#~ "required for security reasons, to ensure that your browser is not being "
+#~ "hijacked by third parties."
+#~ msgstr ""
+#~ "أنت ترى هذه الرسالة لأن موقع HTTPS هذا يتطلب إرسال “Referer header” من "
+#~ "متصفحك، ولكن لم يتم إرسال شيء. هذه الترويسة مطلوبة لأسباب أمنية لضمان عدم "
+#~ "اختطاف متصفحك من قبل أطراف ثالثة."
+
+#~ msgid ""
+#~ "If you have configured your browser to disable “Referer” headers, please "
+#~ "re-enable them, at least for this site, or for HTTPS connections, or for "
+#~ "“same-origin” requests."
+#~ msgstr ""
+#~ "إذا قمت بضبط متصفحك لتعطيل ترويسات “Referer”، يرجى إعادة تفعيلها، على "
+#~ "الأقل لهذا الموقع، أو لاتصالات HTTPS، أو لطلبات “نفس المصدر”."
+
+#~ msgid ""
+#~ "You are seeing this message because this site requires a CSRF cookie when "
+#~ "submitting forms. This cookie is required for security reasons, to ensure "
+#~ "that your browser is not being hijacked by third parties."
+#~ msgstr ""
+#~ "أنت ترى هذه الرسالة لأن هذا الموقع يتطلب ملف تعريف ارتباط CSRF عند إرسال "
+#~ "النماذج. هذا الملف مطلوب لأسباب أمنية لضمان عدم اختطاف متصفحك."
+
+#~ msgid ""
+#~ "If you have configured your browser to disable cookies, please re-enable "
+#~ "them, at least for this site, or for “same-origin” requests."
+#~ msgstr ""
+#~ "إذا قمت بضبط متصفحك لتعطيل ملفات تعريف الارتباط (cookies)، يرجى إعادة "
+#~ "تفعيلها، على الأقل لهذا الموقع، أو لطلبات “نفس المصدر”."
+
+#~ msgid "More information is available with DEBUG=True."
+#~ msgstr "مزيد من المعلومات متاح عند تفعيل DEBUG=True."
+
+#~ msgid "No year specified"
+#~ msgstr "لم يتم تحديد سنة"
+
+#~ msgid "Date out of range"
+#~ msgstr "التاريخ خارج النطاق"
+
+#~ msgid "No month specified"
+#~ msgstr "لم يتم تحديد شهر"
+
+#~ msgid "No day specified"
+#~ msgstr "لم يتم تحديد يوم"
+
+#~ msgid "No week specified"
+#~ msgstr "لم يتم تحديد أسبوع"
+
+#, python-format
+#~ msgid "No %(verbose_name_plural)s available"
+#~ msgstr "لا يوجد %(verbose_name_plural)s متاح"
+
+#, python-format
+#~ msgid ""
+#~ "Future %(verbose_name_plural)s not available because %(class_name)s."
+#~ "allow_future is False."
+#~ msgstr ""
+#~ "%(verbose_name_plural)s المستقبلية غير متاحة لأن %(class_name)s."
+#~ "allow_future معطل."
+
+#, python-format
+#~ msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
+#~ msgstr "سلسلة تاريخ غير صالحة “%(datestr)s” للتنسيق المعطى “%(format)s”"
+
+#, python-format
+#~ msgid "No %(verbose_name)s found matching the query"
+#~ msgstr "لم يتم العثور على %(verbose_name)s يطابق البحث"
+
+#~ msgid "Page is not “last”, nor can it be converted to an int."
+#~ msgstr "الصفحة ليست “الأخيرة”، ولا يمكن تحويلها لعدد صحيح."
+
+#, python-format
+#~ msgid "Invalid page (%(page_number)s): %(message)s"
+#~ msgstr "صفحة غير صالحة (%(page_number)s): %(message)s"
+
+#, python-format
+#~ msgid "Empty list and “%(class_name)s.allow_empty” is False."
+#~ msgstr "قائمة فارغة و “%(class_name)s.allow_empty” معطل."
+
+#~ msgid "Directory indexes are not allowed here."
+#~ msgstr "فهرسة المجلدات غير مسموح بها هنا."
+
+#, python-format
+#~ msgid "“%(path)s” does not exist"
+#~ msgstr "“%(path)s” غير موجود"
+
+#, python-format
+#~ msgid "Index of %(directory)s"
+#~ msgstr "فهرس %(directory)s"
+
+#~ msgid "The install worked successfully! Congratulations!"
+#~ msgstr "تم التثبيت بنجاح! تهانينا!"
+
+#~ msgid "Django Documentation"
+#~ msgstr "توثيق جانغو"
+
+#~ msgid "Topics, references, &amp; how-to’s"
+#~ msgstr "المواضيع، المراجع، والدروس"
+
+#~ msgid "Tutorial: A Polling App"
+#~ msgstr "درس تعليمي: تطبيق استطلاع رأي"
+
+#~ msgid "Get started with Django"
+#~ msgstr "ابدأ مع جانغو"
+
+#~ msgid "Django Community"
+#~ msgstr "مجتمع جانغو"
+
+#~ msgid "Connect, get help, or contribute"
+#~ msgstr "تواصل، احصل على المساعدة، أو ساهم"
+
+#~ msgid "Select record"
+#~ msgstr "اختر السجل"
+
+#~ msgid "Select action"
+#~ msgstr "اختر الإجراء"
+
+#~ msgid "Save"
+#~ msgstr "حفظ"
+
+#~ msgid "Collapse"
+#~ msgstr "طي"
+
+#~ msgid "Value"
+#~ msgstr "القيمة"
+
+#~ msgid "Default"
+#~ msgstr "افتراضي"
+
+#~ msgid "Code"
+#~ msgstr "كود"
+
+#~ msgid "Reset to default"
+#~ msgstr "إعادة للوضع الافتراضي"
+
+#~ msgid "All"
+#~ msgstr "الكل"
+
+#, python-format
+#~ msgid " By %(filter_title)s "
+#~ msgstr " حسب %(filter_title)s "
+
+#~ msgid "From"
+#~ msgstr "من"
+
+#~ msgid "To"
+#~ msgstr "إلى"
+
+#~ msgid "Date from"
+#~ msgstr "التاريخ من"
+
+#~ msgid "Date to"
+#~ msgstr "التاريخ إلى"
+
+#~ msgid "Not enough data."
+#~ msgstr "بيانات غير كافية."
+
+#~ msgid "Add new item"
+#~ msgstr "إضافة عنصر جديد"
+
+#~ msgid "Paragraph"
+#~ msgstr "فقرة"
+
+#~ msgid "Underlined"
+#~ msgstr "تحته خط"
+
+#~ msgid "Bold"
+#~ msgstr "عريض"
+
+#~ msgid "Italic"
+#~ msgstr "مائل"
+
+#~ msgid "Strike"
+#~ msgstr "يتوسطه خط"
+
+#~ msgid "Heading"
+#~ msgstr "عنوان"
+
+#~ msgid "Quote"
+#~ msgstr "اقتباس"
+
+#~ msgid "Unordered list"
+#~ msgstr "قائمة غير مرتبة"
+
+#~ msgid "Ordered list"
+#~ msgstr "قائمة مرتبة"
+
+#~ msgid "Indent increase"
+#~ msgstr "زيادة المسافة البادئة"
+
+#~ msgid "Indent decrease"
+#~ msgstr "تقليل المسافة البادئة"
+
+#~ msgid "Undo"
+#~ msgstr "تراجع"
+
+#~ msgid "Redo"
+#~ msgstr "إعادة"
+
+#~ msgid "Enter an URL"
+#~ msgstr "أدخل رابط URL"
+
+#~ msgid "Unlink"
+#~ msgstr "إلغاء الربط"
+
+#~ msgid "Object permissions"
+#~ msgstr "صلاحيات الكائن"
+
+#~ msgid "Group"
+#~ msgstr "مجموعة"
+
+#~ msgid "Group permissions"
+#~ msgstr "صلاحيات المجموعة"
+
+#~ msgid "Action"
+#~ msgstr "إجراء"
+
+#~ msgid "Edit"
+#~ msgstr "تعديل"
+
+#~ msgid "Manage group"
+#~ msgstr "إدارة المجموعة"
+
+#~ msgid "User permissions"
+#~ msgstr "صلاحيات المستخدم"
+
+#~ msgid "Manage user"
+#~ msgstr "إدارة المستخدم"
+
+#~ msgid "Export"
+#~ msgstr "تصدير"
+
+#~ msgid "Import"
+#~ msgstr "استيراد"
+
+#~ msgid "This exporter will export the following fields"
+#~ msgstr "سيقوم هذا المصدر بتصدير الحقول التالية"
+
+#~ msgid "Submit"
+#~ msgstr "إرسال"
+
+#~ msgid ""
+#~ "Below is a preview of data to be imported. If you are satisfied with the "
+#~ "results, click 'Confirm import'"
+#~ msgstr ""
+#~ "أدناه معاينة للبيانات التي سيتم استيرادها. إذا كنت راضياً عن النتائج، انقر "
+#~ "على 'تأكيد الاستيراد'"
+
+#~ msgid "Confirm import"
+#~ msgstr "تأكيد الاستيراد"
+
+#~ msgid "Line number"
+#~ msgstr "رقم السطر"
+
+#~ msgid "New"
+#~ msgstr "جديد"
+
+#~ msgid "Skipped"
+#~ msgstr "تم التخطي"
+
+#~ msgid "Update"
+#~ msgstr "تحديث"
+
+#~ msgid "Some rows failed to validate"
+#~ msgstr "فشل التحقق من صحة بعض الصفوف"
+
+#~ msgid ""
+#~ "Please correct these errors in your data where possible, then reupload it "
+#~ "using the form above."
+#~ msgstr ""
+#~ "يرجى تصحيح هذه الأخطاء في بياناتك قدر الإمكان، ثم أعد رفعها باستخدام "
+#~ "النموذج أعلاه."
+
+#~ msgid "Row"
+#~ msgstr "صف"
+
+#~ msgid "Errors"
+#~ msgstr "أخطاء"
+
+#~ msgid "Non field specific"
+#~ msgstr "غير محدد بحقل"
+
+#~ msgid "This exporter will export the following fields: "
+#~ msgstr "سيقوم هذا المصدر بتصدير الحقول التالية: "
+
+#~ msgid "This importer will import the following fields: "
+#~ msgstr "سيقوم هذا المستورد باستيراد الحقول التالية: "
+
+#, python-format
+#~ msgid "%(class_name)s %(instance)s"
+#~ msgstr "%(class_name)s %(instance)s"
+
+#, python-format
+#~ msgid ""
+#~ "Deleting %(class_name)s %(instance)s would require deleting the following "
+#~ "protected related objects: %(related_objects)s"
+#~ msgstr ""
+#~ "حذف %(class_name)s %(instance)s يتطلب حذف الكائنات المرتبطة المحمية "
+#~ "التالية: %(related_objects)s"
+
+#, fuzzy
+#~| msgid ""
+#~| "Choose a date from the list below to revert to a previous version of "
+#~| "this object"
+#~ msgid ""
+#~ "Choose a date from the list below to revert to a previous version of this "
+#~ "object."
+#~ msgstr "اختر تاريخاً من القائمة أدناه للعودة لإصدار سابق من هذا الكائن"
+
+#~ msgid "This object doesn't have a change history."
+#~ msgstr "هذا الكائن ليس له سجل تغييرات."
+
+#~ msgid ""
+#~ "Press the 'Revert' button below to revert to this version of the object."
+#~ msgstr "اضغط على زر 'استعادة' أدناه للعودة لهذا الإصدار من الكائن."
+
+#~ msgid "Press the 'Change History' button below to edit the history."
+#~ msgstr "اضغط على زر 'سجل التغييرات' أدناه لتعديل السجل."
+
+#~ msgid "Date/time"
+#~ msgstr "التاريخ/الوقت"
+
+#~ msgid "Comment"
+#~ msgstr "تعليق"
+
+#~ msgid "Changed by"
+#~ msgstr "تغير بواسطة"
+
+#~ msgid "Change reason"
+#~ msgstr "سبب التغيير"
+
+#~ msgid "Changes"
+#~ msgstr "التغييرات"
+
+#~ msgid "None"
+#~ msgstr "لا شيء"
+
+#~ msgid "Revert"
+#~ msgstr "استعادة"
+
+#~ msgid "Change History"
+#~ msgstr "سجل التغييرات"
+
+#~ msgid "Close"
+#~ msgstr "إغلاق"
+
+#~ msgid "Select action to run"
+#~ msgstr "اختر إجراءً للتشغيل"
+
+#~ msgid "Select value"
+#~ msgstr "اختر قيمة"
+
+#~ msgid "Run the selected action"
+#~ msgstr "تشغيل الإجراء المحدد"
+
+#~ msgid "Run"
+#~ msgstr "تشغيل"
+
+#~ msgid "Click here to select the objects across all pages"
+#~ msgstr "انقر هنا لتحديد الكائنات في جميع الصفحات"
+
+#, python-format
+#~ msgid "Select all %(total_count)s %(module_name)s"
+#~ msgstr "تحديد الكل %(total_count)s %(module_name)s"
+
+#~ msgid "Clear selection"
+#~ msgstr "مسح التحديد"
+
+#~ msgid "Django site admin"
+#~ msgstr "إدارة موقع جانغو"
+
+#, python-format
+#~ msgid "Models in the %(name)s application"
+#~ msgstr "النماذج في تطبيق %(name)s"
+
+#~ msgid "You don’t have permission to view or edit anything."
+#~ msgstr "ليس لديك صلاحية لعرض أو تعديل أي شيء."
+
+#~ msgid ""
+#~ "After you've created a user, you’ll be able to edit more user options."
+#~ msgstr "بعد إنشاء مستخدم، ستتمكن من تعديل المزيد من خيارات المستخدم."
+
+#, python-format
+#~ msgid "Enter a new password for the user <strong>%(username)s</strong>."
+#~ msgstr "أدخل كلمة مرور جديدة للمستخدم <strong>%(username)s</strong>."
+
+#~ msgid "Change password"
+#~ msgstr "تغيير كلمة المرور"
+
+#~ msgid "History"
+#~ msgstr "السجل"
+
+#~ msgid "View on site"
+#~ msgstr "عرض على الموقع"
+
+#~ msgid "Filters"
+#~ msgstr "الفلاتر"
+
+#~ msgid "Expand row"
+#~ msgstr "توسيع الصف"
+
+#, python-format
+#~ msgid ""
+#~ "Deleting the %(object_name)s '%(escaped_object)s' would result in "
+#~ "deleting related objects, but your account doesn't have permission to "
+#~ "delete the following types of objects:"
+#~ msgstr ""
+#~ "حذف %(object_name)s '%(escaped_object)s' سيؤدي لحذف كائنات مرتبطة، ولكن "
+#~ "حسابك لا يملك صلاحية حذف أنواع الكائنات التالية:"
+
+#, python-format
+#~ msgid ""
+#~ "Deleting the %(object_name)s '%(escaped_object)s' would require deleting "
+#~ "the following protected related objects:"
+#~ msgstr ""
+#~ "حذف %(object_name)s '%(escaped_object)s' يتطلب حذف الكائنات المرتبطة "
+#~ "المحمية التالية:"
+
+#~ msgid "Objects"
+#~ msgstr "كائنات"
+
+#, python-format
+#~ msgid ""
+#~ "Deleting the selected %(objects_name)s would result in deleting related "
+#~ "objects, but your account doesn't have permission to delete the following "
+#~ "types of objects:"
+#~ msgstr ""
+#~ "حذف %(objects_name)s المحددة سيؤدي لحذف كائنات مرتبطة، ولكن حسابك لا يملك "
+#~ "صلاحية حذف أنواع الكائنات التالية:"
+
+#, python-format
+#~ msgid ""
+#~ "Deleting the selected %(objects_name)s would require deleting the "
+#~ "following protected related objects:"
+#~ msgstr ""
+#~ "حذف %(objects_name)s المحددة يتطلب حذف الكائنات المرتبطة المحمية التالية:"
+
+#, python-format
+#~ msgid ""
+#~ "Are you sure you want to delete the selected %(objects_name)s? All of the "
+#~ "following objects and their related items will be deleted:"
+#~ msgstr ""
+#~ "هل أنت متأكد أنك تريد حذف %(objects_name)s المحددة؟ سيتم حذف جميع "
+#~ "الكائنات التالية والعناصر المرتبطة بها:"
+
+#~ msgid "View"
+#~ msgstr "عرض"
+
+#~ msgid "Summary"
+#~ msgstr "ملخص"
+
+#~ msgid "Welcome back to"
+#~ msgstr "مرحباً بعودتك إلى"
+
+#, python-format
+#~ msgid ""
+#~ "You are authenticated as %(username)s, but are not authorized to access "
+#~ "this page. Would you like to login to a different account?"
+#~ msgstr ""
+#~ "أنت مسجل دخول باسم %(username)s، ولكن ليس لديك صلاحية للوصول لهذه الصفحة. "
+#~ "هل تود تسجيل الدخول بحساب آخر؟"
+
+#~ msgid "Log in"
+#~ msgstr "تسجيل الدخول"
+
+#~ msgid "Forgotten your password or username?"
+#~ msgstr "هل نسيت كلمة المرور أو اسم المستخدم؟"
+
+#~ msgid ""
+#~ "This object doesn’t have a change history. It probably wasn’t added via "
+#~ "this admin site."
+#~ msgstr ""
+#~ "هذا الكائن ليس له سجل تغييرات. غالباً لم يتم إضافته عبر موقع الإدارة هذا."
+
+#~ msgid "Show all"
+#~ msgstr "إظهار الكل"
+
+#~ msgid "Type to search"
+#~ msgstr "اكتب للبحث"
+
+#~ msgid "Save and continue editing"
+#~ msgstr "حفظ ومتابعة التعديل"
+
+#~ msgid "Save and view"
+#~ msgstr "حفظ وعرض"
+
+#~ msgid "Save and add another"
+#~ msgstr "حفظ وإضافة آخر"
+
+#~ msgid "Save as new"
+#~ msgstr "حفظ كجديد"
+
+#~ msgid "You have been successfully logged out from the administration"
+#~ msgstr "تم تسجيل خروجك بنجاح من الإدارة"
+
+#~ msgid "Thanks for spending some quality time with the web site today."
+#~ msgstr "شكراً لقضاء وقت ممتع في الموقع اليوم."
+
+#~ msgid "Log in again"
+#~ msgstr "تسجيل الدخول مرة أخرى"
+
+#~ msgid "Your password was changed."
+#~ msgstr "تم تغيير كلمة المرور الخاصة بك."
+
+#~ msgid ""
+#~ "Please enter your old password, for security’s sake, and then enter your "
+#~ "new password twice so we can verify you typed it in correctly."
+#~ msgstr ""
+#~ "يرجى إدخال كلمة المرور القديمة لدواعي الأمان، ثم إدخال كلمة المرور "
+#~ "الجديدة مرتين للتأكد من كتابتها بشكل صحيح."
+
+#~ msgid "No data"
+#~ msgstr "لا توجد بيانات"
+
+#~ msgid "View site"
+#~ msgstr "عرض الموقع"
+
+#~ msgid "Log out"
+#~ msgstr "تسجيل الخروج"
+
+#~ msgid "More actions"
+#~ msgstr "مزيد من الإجراءات"
+
+#, python-format
+#~ msgid "Add %(name)s"
+#~ msgstr "إضافة %(name)s"
+
+#~ msgid "All applications"
+#~ msgstr "جميع التطبيقات"
+
+#~ msgid "Add"
+#~ msgstr "إضافة"
+
+#~ msgid "True"
+#~ msgstr "صواب"
+
+#~ msgid "False"
+#~ msgstr "خطأ"
+
+#~ msgid "Apply Filters"
+#~ msgstr "تطبيق الفلاتر"
+
+#~ msgid "Hide counts"
+#~ msgstr "إخفاء الأعداد"
+
+#~ msgid "Show counts"
+#~ msgstr "إظهار الأعداد"
+
+#~ msgid "Clear all filters"
+#~ msgstr "مسح جميع الفلاتر"
+
+#~ msgid "Select all rows"
+#~ msgstr "تحديد جميع الصفوف"
+
+#~ msgid "Toggle sorting"
+#~ msgstr "تبديل الترتيب"
+
+#~ msgid "Remove from sorting"
+#~ msgstr "إزالة من الترتيب"
+
+#, python-format
+#~ msgid "Sorting priority: %(priority_number)s"
+#~ msgstr "أولوية الترتيب: %(priority_number)s"
+
+#~ msgid "Recent searches"
+#~ msgstr "عمليات البحث الحديثة"
+
+#~ msgid "No recent searches"
+#~ msgstr "لا توجد عمليات بحث حديثة"
+
+#~ msgid "No results matching your query"
+#~ msgstr "لا توجد نتائج تطابق بحثك"
+
+#~ msgid "Loading more results..."
+#~ msgstr "جاري تحميل المزيد من النتائج..."
+
+#~ msgid "No, take me back"
+#~ msgstr "لا، عد بي للخلف"
+
+#~ msgid "Yes, I’m sure"
+#~ msgstr "نعم، أنا متأكد"
+
+#~ msgid "Record picture"
+#~ msgstr "صورة السجل"
+
+#~ msgid "Remove"
+#~ msgstr "إزالة"
+
+#~ msgid "Delete?"
+#~ msgstr "حذف؟"
+
+#~ msgid "No results found"
+#~ msgstr "لم يتم العثور على نتائج"
+
+#~ msgid ""
+#~ "This page yielded into no results. Create a new item or reset your "
+#~ "filters."
+#~ msgstr "هذه الصفحة لم تسفر عن نتائج. أنشئ عنصراً جديداً أو أعد ضبط الفلاتر."
+
+#~ msgid "Reset filters"
+#~ msgstr "إعادة ضبط الفلاتر"
+
+#~ msgid "Image preview"
+#~ msgstr "معاينة الصورة"
+
+#~ msgid "Click to download"
+#~ msgstr "انقر للتحميل"
+
+#~ msgid "Go back"
+#~ msgstr "العودة للخلف"
+
+#~ msgid "Recent actions"
+#~ msgstr "العمليات الأخيرة"
+
+#~ msgid "Unknown content"
+#~ msgstr "محتوى غير معروف"
+
+#~ msgid "Previous"
+#~ msgstr "السابق"
+
+#~ msgid "Next"
+#~ msgstr "التالي"
+
+#, python-format
+#~ msgid "%(full_result_count)s total"
+#~ msgstr "الإجمالي %(full_result_count)s"
+
+#~ msgid "Search apps and models..."
+#~ msgstr "البحث في التطبيقات والنماذج..."
+
+#~ msgid "Filter navigation items"
+#~ msgstr "فلترة عناصر التنقل"
+
+#~ msgid "Django administration"
+#~ msgstr "إدارة جانغو"
+
+#~ msgid "General"
+#~ msgstr "عام"
+
+#~ msgid "Dark"
+#~ msgstr "داكن"
+
+#~ msgid "Light"
+#~ msgstr "فاتح"
+
+#~ msgid "Return to site"
+#~ msgstr "العودة للموقع"
+
+#~ msgid "Choose file to upload"
+#~ msgstr "اختر ملفاً لرفعه"
+
+#, python-format
+#~ msgid "Change selected %(model)s"
+#~ msgstr "تغيير %(model)s المحدد"
+
+#, python-format
+#~ msgid "Add another %(model)s"
+#~ msgstr "إضافة %(model)s آخر"
+
+#, python-format
+#~ msgid "View selected %(model)s"
+#~ msgstr "عرض %(model)s المحدد"
+
+#, python-format
+#~ msgid "Delete selected %(model)s"
+#~ msgstr "حذف %(model)s المحدد"
+
+#~ msgid "Add row"
+#~ msgstr "إضافة صف"
+
+#~ msgid "Select all objects on this page for an action"
+#~ msgstr "تحديد جميع الكائنات في هذه الصفحة لإجراء عملية"
+
+#~ msgid "Date"
+#~ msgstr "التاريخ"
+
+#~ msgid "Select currency"
+#~ msgstr "اختر العملة"
+
+#~ msgid "Username (for new User)"
+#~ msgstr "اسم المستخدم"
+
+#~ msgid ""
+#~ "You must either select an existing User or provide a Username and "
+#~ "Password to auto-create one."
+#~ msgstr ""
+#~ "يجب اختيار مستخدم مسجل أو كتابة اسم مستخدم وكلمة مرور لإنشاء حساب جديد "
+#~ "تلقائياً."
+
+#, fuzzy
+#~| msgid "%(model_name)s with this %(field_label)s already exists."
+#~ msgid "A user with this username already exists."
+#~ msgstr "%(model_name)s بهذا الـ %(field_label)s موجود بالفعل."
+
+#~ msgid "Cashier Username"
+#~ msgstr "اسم مستخدم الكاشير"
+
+#~ msgid "User Account"
+#~ msgstr "حساب المستخدم"
+
+#~ msgid ""
+#~ "To create a new linked Vendor User, explicitly set a Username and "
+#~ "Password here."
+#~ msgstr "لإنشاء مستخدم تاجر مرتبط، اكتب اسم المستخدم وكلمة المرور هنا."
+
+#~ msgid ""
+#~ "Vendor Admin has full access to dashboard and search. Vendor Cashier can "
+#~ "only process transactions via QR code scan."
+#~ msgstr ""
+#~ "التاجر الادمن لديه صلاحية الوصول الكاملة الى لوحة التحكم والبحث. التاجر "
+#~ "الكاشير يمكنه فقط معالجة المعاملات عبر مسح رمز الاستجابة السريعة."
+
+#~ msgid "Welcome"
+#~ msgstr "مرحباً"
+
+#~ msgid ""
+#~ "Items must be selected in order to perform actions on them. No items have "
+#~ "been changed."
+#~ msgstr "يجب تحديد العناصر لتنفيذ إجراءات عليها. لم يتم تغيير أي عناصر."
+
+#~ msgid "Dataset not found. No action performed."
+#~ msgstr "لم يتم العثور على مجموعة البيانات. لم يتم تنفيذ أي إجراء."
+
+#~ msgid "Toggle password visibility"
+#~ msgstr "تبديل رؤية كلمة المرور"

@@ -1,0 +1,342 @@
+{% extends 'custom_admin/portal_base.html' %}
+{% load i18n %}
+
+{% block title %}بوابة الشركة الراعية | {{ global_system_vendor.name|default:'النظام' }}{% endblock %}
+
+{# -------- Sidebar Identity -------- #}
+{% block portal_icon %}fa-building{% endblock %}
+{% block portal_title %}{% trans 'بوابة الشريك التجاري' %}{% endblock %}
+{% block portal_subtitle %}{{ company_profile.clean_name }}{% endblock %}
+
+{# -------- Sidebar Nav Links -------- #}
+{% block sidebar_nav %}
+{% include 'custom_admin/includes/company_sidebar_nav_full.html' %}
+{% endblock %}
+
+{# -------- Settings URL -------- #}
+{% block settings_url %}{% url 'company_portal_settings' %}{% endblock %}
+
+{# -------- User Role -------- #}
+{% block user_role_label %}{% trans 'شريك تجاري' %}{% endblock %}
+
+{# -------- Header -------- #}
+{% block header_icon %}fa-gauge-high{% endblock %}
+{% block header_title %}{% trans 'نظرة عامة على الميزانيات والحملات' %}{% endblock %}
+{% block header_subtitle %}{{ company_profile.clean_name }}{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'custom_event_request_create' %}" style="
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 18px; border-radius: 10px;
+    background: linear-gradient(135deg, #005353, #007a7a); color: white;
+    font-size: 0.82rem; font-weight: 700; text-decoration: none;
+    transition: opacity 0.2s;
+" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+    <i class="fa-solid fa-plus"></i> {% trans 'طلب فعالية جديدة' %}
+</a>
+{% endblock %}
+
+{# -------- Extra CSS -------- #}
+{% block extra_head %}
+{{ block.super }}
+{% include 'custom_admin/includes/portal_common_styles.html' %}
+{% endblock %}
+
+{# -------- Main Portal Content -------- #}
+{% block portal_content %}
+
+{# Stats Cards #}
+<div class="stats-grid">
+    <div class="stat-card stat-card-clickable" onclick="switchTab('events')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();switchTab('events')}">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.78rem; font-weight:700; color:#6e7979;">{% trans 'إجمالي الميزانيات المعتمدة' %}</span>
+            <div class="stat-icon" style="background:rgba(0,83,83,0.07); color:#005353;"><i class="fa-solid fa-wallet"></i></div>
+        </div>
+        <h2 style="font-size:1.6rem; font-weight:900; margin:4px 0 0 0; color:#005353; font-family:'Inter',sans-serif;">{{ total_budget|floatformat:2 }} <span style="font-size:0.85rem; font-weight:600;"></span></h2>
+    </div>
+    <div class="stat-card stat-card-clickable" onclick="switchTab('vouchers')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();switchTab('vouchers')}">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.78rem; font-weight:700; color:#6e7979;">{% trans 'المبالغ المشحونة (القسائم)' %}</span>
+            <div class="stat-icon" style="background:#e0f2f1; color:#00796b;"><i class="fa-solid fa-receipt"></i></div>
+        </div>
+        <h2 style="font-size:1.6rem; font-weight:900; margin:4px 0 0 0; color:#00796b; font-family:'Inter',sans-serif;">{{ total_distributed|floatformat:2 }} <span style="font-size:0.85rem; font-weight:600;"></span></h2>
+    </div>
+    <div class="stat-card stat-card-clickable" onclick="switchTab('settlements')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();switchTab('settlements')}">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.78rem; font-weight:700; color:#6e7979;">{% trans 'المدفوعات السابقة' %}</span>
+            <div class="stat-icon" style="background:#e8eaf6; color:#3f51b5;"><i class="fa-solid fa-money-check-dollar"></i></div>
+        </div>
+        <h2 style="font-size:1.6rem; font-weight:900; margin:4px 0 0 0; color:#3f51b5; font-family:'Inter',sans-serif;">{{ total_paid|floatformat:2 }} <span style="font-size:0.85rem; font-weight:600;"></span></h2>
+    </div>
+    <div class="stat-card stat-card-clickable" onclick="switchTab('settlements')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();switchTab('settlements')}">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.78rem; font-weight:700; color:#6e7979;">{% trans 'إجمالي المديونية المستحقة' %}</span>
+            <div class="stat-icon" style="background:#efebe9; color:#5d4037;"><i class="fa-solid fa-scale-balanced"></i></div>
+        </div>
+        <h2 style="font-size:1.6rem; font-weight:900; margin:4px 0 0 0; color:#5d4037; font-family:'Inter',sans-serif;">{{ financial_debt|floatformat:2 }} <span style="font-size:0.85rem; font-weight:600;"></span></h2>
+    </div>
+    <div class="stat-card stat-card-clickable" onclick="switchTab('vouchers')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();switchTab('vouchers')}">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.78rem; font-weight:700; color:#6e7979;">{% trans 'الاستهلاك الفعلي' %}</span>
+            <div class="stat-icon" style="background:#fce4ec; color:#c62828;"><i class="fa-solid fa-cart-shopping"></i></div>
+        </div>
+        <h2 style="font-size:1.6rem; font-weight:900; margin:4px 0 0 0; color:#c62828; font-family:'Inter',sans-serif;">{{ total_spent|floatformat:2 }} <span style="font-size:0.85rem; font-weight:600;"></span></h2>
+    </div>
+    <div class="stat-card stat-card-clickable" onclick="switchTab('requests')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();switchTab('requests')}">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.78rem; font-weight:700; color:#6e7979;">{% trans 'طلبات الفعاليات' %}</span>
+            <div class="stat-icon" style="background:#fff8e1; color:#f57f17;"><i class="fa-solid fa-code-pull-request"></i></div>
+        </div>
+        <h2 style="font-size:1.6rem; font-weight:900; margin:4px 0 0 0; color:#f57f17; font-family:'Inter',sans-serif;">{{ event_requests|length }} <span style="font-size:0.85rem; font-weight:600;">{% trans 'طلب' %}</span></h2>
+    </div>
+</div>
+
+{# Tab Bar #}
+<div id="portal-tabs" class="portal-internal-nav">
+    <div class="portal-internal-nav-links">
+        <button class="portal-tab-btn active" id="btn-events" onclick="switchTab('events')"><i class="fa-solid fa-calendar-days"></i> {% trans 'الفعاليات المعتمدة' %}</button>
+        <button class="portal-tab-btn" id="btn-requests" onclick="switchTab('requests')"><i class="fa-solid fa-code-pull-request"></i> {% trans 'طلبات الفعاليات' %}</button>
+        <button class="portal-tab-btn" id="btn-vouchers" onclick="switchTab('vouchers')"><i class="fa-solid fa-users"></i> {% trans 'الأطباء والقسائم' %}</button>
+        <button class="portal-tab-btn" id="btn-settlements" onclick="switchTab('settlements')"><i class="fa-solid fa-file-invoice-dollar"></i> {% trans 'التسويات والمدفوعات' %}</button>
+        <a href="{% url 'company_delegates_doctors' %}" class="portal-tab-btn"><i class="fa-solid fa-users-gear"></i> {% trans 'المندوبون والأطباء' %}</a>
+    </div>
+    <a href="{% url 'custom_event_request_create' %}" class="portal-action-btn">
+        <i class="fa-solid fa-plus"></i> {% trans 'طلب فعالية جديدة' %}
+    </a>
+</div>
+
+{# Tab 1: Events #}
+<div id="tab-events">
+    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap:22px;">
+        {% for event in events_list %}
+        <div class="event-card">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                    <h3 style="margin:0 0 5px 0; font-size:1.1rem; font-weight:900; color:#005353;">{{ event.name }}</h3>
+                    <span style="font-size:0.73rem; font-weight:600; color:#6e7979;"><i class="fa-solid fa-calendar-day"></i> {{ event.date|date:"d M Y" }}</span>
+                </div>
+                {% if event.is_active_campaign %}
+                    <span style="background:#e8f5e9; color:#2e7d32; font-size:0.72rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'جارية' %}</span>
+                {% else %}
+                    <span style="background:#f5f5f5; color:#757575; font-size:0.72rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'منتهية' %}</span>
+                {% endif %}
+            </div>
+            <div>
+                <div style="display:flex; justify-content:space-between; font-size:0.78rem; font-weight:700; margin-bottom:6px; color:#3e4948;">
+                    <span>{% trans 'توزيع ميزانية القسائم' %}</span>
+                    <span style="font-family:'Inter',sans-serif;">{{ event.total_initial|floatformat:0 }} / {{ event.max_budget|floatformat:0 }} </span>
+                </div>
+                <div class="progress-track"><div class="progress-fill" style="width: {{ event.progress_percentage }}%;"></div></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-weight:600; color:#6e7979; border-top:1px solid #f5f5f5; padding-top:12px;">
+                <span><i class="fa-solid fa-user-doctor"></i> {% trans 'الأطباء:' %} <b style="color:#005353;">{{ event.total_vouchers }}</b></span>
+                <span>{% trans 'الاستهلاك:' %} <b style="color:#c62828; font-family:'Inter',sans-serif;">{{ event.total_spent|floatformat:2 }} </b></span>
+            </div>
+        </div>
+        {% empty %}
+        <div style="grid-column:1/-1; background:#fff; padding:50px; border-radius:14px; text-align:center; border:2px dashed #e0e0e0;">
+            <i class="fa-solid fa-box-open" style="font-size:2.5rem; color:#ccc; display:block; margin-bottom:12px;"></i>
+            <p style="font-weight:700; color:#aaa; margin:0;">{% trans 'لم يتم تسجيل أي فعاليات لشركتكم بعد.' %}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{# Tab 2: Vouchers #}
+<div id="tab-vouchers" style="display:none;">
+    <div class="table-container">
+        <table class="v-table">
+            <thead>
+                <tr>
+                    <th>{% trans 'الطبيب' %}</th>
+                    <th>{% trans 'الفعالية' %}</th>
+                    <th>{% trans 'تاريخ الشحن' %}</th>
+                    <th>{% trans 'القيمة المبدئية' %}</th>
+                    <th>{% trans 'الرصيد المتبقي' %}</th>
+                    <th>{% trans 'المبلغ المستهلك' %}</th>
+                    <th>{% trans 'تاريخ الانتهاء' %}</th>
+                    <th>{% trans 'الحالة' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for voucher in vouchers_list %}
+                <tr>
+                    <td>
+                        <div style="font-weight:800; color:#005353;">د. {{ voucher.doctor.name }}</div>
+                        <div style="font-size:0.73rem; color:#6e7979;">{{ voucher.doctor.specialty.name|default:"عام" }}</div>
+                    </td>
+                    <td>{{ voucher.event.name|default:"شحن مباشر" }}</td>
+                    <td style="font-family:'Inter',sans-serif;">{{ voucher.issue_date|date:"Y-m-d" }}</td>
+                    <td style="font-family:'Inter',sans-serif; color:#005353;">{{ voucher.initial_value|floatformat:2 }} </td>
+                    <td style="font-family:'Inter',sans-serif; color:#00796b;">{{ voucher.current_balance|floatformat:2 }} </td>
+                    <td style="font-family:'Inter',sans-serif; color:#733a1a;">{{ voucher.consumed_amount|floatformat:2 }} </td>
+                    <td style="font-family:'Inter',sans-serif;">{{ voucher.expiry_date|date:"Y-m-d" }}</td>
+                    <td>
+                        {% if voucher.is_active %}
+                            <span style="background:#e8f5e9; color:#2e7d32; font-size:0.72rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'نشط' %}</span>
+                        {% else %}
+                            <span style="background:#ffebee; color:#c62828; font-size:0.72rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'غير نشط' %}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="8" style="text-align:center; padding:40px; color:#aaa;">{% trans 'لم يتم إصدار أي قسائم بعد لأطباء الشركة.' %}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{# Tab 3: Requests #}
+<div id="tab-requests" style="display:none;">
+    <div class="table-container">
+        <table class="v-table">
+            <thead>
+                <tr>
+                    <th>{% trans 'اسم الفعالية' %}</th>
+                    <th>{% trans 'التاريخ' %}</th>
+                    <th>{% trans 'الميزانية' %}</th>
+                    <th>{% trans 'قيمة القسيمة' %}</th>
+                    <th>{% trans 'تاريخ الطلب' %}</th>
+                    <th>{% trans 'الحالة' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in event_requests %}
+                <tr>
+                    <td style="font-weight:800; color:#005353;">{{ req.name }}</td>
+                    <td style="font-family:'Inter',sans-serif;">{{ req.date|date:"Y-m-d" }}</td>
+                    <td style="font-family:'Inter',sans-serif; color:#005353;">{{ req.max_budget|floatformat:2 }} </td>
+                    <td style="font-family:'Inter',sans-serif; color:#733a1a;">{{ req.voucher_value|floatformat:2 }} </td>
+                    <td style="font-family:'Inter',sans-serif;">{{ req.created_at|date:"Y-m-d H:i" }}</td>
+                    <td>
+                        {% if req.status == 'PENDING' %}
+                            <span style="background:#fff8e1; color:#f57f17; font-size:0.72rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'قيد المراجعة' %}</span>
+                        {% elif req.status == 'APPROVED' %}
+                            <span style="background:#e8f5e9; color:#2e7d32; font-size:0.72rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'معتمد' %}</span>
+                        {% else %}
+                            <span style="background:#ffebee; color:#c62828; font-size:0.72rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'مرفوض' %}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" style="text-align:center; padding:40px; color:#aaa;">{% trans 'لا توجد طلبات فعاليات سابقة.' %}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{# Tab 4: Settlements #}
+<div id="tab-settlements" style="display:none;">
+    <div style="display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap;">
+        <div style="flex:1; min-width:300px;" class="table-container">
+            <h3 style="padding:18px; margin:0; border-bottom:1px solid #f0f0f0; color:#005353; font-weight:800;">{% trans 'سجل المدفوعات والتسويات' %}</h3>
+            <table class="v-table">
+                <thead>
+                    <tr>
+                        <th>{% trans 'التاريخ' %}</th>
+                        <th>{% trans 'المبلغ المسدد' %}</th>
+                        <th>{% trans 'ملاحظات' %}</th>
+                        <th>{% trans 'المرفقات' %}</th>
+                        <th>{% trans 'الحالة' %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for st in company_settlements %}
+                    <tr>
+                        <td style="font-family:'Inter',sans-serif;">{{ st.settlement_date|date:"Y-m-d" }}</td>
+                        <td style="font-family:'Inter',sans-serif; color:#005353;">{{ st.settlement_amount|floatformat:2 }} </td>
+                        <td>{{ st.notes|default:"-" }}</td>
+                        <td>
+                            {% if st.receipt_image %}
+                            <a href="{{ st.receipt_image.url }}" target="_blank" style="color:#00796b; font-weight:700;"><i class="fa-solid fa-image"></i> عرض</a>
+                            {% else %}-{% endif %}
+                        </td>
+                        <td>
+                            {% if st.settlement_status == 'PENDING' %}
+                                <span style="background:#fff8e1; color:#f57f17; font-size:0.72rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'معلق' %}</span>
+                            {% elif st.settlement_status == 'COMPLETED' %}
+                                <span style="background:#e8f5e9; color:#2e7d32; font-size:0.72rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'مكتمل' %}</span>
+                            {% else %}
+                                <span style="background:#ffebee; color:#c62828; font-size:0.72rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'مرفوض' %}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" style="text-align:center; padding:40px; color:#aaa;">{% trans 'لا يوجد أي تسويات سابقة.' %}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div style="flex:0 0 350px; background:#fff; border-radius:14px; padding:22px; box-shadow:0 2px 12px rgba(0,0,0,0.04); border:1px solid #f0f0f0;">
+            <h3 style="margin:0 0 16px 0; color:#005353; font-weight:800;"><i class="fa-solid fa-plus-circle"></i> {% trans 'طلب تسوية جديدة' %}</h3>
+            <p style="font-size:0.8rem; color:#6e7979; margin-bottom:20px;">{% trans 'قم بإرسال إيصال الدفع البنكي لمراجعته واحتسابه ضمن تسويات الشركة.' %}</p>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="request_settlement">
+                <div style="margin-bottom:14px;">
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:#3e4948; margin-bottom:6px;">{% trans 'المبلغ المسدد ' %} <span style="color:red;">*</span></label>
+                    <input type="number" step="0.01" name="amount" required max="{{ financial_debt|stringformat:'f' }}" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; outline:none; font-family:'Inter',sans-serif;">
+                    <small style="color:#6e7979; font-size:0.75rem;">الحد الأقصى المسموح: {{ financial_debt|floatformat:2 }}</small>
+                </div>
+                <div style="margin-bottom:14px;">
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:#3e4948; margin-bottom:6px;">{% trans 'تاريخ الإيصال' %} <span style="color:red;">*</span></label>
+                    <input type="date" name="date" required style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; outline:none; font-family:'Inter',sans-serif;">
+                </div>
+                <div style="margin-bottom:14px;">
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:#3e4948; margin-bottom:6px;">{% trans 'ملاحظات ورقم التحويل' %}</label>
+                    <textarea name="notes" rows="3" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; outline:none; font-family:inherit; resize:vertical;"></textarea>
+                </div>
+                <div style="margin-bottom:20px;">
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:#3e4948; margin-bottom:6px;">{% trans 'صورة الإيصال المرفق' %}</label>
+                    <input type="file" name="receipt_image" accept="image/*" style="width:100%; font-size:0.8rem;">
+                </div>
+                <button type="submit" style="width:100%; background:#005353; color:white; border:none; padding:12px; border-radius:8px; font-weight:800; cursor:pointer; font-size:0.9rem;">
+                    {% trans 'إرسال طلب التسوية' %}
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+const tabs = ['events', 'vouchers', 'requests', 'settlements'];
+function switchTab(tabId) {
+    tabs.forEach(t => {
+        document.getElementById('tab-' + t).style.display = t === tabId ? 'block' : 'none';
+        const btn = document.getElementById('btn-' + t);
+        if (btn) btn.classList.toggle('active', t === tabId);
+        const navLink = document.getElementById('nav-' + t);
+        if (navLink) {
+            navLink.style.background = t === tabId ? 'rgba(0,83,83,0.07)' : 'transparent';
+            navLink.style.color = t === tabId ? '#005353' : '#3e4948';
+            navLink.style.fontWeight = t === tabId ? '700' : '600';
+        }
+    });
+    if (typeof closeMobileMenu === 'function') closeMobileMenu();
+    document.getElementById('portal-tabs')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function highlightNav() {
+    tabs.forEach(t => {
+        const el = document.getElementById('tab-' + t);
+        const nav = document.getElementById('nav-' + t);
+        if (!nav) return;
+        const isActive = el && el.style.display !== 'none';
+        nav.style.background = isActive ? 'rgba(0,83,83,0.07)' : 'transparent';
+        nav.style.color = isActive ? '#005353' : '#3e4948';
+        nav.style.fontWeight = isActive ? '700' : '600';
+    });
+}
+
+// Switch tab if tab query param is provided
+window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam && tabs.includes(tabParam)) {
+        switchTab(tabParam);
+    }
+});
+</script>
+{% endblock %}

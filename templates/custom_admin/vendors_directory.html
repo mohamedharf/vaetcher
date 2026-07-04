@@ -1,0 +1,588 @@
+{% extends 'custom_admin/dashboard_base.html' %}
+{% load i18n %}
+
+{% block title %}دليل التجار - Arabic Retail Standard{% endblock %}
+
+{% block sidebar %}
+    {% include 'custom_admin/includes/sidebar.html' with active_page='vendors' %}
+{% endblock %}
+
+{% block extra_head %}
+    <style>
+        /* Modern Grid for Vendors */
+        .vendors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+        }
+
+        .vendor-card {
+            position: relative;
+            background-color: var(--surface-container-lowest);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            border: 1px solid transparent;
+        }
+        
+        .vendor-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 83, 83, 0.15);
+            border-color: var(--primary-container);
+        }
+
+        .avatar {
+            width: 55px; 
+            height: 55px; 
+            border-radius: 50%; 
+            background: var(--surface-container);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .glass-overlay { background: rgba(0, 83, 83, 0.2); backdrop-filter: blur(8px); }
+    </style>
+{% endblock %}
+
+{% block page_title %}دليل التجار الأساسيين{% endblock %}
+{% block page_subtitle %}استعراض المتاجر، مراقبة الكاشيرية، ومتابعة إحصائيات النظام.{% endblock %}
+{% block page_icon %}fa-store{% endblock %}
+
+{% block search_bar %}
+<form action="{% url 'custom_vendors_directory' %}" method="get" class="header-search-bar">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" name="q" value="{{ query|default:'' }}" placeholder="{% trans 'البحث باسم المتجر أو الإيميل أو الهاتف...' %}">
+</form>
+{% endblock %}
+
+{% block quick_actions %}
+<button class="qa-btn qa-btn-primary" onclick="openModal('addVendorModal')">
+    <i class="fa-solid fa-store"></i> {% trans 'إضافة تاجر جديد' %}
+</button>
+{% endblock %}
+
+{% block content %}
+
+            <div>
+                <!-- ═══ Collapsible Advanced Filters Panel ═══ -->
+                <div class="mt-6 mb-6" id="filtersPanel">
+                    <form method="get" action="{% url 'custom_vendors_directory' %}" id="vendorsFilterForm">
+                        <input type="hidden" name="q" value="{{ query }}">
+
+                        <!-- Filter Card -->
+                        <div style="background: var(--surface-container-lowest); border-radius: var(--radius-xl); border: 1px solid var(--surface-container); box-shadow: 0 2px 12px rgba(0,83,83,0.06); overflow: hidden;">
+
+                            <!-- Filter Header -->
+                            <div id="filterHeader" onclick="toggleFiltersPanel()" style="display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-md) var(--spacing-lg); background: linear-gradient(135deg, rgba(0,83,83,0.04) 0%, rgba(0,83,83,0.01) 100%); border-bottom: 1px solid var(--surface-container); cursor: pointer;">
+                                <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                    <div style="width: 34px; height: 34px; background: var(--primary); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">
+                                        <i class="fa-solid fa-sliders" style="color: white; font-size: 14px;"></i>
+                                    </div>
+                                    <div>
+                                        <span style="font-weight: 900; font-size: 0.9rem; color: var(--on-surface); display: block; line-height: 1.2;">{% trans 'فلاتر متقدمة' %}</span>
+                                        <span style="font-size: 0.72rem; color: var(--on-surface-variant); font-weight: 600;">{% trans 'تصفية التجار والمتاجر حسب الفئة والعمولة والحالة' %}</span>
+                                    </div>
+                                    <i id="toggleFiltersChevron" class="fa-solid fa-chevron-down" style="font-size: 12px; color: var(--primary); transition: transform 0.3s; transform: rotate(0deg); margin-right: 8px;"></i>
+                                </div>
+                                <!-- Active Filters Badges -->
+                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end;" onclick="event.stopPropagation;">
+                                    {% if current_category %}
+                                    <span style="background: rgba(0,83,83,0.1); color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center; gap: 4px;">
+                                        <i class="fa-solid fa-tag" style="margin-left: 4px; font-size: 10px;"></i>
+                                        {{ current_category }}
+                                    </span>
+                                    {% endif %}
+                                    {% if current_status %}
+                                    <span style="background: {% if current_status == 'active' %}rgba(22,163,74,0.1); color: #16a34a;{% elif current_status == 'inactive' %}rgba(220,38,38,0.1); color: #dc2626;{% else %}rgba(234,179,8,0.1); color: #ca8a04;{% endif %} padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800;">
+                                        <i class="fa-solid fa-circle" style="font-size: 7px; margin-left: 4px;"></i>
+                                        {% if current_status == 'active' %}{% trans 'نشط' %}{% elif current_status == 'inactive' %}{% trans 'غير نشط' %}{% endif %}
+                                    </span>
+                                    {% endif %}
+                                    {% if current_has_fee %}
+                                    <span style="background: rgba(59,130,246,0.1); color: #3b82f6; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800;">
+                                        <i class="fa-solid fa-percentage" style="font-size: 10px; margin-left: 4px;"></i>
+                                        {% if current_has_fee == 'yes' %}{% trans 'بعمولة' %}{% elif current_has_fee == 'no' %}{% trans 'بلا عمولة' %}{% endif %}
+                                    </span>
+                                    {% endif %}
+                                    {% if date_from or date_to %}
+                                    <span style="background: rgba(245,158,11,0.1); color: #d97706; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center;">
+                                        <i class="fa-solid fa-calendar-alt" style="margin-left: 4px; font-size: 10px;"></i>
+                                        {% if date_from %}{{ date_from }}{% endif %} - {% if date_to %}{{ date_to }}{% endif %}
+                                    </span>
+                                    {% endif %}
+                                    {% if query or current_category or current_status or current_has_fee or date_from or date_to %}
+                                    <a href="{% url 'custom_vendors_directory' %}" title="{% trans 'مسح جميع الفلاتر' %}"
+                                       style="background: rgba(239,68,68,0.08); color: #ef4444; border: none; padding: 5px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 4px; cursor: pointer; transition: all 0.2s;"
+                                       onmouseover="this.style.background='rgba(239,68,68,0.15)'" onmouseout="this.style.background='rgba(239,68,68,0.08)'">
+                                        <i class="fa-solid fa-xmark"></i> {% trans 'مسح الكل' %}
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Filter Fields Grid -->
+                            <div id="filterFieldsContainer" style="display: none; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0; padding: 0; border-top: 1px solid var(--surface-container);">
+
+                                <!-- 1. Category Filter -->
+                                <div style="padding: var(--spacing-lg); border-left: 1px solid var(--surface-container);">
+                                    <label style="display: flex; align-items: center; gap: var(--spacing-xs); font-size: 0.7rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--spacing-sm);">
+                                        <i class="fa-solid fa-tag" style="color: var(--primary); font-size: 11px;"></i>
+                                        {% trans 'فئة المتجر' %}
+                                    </label>
+                                    <div style="position: relative;">
+                                        <select name="category" id="filterCategory"
+                                                onchange="document.getElementById('vendorsFilterForm').submit()"
+                                                style="width: 100%; background: var(--surface-container-lowest); border: 1.5px solid {% if current_category %}var(--primary){% else %}var(--surface-container-high){% endif %}; border-radius: var(--radius-md); padding: var(--spacing-xs) var(--spacing-sm); font-size: 0.82rem; font-weight: 700; color: var(--on-surface); outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; transition: border-color 0.2s; font-family: inherit;">
+                                            <option value="">🛒 {% trans 'كل الفئات' %}</option>
+                                            {% for cat in categories %}
+                                            <option value="{{ cat }}" {% if current_category == cat %}selected{% endif %}>
+                                                {{ cat }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                        <i class="fa-solid fa-chevron-down" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--on-surface-variant); font-size: 11px; pointer-events: none;"></i>
+                                    </div>
+                                </div>
+
+                                <!-- 2. Management Fee Filter -->
+                                <div style="padding: var(--spacing-lg); border-left: 1px solid var(--surface-container);">
+                                    <label style="display: flex; align-items: center; gap: var(--spacing-xs); font-size: 0.7rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--spacing-sm);">
+                                        <i class="fa-solid fa-percentage" style="color: var(--primary); font-size: 11px;"></i>
+                                        {% trans 'رسوم إدارة المنظومة' %}
+                                    </label>
+                                    <div style="position: relative;">
+                                        <select name="has_fee" id="filterHasFee"
+                                                onchange="document.getElementById('vendorsFilterForm').submit()"
+                                                style="width: 100%; background: var(--surface-container-lowest); border: 1.5px solid {% if current_has_fee %}var(--primary){% else %}var(--surface-container-high){% endif %}; border-radius: var(--radius-md); padding: var(--spacing-xs) var(--spacing-sm); font-size: 0.82rem; font-weight: 700; color: var(--on-surface); outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; transition: border-color 0.2s; font-family: inherit;">
+                                            <option value="">💰 {% trans 'الكل' %}</option>
+                                            <option value="yes" {% if current_has_fee == 'yes' %}selected{% endif %}>💳 {% trans 'يخضع لرسوم العمولة' %}</option>
+                                            <option value="no" {% if current_has_fee == 'no' %}selected{% endif %}>🎁 {% trans 'معفى من الرسوم' %}</option>
+                                        </select>
+                                        <i class="fa-solid fa-chevron-down" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--on-surface-variant); font-size: 11px; pointer-events: none;"></i>
+                                    </div>
+                                </div>
+
+                                <!-- 3. Account Status Filter -->
+                                <div style="padding: var(--spacing-lg); border-left: 1px solid var(--surface-container);">
+                                    <label style="display: flex; align-items: center; gap: var(--spacing-xs); font-size: 0.7rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--spacing-sm);">
+                                        <i class="fa-solid fa-user-shield" style="color: #3b82f6; font-size: 11px;"></i>
+                                        {% trans 'حالة الحساب' %}
+                                    </label>
+                                    <div style="position: relative;">
+                                        <select name="status" id="filterStatus"
+                                                onchange="document.getElementById('vendorsFilterForm').submit()"
+                                                style="width: 100%; background: var(--surface-container-lowest); border: 1.5px solid {% if current_status %}var(--primary){% else %}var(--surface-container-high){% endif %}; border-radius: var(--radius-md); padding: var(--spacing-xs) var(--spacing-sm); font-size: 0.82rem; font-weight: 700; color: var(--on-surface); outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; transition: border-color 0.2s; font-family: inherit;">
+                                            <option value="">⚙️ {% trans 'الكل' %}</option>
+                                            <option value="active" {% if current_status == 'active' %}selected{% endif %}>🟢 {% trans 'النشطة فقط' %}</option>
+                                            <option value="inactive" {% if current_status == 'inactive' %}selected{% endif %}>🔴 {% trans 'المتوقفة فقط' %}</option>
+                                        </select>
+                                        <i class="fa-solid fa-chevron-down" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--on-surface-variant); font-size: 11px; pointer-events: none;"></i>
+                                    </div>
+                                </div>
+
+                                <!-- 4. Date Range Filter -->
+                                <div style="padding: var(--spacing-lg); display: flex; gap: var(--spacing-md);">
+                                    <div style="flex: 1;">
+                                        <label style="display: flex; align-items: center; gap: var(--spacing-xs); font-size: 0.7rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--spacing-sm);">
+                                            <i class="fa-solid fa-calendar-day" style="color: var(--primary); font-size: 11px;"></i>
+                                            {% trans 'من تاريخ الانضمام' %}
+                                        </label>
+                                        <input type="date" name="date_from" value="{{ date_from }}"
+                                               onchange="document.getElementById('vendorsFilterForm').submit()"
+                                               style="width: 100%; background: var(--surface-container-lowest); border: 1.5px solid {% if date_from %}var(--primary){% else %}var(--surface-container-high){% endif %}; border-radius: var(--radius-md); padding: var(--spacing-xs) var(--spacing-sm); font-size: 0.82rem; font-weight: 700; color: var(--on-surface); outline: none; transition: border-color 0.2s; font-family: inherit; box-sizing: border-box;">
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <label style="display: flex; align-items: center; gap: var(--spacing-xs); font-size: 0.7rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--spacing-sm);">
+                                            <i class="fa-solid fa-calendar-day" style="color: var(--primary); font-size: 11px;"></i>
+                                            {% trans 'إلى تاريخ الانضمام' %}
+                                        </label>
+                                        <input type="date" name="date_to" value="{{ date_to }}"
+                                               onchange="document.getElementById('vendorsFilterForm').submit()"
+                                               style="width: 100%; background: var(--surface-container-lowest); border: 1.5px solid {% if date_to %}var(--primary){% else %}var(--surface-container-high){% endif %}; border-radius: var(--radius-md); padding: var(--spacing-xs) var(--spacing-sm); font-size: 0.82rem; font-weight: 700; color: var(--on-surface); outline: none; transition: border-color 0.2s; font-family: inherit; box-sizing: border-box;">
+                                    </div>
+                                </div>
+
+                            </div><!-- /Filter Fields Grid -->
+
+                            <!-- Filter Footer: Results Summary -->
+                            {% if query or current_category or current_status or current_has_fee or date_from or date_to %}
+                            <div style="padding: var(--spacing-sm) var(--spacing-lg); background: rgba(0,83,83,0.03); border-top: 1px solid var(--surface-container); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--spacing-sm);">
+                                <span style="font-size: 0.78rem; font-weight: 700; color: var(--primary);">
+                                    <i class="fa-solid fa-magnifying-glass" style="margin-left: 6px; opacity: 0.7;"></i>
+                                    {% trans 'نتائج الفلتر:' %} <strong>{{ page_obj.paginator.count }}</strong> {% trans 'متجر' %}
+                                </span>
+                                <a href="{% url 'custom_vendors_directory' %}"
+                                   style="background: rgba(239,68,68,0.08); color: #ef4444; padding: var(--spacing-xs) var(--spacing-md); border-radius: 20px; font-size: 0.72rem; font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: var(--spacing-xs); transition: all 0.2s;"
+                                   onmouseover="this.style.background='rgba(239,68,68,0.15)'" onmouseout="this.style.background='rgba(239,68,68,0.08)'">
+                                    <i class="fa-solid fa-rotate-left"></i> {% trans 'إعادة تعيين الفلاتر' %}
+                                </a>
+                            </div>
+                            {% endif %}
+
+                            <!-- Collapsible Script -->
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const hasActiveFilters = {% if current_category or current_status or current_has_fee or date_from or date_to %}true{% else %}false{% endif %};
+                                    const container = document.getElementById('filterFieldsContainer');
+                                    const chevron = document.getElementById('toggleFiltersChevron');
+                                    if (hasActiveFilters) {
+                                        container.style.display = 'grid';
+                                        chevron.style.transform = 'rotate(180deg)';
+                                    }
+                                });
+
+                                function toggleFiltersPanel() {
+                                    const container = document.getElementById('filterFieldsContainer');
+                                    const chevron = document.getElementById('toggleFiltersChevron');
+                                    if (container.style.display === 'none') {
+                                        container.style.display = 'grid';
+                                        chevron.style.transform = 'rotate(180deg)';
+                                    } else {
+                                        container.style.display = 'none';
+                                        chevron.style.transform = 'rotate(0deg)';
+                                    }
+                                }
+                            </script>
+
+                        </div><!-- /Filter Card -->
+                    </form>
+                </div><!-- /Filters Panel -->
+
+                <!-- Vendors Grid Form -->
+                <form id="bulkForm" method="post" action="{% url 'custom_vendors_directory' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" id="bulkActionInput" value="">
+                    
+                    <!-- Bulk Actions Bar (Sticky/Floating) -->
+                    <div id="bulkActionsBar" class="hidden fixed bottom-8 left-1/2 -translate-x-1/2 bg-white/80 backdrop-blur-xl border border-primary/20 shadow-2xl rounded-full px-8 py-4 z-50 flex items-center gap-6 animate-bounce-subtle">
+                        <div class="flex items-center gap-2 border-l border-stone-200 pl-6">
+                            <span class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-xs font-black" id="selectedCount">0</span>
+                            <span class="text-xs font-bold text-stone-500">{% trans 'متجر محدد' %}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="submitBulk('bulk_activate')" class="flex items-center gap-2 px-4 py-2 bg-success/10 text-success rounded-xl text-xs font-bold hover:bg-success hover:text-white transition-all">
+                                <i class="fa-solid fa-user-check"></i> {% trans 'تنشيط المحدد' %}
+                            </button>
+                            <button type="button" onclick="submitBulk('bulk_deactivate')" class="flex items-center gap-2 px-4 py-2 bg-amber-50 text-amber-600 rounded-xl text-xs font-bold hover:bg-amber-100 transition-all">
+                                <i class="fa-solid fa-user-slash"></i> {% trans 'إيقاف' %}
+                            </button>
+                            <button type="button" onclick="submitBulk('bulk_delete')" class="flex items-center gap-2 px-4 py-2 bg-error/5 text-error rounded-xl text-xs font-bold hover:bg-error/10 transition-all">
+                                <i class="fa-solid fa-trash-can"></i> {% trans 'حذف وأرشفة' %}
+                            </button>
+                        </div>
+                        <button type="button" onclick="deselectAll()" class="text-xs font-bold text-stone-400 hover:text-stone-700 transition-colors pr-4">{% trans 'إلغاء' %}</button>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="flex gap-4 mb-6 border-b border-stone-200">
+                        <button type="button" class="px-6 py-3 font-bold text-sm border-b-2 border-primary text-primary transition-all" id="tabActiveBtn" onclick="switchTab('active')">
+                            دليل التجار ({{ page_obj.paginator.count|default:vendors.count }})
+                        </button>
+                        <button type="button" class="px-6 py-3 font-bold text-sm border-b-2 border-transparent text-stone-500 hover:text-stone-700 transition-all" id="tabArchiveBtn" onclick="switchTab('archive')">
+                            الأرشيف ({{ archived_vendors.count }})
+                        </button>
+                    </div>
+
+                    <div id="activeTab">
+                        <div class="flex items-center gap-3 mb-6 bg-white p-4 rounded-2xl border border-stone-100">
+                            <input type="checkbox" id="selectAllCheck" onchange="toggleSelectAll(this)" class="w-5 h-5 rounded border-stone-300 text-primary focus:ring-primary transition-all cursor-pointer">
+                            <label for="selectAllCheck" class="text-xs font-black text-stone-500 cursor-pointer">{% trans 'تحديد كافة التجار في هذه الصفحة' %}</label>
+                        </div>
+
+                        <div class="vendors-grid">
+                    {% for vendor in vendors %}
+                    <label class="cursor-pointer relative block">
+                        <input type="checkbox" name="vendor_ids" value="{{ vendor.id }}" class="vendor-check peer absolute top-4 left-4 z-10 w-5 h-5 rounded text-primary focus:ring-primary border-stone-300" onchange="updateBulkCounter()">
+                        <div class="vendor-card group peer-checked:border-primary peer-checked:bg-primary/5">
+                            <!-- Top Row: Avatar & Status -->
+                        <div class="flex justify-between items-start">
+                            <div class="flex gap-4 items-center">
+                                <div class="avatar">
+                                    <i class="fa-solid fa-store"></i>
+                                </div>
+                                <div>
+                                    <h3 class="title-md" style="margin:0; font-weight: 900; color: var(--on-surface);">{{ vendor.name }}</h3>
+                                    <p class="label-md" style="margin:0; color: var(--on-surface-variant); font-weight: 700;">{{ vendor.category|default:"متجر" }}</p>
+                                </div>
+                            </div>
+                            {% if vendor.is_active %}
+                            <div class="bg-success/10 text-success text-[10px] px-3 py-1 rounded-full font-black border border-success/20">{% trans 'نشط' %}</div>
+                            {% else %}
+                            <div class="bg-error/10 text-error text-[10px] px-3 py-1 rounded-full font-black border border-error/20">{% trans 'موقوف' %}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Data List -->
+                        <div class="bg-stone-50 rounded-2xl p-4 space-y-3 border border-stone-100/50 mt-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-stone-400 font-bold"><i class="fa-solid fa-user text-[10px] ml-1"></i> {% trans 'مسئول التواصل' %}</span>
+                                <span class="font-black text-stone-700">{{ vendor.contact_person|default:"--" }}</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-stone-400 font-bold"><i class="fa-solid fa-phone text-[10px] ml-1"></i> {% trans 'الهاتف' %}</span>
+                                <span class="font-black text-primary" dir="ltr">{{ vendor.phone }}</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-stone-400 font-bold"><i class="fa-solid fa-users text-[10px] ml-1"></i> {% trans 'حسابات الكاشير' %}</span>
+                                <span class="bg-stone-200 text-stone-600 px-2 py-0.5 rounded-md font-black">{{ vendor.cashiers_count }} حساب</span>
+                            </div>
+                        </div>
+
+                        <!-- Outstanding Balance Badge -->
+                        <div class="rounded-2xl overflow-hidden border mt-1 {% if vendor.net_outstanding > 0 %}bg-rose-50 border-rose-200{% else %}bg-emerald-50 border-emerald-200{% endif %}">
+                            <!-- Main row -->
+                            <div class="flex justify-between items-center px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-7 h-7 rounded-lg flex items-center justify-center {% if vendor.net_outstanding > 0 %}bg-rose-100 text-rose-600{% else %}bg-emerald-100 text-emerald-600{% endif %}">
+                                        <i class="fa-solid {% if vendor.net_outstanding > 0 %}fa-circle-dollar-to-slot{% else %}fa-circle-check{% endif %} text-xs"></i>
+                                    </div>
+                                    <span class="text-[10px] font-black uppercase tracking-wide {% if vendor.net_outstanding > 0 %}text-rose-500{% else %}text-emerald-600{% endif %}">
+                                        {% if vendor.net_outstanding > 0 %}{% trans 'رصيد مستحق' %}{% else %}{% trans 'لا ديون مستحقة' %}{% endif %}
+                                    </span>
+                                </div>
+                                <div dir="ltr" class="flex items-baseline gap-1">
+                                    <span class="text-xl font-black {% if vendor.net_outstanding > 0 %}text-rose-600{% else %}text-emerald-600{% endif %}">
+                                        {{ vendor.net_outstanding|floatformat:0 }}
+                                    </span>
+                                    <span class="text-[10px] font-bold {% if vendor.net_outstanding > 0 %}text-rose-400{% else %}text-emerald-400{% endif %}"></span>
+                                </div>
+                            </div>
+                            <!-- Sub-row: breakdown -->
+                            <div class="px-4 pb-3 flex justify-between text-[10px] font-bold {% if vendor.net_outstanding > 0 %}text-rose-400{% else %}text-emerald-500{% endif %} border-t {% if vendor.net_outstanding > 0 %}border-rose-100{% else %}border-emerald-100{% endif %} pt-2">
+                                <span><i class="fa-solid fa-arrow-up ml-1 opacity-60"></i>إجمالي مستحق: {{ vendor.total_sales|default:0|floatformat:0 }} </span>
+                                <span><i class="fa-solid fa-check ml-1 opacity-60"></i>مُسدَّد: {{ vendor.total_settled|default:0|floatformat:0 }} </span>
+                            </div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <div class="mt-2 text-left">
+                            <a href="{% url 'custom_vendor_profile' pk=vendor.pk %}" class="w-full inline-flex justify-center items-center gap-2 bg-white border border-stone-200 text-stone-500 px-4 py-3 rounded-xl text-xs font-black hover:border-primary hover:text-primary hover:bg-primary/5 transition-all">
+                                <i class="fa-solid fa-eye"></i> {% trans 'استعراض الملف والتقارير' %}
+                            </a>
+                        </div>
+                        </div><!-- /vendor-card -->
+                    </label>
+                    {% empty %}
+                    <div class="col-span-full py-20 text-center text-stone-400">
+                        <i class="fa-solid fa-store-slash text-5xl mb-4 opacity-50"></i>
+                        <p class="font-bold text-lg text-stone-500">{% trans 'لم يتم العثور على أي تجار مطابقين للبحث.' %}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                </form>
+
+                    {% if page_obj.has_other_pages %}
+                    <div class="flex justify-center mt-8">
+                        <div class="flex gap-2 bg-white p-2 rounded-2xl shadow-sm border border-stone-100">
+                            {% if page_obj.has_previous %}
+                            <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}" class="w-10 h-10 flex items-center justify-center rounded-xl bg-stone-50 text-stone-500 hover:bg-primary hover:text-white transition-colors font-black">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </a>
+                            {% endif %}
+
+                            <div class="px-6 flex items-center justify-center text-sm font-black text-stone-600">
+                                صفحة {{ page_obj.number }} من {{ page_obj.paginator.num_pages }}
+                            </div>
+
+                            {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}" class="w-10 h-10 flex items-center justify-center rounded-xl bg-stone-50 text-stone-500 hover:bg-primary hover:text-white transition-colors font-black">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    </div> <!-- activeTab end -->
+
+                    <div id="archiveTab" style="display: none;">
+                        <div class="vendors-grid">
+                            {% for vendor in archived_vendors %}
+                            <div class="vendor-card group opacity-75 hover:opacity-100">
+                                <!-- Top Row: Avatar & Status -->
+                                <div class="flex justify-between items-start">
+                                    <div class="flex gap-4 items-center">
+                                        <div class="avatar grayscale">
+                                            <i class="fa-solid fa-store"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="title-md" style="margin:0; font-weight: 900; color: var(--on-surface-variant);">{{ vendor.clean_name }}</h3>
+                                            <p class="label-md" style="margin:0; color: var(--on-surface-variant); font-weight: 700;">{{ vendor.category|default:"متجر" }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="bg-error/10 text-error text-[10px] px-3 py-1 rounded-full font-black border border-error/20">{% trans 'محذوف / مؤرشف' %}</div>
+                                </div>
+
+                                <!-- Data List -->
+                                <div class="bg-stone-50 rounded-2xl p-4 space-y-3 border border-stone-100/50 mt-2">
+                                    <div class="flex justify-between items-center text-xs">
+                                        <span class="text-stone-400 font-bold"><i class="fa-solid fa-user text-[10px] ml-1"></i> {% trans 'مسئول التواصل' %}</span>
+                                        <span class="font-black text-stone-500">{{ vendor.contact_person|default:"--" }}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center text-xs">
+                                        <span class="text-stone-400 font-bold"><i class="fa-solid fa-phone text-[10px] ml-1"></i> {% trans 'الهاتف' %}</span>
+                                        <span class="font-black text-stone-500" dir="ltr">{{ vendor.clean_phone }}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Action Button -->
+                                <div class="mt-2 text-left">
+                                    <a href="{% url 'custom_vendor_profile' pk=vendor.pk %}" class="w-full inline-flex justify-center items-center gap-2 bg-stone-100 text-stone-600 px-4 py-3 rounded-xl text-xs font-black hover:bg-stone-200 transition-all">
+                                        <i class="fa-solid fa-clock-rotate-left"></i> {% trans 'عرض السجل التاريخي' %}
+                                    </a>
+                                </div>
+                            </div>
+                            {% empty %}
+                            <div class="col-span-full py-20 text-center text-stone-400">
+                                <i class="fa-solid fa-box-archive text-5xl mb-4 opacity-50"></i>
+                                <p class="font-bold text-lg text-stone-500">{% trans 'سجل الأرشيف فارغ. لا توجد حسابات محذوفة.' %}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div> <!-- archiveTab end -->
+
+                </form>
+        </main>
+    </div>
+
+    <!-- Add Vendor Modal -->
+    <div id="addVendorModal" class="glass-overlay fixed inset-0 z-[2000] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2.5rem] w-full max-w-2xl p-10 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('addVendorModal')" class="absolute top-8 left-8 text-stone-300 hover:text-stone-900 transition-colors"><i class="fa-solid fa-times text-xl"></i></button>
+            <h3 class="text-2xl font-black text-primary mb-2">{% trans 'إضافة تاجر رئيسي جديد' %}</h3>
+            <p class="text-sm text-stone-400 mb-8">{% trans 'تسجيل متجر جديد. هذا الحساب سيكون هو الحساب الإداري (Manager) للتاجر.' %}</p>
+            
+            <form action="" method="post" class="space-y-6">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="add_vendor">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Column 1 -->
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-[10px] font-black text-stone-400 uppercase tracking-widest mb-2 mr-2">{% trans 'اسم المتجر/الشركة' %} <span class="text-error">*</span></label>
+                            <input type="text" name="name" required class="w-full bg-stone-50 rounded-2xl border-stone-100 p-4 text-sm font-bold focus:ring-2 focus:ring-primary/20" placeholder="{% trans 'مثال: أسواق العثيم' %}">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-stone-400 uppercase tracking-widest mb-2 mr-2">{% trans 'مسئول التواصل' %} <span class="text-error">*</span></label>
+                            <input type="text" name="contact_person" required class="w-full bg-stone-50 rounded-2xl border-stone-100 p-4 text-sm font-bold focus:ring-2 focus:ring-primary/20" placeholder="{% trans 'اسم الشخص المسئول' %}">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-stone-400 uppercase tracking-widest mb-2 mr-2">{% trans 'رقم الهاتف' %} <span class="text-error">*</span></label>
+                            <input type="text" name="phone" required class="w-full bg-stone-50 rounded-2xl border-stone-100 p-4 text-sm font-bold focus:ring-2 focus:ring-primary/20" dir="ltr" placeholder="05xxxxxxxx">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-stone-400 uppercase tracking-widest mb-2 mr-2">{% trans 'البريد الإلكتروني' %}</label>
+                            <input type="email" name="email" class="w-full bg-stone-50 rounded-2xl border-stone-100 p-4 text-sm font-bold focus:ring-2 focus:ring-primary/20" placeholder="{% trans 'الايميل إن وجد' %}">
+                        </div>
+                    </div>
+                    
+                    <!-- Column 2 -->
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-[10px] font-black text-stone-400 uppercase tracking-widest mb-2 mr-2">{% trans 'التصنيف' %} <span class="text-error">*</span></label>
+                            <input type="text" name="category" required class="w-full bg-stone-50 rounded-2xl border-stone-100 p-4 text-sm font-bold focus:ring-2 focus:ring-primary/20" placeholder="{% trans 'مثال: سوبرماركت، مطعم...' %}">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-stone-400 uppercase tracking-widest mb-2 mr-2">{% trans 'اسم المستخدم للدخول (Login)' %} <span class="text-error">*</span></label>
+                            <input type="text" name="username" required class="w-full bg-stone-50 rounded-2xl border-stone-100 p-4 text-sm font-bold focus:ring-2 focus:ring-primary/20" dir="ltr">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-stone-400 uppercase tracking-widest mb-2 mr-2">{% trans 'كلمة المرور' %} <span class="text-error">*</span></label>
+                            <input type="password" name="password" required class="w-full bg-stone-50 rounded-2xl border-stone-100 p-4 text-sm font-bold focus:ring-2 focus:ring-primary/20" dir="ltr">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-stone-400 uppercase tracking-widest mb-2 mr-2">{% trans 'نسبة عمولة المنظومة (%)' %} <span class="text-error">*</span></label>
+                            <input type="number" step="0.01" name="management_fee_percentage" value="25.0" required class="w-full bg-stone-50 rounded-2xl border-stone-100 p-4 text-sm font-bold focus:ring-2 focus:ring-primary/20" dir="ltr">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pt-4 border-t border-stone-100">
+                    <label class="block text-[10px] font-black text-stone-400 uppercase tracking-widest mb-2 mr-2">{% trans 'العنوان' %}</label>
+                    <textarea name="address" class="w-full bg-stone-50 rounded-2xl border-stone-100 p-4 text-sm font-bold focus:ring-2 focus:ring-primary/20 resize-none h-20" placeholder="{% trans 'عنوان المتجر بالتفصيل...' %}"></textarea>
+                </div>
+
+                <div class="flex justify-end gap-4 mt-8 pt-4">
+                    <button type="button" onclick="closeModal('addVendorModal')" class="px-8 py-4 rounded-2xl font-black text-sm text-stone-500 bg-stone-100 hover:bg-stone-200 transition-all">{% trans 'إلغاء' %}</button>
+                    <button type="submit" class="bg-primary text-white px-10 py-4 rounded-2xl font-black text-sm hover:shadow-xl hover:shadow-primary/20 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-check"></i> {% trans 'حفظ بيانات التاجر' %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        // Bulk Selection Logic
+        function updateBulkCounter() {
+            const checkboxes = document.querySelectorAll('.vendor-check:checked');
+            const count = checkboxes.length;
+            const bar = document.getElementById('bulkActionsBar');
+            const countDisplay = document.getElementById('selectedCount');
+            
+            countDisplay.textContent = count;
+            
+            if(count > 0) {
+                bar.classList.remove('hidden');
+            } else {
+                bar.classList.add('hidden');
+            }
+        }
+
+        function toggleSelectAll(master) {
+            const checks = document.querySelectorAll('.vendor-check');
+            checks.forEach(c => c.checked = master.checked);
+            updateBulkCounter();
+        }
+
+        function deselectAll() {
+            const master = document.getElementById('selectAllCheck');
+            if (master) master.checked = false;
+            const checks = document.querySelectorAll('.vendor-check');
+            checks.forEach(c => c.checked = false);
+            updateBulkCounter();
+        }
+
+        function submitBulk(actionType) {
+            const actionNames = {
+                'bulk_activate': 'تنشيط',
+                'bulk_deactivate': 'إيقاف',
+                'bulk_delete': 'حذف وأرشفة'
+            };
+            const msg = `هل أنت متأكد من ${actionNames[actionType] || ''} المتاجر المحددة؟`;
+            if(confirm(msg)) {
+                document.getElementById('bulkActionInput').value = actionType;
+                document.getElementById('bulkForm').submit();
+            }
+        }
+
+        function switchTab(tabId) {
+            document.getElementById('activeTab').style.display = 'none';
+            document.getElementById('archiveTab').style.display = 'none';
+            
+            const activeBtn = document.getElementById('tabActiveBtn');
+            const archiveBtn = document.getElementById('tabArchiveBtn');
+            
+            activeBtn.className = 'px-6 py-3 font-bold text-sm border-b-2 border-transparent text-stone-500 hover:text-stone-700 transition-all';
+            archiveBtn.className = 'px-6 py-3 font-bold text-sm border-b-2 border-transparent text-stone-500 hover:text-stone-700 transition-all';
+            
+            if (tabId === 'active') {
+                document.getElementById('activeTab').style.display = 'block';
+                activeBtn.className = 'px-6 py-3 font-bold text-sm border-b-2 border-primary text-primary transition-all';
+            } else {
+                document.getElementById('archiveTab').style.display = 'block';
+                archiveBtn.className = 'px-6 py-3 font-bold text-sm border-b-2 border-primary text-primary transition-all';
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,187 @@
+{% extends 'custom_admin/dashboard_base.html' %}
+{% load i18n %}
+{% block title %}تفاصيل طلب الفعالية #{{ object.id }} | {{ global_system_vendor.name|default:'النظام' }}{% endblock %}
+
+{% block extra_head %}
+<style>
+    .status-badge {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        display: inline-block;
+    }
+    .status-PENDING { background: #fff8e1; color: #f57f17; }
+    .status-APPROVED { background: #e8f5e9; color: #2e7d32; }
+    .status-REJECTED { background: #ffebee; color: #c62828; }
+    
+    .detail-label {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        font-weight: bold;
+        margin-bottom: 4px;
+    }
+    .detail-val {
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: var(--primary);
+    }
+    
+    .doc-card {
+        background: #f9f9f9;
+        border: 1px solid #eee;
+        border-radius: 12px;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px;">
+    <div>
+        <h1 style="margin: 0 0 5px 0; font-size: 1.8rem; font-weight: 900; color: var(--primary);">{% trans 'تفاصيل طلب الفعالية' %} #{{ object.id }}</h1>
+        <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem; font-weight: 600;">
+            <a href="{% url 'admin_event_requests_list' %}" style="color: var(--primary); text-decoration: none;">{% trans 'الطلبات' %}</a> &rsaquo; {% trans 'التفاصيل' %}
+        </p>
+    </div>
+    <div style="display: flex; gap: 10px;">
+        {% if object.status == 'PENDING' %}
+        <form method="POST" action="{% url 'admin_event_request_approve' object.id %}" onsubmit="return confirm('{% trans "هل أنت متأكد من اعتماد الفعالية وبدء إصدار القسائم؟" %}');" style="margin: 0;">
+            {% csrf_token %}
+            <button type="submit" style="background: #2e7d32; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: inherit; font-size: 0.9rem;">
+                <i class="fa-solid fa-check"></i> {% trans 'اعتماد الفعالية' %}
+            </button>
+        </form>
+        <form method="POST" action="{% url 'admin_event_request_reject' object.id %}" onsubmit="return confirm('{% trans "هل أنت متأكد من رفض هذه الفعالية؟" %}');" style="margin: 0;">
+            {% csrf_token %}
+            <button type="submit" style="background: #c62828; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: inherit; font-size: 0.9rem;">
+                <i class="fa-solid fa-xmark"></i> {% trans 'رفض الفعالية' %}
+            </button>
+        </form>
+        {% else %}
+            <span class="status-badge status-{{ object.status }}" style="font-size: 1rem; padding: 8px 16px;">{{ object.get_status_display }}</span>
+        {% endif %}
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 25px; align-items: flex-start;">
+    <!-- Main Info -->
+    <div class="card-premium">
+        <h3 style="margin: 0 0 20px 0; font-size: 1.2rem; color: var(--primary); border-bottom: 1px solid #eee; padding-bottom: 10px;">{% trans 'بيانات الفعالية' %}</h3>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+            <div>
+                <div class="detail-label">{% trans 'اسم الفعالية' %}</div>
+                <div class="detail-val">{{ object.name }}</div>
+            </div>
+            <div>
+                <div class="detail-label">{% trans 'مقدم الطلب' %}</div>
+                <div class="detail-val">
+                    {% if object.company %}{{ object.company.clean_name }} (شركة){% elif object.delegate %}{{ object.delegate.name }} (مندوب){% else %}{{ object.requester_user.username }}{% endif %}
+                </div>
+            </div>
+            <div>
+                <div class="detail-label">{% trans 'تاريخ الفعالية' %}</div>
+                <div class="detail-val num-font">{{ object.date|date:"Y-m-d" }}</div>
+            </div>
+            <div>
+                <div class="detail-label">{% trans 'تاريخ التقديم' %}</div>
+                <div class="detail-val num-font">{{ object.created_at|date:"Y-m-d H:i" }}</div>
+            </div>
+            <div>
+                <div class="detail-label">{% trans 'الحد الأقصى للميزانية' %}</div>
+                <div class="detail-val num-font" style="color: #2e7d32;">{{ object.max_budget|floatformat:2 }} </div>
+            </div>
+            <div>
+                <div class="detail-label">{% trans 'قيمة القسيمة للطبيب' %}</div>
+                <div class="detail-val num-font">{{ object.voucher_value|floatformat:2 }} </div>
+            </div>
+        </div>
+        
+        {% if object.notes %}
+        <div style="background: #fff8e1; padding: 15px; border-radius: 8px; border-right: 4px solid #ffb300; margin-top: 20px;">
+            <div style="font-weight: bold; font-size: 0.85rem; color: #ff8f00; margin-bottom: 5px;">{% trans 'ملاحظات الطلب' %}</div>
+            <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">{{ object.notes }}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Doctors List -->
+    <div class="card-premium">
+        <h3 style="margin: 0 0 20px 0; font-size: 1.2rem; color: var(--primary); border-bottom: 1px solid #eee; padding-bottom: 10px;">
+            {% trans 'الأطباء المرتبطون' %} ({{ doctors.count }})
+        </h3>
+        
+        <div style="max-height: 500px; overflow-y: auto;">
+            {% for doc in doctors %}
+            <div class="doc-card">
+                <div>
+                    <div style="font-weight: 800; color: var(--primary);">د. {% if doc.existing_doctor %}{{ doc.existing_doctor.name }}{% else %}{{ doc.name }}{% endif %}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">
+                        <span class="num-font">{% if doc.existing_doctor %}{{ doc.existing_doctor.clean_phone }}{% else %}{{ doc.phone|default:"--" }}{% endif %}</span> | {{ doc.specialty_name|default:"عام" }}
+                    </div>
+                </div>
+                
+                <div>
+                    {% if doc.existing_doctor %}
+                        <span style="background: #e8f5e9; color: #2e7d32; font-size: 0.7rem; padding: 4px 8px; border-radius: 8px; font-weight: bold;"><i class="fa-solid fa-check-circle"></i> {% trans 'حساب موجود' %}</span>
+                    {% else %}
+                        {% if doc.is_created %}
+                            <span style="background: #e8f5e9; color: #2e7d32; font-size: 0.7rem; padding: 4px 8px; border-radius: 8px; font-weight: bold;"><i class="fa-solid fa-check-double"></i> {% trans 'تم الإنشاء' %}</span>
+                        {% else %}
+                            <button onclick="createAccount({{ doc.id }})" id="btn-create-{{ doc.id }}" style="background: var(--tertiary); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: pointer; font-family: inherit;">
+                                <i class="fa-solid fa-user-plus"></i> {% trans 'إنشاء حساب' %}
+                            </button>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <p style="color: #888; text-align: center;">{% trans 'لم يتم إرفاق أطباء.' %}</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function createAccount(reqDocId) {
+        if(!confirm('{% trans "هل أنت متأكد من رغبتك بإنشاء حساب لهذا الطبيب وإرسال بيانات الدخول إليه؟" %}')) return;
+        
+        const btn = document.getElementById('btn-create-' + reqDocId);
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> {% trans "جاري الإنشاء..." %}';
+        
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : '{{ csrf_token }}';
+        
+        const urlTemplate = "{% url 'admin_create_requested_doctor' 0 %}";
+        const url = urlTemplate.replace('0', reqDocId);
+        
+        fetch(url, {
+            method: 'POST',
+            headers: {'X-CSRFToken': csrfToken, 'Content-Type': 'application/json'}
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                btn.parentElement.innerHTML = '<span style="background: #e8f5e9; color: #2e7d32; font-size: 0.7rem; padding: 4px 8px; border-radius: 8px; font-weight: bold;"><i class="fa-solid fa-check-double"></i> {% trans "تم الإنشاء" %}</span>';
+                alert('{% trans "تم إنشاء الحساب وإرسال الإيميل بنجاح." %}');
+            } else {
+                alert('{% trans "خطأ:" %} ' + data.error);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-user-plus"></i> {% trans "إنشاء حساب" %}';
+            }
+        })
+        .catch(err => {
+            alert('{% trans "حدث خطأ غير متوقع." %}');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-user-plus"></i> {% trans "إنشاء حساب" %}';
+        });
+    }
+</script>
+{% endblock %}

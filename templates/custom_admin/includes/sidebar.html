@@ -1,0 +1,115 @@
+{% load i18n %}
+<aside class="sidebar">
+    <div style="padding: var(--spacing-xl); display: flex; align-items: center; gap: 15px; border-bottom: 2px solid var(--surface-container);">
+        <div style="width: 48px; height: 48px; border-radius: var(--radius-md); background: var(--primary); display: flex; align-items: center; justify-content: center; color: white; overflow: hidden; flex-shrink: 0;">
+            {% if global_system_vendor and global_system_vendor.logo %}
+                <img src="{{ global_system_vendor.logo.url }}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
+            {% else %}
+                <i class="fa-solid fa-store"></i>
+            {% endif %}
+        </div>
+        <div>
+            <h3 class="title-md" style="margin: 0; color: var(--primary);">{{ global_system_vendor.name|default:'قرية حضرموت' }}</h3>
+            <p class="label-md" style="margin: 0;">{{ global_system_vendor.contact_person|default:'نظام البيع العربي' }}</p>
+        </div>
+    </div>
+
+    <div style="padding: var(--spacing-lg) 0; flex: 1; overflow-y: auto;">
+        <a href="{% url 'custom_dashboard' %}" class="nav-item {% if active_page == 'dashboard' %}active{% endif %}"><i class="fa-solid fa-border-all"></i> {% trans 'لوحة القياس' %}</a>
+        <a href="{% url 'custom_pos' %}" class="nav-item {% if active_page == 'pos' %}active{% endif %}"><i class="fa-solid fa-cash-register"></i> {% trans 'نقطة البيع (POS)' %}</a>
+        <a href="{% url 'custom_doctors' %}" class="nav-item {% if active_page == 'doctors' %}active{% endif %}"><i class="fa-solid fa-user-doctor"></i> {% trans 'الأطباء' %}</a>
+        <a href="{% url 'custom_companies' %}" class="nav-item {% if active_page == 'companies' %}active{% endif %}"><i class="fa-solid fa-building"></i> {% trans 'الشركات والمناديب' %}</a>
+        <a href="{% url 'custom_vendors_directory' %}" class="nav-item {% if active_page == 'vendors' %}active{% endif %}"><i class="fa-solid fa-store"></i> {% trans 'التجار' %}</a>
+        <a href="{% url 'custom_events' %}" class="nav-item {% if active_page == 'events' %}active{% endif %}"><i class="fa-solid fa-gift"></i> {% trans 'الفعاليات والقسائم' %}</a>
+        <a href="{% url 'admin_event_requests_list' %}" class="nav-item {% if active_page == 'event_requests' %}active{% endif %}"><i class="fa-solid fa-code-pull-request"></i> {% trans 'طلبات الفعاليات' %}</a>
+        <a href="{% url 'custom_settlements' %}" class="nav-item {% if active_page == 'settlements' %}active{% endif %}"><i class="fa-solid fa-hand-holding-dollar"></i> {% trans 'التسويات المالية' %}</a>
+        <a href="{% url 'custom_notifications' %}" class="nav-item {% if active_page == 'notifications' %}active{% endif %}">
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <div><i class="fa-solid fa-bell"></i> {% trans 'الإشعارات' %}</div>
+                {% if unread_notifications_count and unread_notifications_count > 0 %}
+                    <span style="background: var(--error); color: white; border-radius: 20px; padding: 2px 8px; font-size: 12px; font-weight: bold;">{{ unread_notifications_count }}</span>
+                {% endif %}
+            </div>
+        </a>
+        <a href="{% url 'custom_email_logs' %}" class="nav-item {% if active_page == 'email_logs' %}active{% endif %}"><i class="fa-solid fa-envelope-open-text"></i> {% trans 'سجل الإيميلات' %}</a>
+        <a href="{% url 'custom_settings' %}" class="nav-item {% if active_page == 'settings' %}active{% endif %}"><i class="fa-solid fa-gear"></i> {% trans 'إعدادات المنظومة' %}</a>
+    </div>
+    
+    <div style="padding: var(--spacing-lg);">
+        <!-- Language Switcher — Icon only, opens dropdown upward -->
+        {% get_current_language as CURRENT_LANG %}
+        <div style="position: relative; margin-bottom: 10px;" class="sidebar-lang-wrapper">
+            <button onclick="toggleSidebarLangMenu(this)"
+                    title="{% trans 'Language / اللغة' %}"
+                    style="width:100%; padding: 10px; background: var(--surface-container); border-radius: var(--radius-md);
+                           display: flex; align-items: center; justify-content: center;
+                           cursor: pointer; border: 1.5px solid transparent; transition: all 0.2s; font-family: inherit;">
+                <i class="fa-solid fa-language" style="font-size: 1.2rem; color: var(--on-surface-variant);"></i>
+            </button>
+            <div id="sidebar-lang-dropdown"
+                 style="display:none; position: absolute; bottom: calc(100% + 6px); left: 0; right: 0;
+                        background: #fff; border-radius: 12px; box-shadow: 0 -10px 40px rgba(0,0,0,0.12);
+                        border: 1px solid #eee; overflow: hidden; z-index: 200;">
+                <p style="font-size: 0.68rem; font-weight: 800; color: var(--on-surface-variant); padding: 10px 14px 6px; margin: 0; text-transform: uppercase; letter-spacing: 0.05em;">{% trans 'Interface Language' %}</p>
+                <form action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="language" value="ar">
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <button type="submit"
+                            style="width:100%; padding: 10px 14px; text-align: right; border: none;
+                                   background: {% if CURRENT_LANG == 'ar' %}rgba(0,83,83,0.06){% else %}transparent{% endif %};
+                                   cursor:pointer; font-size:0.85rem;
+                                   font-weight: {% if CURRENT_LANG == 'ar' %}800{% else %}600{% endif %};
+                                   color: {% if CURRENT_LANG == 'ar' %}var(--primary){% else %}var(--on-surface){% endif %};
+                                   font-family:inherit; display:flex; align-items:center; gap:8px; transition: background 0.15s;"
+                            onmouseover="this.style.background='#f5f5f5'"
+                            onmouseout="this.style.background='{% if CURRENT_LANG == 'ar' %}rgba(0,83,83,0.06){% else %}transparent{% endif %}'">
+                        🇸🇦 عربي
+                        {% if CURRENT_LANG == 'ar' %}<span style="margin-right:auto; font-size:0.8rem; color:var(--primary);">✓</span>{% endif %}
+                    </button>
+                </form>
+                <form action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="language" value="en">
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <button type="submit"
+                            style="width:100%; padding: 10px 14px; text-align: right; border: none;
+                                   background: {% if CURRENT_LANG == 'en' %}rgba(0,83,83,0.06){% else %}transparent{% endif %};
+                                   cursor:pointer; font-size:0.85rem;
+                                   font-weight: {% if CURRENT_LANG == 'en' %}800{% else %}600{% endif %};
+                                   color: {% if CURRENT_LANG == 'en' %}var(--primary){% else %}var(--on-surface){% endif %};
+                                   font-family:inherit; display:flex; align-items:center; gap:8px; transition: background 0.15s;"
+                            onmouseover="this.style.background='#f5f5f5'"
+                            onmouseout="this.style.background='{% if CURRENT_LANG == 'en' %}rgba(0,83,83,0.06){% else %}transparent{% endif %}'">
+                        🇬🇧 English
+                        {% if CURRENT_LANG == 'en' %}<span style="margin-right:auto; font-size:0.8rem; color:var(--primary);">✓</span>{% endif %}
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+            {% csrf_token %}
+        </form>
+        <a href="javascript:void(0)" onclick="document.getElementById('logout-form').submit();" class="nav-item" style="color: var(--danger);"><i class="fa-solid fa-right-from-bracket"></i> {% trans 'تسجيل الخروج' %}</a>
+    </div>
+</aside>
+
+<script>
+function toggleSidebarLangMenu(btn) {
+    var menu = document.getElementById('sidebar-lang-dropdown');
+    var isOpen = menu.style.display === 'block';
+    menu.style.display = isOpen ? 'none' : 'block';
+    if (!isOpen) {
+        // Close when clicking outside
+        setTimeout(function() {
+            document.addEventListener('click', function closeLang(e) {
+                if (!btn.closest('.sidebar-lang-wrapper').contains(e.target)) {
+                    menu.style.display = 'none';
+                    document.removeEventListener('click', closeLang);
+                }
+            });
+        }, 10);
+    }
+}
+</script>

@@ -1,0 +1,380 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Colors - The Palette */
+  --primary: #005353;
+  --primary-container: #006D6D;
+  --on-primary: #ffffff;
+  
+  --secondary-container: #c9e9e8;
+  --on-secondary-container: #003a3a;
+  
+  --tertiary: #733a1a;
+  
+  --surface: #f9f9f9;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f5f5f5;
+  --surface-container: #eeeeee;
+  --surface-container-high: #e8e8e8;
+  --surface-container-highest: #e2e2e2;
+  
+  --on-surface: #1a1c1c;
+  --on-surface-variant: #3e4948;
+  --outline-variant: #bec9c8;
+  
+  /* Fonts */
+  --font-arabic: 'IBM Plex Sans Arabic', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+
+  /* Spacing */
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.25rem;
+  --spacing-xl: 1.5rem;   /* 24px */
+  --spacing-xxl: 2rem;
+
+  /* Rounding */
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+  --radius-xl: 1.5rem;    /* Soft corners for a friendly POS */
+  --radius-full: 9999px;
+
+  /* Shadows - Tonal Layers */
+  /* Extra diffused shadow tinted with Primary Teal instead of Black */
+  --shadow-ambient: 0 20px 50px rgba(0, 83, 83, 0.05);
+  --shadow-sm: 0 4px 12px rgba(0, 83, 83, 0.03);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--surface);
+  color: var(--on-surface);
+  font-family: var(--font-arabic);
+  direction: rtl;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Typography Editorial Scale */
+.display-lg { font-size: 3.5rem; font-weight: 700; line-height: 1.2; font-family: var(--font-inter); }
+.headline-sm { font-size: 1.5rem; font-weight: 600; line-height: 1.3; }
+.title-md { font-size: 1.125rem; font-weight: 500; line-height: 1.4; }
+.title-sm { font-size: 0.875rem; font-weight: 500; line-height: 1.4; }
+.label-md { font-size: 0.75rem; font-weight: 500; line-height: 1.5; color: var(--on-surface-variant); }
+
+/* Layout Base */
+.pos-layout {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* Sidebar Layers */
+.sidebar {
+  width: 280px;
+  background-color: var(--surface-container-lowest);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm); /* Using shadow slightly to separate if needed or just color */
+  z-index: 10;
+  /* To maintain no borders, we rely on the background shift vs main content */
+}
+
+/* Main Workspace */
+.main-workspace {
+  flex: 1;
+  background-color: var(--surface);
+  padding: var(--spacing-xxl);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cards (Surface Lowest on Surface) */
+.pos-card {
+  background-color: var(--surface-container-lowest);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  /* No borders. Tonal transition rules. */
+}
+
+.pos-card-ambient {
+  box-shadow: var(--shadow-ambient);
+}
+
+/* Buttons */
+.btn {
+  font-family: var(--font-arabic);
+  border: none;
+  border-radius: var(--radius-xl); /* Big comfy buttons */
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-container));
+  color: var(--on-primary);
+}
+
+.btn-primary:active { transform: scale(0.98); }
+
+.btn-secondary {
+  background-color: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--on-surface-variant);
+  font-size: var(--title-sm);
+}
+
+.btn-ghost:hover {
+  background: var(--surface-container);
+}
+
+/* Inputs */
+.input-base {
+  background-color: var(--surface-container-high);
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  padding: 1rem;
+  font-family: var(--font-arabic);
+  font-size: 1rem;
+  color: var(--on-surface);
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+.input-base:focus {
+  outline: none;
+  background-color: var(--surface-container-lowest);
+  border-bottom-color: var(--primary-container);
+}
+
+/* QR Placeholder */
+.qr-placeholder {
+  background-color: var(--surface-container-highest);
+  border-radius: var(--radius-xl);
+  height: 250px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 83, 83, 0.4); /* 40% opacity primary */
+  margin-bottom: var(--spacing-xl);
+  overflow: hidden;
+}
+
+/* Ghost borders on corners only for QR */
+.qr-corner {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-color: rgba(190, 201, 200, 0.5); /* outline-variant at 50% opacity approx */
+  border-style: solid;
+  border-width: 0;
+  border-radius: 4px;
+}
+.qr-tl { top: 20px; right: 20px; border-top-width: 4px; border-right-width: 4px; }
+.qr-tr { top: 20px; left: 20px; border-top-width: 4px; border-left-width: 4px; }
+.qr-bl { bottom: 20px; right: 20px; border-bottom-width: 4px; border-right-width: 4px; }
+.qr-br { bottom: 20px; left: 20px; border-bottom-width: 4px; border-left-width: 4px; }
+
+/* Menus & Sidebar Items */
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  color: var(--on-surface-variant);
+  text-decoration: none;
+  font-weight: 500;
+  gap: 1rem;
+  margin: 0.25rem var(--spacing-md);
+  border-radius: var(--radius-md);
+  transition: background 0.2s;
+}
+
+.nav-item:hover {
+  background-color: var(--surface-container-low);
+}
+
+.nav-item.active {
+  background-color: var(--secondary-container);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Grid layout for main workspace */
+/* We recreate the look from the image */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--spacing-xl);
+  height: 100%;
+}
+
+.main-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.side-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Search bar header */
+.header-search {
+  background-color: var(--surface-container-high);
+  border-radius: var(--radius-full);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  width: 300px;
+}
+.header-search input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  outline: none;
+  font-family: var(--font-arabic);
+}
+
+/* Custom Spacing Rules */
+.mb-xl { margin-bottom: var(--spacing-xl); }
+.mt-xl { margin-top: var(--spacing-xl); }
+.gap-md { gap: var(--spacing-md); }
+.flex-col { display: flex; flex-direction: column; }
+.flex-row { display: flex; flex-direction: row; }
+.justify-between { justify-content: space-between; }
+.items-center { align-items: center; }
+
+/* Number font standard */
+.num-font {
+  font-family: var(--font-inter);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .pos-layout {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 0.5rem;
+    box-shadow: 0 -4px 20px rgba(0, 83, 83, 0.1);
+  }
+  
+  .main-workspace {
+    padding: var(--spacing-lg);
+    padding-bottom: 80px; /* Space for bottom navigation */
+  }
+  
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+  
+  .header-search {
+    width: 100%;
+  }
+  
+  .dash-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .quick-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .header-search-bar {
+    min-width: 100%;
+  }
+  
+  .pos-card {
+    padding: var(--spacing-lg);
+  }
+  
+  .btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .display-lg {
+    font-size: 2rem;
+  }
+  
+  .headline-sm {
+    font-size: 1.2rem;
+  }
+  
+  .title-md {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-workspace {
+    padding: var(--spacing-md);
+    padding-bottom: 80px;
+  }
+  
+  .pos-card {
+    padding: var(--spacing-md);
+  }
+  
+  .btn {
+    padding: 0.65rem 0.85rem;
+    font-size: 0.85rem;
+  }
+  
+  .display-lg {
+    font-size: 1.5rem;
+  }
+  
+  .headline-sm {
+    font-size: 1.1rem;
+  }
+  
+  .title-md {
+    font-size: 0.95rem;
+  }
+  
+  .label-md {
+    font-size: 0.7rem;
+  }
+}

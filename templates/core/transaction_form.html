@@ -1,0 +1,653 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}تسجيل معاملة{% endblock %}
+
+{% block content %}
+<style>
+/* CSS styles for layout, loader, floating invoice, etc. */
+.main-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.form-section {
+    flex: 1 1 300px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.qr-section {
+    flex: 1 1 300px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#reader { width: 100%; max-width: 400px; margin: 0 auto; }
+#doctor-info {
+    margin-top: 20px;
+    padding: 15px;
+    background: #e9ecef;
+    border-radius: 5px;
+    display: none;
+    width: 100%;
+}
+.scan-btn {
+    background-color: var(--primary-color); color: white; border: none;
+    padding: 10px 20px; border-radius: 5px; cursor: pointer;
+    font-size: 16px; margin-bottom: 15px; width: 100%; max-width: 400px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.scan-btn:hover { background-color: #600000; }
+
+/* Loader Overlay */
+#loader-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7); z-index: 9999;
+    display: none; align-items: center; justify-content: center;
+    flex-direction: column; color: white;
+}
+.spinner {
+    width: 50px; height: 50px;
+    border: 5px solid rgba(255,255,255,0.3);
+    border-radius: 50%; border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+    margin-bottom: 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* OTP Popup */
+#otp-popup {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); z-index: 1000;
+    display: none; align-items: center; justify-content: center;
+}
+.otp-content {
+    background: white; padding: 30px; border-radius: 10px;
+    text-align: center; max-width: 400px; width: 90%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+.otp-input {
+    width: 60%; padding: 10px; font-size: 24px; text-align: center;
+    letter-spacing: 5px; margin: 20px 0; border: 2px solid #ccc; border-radius: 5px;
+}
+.otp-btn {
+    background: var(--primary-color); color: white; border: none; padding: 10px 20px;
+    border-radius: 5px; cursor: pointer; width: 100%; font-size: 16px;
+}
+.otp-btn:hover { background: #600000; }
+
+/* Submitting State for OTP Button */
+.otp-btn.submitting {
+    background: #6c757d; cursor: not-allowed; opacity: 0.8;
+}
+
+/* Success Invoice Popup */
+#invoice-popup {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8); z-index: 2000;
+    display: none; align-items: center; justify-content: center;
+}
+.invoice-content {
+    background: white; padding: 40px; border-radius: 15px;
+    width: 90%; max-width: 500px; text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3); position: relative;
+    animation: slideDown 0.5s ease-out;
+}
+@keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+.success-icon {
+    width: 80px; height: 80px; background: #28a745; color: white;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 40px; margin: 0 auto 20px; box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+}
+.invoice-details { text-align: right; margin-top: 20px; border-top: 2px dashed #eee; padding-top: 20px; }
+.invoice-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 1.1rem; }
+.invoice-total {
+    font-size: 1.4rem; font-weight: bold; color: #dc3545;
+    border-top: 2px solid #eee; padding-top: 15px; margin-top: 15px;
+}
+.print-btn {
+    background: #007bff; color: white; border: none; padding: 12px 25px;
+    border-radius: 5px; font-size: 1.1rem; cursor: pointer; margin-top: 20px; flex: 1;
+}
+.new-trans-btn {
+    background: #6c757d; color: white; border: none; padding: 12px 25px;
+    border-radius: 5px; font-size: 1.1rem; cursor: pointer; margin-top: 20px; flex: 1;
+}
+.btn-group { display: flex; gap: 10px; margin-top: 20px; }
+</style>
+
+<!-- Full Screen Loader -->
+<div id="loader-overlay">
+    <div class="spinner"></div>
+    <h3 id="loader-text">{% trans 'جاري معالجة المعاملة...' %}</h3>
+    <p>{% trans 'يرجى الانتظار وعدم إغلاق الصفحة' %}</p>
+</div>
+
+<!-- OTP Popup -->
+<div id="otp-popup">
+    <div class="otp-content">
+        <h3 style="color: #333; margin-bottom: 10px;">{% trans '🔒 التحقق الأمني مطلوب' %}</h3>
+        <p style="color: #666; font-size: 0.9rem;">
+            {% trans 'تم إرسال رمز تحقق (OTP) إلى البريد الإلكتروني الخاص بالطبيب' %} <br> 
+            <b id="display-email"></b> <br>
+            <span style="color: #d9534f; font-weight: bold; display: block; margin-top: 5px;">{% trans '⚠️ الرمز صالح لمدة 10 دقائق فقط.' %}</span>
+        </p>
+        <input type="text" id="otp_code_input" class="otp-input" placeholder="000000" maxlength="6" autocomplete="off">
+        <button id="verify_otp_btn" class="otp-btn" onclick="verifyOTP">{% trans 'تأكيد وإتمام العملية' %}</button>
+        <p id="otp-error" style="color: red; margin-top: 10px; display: none;"></p>
+        
+        <div style="margin-top: 15px;">
+            <button id="resend-otp-link" style="background: none; border: none; color: #007bff; text-decoration: underline; cursor: pointer; font-size: 0.9rem;" onclick="resendOTP">{% trans 'إعادة إرسال رمز جديد' %}</button>
+        </div>
+        
+        <button style="background: none; border: none; color: #666; text-decoration: underline; margin-top: 10px; cursor: pointer; font-size: 0.8rem;" onclick="closeOTPPopup">{% trans 'إلغاء العملية' %}</button>
+    </div>
+</div>
+
+<!-- Success Invoice Popup -->
+<div id="invoice-popup">
+    <div class="invoice-content">
+        <div class="success-icon">✓</div>
+        <h2 style="color: #28a745; margin-bottom: 5px;">{% trans 'تمت العملية بنجاح!' %}</h2>
+        <p style="color: #666; margin-bottom: 20px;">{% trans 'شكراً لك، تم الخصم من رصيد الطبيب.' %}</p>
+        
+        <div class="invoice-details" id="print-area">
+            <h4 style="text-align: center; margin-bottom: 20px; color: #333;">{% trans 'إيصال معاملة' %}</h4>
+            <div class="invoice-row">
+                <span style="color: #666;">{% trans 'رقم الفاتورة:' %}</span>
+                <strong id="inv-number"></strong>
+            </div>
+            <div class="invoice-row">
+                <span style="color: #666;">{% trans 'التاريخ:' %}</span>
+                <strong id="inv-date"></strong>
+            </div>
+            <div class="invoice-row">
+                <span style="color: #666;">{% trans 'التاجر:' %}</span>
+                <strong id="inv-vendor"></strong>
+            </div>
+            <div class="invoice-row">
+                <span style="color: #666;">{% trans 'الطبيب:' %}</span>
+                <strong id="inv-doctor"></strong>
+            </div>
+            <div class="invoice-row" style="margin-top: 15px;">
+                <span style="color: #666;">{% trans 'قيمة المشتريات:' %}</span>
+                <strong id="inv-amount"></strong>
+            </div>
+            {% if has_management_fee %}
+            <div class="invoice-row">
+                <span style="color: #666;">{% trans 'رسوم إدارية (25%):' %}</span>
+                <strong id="inv-fee"></strong>
+            </div>
+            {% endif %}
+            <div class="invoice-row invoice-total">
+                <span>{% trans 'الإجمالي المخصوم:' %}</span>
+                <span id="inv-total"></span>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="print-btn" onclick="printInvoice">{% trans '🖨️ طباعة الفاتورة' %}</button>
+            <button class="new-trans-btn" onclick="window.location.reload">{% trans '+ معاملة جديدة' %}</button>
+        </div>
+    </div>
+</div>
+
+<h2 style="margin-bottom: 20px;">{% trans 'تسجيل معاملة جديدة' %}</h2>
+
+<!-- Cashier Warning Info -->
+{% if is_cashier %}
+<div class="alert alert-info" style="margin-bottom: 20px; font-weight: bold;">
+    👤 مرحباً يا {{ request.user.first_name|default:request.user.username }} (كاشير). الإجراءات تسجل باسمك تحت البائع الرئيسي: {{ vendor.parent_vendor.name|default:vendor.name }}.
+</div>
+{% endif %}
+
+<div id="error-message" class="alert alert-danger" style="display: none; margin-bottom: 20px;"></div>
+
+<div class="main-container">
+    <div class="qr-section">
+        <div style="margin-bottom: 20px; width: 100%; border-bottom: 2px dashed #eee; padding-bottom: 15px;">
+            <h4 style="margin-bottom: 10px; color: #333;">{% trans 'أو البحث اليدوي عن طبيب' %}</h4>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="manual-doc-search" class="form-control" placeholder="{% trans 'ابحث بالاسم، الهاتف، أو المعرف...' %}" style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                <button class="btn" onclick="manualSearch">{% trans '🔍 بحث' %}</button>
+            </div>
+            <div id="search-results" style="margin-top: 10px; max-height: 200px; overflow-y: auto;"></div>
+        </div>
+        
+        <h3 style="margin-bottom: 15px;">{% trans 'مسح الـ QR Code' %}</h3>
+        <button id="camera-btn" class="scan-btn" onclick="startQRScanner">
+            {% trans '📷 تشغيل الكاميرا للمسح' %}
+        </button>
+        <div id="reader"></div>
+
+        <div id="doctor-info" class="card">
+            <h4 style="color: #28a745; margin-bottom: 15px;">{% trans 'بـيـانـات الـطـبـيـب' %}</h4>
+            <p><strong>{% trans 'الاسم:' %}</strong> <span id="doc-name">{% if prefill_doctor %}{{ prefill_doctor.name }}{% endif %}</span></p>
+            <p><strong>{% trans 'الهاتف:' %}</strong> <span id="doc-phone">{% if prefill_doctor %}{{ prefill_doctor.phone }}{% endif %}</span></p>
+            <p style="font-size: 1.2rem; color: #dc3545; font-weight: bold; margin-top: 10px; padding-top: 10px; border-top: 1px solid #ccc;">
+                <strong>{% trans 'الرصيد المتاح:' %}</strong> <span id="doc-balance">{% if prefill_doctor %}{{ prefill_doctor.balance }}{% else %}0.00{% endif %}</span> {% trans '' %}
+            </p>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <h3>{% trans 'تفاصيل المعاملة' %}</h3>
+        <!-- Note: We don't use a standard form submit to prevent page reload -->
+        <form id="transaction-form" onsubmit="event.preventDefault; submitTransaction;">
+            {% csrf_token %}
+            <input type="hidden" name="doctor_id" id="doctor_id" value="{% if prefill_doctor %}{{ prefill_doctor.id }}{% endif %}">
+            
+            <div style="margin-bottom: 15px;">
+                <label for="amount" style="display: block; margin-bottom: 5px; font-weight: bold;">{% trans 'المبلغ المطلوب :' %}</label>
+                <input type="number" id="amount" name="amount" step="0.01" min="1" class="form-control" required style="width: 100%; padding: 10px; font-size: 1.2rem; border-radius: 5px; border: 1px solid #ccc;" oninput="calculateTotal">
+            </div>
+
+            {% if has_management_fee %}
+            <div style="margin-bottom: 15px; padding: 10px; background: #fff3cd; border: 1px solid #ffeeba; border-radius: 5px;">
+                <p style="margin: 0; color: #856404; font-size: 0.9rem;">{% trans 'سيتم إضافة 25% رسوم إدارية تلقائياً لإجمالي الخصم.' %}</p>
+                <p style="margin: 5px 0 0 0; font-weight: bold;">{% trans 'الإجمالي المتوقع خصمه:' %} <span id="expected_total">0.00</span> {% trans '' %}</p>
+            </div>
+            {% endif %}
+
+            <div style="margin-bottom: 20px;">
+                <label for="description" style="display: block; margin-bottom: 5px; font-weight: bold;">{% trans 'وصف المعاملة (اختياري):' %}</label>
+                <textarea id="description" name="description" class="form-control" rows="3" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" placeholder="{% trans 'مثال: خصم على أدوية، وجبة غداء، الخ...' %}"></textarea>
+            </div>
+
+            <button type="submit" id="submit-btn" class="btn" style="width: 100%; font-size: 1.2rem; padding: 15px; {% if not prefill_doctor %}opacity: 0.5; cursor: not-allowed;{% endif %}" {% if not prefill_doctor %}disabled{% endif %}>
+                {% trans 'إتمام المعاملة' %}
+            </button>
+        </form>
+    </div>
+</div>
+
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script>
+    const hasManagementFee = {{ has_management_fee|yesno:"true,false" }};
+    let html5QrcodeScanner = null;
+    let currentTransactionToken = null; // Store token for OTP
+
+    // If pre-filled from URL
+    window.onload = function {
+        if(document.getElementById('doctor_id').value) {
+            document.getElementById('doctor-info').style.display = 'block';
+            document.getElementById('submit-btn').disabled = false;
+            document.getElementById('submit-btn').style.opacity = '1';
+            document.getElementById('submit-btn').style.cursor = 'pointer';
+        }
+        
+        // Enter key triggers manual search
+        document.getElementById('manual-doc-search').addEventListener('keydown', function(e) {
+            if(e.key === 'Enter') {
+                e.preventDefault;
+                manualSearch;
+            }
+        });
+        
+        // Auto-search after 500ms of typing (debounce)
+        let searchTimeout = null;
+        document.getElementById('manual-doc-search').addEventListener('input', function {
+            clearTimeout(searchTimeout);
+            const val = this.value.trim;
+            if(val.length >= 2) {
+                searchTimeout = setTimeout( => manualSearch, 500);
+            } else {
+                document.getElementById('search-results').innerHTML = '';
+            }
+        });
+    };
+
+    function calculateTotal {
+        const amountInput = document.getElementById('amount').value;
+        const totalSpan = document.getElementById('expected_total');
+        if(amountInput && hasManagementFee && totalSpan) {
+            const amt = parseFloat(amountInput);
+            const fee = amt * 0.25;
+            totalSpan.textContent = (amt + fee).toFixed(2);
+        } else if (totalSpan) {
+            totalSpan.textContent = "0.00";
+        }
+    }
+
+    function startQRScanner {
+        const btn = document.getElementById('camera-btn');
+        btn.style.display = 'none';
+        
+        html5QrcodeScanner = new Html5QrcodeScanner(
+            "reader", 
+            { fps: 10, qrbox: {width: 250, height: 250} },
+            false
+        );
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+    }
+
+    function onScanSuccess(decodedText, decodedResult) {
+        if(html5QrcodeScanner) {
+            html5QrcodeScanner.clear;
+            document.getElementById('camera-btn').style.display = 'flex';
+        }
+        
+        let doctorId = decodedText.trim;
+        
+        try {
+            // If it's a full URL, try to extract from path
+            if (doctorId.startsWith('http://') || doctorId.startsWith('https://')) {
+                const url = new URL(doctorId);
+                // Check if it's the /scan/CODE/ format
+                if (url.pathname.includes('/scan/')) {
+                    const parts = url.pathname.split('/scan/');
+                    if (parts.length > 1) {
+                        doctorId = parts[1].split('/')[0]; // gets CODE from CODE/
+                    }
+                } 
+                // Handle legacy doctor_id query param
+                else if (url.searchParams.has('doctor_id')) {
+                    doctorId = url.searchParams.get('doctor_id');
+                }
+            } else {
+                // Handle raw string scanning that might contain /scan/
+                if(doctorId.includes('/scan/')) {
+                    const parts = doctorId.split('/scan/');
+                    if (parts.length > 1) {
+                        // Extract the code from after /scan/ and handle possible ? or /
+                        doctorId = parts[1].split('/')[0].split('?')[0];
+                    }
+                }
+                // Handle legacy doctor_id query param
+                else if(doctorId.includes('doctor_id=')) {
+                    const urlParams = new URLSearchParams(doctorId.split('?')[1] || '');
+                    if (urlParams.has('doctor_id')) {
+                        doctorId = urlParams.get('doctor_id');
+                    }
+                }
+            }
+        } catch (e) {
+            console.error("Error parsing QR URL:", e);
+        }
+
+        if(!doctorId) {
+            alert('رمز QR غير صالح أو فارغ.');
+            return;
+        }
+
+        fetchDoctorInfo(doctorId);
+    }
+
+    function onScanFailure(error) {
+        // Handle scan failure silently
+    }
+
+    function manualSearch {
+        const query = document.getElementById('manual-doc-search').value.trim;
+        if(query.length < 2) {
+            alert("يرجى إدخال حرفين أو رقمين على الأقل للبحث");
+            return;
+        }
+        
+        document.getElementById('search-results').innerHTML = '<p style="color: #666;">{% trans "جاري البحث..." %}</p>';
+        
+        fetch(`/api/doctor-lookup/?q=${encodeURIComponent(query)}`)
+            .then(res => res.json)
+            .then(data => {
+                const resultsDiv = document.getElementById('search-results');
+                resultsDiv.innerHTML = '';
+                // Filter only doctors from results
+                const doctorResults = data.results ? data.results.filter(r => r.type === 'doctor' || !r.type) : [];
+                if(doctorResults.length > 0) {
+                    doctorResults.forEach(doc => {
+                        const div = document.createElement('div');
+                        div.style.padding = '10px';
+                        div.style.borderBottom = '1px solid #eee';
+                        div.style.cursor = 'pointer';
+                        div.style.background = '#f8f9fa';
+                        div.style.marginBottom = '5px';
+                        div.style.borderRadius = '5px';
+                        div.innerHTML = `<strong>${doc.name}</strong> - ${doc.phone} <br> <small style="color: #666;">الرصيد: ${parseFloat(doc.balance).toFixed(2)} </small>`;
+                        div.onclick = function {
+                            selectDoctor(doc);
+                            resultsDiv.innerHTML = '';
+                            document.getElementById('manual-doc-search').value = '';
+                        };
+                        resultsDiv.appendChild(div);
+                    });
+                } else {
+                    resultsDiv.innerHTML = '<p style="color: red;">{% trans "لم يتم العثور على أطباء." %}</p>';
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                document.getElementById('search-results').innerHTML = '<p style="color: red;">{% trans "خطأ في الاتصال بالسيرفر." %}</p>';
+            });
+    }
+
+    // Select doctor and fill form
+    function selectDoctor(doc) {
+        document.getElementById('doctor_id').value = doc.id;
+        document.getElementById('doc-name').textContent = doc.name;
+        document.getElementById('doc-phone').textContent = doc.phone || '—';
+        document.getElementById('doc-balance').textContent = parseFloat(doc.balance).toFixed(2);
+        document.getElementById('doctor-info').style.display = 'block';
+        document.getElementById('submit-btn').disabled = false;
+        document.getElementById('submit-btn').style.opacity = '1';
+        document.getElementById('submit-btn').style.cursor = 'pointer';
+    }
+
+    function fetchDoctorInfo(qrCodeOrId) {
+        // Try to look up by QR code or id
+        fetch(`/api/doctor-lookup/?q=${encodeURIComponent(qrCodeOrId)}`)
+            .then(res => res.json)
+            .then(data => {
+                const doctors = data.results ? data.results.filter(r => r.type === 'doctor' || !r.type) : [];
+                if(doctors.length > 0) {
+                    selectDoctor(doctors[0]);
+                } else {
+                    alert('لم يتم العثور على الطبيب بهذا الرمز: ' + qrCodeOrId);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('حدث خطأ أثناء البحث عن الطبيب.');
+            });
+    }
+
+    function showError(msg) {
+        const errDiv = document.getElementById('error-message');
+        errDiv.textContent = msg;
+        errDiv.style.display = 'block';
+        window.scrollTo(0,0);
+    }
+
+    function hideError {
+        document.getElementById('error-message').style.display = 'none';
+    }
+
+    function showLoader(text) {
+        document.getElementById('loader-text').textContent = text;
+        document.getElementById('loader-overlay').style.display = 'flex';
+    }
+
+    function hideLoader {
+        document.getElementById('loader-overlay').style.display = 'none';
+    }
+
+    // Step 1: Submit transaction form to send OTP
+    function submitTransaction(isResend = false) {
+        hideError;
+        const doctorId = document.getElementById('doctor_id').value;
+        const amount = document.getElementById('amount').value;
+        const description = document.getElementById('description').value;
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        if(!doctorId) {
+            showError("يرجى مسح رمز الـ QR الخاص بالطبيب أولاً.");
+            return;
+        }
+        if(!amount || amount <= 0) {
+            showError("يرجى إدخال مبلغ صحيح.");
+            return;
+        }
+
+        if (!isResend) {
+            showLoader("جاري التحضير وإرسال رمز التحقق (OTP) للطبيب...");
+        }
+
+        const formData = new FormData;
+        formData.append('doctor_id', doctorId);
+        formData.append('amount', amount);
+        formData.append('description', description);
+
+        // Uses SendOTPView from core/views.py
+        fetch("{% url 'send_otp' %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json.then(data => ({status: response.status, body: data})))
+        .then(result => {
+            hideLoader;
+            if(result.status === 200 && result.body.success) {
+                // OTP sent successfully, show popup
+                currentTransactionToken = result.body.transaction_token;
+                document.getElementById('display-email').textContent = result.body.doctor_email;
+                document.getElementById('otp_code_input').value = ''; // clear previous
+                document.getElementById('otp-error').style.display = 'none';
+                document.getElementById('otp-popup').style.display = 'flex';
+                document.getElementById('otp_code_input').focus;
+            } else {
+                showError(result.body.error || "حدث خطأ غير متوقع.");
+            }
+        })
+        .catch(err => {
+            hideLoader;
+            showError("خطأ في الاتصال بالسيرفر.");
+            console.error(err);
+        });
+    }
+
+    function closeOTPPopup {
+        document.getElementById('otp-popup').style.display = 'none';
+        currentTransactionToken = null;
+    }
+
+    function resendOTP {
+        const link = document.getElementById('resend-otp-link');
+        const errorP = document.getElementById('otp-error');
+        
+        link.textContent = "جاري الإرسال...";
+        link.style.pointerEvents = 'none';
+        errorP.style.display = 'none';
+
+        submitTransaction(true); // Call submitTransaction again to get new OTP
+        
+        // Reset link after a few seconds
+        setTimeout( => {
+            link.textContent = "إعادة إرسال رمز جديد";
+            link.style.pointerEvents = 'auto';
+        }, 3000);
+    }
+
+    // Step 2: Verify OTP and complete transaction
+    function verifyOTP {
+        const otpCode = document.getElementById('otp_code_input').value;
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const errorP = document.getElementById('otp-error');
+        const verifyBtn = document.getElementById('verify_otp_btn');
+
+        if(otpCode.length !== 6) {
+            errorP.textContent = "الرمز يجب أن يكون 6 أرقام.";
+            errorP.style.display = 'block';
+            return;
+        }
+
+        errorP.style.display = 'none';
+        
+        // Change button state
+        verifyBtn.classList.add('submitting');
+        verifyBtn.textContent = 'جاري التأكيد والخصم...';
+        verifyBtn.disabled = true;
+
+        const formData = new FormData;
+        formData.append('transaction_token', currentTransactionToken);
+        formData.append('otp_code', otpCode);
+        // We reuse transaction_create for POSTing the OTP validation
+        fetch("{% url 'transaction_create' %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json.then(data => ({status: response.status, body: data})))
+        .then(result => {
+             // Reset button state
+             verifyBtn.classList.remove('submitting');
+             verifyBtn.textContent = 'تأكيد وإتمام العملية';
+             verifyBtn.disabled = false;
+
+            if(result.status === 200 && result.body.success) {
+                // Success! Close OTP popup and show Invoice
+                closeOTPPopup;
+                showInvoice(result.body.invoice);
+            } else {
+                errorP.textContent = result.body.error || "حدث خطأ غير متوقع.";
+                errorP.style.display = 'block';
+            }
+        })
+        .catch(err => {
+            verifyBtn.classList.remove('submitting');
+            verifyBtn.textContent = 'تأكيد وإتمام العملية';
+            verifyBtn.disabled = false;
+            
+            errorP.textContent = "خطأ في الاتصال بالسيرفر.";
+            errorP.style.display = 'block';
+            console.error(err);
+        });
+    }
+
+    function showInvoice(inv) {
+        document.getElementById('inv-number').textContent = inv.invoice_number;
+        document.getElementById('inv-date').textContent = inv.date;
+        document.getElementById('inv-vendor').textContent = inv.vendor_name;
+        document.getElementById('inv-doctor').textContent = inv.doctor_name;
+        document.getElementById('inv-amount').textContent = inv.amount_spent.toFixed(2) + ' ';
+        
+        if(document.getElementById('inv-fee')) {
+            document.getElementById('inv-fee').textContent = inv.management_fee.toFixed(2) + ' ';
+        }
+        
+        document.getElementById('inv-total').textContent = inv.total_deducted.toFixed(2) + ' ';
+
+        document.getElementById('invoice-popup').style.display = 'flex';
+    }
+
+    function printInvoice {
+        const printContents = document.getElementById('print-area').innerHTML;
+        const originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = `
+            <div style="width: 80mm; font-family: sans-serif; padding: 10px; margin: 0 auto;">
+                ${printContents}
+                <hr style="border: 1px dashed #ccc; margin-top: 20px;">
+                <p style="text-align: center; font-size: 12px; color: #666;">{% trans 'تمت بنجاح' %}<br>{{ global_system_vendor.name|default:'النظام' }}</p>
+            </div>
+        `;
+
+        window.print;
+        document.body.innerHTML = originalContents;
+        window.location.reload; // Reload to reset JS states
+    }
+</script>
+{% endblock %}

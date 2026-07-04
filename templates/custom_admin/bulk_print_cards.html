@@ -1,0 +1,87 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans 'طباعة كروت الأطباء' %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS (Same as main project) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            @page {
+                size: A4;
+                margin: 0;
+            }
+            body {
+                background: white !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .page-break {
+                page-break-after: always;
+                break-after: page;
+            }
+        }
+        body {
+            background-color: #0f172a;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    
+    <!-- Top Bar with Print Button (Only visible on screen) -->
+    <div class="no-print mb-8 flex justify-between items-center bg-slate-800 p-6 rounded-[2rem] border border-slate-700 shadow-2xl">
+        <div>
+            <h1 class="text-white text-2xl font-black">{% trans 'جاهز للطباعة الجماعية' %}</h1>
+            <p class="text-slate-400">سيتم طباعة عدد {{ doctors|length }} كارت بنظام الوجه والظهر</p>
+        </div>
+        <button onclick="window.print" class="bg-teal-600 hover:bg-teal-500 text-white px-8 py-4 rounded-2xl font-black flex items-center gap-3 transition-all">
+            <i class="fa-solid fa-print"></i> {% trans 'ابدأ الطباعة الآن' %}
+        </button>
+    </div>
+
+    <!-- Cards Container -->
+    <div class="flex flex-col gap-10">
+        {% for doctor in doctors %}
+        <div class="page-break flex justify-center py-10">
+            {% include 'custom_admin/includes/doctor_id_card_component.html' with doctor=doctor %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script>
+        // Generate QR codes locally to avoid API rate limits when printing many cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const qrContainers = document.querySelectorAll('.qr-container');
+            
+            qrContainers.forEach(function(container) {
+                const qrContent = container.getAttribute('data-qr-content');
+                if (qrContent) {
+                    // Clear the fallback image
+                    container.innerHTML = "";
+                    // Generate new QR Code
+                    new QRCode(container, {
+                        text: qrContent,
+                        width: 150,
+                        height: 150,
+                        colorDark: "#005050",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                }
+            });
+        });
+
+        // Optional: Auto-trigger print after short delay
+        window.onload = function {
+            setTimeout( => {
+                // window.print;
+            }, 1500); // Increased delay slightly to allow QR codes to render
+        };
+    </script>
+</body>
+</html>

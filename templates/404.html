@@ -1,0 +1,46 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans 'الصفحة غير موجودة | 404' %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style>
+        body { font-family: 'IBM Plex Sans Arabic', sans-serif; background-color: #f9f9f9; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6 overflow-hidden relative">
+    <!-- Decorative background elements -->
+    <div class="absolute -top-20 -right-20 w-80 h-80 bg-teal-500/10 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl"></div>
+
+    <div class="max-w-md w-full text-center relative z-10">
+        <div class="mb-8 relative">
+            <h1 class="text-[12rem] font-black text-stone-200 leading-none select-none">404</h1>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <span class="material-symbols-outlined text-teal-800 text-9xl">search_off</span>
+            </div>
+        </div>
+        
+        <h2 class="text-3xl font-bold text-teal-900 mb-4">{% trans 'أوبس! لم نجد هذه الصفحة' %}</h2>
+        <p class="text-stone-500 mb-10 leading-relaxed">
+            {% trans 'يبدو أنك سلكت طريقاً غير موجود، أو أن الرابط الذي حاولت الوصول إليه قد تم حذفه أو نقله لمكان آخر.' %}
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'home' %}" class="inline-flex items-center justify-center gap-2 bg-teal-800 text-white px-8 py-3 rounded-2xl font-bold hover:bg-teal-700 transition-all shadow-lg shadow-teal-900/20">
+                <span class="material-symbols-outlined">home</span>
+                {% trans 'العودة للرئيسية' %}
+            </a>
+            <button onclick="history.back" class="inline-flex items-center justify-center gap-2 bg-white text-stone-600 px-8 py-3 rounded-2xl font-bold hover:bg-stone-50 transition-all border border-stone-200 shadow-sm">
+                <span class="material-symbols-outlined">arrow_back</span>
+                {% trans 'للخلف' %}
+            </button>
+        </div>
+    </div>
+</body>
+</html>

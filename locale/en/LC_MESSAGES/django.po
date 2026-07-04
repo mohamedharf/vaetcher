@@ -1,0 +1,5716 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-10 00:27+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\accounts\admin.py:39
+msgid "{} Companies"
+msgstr "{} Companies"
+
+#: .\accounts\admin.py:39
+msgid "General (All Companies)"
+msgstr "General (All Companies)"
+
+#: .\accounts\admin.py:40 .\accounts\models.py:66
+msgid "Companies"
+msgstr "Companies"
+
+#: .\accounts\admin.py:44
+msgid "{} Specialties"
+msgstr "{} Specialties"
+
+#: .\accounts\admin.py:44
+msgid "General (All Specialties)"
+msgstr "General (All Specialties)"
+
+#: .\accounts\admin.py:45 .\accounts\models.py:57 .\accounts\models.py:67
+#: .\core\models.py:13 .\events\models.py:20
+msgid "Specialties"
+msgstr "Specialties"
+
+#: .\accounts\admin.py:52 .\accounts\admin.py:59
+msgid "Doctor Profile"
+msgstr "Doctor Profile"
+
+#: .\accounts\admin.py:53 .\accounts\admin.py:60
+msgid "Doctor Profiles"
+msgstr "Doctor Profiles"
+
+#: .\accounts\admin.py:75
+msgid "Personal info"
+msgstr "Personal info"
+
+#: .\accounts\admin.py:76
+msgid "Permissions"
+msgstr "Permissions"
+
+#: .\accounts\admin.py:77
+msgid "Important dates"
+msgstr "Important dates"
+
+#: .\accounts\admin.py:136
+#, python-brace-format
+msgid "Welcome email sent to {email}"
+msgstr "Welcome email sent to {email}"
+
+#: .\accounts\admin.py:156
+msgid "Session"
+msgstr "Session"
+
+#: .\accounts\admin.py:157
+msgid "Sessions"
+msgstr "Sessions"
+
+#: .\accounts\admin.py:186 .\accounts\admin.py:428
+msgid "Basic Information"
+msgstr "Basic Information"
+
+#: .\accounts\admin.py:188
+msgid "Personal Data"
+msgstr "Personal data"
+
+#: .\accounts\admin.py:189
+msgid "Professional Data"
+msgstr "Professional Data"
+
+#: .\accounts\admin.py:193
+msgid "Financials"
+msgstr "Financials"
+
+#: .\accounts\admin.py:195
+msgid "Balance Summary"
+msgstr "Balance summary"
+
+#: .\accounts\admin.py:196
+msgid "Vouchers History"
+msgstr "Vouchers History"
+
+#: .\accounts\admin.py:197
+msgid "Transfers History"
+msgstr "Transfers History"
+
+#: .\accounts\admin.py:198
+msgid "Purchases History"
+msgstr "Purchases History"
+
+#: .\accounts\admin.py:202
+msgid "Attendance"
+msgstr "Attendance"
+
+#: .\accounts\admin.py:204
+msgid "Sessions History"
+msgstr "Sessions History"
+
+#: .\accounts\admin.py:208
+msgid "Business Card"
+msgstr "Business Card"
+
+#: .\accounts\admin.py:210
+msgid "Preview"
+msgstr "Preview"
+
+#: .\accounts\admin.py:235 .\accounts\admin.py:486 .\events\models.py:37
+msgid "Current Balance"
+msgstr "Current Balance"
+
+#: .\accounts\admin.py:239
+msgid "Save the doctor first to see the card."
+msgstr "Save the doctor first to see the card."
+
+#: .\accounts\admin.py:244
+msgid "Card Preview"
+msgstr "Card Preview"
+
+#: .\accounts\admin.py:246
+msgid "Export Doctor Cards (PDF)"
+msgstr "Export Doctor Cards (PDF)"
+
+#: .\accounts\admin.py:312
+msgid "Password (for new User)"
+msgstr "Password (for new User)"
+
+#: .\accounts\admin.py:329
+msgid "Name and Password are required to create the account."
+msgstr "Name and Password are required to create the account."
+
+#: .\accounts\admin.py:334
+msgid ""
+"A user with a name that generates the username '{}' already exists. Please "
+"use a slightly different name."
+msgstr ""
+"A user with a name that generates the username '{}' already exists. Please "
+"use a slightly different name."
+
+#: .\accounts\admin.py:338
+msgid "Cashier Password"
+msgstr "Cashier Password"
+
+#: .\accounts\admin.py:357
+msgid "Name and Password required for new cashier."
+msgstr "Name and Password required for new cashier."
+
+#: .\accounts\admin.py:361
+msgid "Username '{}' already exists."
+msgstr "Username '{}' already exists."
+
+#: .\accounts\admin.py:369
+msgid "Cashier"
+msgstr "Cashier"
+
+#: .\accounts\admin.py:370
+msgid "Cashiers"
+msgstr "Cashiers"
+
+#: .\accounts\admin.py:398 .\core\models.py:217
+msgid "Transaction"
+msgstr "Transaction"
+
+#: .\accounts\admin.py:399 .\core\models.py:218 .\project\settings.py:282
+#: .\templates\admin\index.html:36
+msgid "Transactions"
+msgstr "Transactions"
+
+#: .\accounts\admin.py:405
+msgid "Main Vendor"
+msgstr "Main Vendor"
+
+#: .\accounts\admin.py:430
+msgid ""
+"The Name field will also be used as the login username (spaces will be "
+"replaced by underscores)."
+msgstr ""
+"The Name field will also be used as the login username (spaces will be "
+"replaced by underscores)."
+
+#: .\accounts\admin.py:432
+msgid "Access Control"
+msgstr "Access Control"
+
+#: .\accounts\admin.py:434
+msgid "Control account activation and management fee settings."
+msgstr "Control account activation and management fee settings."
+
+#: .\accounts\models.py:7
+msgid "Admin"
+msgstr "Admin"
+
+#: .\accounts\models.py:8 .\accounts\models.py:96 .\core\models.py:196
+#: .\events\models.py:33
+msgid "Doctor"
+msgstr "Doctor"
+
+#: .\accounts\models.py:9 .\accounts\models.py:166 .\core\models.py:122
+#: .\core\models.py:195
+msgid "Vendor"
+msgstr "Vendor"
+
+#: .\accounts\models.py:10 .\events\models.py:13 .\events\models.py:35
+msgid "Company"
+msgstr "Company"
+
+#: .\accounts\models.py:11 .\accounts\models.py:71 .\core\admin.py:11
+msgid "Delegate"
+msgstr "Delegate"
+
+#: .\accounts\models.py:14
+msgid "Type"
+msgstr "Type"
+
+#: .\accounts\models.py:16
+msgid "Phone Number"
+msgstr "Phone Number"
+
+#: .\accounts\models.py:17
+msgid "email address"
+msgstr "email address"
+
+#: .\accounts\models.py:40
+msgid "البريد الإلكتروني مسجل بالفعل لمستخدم آخر في النظام."
+msgstr "The email is already registered to another user in the system."
+
+#: .\accounts\models.py:48
+msgid "رقم الهاتف مسجل بالفعل لمستخدم آخر في النظام."
+msgstr "The phone number is already registered to another user in the system."
+
+#: .\accounts\models.py:53 .\accounts\models.py:64 .\accounts\models.py:85
+#: .\accounts\models.py:137 .\core\models.py:8 .\events\models.py:11
+msgid "Name"
+msgstr "Name"
+
+#: .\accounts\models.py:56 .\accounts\models.py:88
+msgid "Specialty"
+msgstr "Specialty"
+
+#: .\accounts\models.py:63 .\accounts\models.py:84 .\accounts\models.py:136
+#: .\core\models.py:7 .\core\models.py:230
+msgid "User"
+msgstr "User"
+
+#: .\accounts\models.py:65 .\accounts\models.py:86 .\accounts\models.py:139
+#: .\core\models.py:10
+msgid "Phone"
+msgstr "Phone"
+
+#: .\accounts\models.py:68 .\accounts\models.py:93 .\accounts\models.py:161
+#: .\core\models.py:16
+msgid "Is Deleted"
+msgstr "Is deleted"
+
+#: .\accounts\models.py:72 .\core\admin.py:12 .\events\models.py:19
+#: .\project\settings.py:300
+msgid "Delegates"
+msgstr "Delegates"
+
+#: .\accounts\models.py:87 .\accounts\models.py:140 .\core\models.py:11
+msgid "Email"
+msgstr "Email"
+
+#: .\accounts\models.py:89
+msgid "QR Code"
+msgstr "QR Code"
+
+#: .\accounts\models.py:90
+msgid "Profile Picture"
+msgstr "Profile Picture"
+
+#: .\accounts\models.py:91 .\accounts\models.py:162 .\core\models.py:14
+#: .\core\models.py:68 .\core\models.py:113 .\core\models.py:155
+#: .\core\models.py:235 .\events\models.py:22 .\events\models.py:42
+msgid "Created At"
+msgstr "CreatedAt"
+
+#: .\accounts\models.py:92 .\accounts\models.py:163 .\core\models.py:15
+#: .\core\models.py:69 .\core\models.py:114 .\events\models.py:23
+#: .\events\models.py:43
+msgid "Updated At"
+msgstr "Updated At"
+
+#: .\accounts\models.py:97 .\events\models.py:18 .\project\settings.py:238
+#: .\templates\admin\index.html:72
+msgid "Doctors"
+msgstr "Doctors"
+
+#: .\accounts\models.py:133
+msgid "Vendor Admin"
+msgstr "Vendor Admin"
+
+#: .\accounts\models.py:134
+msgid "Vendor Cashier"
+msgstr "Vendor Cashier"
+
+#: .\accounts\models.py:138 .\core\models.py:9
+msgid "Contact Person"
+msgstr "Contact Person"
+
+#: .\accounts\models.py:141 .\core\models.py:12
+msgid "Address"
+msgstr "Address"
+
+#: .\accounts\models.py:142
+msgid "Category"
+msgstr "Category"
+
+#: .\accounts\models.py:144
+msgid "Role"
+msgstr "Role"
+
+#: .\accounts\models.py:145
+msgid ""
+"Vendor Admin has full access, Cashier can only process transactions via QR "
+"scan"
+msgstr ""
+"Vendor Admin has full access, Cashier can only process transactions via QR "
+"scan"
+
+#: .\accounts\models.py:149
+msgid "Parent Vendor"
+msgstr "Parent Vendor"
+
+#: .\accounts\models.py:150
+msgid "If this is a cashier, specify the parent vendor it belongs to"
+msgstr "If this is a cashier, specify the parent vendor it belongs to"
+
+#: .\accounts\models.py:153
+msgid "Bank Account Info"
+msgstr "Bank Account Info"
+
+#: .\accounts\models.py:153
+msgid "Bank name, Account number, etc."
+msgstr "Bank name, Account number, etc."
+
+#: .\accounts\models.py:154
+msgid "Electronic Wallet Info"
+msgstr "Electronic Wallet Info"
+
+#: .\accounts\models.py:154
+msgid "Vodafone Cash, etc."
+msgstr "Vodafone Cash, etc."
+
+#: .\accounts\models.py:155
+msgid "Other Financial Info"
+msgstr "Other Financial Info"
+
+#: .\accounts\models.py:156
+msgid "Vendor Logo"
+msgstr "Vendor Logo"
+
+#: .\accounts\models.py:158 .\core\models.py:199
+msgid "Management Fee Percentage"
+msgstr "Management Fee Percentage"
+
+#: .\accounts\models.py:159
+msgid "Has Management Fee"
+msgstr "Has Management Fee"
+
+#: .\accounts\models.py:160 .\events\models.py:40
+msgid "Is Active"
+msgstr "Is Active"
+
+#: .\accounts\models.py:167 .\project\settings.py:244
+msgid "Vendors"
+msgstr "Vendors"
+
+#: .\core\admin_site.py:9
+msgid "Hadramout Village Administration"
+msgstr "Hadramout Village Administration"
+
+#: .\core\admin_site.py:10
+msgid "Hadramout Admin"
+msgstr "Hadramout Admin"
+
+#: .\core\admin_site.py:11 .\example\project\settings.py:219
+#: .\example\project\settings.py:222 .\project\settings.py:216
+#: .\project\settings.py:219
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: .\core\models.py:19
+msgid "Pharmaceutical Company"
+msgstr "Pharmaceutical Company"
+
+#: .\core\models.py:20
+msgid "Pharmaceutical Companies"
+msgstr "Pharmaceutical Companies"
+
+#: .\core\models.py:45
+msgid "Total Budget Allocated"
+msgstr "Total Budget Allocated"
+
+#: .\core\models.py:46
+msgid "Total Vouchers Distributed"
+msgstr "Total Vouchers Distributed"
+
+#: .\core\models.py:47
+msgid "Total Amount Spent by Doctors"
+msgstr "Total Amount Spent by Doctors"
+
+#: .\core\models.py:48
+msgid "Settlement Amount"
+msgstr "Settlement Amount"
+
+#: .\core\models.py:49 .\core\models.py:94 .\core\models.py:126
+msgid "Settlement Date"
+msgstr "Settlement Date"
+
+#: .\core\models.py:51 .\core\models.py:96 .\core\models.py:128
+#: .\core\models.py:249
+msgid "Status"
+msgstr "Status"
+
+#: .\core\models.py:60 .\core\models.py:105 .\core\models.py:153
+#: .\events\models.py:21 .\events\models.py:41
+msgid "Notes"
+msgstr "Notes"
+
+#: .\core\models.py:61 .\core\models.py:106 .\core\models.py:154
+msgid "Receipt Image"
+msgstr "Receive Image"
+
+#: .\core\models.py:72
+msgid "Company Settlement"
+msgstr "Company Settlement"
+
+#: .\core\models.py:73
+msgid "Company Settlements"
+msgstr "Company Settlements"
+
+#: .\core\models.py:90
+msgid "Events Assigned"
+msgstr "Events Assigned"
+
+#: .\core\models.py:91
+msgid "Doctors Registered"
+msgstr "Doctors Registered"
+
+#: .\core\models.py:92
+msgid "Commission Rate (%)"
+msgstr "Commission Rate (%)"
+
+#: .\core\models.py:93
+msgid "Total Commission"
+msgstr "Total Commission"
+
+#: .\core\models.py:117
+msgid "Delegate Settlement"
+msgstr "Delegate Settlement"
+
+#: .\core\models.py:118
+msgid "Delegate Settlements"
+msgstr "Delegate Settlements"
+
+#: .\core\models.py:123
+msgid "Amount Settled"
+msgstr "Amount Set"
+
+#: .\core\models.py:124
+msgid "Admin Commission Amount"
+msgstr "Admin Commission Amount"
+
+#: .\core\models.py:125
+msgid "Net Amount to Vendor"
+msgstr "Net Amount to Vendor"
+
+#: .\core\models.py:138
+msgid "Payment Method"
+msgstr "Payment Method"
+
+#: .\core\models.py:151
+msgid "Transactions Settled"
+msgstr "Transactions Set"
+
+#: .\core\models.py:158
+msgid "Vendor Settlement"
+msgstr "Vendor Settlement"
+
+#: .\core\models.py:159 .\project\settings.py:288
+msgid "Vendor Settlements"
+msgstr "Vendor Settlements"
+
+#: .\core\models.py:194 .\events\models.py:47 .\project\settings.py:269
+msgid "Vouchers"
+msgstr "Vouchers"
+
+#: .\core\models.py:197
+msgid "Created By"
+msgstr "Created By"
+
+#: .\core\models.py:198
+msgid "Amount Spent"
+msgstr "Amount Spent"
+
+#: .\core\models.py:200
+msgid "Management Fee Amount"
+msgstr "Management Fee Amount"
+
+#: .\core\models.py:201
+msgid "Total Deducted"
+msgstr "Total Deducted"
+
+#: .\core\models.py:202
+msgid "Transaction Date"
+msgstr "Transaction Date"
+
+#: .\core\models.py:203
+msgid "Items Description"
+msgstr "Items Description"
+
+#: .\core\models.py:204
+msgid "Invoice Number"
+msgstr "Invoice Number"
+
+#: .\core\models.py:213 .\core\models.py:225
+msgid "Settlement"
+msgstr "Settlement"
+
+#: .\core\models.py:226 .\events\models.py:46 .\events\models.py:71
+msgid "Voucher"
+msgstr "Voucher"
+
+#: .\core\models.py:227 .\example\project\settings.py:381
+msgid "System"
+msgstr "System"
+
+#: .\core\models.py:228
+msgid "Account"
+msgstr "Account"
+
+#: .\core\models.py:231
+msgid "Message"
+msgstr "Message"
+
+#: .\core\models.py:232
+msgid "Notification Type"
+msgstr "Notification Type"
+
+#: .\core\models.py:233
+msgid "Link"
+msgstr "Link"
+
+#: .\core\models.py:233
+msgid "URL to redirect to when clicked"
+msgstr "URL to redirect to when clicked"
+
+#: .\core\models.py:234
+msgid "Is Read"
+msgstr "Is Read"
+
+#: .\core\models.py:238
+msgid "Notification"
+msgstr "Notification"
+
+#: .\core\models.py:239 .\templates\custom_admin\dashboard_base.html:114
+msgid "Notifications"
+msgstr "Notifications"
+
+#: .\core\models.py:246
+msgid "Recipient"
+msgstr "Recipient"
+
+#: .\core\models.py:247
+msgid "Subject"
+msgstr "Subject"
+
+#: .\core\models.py:248
+msgid "Template Used"
+msgstr "Template Used"
+
+#: .\core\models.py:250
+msgid "Error Message"
+msgstr "Error Message"
+
+#: .\core\models.py:251
+msgid "Sent At"
+msgstr "Sent At"
+
+#: .\core\models.py:254
+msgid "Email Log"
+msgstr "Email Log"
+
+#: .\core\models.py:255 .\project\settings.py:319
+msgid "Email Logs"
+msgstr "Email Logs"
+
+#: .\core\views.py:584
+msgid "لا تملك صلاحية تحويل هذه القسيمة."
+msgstr "You do not have the authority to transfer this coupon."
+
+#: .\core\views.py:592
+msgid "لا يمكن تحويل قسيمة غير نشطة."
+msgstr "An inactive coupon cannot be transferred."
+
+#: .\core\views.py:600
+msgid "يرجى توفير رمز التحقق."
+msgstr "Please provide the verification code."
+
+#: .\core\views.py:608
+msgid "انتهت صلاحية رمز التحقق أو أنه غير صالح."
+msgstr "The verification code has expired or is invalid."
+
+#: .\core\views.py:612
+msgid "رمز التحقق غير صحيح."
+msgstr "The verification code is invalid."
+
+#: .\core\views.py:617
+msgid "بيانات العملية غير متطابقة."
+msgstr "Transaction data does not match."
+
+#: .\core\views.py:663
+msgid "هذه الصفحة مخصصة للأطباء فقط."
+msgstr "This page is intended for doctors only."
+
+#: .\core\views.py:775
+msgid "تم حذف حساب الكاشير بنجاح."
+msgstr "The cashier account has been successfully deleted."
+
+#: .\core\views.py:993
+msgid "يرجى تعبئة الحقول المطلوبة."
+msgstr "Please fill out the required fields."
+
+#: .\core\views.py:1043 .\core\views.py:2334 .\core\views.py:2420
+msgid "اسم المستخدم (Login) مسجل مسبقاً لمستخدم آخر في النظام."
+msgstr ""
+"The user name (Login) is already registered to another user in the system."
+
+#: .\core\views.py:1067
+msgid "يرجى إدخال اسم التخصص."
+msgstr "Please enter the specialty name."
+
+#: .\core\views.py:1085 .\core\views.py:1099
+msgid "التخصص غير موجود."
+msgstr "Specialization does not exist."
+
+#: .\core\views.py:1087
+msgid "بيانات غير مكتملة لتعديل التخصص."
+msgstr "Incomplete data to modify specialization."
+
+#: .\core\views.py:1103
+msgid "معرف التخصص غير صالح."
+msgstr "The specialty ID is invalid."
+
+#: .\core\views.py:1117
+msgid "يرجى تعبئة الحقول المطلوبة للقسيمة."
+msgstr "Please fill out the required fields for the coupon."
+
+#: .\core\views.py:1201
+msgid "يرجى ملء جميع البيانات المطلوبة."
+msgstr "Please fill out all required data."
+
+#: .\core\views.py:1330
+msgid "تم تحديث بيانات القسيمة بنجاح."
+msgstr "The coupon data has been updated successfully."
+
+#: .\core\views.py:1338
+msgid ""
+"لا يمكن حذف قسيمة تحتوي على عمليات مالية مسجلة. يمكنك تعطيلها بدلاً من ذلك."
+msgstr ""
+"A voucher containing recorded financial transactions cannot be deleted. You "
+"can disable it instead."
+
+#: .\core\views.py:1341
+msgid "تم حذف القسيمة بنجاح."
+msgstr "The coupon has been successfully deleted."
+
+#: .\core\views.py:1354
+msgid "تم إلغاء العملية المالية وإعادة المبلغ لرصيد القسيمة بنجاح."
+msgstr ""
+"The financial transaction was canceled and the amount was returned to the "
+"voucher balance successfully."
+
+#: .\core\views.py:1368
+msgid "تم إلغاء التحويل وإعادة القسيمة للطبيب الأصلي بنجاح."
+msgstr ""
+"The transfer has been canceled and the voucher has been returned to the "
+"original doctor successfully."
+
+#: .\core\views.py:1381 .\core\views.py:1859 .\core\views.py:2174
+msgid "تم تغيير كلمة المرور بنجاح."
+msgstr "The password has been changed successfully."
+
+#: .\core\views.py:1395
+msgid "تم تحديث بيانات الطبيب بنجاح."
+msgstr "Doctor data has been updated successfully."
+
+#: .\core\views.py:1472
+msgid "تم إصدار تسوية المورد بنجاح وتصفير المديونية المحددة."
+msgstr ""
+"The supplier settlement has been successfully issued and the specified debt "
+"has been zeroed."
+
+#: .\core\views.py:1492
+msgid "تم إصدار تسوية الشركة بنجاح."
+msgstr "The company settlement has been successfully issued."
+
+#: .\core\views.py:1514
+msgid "تم إصدار تسوية المندوب بنجاح."
+msgstr "The delegate settlement has been issued successfully."
+
+#: .\core\views.py:1684
+msgid ""
+"لم يتم إنشاء أي قسائم جديدة، ربما تم شحن قسائم لهؤلاء الأطباء مسبقاً في هذه "
+"الفعالية."
+msgstr ""
+"No new coupons were created, coupons may have been shipped to these doctors "
+"previously at this event."
+
+#: .\core\views.py:1844
+msgid "تم تحديث البيانات الشخصية بنجاح."
+msgstr "Personal data has been updated successfully."
+
+#: .\core\views.py:1851
+msgid "كلمتا المرور غير متطابقتين."
+msgstr "The two passwords do not match."
+
+#: .\core\views.py:1853 .\core\views.py:2546 .\core\views.py:2619
+#: .\core\views.py:2873
+msgid "كلمة المرور يجب أن تكون 6 أحرف على الأقل."
+msgstr "Password must be at least 6 characters."
+
+#: .\core\views.py:2032 .\core\views.py:2196
+msgid "تم تحديث البيانات المالية بنجاح."
+msgstr "The financial statements have been updated successfully."
+
+#: .\core\views.py:2064 .\core\views.py:2188
+msgid "تم تحديث الملف الشخصي بنجاح."
+msgstr "The profile has been updated successfully."
+
+#: .\core\views.py:2150
+msgid "لا يمكنك إيقاف حسابك الخاص."
+msgstr "You cannot stop your own account."
+
+#: .\core\views.py:2164
+msgid "كلمة المرور الحالية غير صحيحة."
+msgstr "The current password is incorrect."
+
+#: .\core\views.py:2166
+msgid "كلمتا المرور الجديدتان غير متطابقتين."
+msgstr "The two new passwords do not match."
+
+#: .\core\views.py:2168
+msgid "كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل."
+msgstr "The new password must be at least 6 characters."
+
+#: .\core\views.py:2208
+msgid "تم تحديث بيانات حسابك الشخصي بنجاح."
+msgstr "Your personal account data has been updated successfully."
+
+#: .\core\views.py:2211
+msgid "إجراء غير صالح."
+msgstr "Invalid action."
+
+#: .\core\views.py:2461
+msgid "تم تنشيط الحسابات المحددة بنجاح."
+msgstr "The selected accounts have been activated successfully."
+
+#: .\core\views.py:2465
+msgid "تم إيقاف الحسابات المحددة بنجاح."
+msgstr "The selected accounts have been successfully suspended."
+
+#: .\core\views.py:2485
+msgid "تم حذف العناصر المحددة بنجاح."
+msgstr "The selected items were successfully deleted."
+
+#: .\core\views.py:2536
+msgid "تم تحديث بيانات الشركة بنجاح."
+msgstr "Company data has been updated successfully."
+
+#: .\core\views.py:2544 .\core\views.py:2617 .\core\views.py:2871
+msgid "تم تحديث كلمة المرور بنجاح."
+msgstr "The password has been updated successfully."
+
+#: .\core\views.py:2548
+msgid "هذه الشركة لا تملك حساب دخول."
+msgstr "This company does not have a login account."
+
+#: .\core\views.py:2573
+msgid "تم تحديث الارتباطات (المناديب والتخصصات) بنجاح."
+msgstr ""
+"Associations (representatives and specializations) have been updated "
+"successfully."
+
+#: .\core\views.py:2609
+msgid "تم تحديث بيانات المندوب بنجاح."
+msgstr "The representative's data has been updated successfully."
+
+#: .\core\views.py:2621
+msgid "هذا المندوب لا يملك حساب دخول."
+msgstr "This agent does not have a login account."
+
+#: .\core\views.py:2637
+msgid "تم تحديث ارتباطات المندوب (الشركات والتخصصات) بنجاح."
+msgstr ""
+"Agent associations (Companies and Specialties) have been updated "
+"successfully."
+
+#: .\core\views.py:2714
+msgid "يرجى تعبئة الحقول الأساسية المطلوبة."
+msgstr "Please fill out the basic required fields."
+
+#: .\core\views.py:2719
+msgid "اسم المستخدم مسجل مسبقاً لمستخدم آخر."
+msgstr "The username is already registered to another user."
+
+#: .\core\views.py:2777
+msgid "يرجى تحديد تاجر واحد على الأقل."
+msgstr "Please select at least one merchant."
+
+#: .\core\views.py:2863
+msgid "تم تحديث بيانات التاجر بنجاح."
+msgstr "Merchant data has been updated successfully."
+
+#: .\core\views.py:2875
+msgid "هذا التاجر لا يملك حساب دخول."
+msgstr "This trader does not have a login account."
+
+#: .\core\views.py:2903
+msgid "يجب أن تكون قيمة التسوية أكبر من الصفر."
+msgstr "The settlement value must be greater than zero."
+
+#: .\core\views.py:2905
+msgid "قيمة التسوية غير صالحة."
+msgstr "The settlement value is invalid."
+
+#: .\core\views.py:2916
+msgid "اسم المستخدم مسجل مسبقاً."
+msgstr "Username is already registered."
+
+#: .\core\views.py:2949
+msgid "تم تغيير حالة الكاشير بنجاح."
+msgstr "The cashier status has been changed successfully."
+
+#: .\core\views.py:3074
+msgid "المستخدم غير موجود."
+msgstr "User not found."
+
+#: .\core\views.py:3082
+msgid "يرجى تعبئة عنوان الرسالة ومحتواها."
+msgstr "Please fill in the message title and content."
+
+#: .\events\models.py:8
+msgid "Cash"
+msgstr "Cash"
+
+#: .\events\models.py:9
+msgid "Deferred"
+msgstr "Deferred"
+
+#: .\events\models.py:12
+msgid "Event Date"
+msgstr "Event Date"
+
+#: .\events\models.py:14
+msgid "Payment Type"
+msgstr "PaymentType"
+
+#: .\events\models.py:15
+msgid "Voucher Value"
+msgstr "Voucher Value"
+
+#: .\events\models.py:16
+msgid "Voucher Expiry Days"
+msgstr "Voucher Expiry Days"
+
+#: .\events\models.py:17
+msgid "Max Budget"
+msgstr "Max Budget"
+
+#: .\events\models.py:26 .\events\models.py:34
+msgid "Event"
+msgstr "Event"
+
+#: .\events\models.py:27 .\project\settings.py:263
+msgid "Events"
+msgstr "Events"
+
+#: .\events\models.py:36
+msgid "Initial Value"
+msgstr "Initial value"
+
+#: .\events\models.py:38
+msgid "Issue Date"
+msgstr "Issue Date"
+
+#: .\events\models.py:39
+msgid "Expiry Date"
+msgstr "Expiry Date"
+
+#: .\events\models.py:69
+msgid "From Doctor"
+msgstr "From Doctor"
+
+#: .\events\models.py:70
+msgid "To Doctor"
+msgstr "To Doctor"
+
+#: .\events\models.py:72
+msgid "Transfer Date"
+msgstr "Transfer Date"
+
+#: .\events\models.py:75
+msgid "Voucher Transfer"
+msgstr "Voucher Transfer"
+
+#: .\events\models.py:76
+msgid "Voucher Transfers"
+msgstr "Voucher Transfers"
+
+#: .\example\project\settings.py:125 .\project\settings.py:135
+msgid "English"
+msgstr "English"
+
+#: .\example\project\settings.py:126 .\project\settings.py:134
+msgid "Arabic"
+msgstr "Arabic"
+
+#: .\example\project\settings.py:229
+msgid "Menu Management"
+msgstr "Menu Management"
+
+#: .\example\project\settings.py:234
+msgid "Branches"
+msgstr "Branches"
+
+#: .\example\project\settings.py:239
+msgid "Categories"
+msgstr "Categories"
+
+#: .\example\project\settings.py:244
+msgid "Meals"
+msgstr "Meals"
+
+#: .\example\project\settings.py:251 .\example\project\settings.py:256
+msgid "Orders"
+msgstr "Orders"
+
+#: .\example\project\settings.py:263 .\example\project\settings.py:273
+msgid "Reservations"
+msgstr "Reservations"
+
+#: .\example\project\settings.py:268
+msgid "Staff Dashboard"
+msgstr "Staff Dashboard"
+
+#: .\example\project\settings.py:278
+msgid "Tables"
+msgstr "Tables"
+
+#: .\example\project\settings.py:283
+msgid "Waiting List"
+msgstr "Waiting List"
+
+#: .\example\project\settings.py:288
+msgid "Time Slots"
+msgstr "Time Slots"
+
+#: .\example\project\settings.py:295
+msgid "Customer Messages"
+msgstr "Customer Messages"
+
+#: .\example\project\settings.py:300
+msgid "Contacts"
+msgstr "Contacts"
+
+#: .\example\project\settings.py:307
+msgid "Page Content"
+msgstr "Page Content"
+
+#: .\example\project\settings.py:312
+msgid "Home Banner"
+msgstr "Home Banner"
+
+#: .\example\project\settings.py:317
+msgid "Home Story"
+msgstr "Home Story"
+
+#: .\example\project\settings.py:322
+msgid "About Banner"
+msgstr "About Banner"
+
+#: .\example\project\settings.py:327
+msgid "About Story"
+msgstr "About Story"
+
+#: .\example\project\settings.py:332
+msgid "Intro Video"
+msgstr "Intro Video"
+
+#: .\example\project\settings.py:337
+msgid "Why Us Items"
+msgstr "WhyUsItems"
+
+#: .\example\project\settings.py:342
+msgid "Statistics"
+msgstr "Statistics"
+
+#: .\example\project\settings.py:347
+msgid "Services"
+msgstr "Services"
+
+#: .\example\project\settings.py:352
+msgid "Gallery"
+msgstr "Gallery"
+
+#: .\example\project\settings.py:359
+msgid "Site Settings"
+msgstr "Site Settings"
+
+#: .\example\project\settings.py:364
+msgid "SEO Settings"
+msgstr "SEO Settings"
+
+#: .\example\project\settings.py:369
+msgid "Theme Customization"
+msgstr "Theme Customization"
+
+#: .\example\project\settings.py:374
+msgid "Instagram Images"
+msgstr "Instagram Images"
+
+#: .\example\project\settings.py:386 .\project\settings.py:232
+msgid "Users"
+msgstr "Users"
+
+#: .\example\project\settings.py:391
+msgid "Groups"
+msgstr "Groups"
+
+#: .\example\templates\admin\index.html:14
+msgid "Revenue (7d)"
+msgstr "Revenue(7d)"
+
+#: .\example\templates\admin\index.html:20
+msgid "payments"
+msgstr "payments"
+
+#: .\example\templates\admin\index.html:28
+#: .\example\templates\admin\index.html:50
+msgid "vs previous 7 days"
+msgstr "vs previous 7 days"
+
+#: .\example\templates\admin\index.html:36
+msgid "Orders (7d)"
+msgstr "Orders (7d)"
+
+#: .\example\templates\admin\index.html:42
+msgid "shopping_cart"
+msgstr "shopping_cart"
+
+#: .\example\templates\admin\index.html:58
+msgid "Avg. Order Value"
+msgstr "Avg. OrderValue"
+
+#: .\example\templates\admin\index.html:64
+msgid "receipt_long"
+msgstr "receipt_long"
+
+#: .\example\templates\admin\index.html:68
+msgid "Performance metric"
+msgstr "Performance metric"
+
+#: .\example\templates\admin\index.html:76
+msgid "Active Branches"
+msgstr "Active Branches"
+
+#: .\example\templates\admin\index.html:82
+msgid "store"
+msgstr "store"
+
+#: .\example\templates\admin\index.html:86
+msgid "Operating locations"
+msgstr "Operating locations"
+
+#: .\example\templates\admin\index.html:95 .\templates\admin\index.html:91
+msgid "Revenue Trend (30 Days)"
+msgstr "Revenue Trend (30 Days)"
+
+#: .\example\templates\admin\index.html:103
+msgid "Top 5 Selling Items"
+msgstr "Top 5 Selling Items"
+
+#: .\example\templates\admin\index.html:113
+msgid "Branch Performance Overview"
+msgstr "Branch Performance Overview"
+
+#: .\example\templates\admin\index.html:114
+msgid "Last 7 Days Activity"
+msgstr "Last 7 Days Activity"
+
+#: .\example\templates\admin\index.html:120
+msgid "Branch Name"
+msgstr "Branch Name"
+
+#: .\example\templates\admin\index.html:121
+msgid "Menu Items"
+msgstr "Menu Items"
+
+#: .\example\templates\admin\index.html:122
+msgid "Delivery Orders"
+msgstr "Delivery Orders"
+
+#: .\example\templates\admin\index.html:123
+msgid "Dine-in Orders"
+msgstr "Dine-in Orders"
+
+#: .\example\templates\admin\index.html:124
+msgid "Revenue (30d)"
+msgstr "Revenue(30d)"
+
+#: .\project\settings.py:227
+msgid "Accounts"
+msgstr "Accounts"
+
+#: .\project\settings.py:250
+msgid "Doctor Registration QR"
+msgstr "Doctor Registration QR"
+
+#: .\project\settings.py:258
+msgid "Events Management"
+msgstr "Events Management"
+
+#: .\project\settings.py:277
+msgid "Transactions & Finance"
+msgstr "Transactions & Finance"
+
+#: .\project\settings.py:294
+msgid "Pharma Companies"
+msgstr "Pharma Companies"
+
+#: .\project\settings.py:308
+msgid "System Settings & Logs"
+msgstr "System Settings & Logs"
+
+#: .\project\settings.py:313
+msgid "System Settings"
+msgstr "System Settings"
+
+#: .\templates\403.html:8
+msgid "وصول غير مصرح | 403"
+msgstr "Unauthorized access 403"
+
+#: .\templates\403.html:28
+msgid "عذراً، لا نملك الصلاحية الكافية"
+msgstr "Sorry, we don't have enough authority"
+
+#: .\templates\403.html:30
+msgid ""
+"ليس لديك إذن للوصول إلى هذا المحتوى. يرجى التأكد من تسجيل الدخول بالحساب "
+"الصحيح أو التواصل مع الإدارة إذا كنت تعتقد أن هذا خطأ."
+msgstr ""
+"You do not have permission to access this content. Please make sure you are "
+"logged in with the correct account or contact the administration if you "
+"think this is an error."
+
+#: .\templates\403.html:36 .\templates\404.html:37 .\templates\500.html:36
+msgid "العودة للرئيسية"
+msgstr "Back to main page"
+
+#: .\templates\403.html:43 .\templates\base.html:173
+#: .\templates\custom_admin\company_portal.html:140
+#: .\templates\custom_admin\delegate_portal.html:140
+#: .\templates\custom_admin\includes\sidebar.html:66
+msgid "تسجيل الخروج"
+msgstr "Log out"
+
+#: .\templates\404.html:8
+msgid "الصفحة غير موجودة | 404"
+msgstr "Page not found | 404"
+
+#: .\templates\404.html:29
+msgid "أوبس! لم نجد هذه الصفحة"
+msgstr "Oops! We did not find this page"
+
+#: .\templates\404.html:31
+msgid ""
+"يبدو أنك سلكت طريقاً غير موجود، أو أن الرابط الذي حاولت الوصول إليه قد تم "
+"حذفه أو نقله لمكان آخر."
+msgstr ""
+"It appears that you have taken a route that does not exist, or that the link"
+" you tried to access has been deleted or moved to another location."
+
+#: .\templates\404.html:41
+msgid "للخلف"
+msgstr "Backwards"
+
+#: .\templates\500.html:8
+msgid "خطأ في الخادم | 500"
+msgstr "Server Error | 500"
+
+#: .\templates\500.html:28
+msgid "عذراً، حدث خطأ داخلي"
+msgstr "Sorry, an internal error has occurred"
+
+#: .\templates\500.html:30
+msgid ""
+"واجه النظام مشكلة غير متوقعة أثناء معالجة طلبك. لقد تم إخطار الفريق التقني، "
+"نرجو المحاولة مرة أخرى لاحقاً."
+msgstr ""
+"The system encountered an unexpected problem while processing your request. "
+"The technical team has been notified, please try again later."
+
+#: .\templates\500.html:40
+msgid "تحديث الصفحة"
+msgstr "Refresh the page"
+
+#: .\templates\accounts\doctor_register.html:100
+msgid "انضم لمجتمع"
+msgstr "Join a community"
+
+#: .\templates\accounts\doctor_register.html:100
+msgid "أطباء حضرموت"
+msgstr "Hadhramaut doctors"
+
+#: .\templates\accounts\doctor_register.html:103
+msgid ""
+"سجل حسابك الآن لتبدأ في استخدام نظام القسائم والمزايا الحصرية للأطباء "
+"المعتمدين."
+msgstr ""
+"Register your account now to start using the coupon system and exclusive "
+"benefits for approved doctors."
+
+#: .\templates\accounts\doctor_register.html:123
+msgid "تسجيل طبيب جديد"
+msgstr "Register a new doctor"
+
+#: .\templates\accounts\doctor_register.html:124
+msgid "أنشئ حسابك للاستفادة من خدمات المنظومة"
+msgstr "Create your account to benefit from the system’s services"
+
+#: .\templates\accounts\doctor_register.html:142
+#: .\templates\custom_admin\doctor_profile.html:503
+#: .\templates\custom_admin\doctor_settings.html:177
+#: .\templates\custom_admin\doctors_directory.html:403
+#: .\templates\custom_admin\register_gateway.html:120
+#: .\templates\custom_admin\system_settings.html:402
+msgid "الاسم الكامل"
+msgstr "full name"
+
+#: .\templates\accounts\doctor_register.html:145
+msgid "مثال: د. أحمد محمد"
+msgstr "Example: Dr. Ahmed Mohamed"
+
+#: .\templates\accounts\doctor_register.html:148
+#: .\templates\custom_admin\company_profile.html:277
+#: .\templates\custom_admin\delegate_profile.html:180
+#: .\templates\custom_admin\doctor_profile.html:515
+#: .\templates\custom_admin\doctor_settings.html:181
+#: .\templates\custom_admin\doctors_directory.html:407
+#: .\templates\custom_admin\register_gateway.html:125
+#: .\templates\custom_admin\vendor_profile.html:379
+#: .\templates\custom_admin\vendors_directory.html:301
+#: .\templates\emails\account_credentials.html:35
+#: .\templates\emails\welcome_email.html:35
+msgid "رقم الهاتف"
+msgstr "phone number"
+
+#: .\templates\accounts\doctor_register.html:157
+#: .\templates\core\vendor_dashboard.html:183
+#: .\templates\custom_admin\system_settings.html:401
+#: .\templates\emails\account_credentials.html:24
+#: .\templates\emails\welcome_email.html:24
+#: .\templates\registration\login.html:128
+msgid "اسم المستخدم"
+msgstr "user name"
+
+#: .\templates\accounts\doctor_register.html:160
+msgid "اختياري"
+msgstr "optional"
+
+#: .\templates\accounts\doctor_register.html:163
+#: .\templates\custom_admin\companies_directory.html:383
+#: .\templates\custom_admin\company_profile.html:273
+#: .\templates\custom_admin\doctor_profile.html:433
+#: .\templates\custom_admin\doctor_profile.html:520
+#: .\templates\custom_admin\doctor_settings.html:185
+#: .\templates\custom_admin\doctors_directory.html:413
+#: .\templates\custom_admin\register_gateway.html:132
+#: .\templates\custom_admin\system_settings.html:403
+#: .\templates\custom_admin\vendor_profile.html:591
+#: .\templates\custom_admin\vendors_directory.html:305
+#: .\templates\emails\account_credentials.html:29
+#: .\templates\emails\welcome_email.html:29
+msgid "البريد الإلكتروني"
+msgstr "e-mail"
+
+#: .\templates\accounts\doctor_register.html:172
+#: .\templates\custom_admin\doctor_profile.html:507
+#: .\templates\custom_admin\doctors_directory.html:419
+#: .\templates\custom_admin\includes\doctor_id_card_component.html:94
+#: .\templates\emails\welcome_email.html:41
+msgid "التخصص"
+msgstr "Specialization"
+
+#: .\templates\accounts\doctor_register.html:180
+msgid "ابحث عن تخصصك هنا..."
+msgstr "Find your specialty here..."
+
+#: .\templates\accounts\doctor_register.html:188
+#: .\templates\custom_admin\login_gateway.html:135
+#: .\templates\custom_admin\register_gateway.html:139
+#: .\templates\custom_admin\vendor_profile.html:388
+#: .\templates\custom_admin\vendors_directory.html:321
+#: .\templates\registration\login.html:134
+msgid "كلمة المرور"
+msgstr "password"
+
+#: .\templates\accounts\doctor_register.html:194
+#: .\templates\custom_admin\doctor_settings.html:220
+#: .\templates\custom_admin\register_gateway.html:144
+msgid "تأكيد كلمة المرور"
+msgstr "Confirm password"
+
+#: .\templates\accounts\doctor_register.html:203
+msgid "إنشاء الحساب والمتابعة"
+msgstr "Create an account and follow"
+
+#: .\templates\accounts\doctor_register.html:208
+#: .\templates\custom_admin\register_gateway.html:157
+msgid "لديك حساب بالفعل؟"
+msgstr "Already have an account?"
+
+#: .\templates\accounts\doctor_register.html:209
+msgid "دخول"
+msgstr "entrance"
+
+#: .\templates\accounts\doctor_register.html:235
+msgid "لا توجد نتائج"
+msgstr "No results found"
+
+#: .\templates\accounts\registration_qr.html:87
+msgid "📱 رمز QR لتسجيل الأطباء"
+msgstr "📱 QR code to register doctors"
+
+#: .\templates\accounts\registration_qr.html:88
+msgid "امسح هذا الرمز أو شاركه مع الأطباء لتسجيل حساباتهم"
+msgstr "Scan this code or share it with doctors to register their accounts"
+
+#: .\templates\accounts\registration_qr.html:97
+msgid "📥 تحميل صورة QR"
+msgstr "📥 Download QR image"
+
+#: .\templates\accounts\registration_qr.html:98
+msgid "📄 تحميل PDF"
+msgstr "📄 Download PDF"
+
+#: .\templates\accounts\registration_qr.html:99
+msgid "📋 نسخ الرابط"
+msgstr "📋 Copy the link"
+
+#: .\templates\accounts\registration_qr.html:130
+msgid "رمز QR - تسجيل الأطباء"
+msgstr "QR Code - Doctors Registration"
+
+#: .\templates\accounts\registration_qr.html:154
+msgid "امسح رمز QR أدناه لتسجيل حسابك كطبيب"
+msgstr "Scan the QR code below to register your account as a doctor"
+
+#: .\templates\admin\accounts\doctor\add_voucher_action.html:7
+msgid "Home"
+msgstr "Home"
+
+#: .\templates\admin\accounts\doctor\add_voucher_action.html:8
+msgid "الحسابات"
+msgstr "the accounts"
+
+#: .\templates\admin\accounts\doctor\add_voucher_action.html:9
+#: .\templates\custom_admin\includes\sidebar.html:20
+msgid "الأطباء"
+msgstr "doctors"
+
+#: .\templates\admin\accounts\doctor\add_voucher_action.html:10
+msgid "&rsaquo; إضافة قسيمة جماعية"
+msgstr "&rsaquo; Add a group coupon"
+
+#: .\templates\admin\accounts\doctor\add_voucher_action.html:30
+msgid "الأطباء المحددين:"
+msgstr "Specific doctors:"
+
+#: .\templates\admin\accounts\doctor\add_voucher_action.html:40
+msgid "قيمة القسيمة (ج.م) *"
+msgstr "Voucher value (EGP) *"
+
+#: .\templates\admin\accounts\doctor\add_voucher_action.html:41
+msgid "مثال: 1000"
+msgstr "Example: 1000"
+
+#: .\templates\admin\accounts\doctor\add_voucher_action.html:45
+#: .\templates\custom_admin\doctors_directory.html:535
+msgid "الشركة الدوائية (اختياري)"
+msgstr "Pharmaceutical company (optional)"
+
+#: .\templates\admin\accounts\doctor\add_voucher_action.html:47
+#: .\templates\custom_admin\doctors_directory.html:537
+#: .\templates\custom_admin\vendor_settlements.html:402
+msgid "-- اختر الشركة --"
+msgstr "--Select company--"
+
+#: .\templates\admin\accounts\doctor\add_voucher_action.html:55
+msgid "تاريخ الانتهاء *"
+msgstr "End date *"
+
+#: .\templates\admin\accounts\doctor\add_voucher_action.html:60
+msgid "ملاحظات إضافية (اختياري)"
+msgstr "Additional notes (optional)"
+
+#: .\templates\admin\accounts\doctor\add_voucher_action.html:61
+msgid "أية ملاحظات حول إصدار هذه القسائم..."
+msgstr "Any comments about issuing these vouchers..."
+
+#: .\templates\admin\accounts\doctor\add_voucher_action.html:65
+#: .\templates\admin\send_custom_email.html:31
+#: .\templates\core\cashier_form.html:47
+#: .\templates\custom_admin\companies_directory.html:130
+#: .\templates\custom_admin\doctor_vouchers.html:246
+#: .\templates\custom_admin\doctors_directory.html:216
+#: .\templates\custom_admin\email_logs.html:212
+#: .\templates\custom_admin\email_logs.html:304
+#: .\templates\custom_admin\vendor_portal.html:602
+#: .\templates\custom_admin\vendor_portal.html:685
+#: .\templates\custom_admin\vendor_settlements.html:449
+#: .\templates\custom_admin\vendors_directory.html:131
+#: .\templates\custom_admin\vendors_directory.html:337
+msgid "إلغاء"
+msgstr "cancellation"
+
+#: .\templates\admin\accounts\doctor\add_voucher_action.html:66
+msgid "إصدار القسائم"
+msgstr "Issuing coupons"
+
+#: .\templates\admin\base_site.html:24 .\templates\base.html:202
+msgid "أضف التطبيق للشاشة الرئيسية لسهولة الوصول"
+msgstr "Add the app to the home screen for easy access"
+
+#: .\templates\admin\base_site.html:27 .\templates\base.html:205
+msgid "تثبيت"
+msgstr "stabilizing"
+
+#: .\templates\admin\base_site.html:28 .\templates\base.html:206
+msgid "لاحقاً"
+msgstr "Later"
+
+#: .\templates\admin\events\event\change_list.html:13
+msgid "Table View"
+msgstr "Table View"
+
+#: .\templates\admin\events\event\change_list.html:21
+msgid "Calendar View"
+msgstr "Calendar View"
+
+#: .\templates\admin\index.html:15
+msgid "Total Revenue"
+msgstr "Total Revenue"
+
+#: .\templates\admin\index.html:28
+msgid "vs last 7 days"
+msgstr "vs last 7 days"
+
+#: .\templates\admin\index.html:46
+msgid "in last 7 days"
+msgstr "in the last 7 days"
+
+#: .\templates\admin\index.html:54
+msgid "Active Vouchers"
+msgstr "Active Vouchers"
+
+#: .\templates\admin\index.html:64
+msgid "Currently valid"
+msgstr "Currently valid"
+
+#: .\templates\admin\index.html:82
+msgid "Vendors Participated"
+msgstr "Vendors Participated"
+
+#: .\templates\admin\index.html:99
+msgid "Top Vendors"
+msgstr "Top Vendors"
+
+#: .\templates\admin\send_custom_email.html:6
+#: .\templates\custom_admin\email_logs.html:226
+msgid "إرسال إيميل مخصص"
+msgstr "Send a personalized email"
+
+#: .\templates\admin\send_custom_email.html:16
+msgid "سيتم إرسال هذا الإيميل إلى"
+msgstr "This email will be sent to"
+
+#: .\templates\admin\send_custom_email.html:16
+msgid "مستخدم/مستخدمين."
+msgstr "User/users."
+
+#: .\templates\admin\send_custom_email.html:20
+msgid "عنوان الإيميل:"
+msgstr "Email address:"
+
+#: .\templates\admin\send_custom_email.html:25
+msgid "نص الإيميل:"
+msgstr "Email text:"
+
+#: .\templates\admin\send_custom_email.html:30
+msgid "إرسال الآن"
+msgstr "Submit now"
+
+#: .\templates\base.html:169 .\templates\custom_admin\doctor_card.html:107
+#: .\templates\custom_admin\doctor_portal.html:98
+#: .\templates\custom_admin\doctor_portal.html:142
+#: .\templates\custom_admin\doctor_settings.html:77
+#: .\templates\custom_admin\doctor_transactions.html:83
+#: .\templates\custom_admin\doctor_transfers.html:82
+#: .\templates\custom_admin\doctor_vouchers.html:79
+#: .\templates\custom_admin\vendor_base.html:23
+msgid "لوحة التحكم"
+msgstr "Dashboard"
+
+#: .\templates\base.html:176 .\templates\registration\login.html:105
+msgid "تسجيل الدخول"
+msgstr "Login"
+
+#: .\templates\core\cashier_form.html:9
+msgid "👤 إضافة كاشير جديد"
+msgstr "👤 Add a new cashier"
+
+#: .\templates\core\cashier_form.html:15
+msgid "اسم المستخدم (للدخول):"
+msgstr "Username (to log in):"
+
+#: .\templates\core\cashier_form.html:20
+msgid "كلمة المرور:"
+msgstr "password:"
+
+#: .\templates\core\cashier_form.html:26
+msgid "الاسم الأول:"
+msgstr "first name:"
+
+#: .\templates\core\cashier_form.html:30
+msgid "اسم العائلة:"
+msgstr "last name:"
+
+#: .\templates\core\cashier_form.html:36
+msgid "البريد الإلكتروني:"
+msgstr "e-mail:"
+
+#: .\templates\core\cashier_form.html:41
+msgid "رقم الهاتف:"
+msgstr "phone number:"
+
+#: .\templates\core\cashier_form.html:46
+msgid "✅ إنشاء الحساب"
+msgstr "✅ Create an account"
+
+#: .\templates\core\doctor_profile.html:70
+msgid "امسح هذا الكود للوصول لملف الطبيب"
+msgstr "Scan this code to access the doctor's file"
+
+#: .\templates\core\doctor_profile.html:77
+msgid "الرصيد الحالي"
+msgstr "Current balance"
+
+#: .\templates\core\doctor_profile.html:81
+msgid "قسائم نشطة"
+msgstr "Active coupons"
+
+#: .\templates\core\doctor_profile.html:85
+#: .\templates\custom_admin\doctor_profile.html:137
+msgid "إجمالي المصروف"
+msgstr "Total expense"
+
+#: .\templates\core\doctor_profile.html:92
+msgid "🎟️ القسائم (Vouchers)"
+msgstr "🎟️ Vouchers"
+
+#: .\templates\core\doctor_profile.html:99
+#: .\templates\custom_admin\doctor_profile.html:250
+#: .\templates\custom_admin\doctor_transfers.html:235
+msgid "نشطة"
+msgstr "Active"
+
+#: .\templates\core\doctor_profile.html:102
+msgid "🔃 تحويل القسيمة"
+msgstr "🔃 Voucher transfer"
+
+#: .\templates\core\doctor_profile.html:106
+#: .\templates\custom_admin\company_portal.html:206
+#: .\templates\custom_admin\delegate_portal.html:206
+#: .\templates\custom_admin\doctor_profile.html:248
+msgid "منتهية"
+msgstr "Finished"
+
+#: .\templates\core\doctor_profile.html:120
+msgid "لا توجد قسائم."
+msgstr "There are no coupons."
+
+#: .\templates\core\doctor_profile.html:126
+msgid "🔄 سجل التحويلات الصادرة"
+msgstr "🔄 Record of outgoing transfers"
+
+#: .\templates\core\doctor_profile.html:132
+msgid "تم التحويل إلى"
+msgstr "Converted to"
+
+#: .\templates\core\doctor_profile.html:133
+msgid "القسيمة (الفعالية)"
+msgstr "coupon (event)"
+
+#: .\templates\core\doctor_profile.html:134
+msgid "الرصيد المحول"
+msgstr "Transferred balance"
+
+#: .\templates\core\doctor_profile.html:135
+#: .\templates\core\doctor_profile.html:169
+#: .\templates\custom_admin\doctor_profile.html:649
+#: .\templates\custom_admin\vendor_settlements.html:245
+#: .\templates\custom_admin\vendor_settlements.html:297
+#: .\templates\custom_admin\vendor_settlements.html:349
+msgid "التاريخ"
+msgstr "the date"
+
+#: .\templates\core\doctor_profile.html:148
+msgid "لم تقم بأي تحويلات حتى الآن."
+msgstr "You haven't made any transfers yet."
+
+#: .\templates\core\doctor_profile.html:159
+msgid "📄 سجل المعاملات"
+msgstr "📄 Transaction history"
+
+#: .\templates\core\doctor_profile.html:165
+msgid "التاجر"
+msgstr "Merchant"
+
+#: .\templates\core\doctor_profile.html:166
+#: .\templates\core\vendor_dashboard.html:144
+#: .\templates\custom_admin\doctor_profile.html:650
+#: .\templates\custom_admin\vendor_settlements.html:244
+msgid "المبلغ"
+msgstr "Amount"
+
+#: .\templates\core\doctor_profile.html:167
+#: .\templates\custom_admin\vendor_profile.html:243
+msgid "العمولة"
+msgstr "Commission"
+
+#: .\templates\core\doctor_profile.html:168
+#: .\templates\custom_admin\doctor_vouchers.html:176
+msgid "الإجمالي"
+msgstr "Total"
+
+#: .\templates\core\doctor_profile.html:183
+msgid "لا توجد معاملات."
+msgstr "There are no transactions."
+
+#: .\templates\core\doctor_profile.html:195
+#: .\templates\custom_admin\doctor_vouchers.html:216
+msgid "تحويل القسيمة"
+msgstr "Voucher conversion"
+
+#: .\templates\core\doctor_profile.html:199
+msgid "الطبيب المستلم:"
+msgstr "Recipient physician:"
+
+#: .\templates\core\doctor_profile.html:200
+msgid "رقم الموبايل أو كود الطبيب"
+msgstr "Mobile number or doctor code"
+
+#: .\templates\core\doctor_profile.html:203
+msgid "الغاء"
+msgstr "cancellation"
+
+#: .\templates\core\doctor_profile.html:204
+msgid "تأكيد التحويل"
+msgstr "Confirm the transfer"
+
+#: .\templates\core\transaction_form.html:131
+msgid "جاري معالجة المعاملة..."
+msgstr "Transaction is being processed..."
+
+#: .\templates\core\transaction_form.html:132
+msgid "يرجى الانتظار وعدم إغلاق الصفحة"
+msgstr "Please wait and do not close the page"
+
+#: .\templates\core\transaction_form.html:138
+msgid "🔒 التحقق الأمني مطلوب"
+msgstr "🔒 Security verification required"
+
+#: .\templates\core\transaction_form.html:140
+msgid "تم إرسال رمز تحقق (OTP) إلى البريد الإلكتروني الخاص بالطبيب"
+msgstr "A verification code (OTP) has been sent to your doctor's email"
+
+#: .\templates\core\transaction_form.html:142
+msgid "⚠️ الرمز صالح لمدة 10 دقائق فقط."
+msgstr "⚠️ The code is valid for 10 minutes only."
+
+#: .\templates\core\transaction_form.html:145
+msgid "تأكيد وإتمام العملية"
+msgstr "Confirm and complete the process"
+
+#: .\templates\core\transaction_form.html:149
+msgid "إعادة إرسال رمز جديد"
+msgstr "Resend a new code"
+
+#: .\templates\core\transaction_form.html:152
+msgid "إلغاء العملية"
+msgstr "Cancel the operation"
+
+#: .\templates\core\transaction_form.html:160
+msgid "تمت العملية بنجاح!"
+msgstr "The operation was completed successfully!"
+
+#: .\templates\core\transaction_form.html:161
+msgid "شكراً لك، تم الخصم من رصيد الطبيب."
+msgstr "Thank you, the doctor's balance has been debited."
+
+#: .\templates\core\transaction_form.html:164
+msgid "إيصال معاملة"
+msgstr "Transaction receipt"
+
+#: .\templates\core\transaction_form.html:166
+msgid "رقم الفاتورة:"
+msgstr "Invoice number:"
+
+#: .\templates\core\transaction_form.html:170
+msgid "التاريخ:"
+msgstr "the date:"
+
+#: .\templates\core\transaction_form.html:174
+msgid "التاجر:"
+msgstr "Merchant:"
+
+#: .\templates\core\transaction_form.html:178
+msgid "الطبيب:"
+msgstr "Doctor:"
+
+#: .\templates\core\transaction_form.html:182
+msgid "قيمة المشتريات:"
+msgstr "Purchase value:"
+
+#: .\templates\core\transaction_form.html:187
+#, python-format
+msgid "رسوم إدارية (25%%):"
+msgstr "Administrative fees (25%):"
+
+#: .\templates\core\transaction_form.html:192
+msgid "الإجمالي المخصوم:"
+msgstr "Discounted total:"
+
+#: .\templates\core\transaction_form.html:198
+msgid "🖨️ طباعة الفاتورة"
+msgstr "🖨️ Print the invoice"
+
+#: .\templates\core\transaction_form.html:199
+msgid "+ معاملة جديدة"
+msgstr "+ New transaction"
+
+#: .\templates\core\transaction_form.html:204
+msgid "تسجيل معاملة جديدة"
+msgstr "Register a new transaction"
+
+#: .\templates\core\transaction_form.html:218
+msgid "أو البحث اليدوي عن طبيب"
+msgstr "Or manually search for a doctor"
+
+#: .\templates\core\transaction_form.html:220
+msgid "ابحث بالاسم، الهاتف، أو المعرف..."
+msgstr "Search by name, phone, or ID..."
+
+#: .\templates\core\transaction_form.html:221
+msgid "🔍 بحث"
+msgstr "🔍 Search"
+
+#: .\templates\core\transaction_form.html:226
+msgid "مسح الـ QR Code"
+msgstr "Scan the QR Code"
+
+#: .\templates\core\transaction_form.html:228
+msgid "📷 تشغيل الكاميرا للمسح"
+msgstr "📷 Turn on the camera to scan"
+
+#: .\templates\core\transaction_form.html:233
+msgid "بـيـانـات الـطـبـيـب"
+msgstr "Doctor's data"
+
+#: .\templates\core\transaction_form.html:234
+msgid "الاسم:"
+msgstr "the name:"
+
+#: .\templates\core\transaction_form.html:235
+#: .\templates\custom_admin\delegate_portal.html:136
+msgid "الهاتف:"
+msgstr "Phone:"
+
+#: .\templates\core\transaction_form.html:237
+msgid "الرصيد المتاح:"
+msgstr "Available balance:"
+
+#: .\templates\core\transaction_form.html:237
+#: .\templates\core\transaction_form.html:257
+msgid "ج.م"
+msgstr "J.M"
+
+#: .\templates\core\transaction_form.html:243
+msgid "تفاصيل المعاملة"
+msgstr "Transaction details"
+
+#: .\templates\core\transaction_form.html:250
+msgid "المبلغ المطلوب (ج.م):"
+msgstr "Required amount (EGP):"
+
+#: .\templates\core\transaction_form.html:256
+#, python-format
+msgid "سيتم إضافة 25%% رسوم إدارية تلقائياً لإجمالي الخصم."
+msgstr ""
+"A 25% administration fee will be automatically added to the total discount."
+
+#: .\templates\core\transaction_form.html:257
+msgid "الإجمالي المتوقع خصمه:"
+msgstr "Total expected to be deducted:"
+
+#: .\templates\core\transaction_form.html:262
+msgid "وصف المعاملة (اختياري):"
+msgstr "Transaction description (optional):"
+
+#: .\templates\core\transaction_form.html:263
+msgid "مثال: خصم على أدوية، وجبة غداء، الخ..."
+msgstr "Example: discount on medicines, lunch, etc."
+
+#: .\templates\core\transaction_form.html:267
+msgid "إتمام المعاملة"
+msgstr "Complete the transaction"
+
+#: .\templates\core\transaction_form.html:354
+msgid "جاري البحث..."
+msgstr "Searching..."
+
+#: .\templates\core\transaction_form.html:388
+msgid "لم يتم العثور على أطباء."
+msgstr "No doctors found."
+
+#: .\templates\core\transaction_form.html:393
+msgid "خطأ في الاتصال بالسيرفر."
+msgstr "Error connecting to the server."
+
+#: .\templates\core\transaction_form.html:604
+msgid "تمت بنجاح"
+msgstr "Successfully completed"
+
+#: .\templates\core\vendor_dashboard.html:101
+msgid "ابحث في سجلاتك..."
+msgstr "Search your records..."
+
+#: .\templates\core\vendor_dashboard.html:106
+msgid "تسجيل معاملة"
+msgstr "Record a transaction"
+
+#: .\templates\core\vendor_dashboard.html:109
+msgid "إضافة كاشير"
+msgstr "Add a cashier"
+
+#: .\templates\core\vendor_dashboard.html:117
+msgid "إجمالي أرباح المبيعات"
+msgstr "Total sales profits"
+
+#: .\templates\core\vendor_dashboard.html:122
+msgid "إجمالي ما تم استلامه"
+msgstr "Total amount received"
+
+#: .\templates\core\vendor_dashboard.html:126
+msgid "الرصيد المتبقي (لدى المنصة)"
+msgstr "Remaining balance (at the platform)"
+
+#: .\templates\core\vendor_dashboard.html:136
+msgid "🛒 آخر المبيعات"
+msgstr "🛒 Latest sales"
+
+#: .\templates\core\vendor_dashboard.html:142
+#: .\templates\custom_admin\doctor_transactions.html:182
+msgid "رقم الفاتورة"
+msgstr "Invoice number"
+
+#: .\templates\core\vendor_dashboard.html:143
+#: .\templates\custom_admin\company_portal.html:240
+#: .\templates\custom_admin\delegate_portal.html:240
+#: .\templates\custom_admin\events_wizard.html:306
+#: .\templates\custom_admin\events_wizard.html:342
+#: .\templates\custom_admin\vendor_profile.html:240
+msgid "الطبيب"
+msgstr "The doctor"
+
+#: .\templates\core\vendor_dashboard.html:145
+#: .\templates\custom_admin\vendor_portal.html:429
+msgid "بواسطة"
+msgstr "by"
+
+#: .\templates\core\vendor_dashboard.html:146
+#: .\templates\custom_admin\doctor_transactions.html:180
+msgid "التاريخ والوقت"
+msgstr "Date and time"
+
+#: .\templates\core\vendor_dashboard.html:159
+msgid "البائع الرئيسي"
+msgstr "Main seller"
+
+#: .\templates\core\vendor_dashboard.html:166
+msgid "لا توجد معاملات حديثة."
+msgstr "There are no recent transactions."
+
+#: .\templates\core\vendor_dashboard.html:177
+msgid "👥 حسابات الكاشير"
+msgstr "👥 Cashier accounts"
+
+#: .\templates\core\vendor_dashboard.html:184
+msgid "الاسم"
+msgstr "the name"
+
+#: .\templates\core\vendor_dashboard.html:185
+#: .\templates\custom_admin\includes\doctor_id_card_component.html:98
+#: .\templates\custom_admin\vendor_profile.html:188
+#: .\templates\custom_admin\vendor_profile.html:587
+#: .\templates\custom_admin\vendors_directory.html:180
+#: .\templates\custom_admin\vendors_directory.html:253
+msgid "الهاتف"
+msgstr "Phone"
+
+#: .\templates\core\vendor_dashboard.html:186
+#: .\templates\custom_admin\vendor_profile.html:189
+#: .\templates\custom_admin\vendor_profile.html:419
+msgid "تاريخ الإنشاء"
+msgstr "Creation date"
+
+#: .\templates\core\vendor_dashboard.html:187
+#: .\templates\custom_admin\doctor_profile.html:221
+#: .\templates\custom_admin\vendor_profile.html:421
+msgid "الإجراءات"
+msgstr "procedures"
+
+#: .\templates\core\vendor_dashboard.html:200
+msgid "🗑️ حذف"
+msgstr "🗑️ Delete"
+
+#: .\templates\core\vendor_dashboard.html:206
+msgid "لم تقم بإنشاء أي حسابات كاشير بعد."
+msgstr "You haven't created any cashier accounts yet."
+
+#: .\templates\core\vendor_dashboard.html:217
+msgid "💰 سجل المدفوعات"
+msgstr "💰 Payment history"
+
+#: .\templates\core\vendor_dashboard.html:223
+msgid "المبلغ المستلم"
+msgstr "Amount received"
+
+#: .\templates\core\vendor_dashboard.html:224
+#: .\templates\custom_admin\doctor_transfers.html:219
+msgid "تاريخ الاستلام"
+msgstr "Date of receipt"
+
+#: .\templates\core\vendor_dashboard.html:225
+#: .\templates\custom_admin\doctors_directory.html:550
+#: .\templates\custom_admin\email_logs.html:110
+#: .\templates\custom_admin\vendor_profile.html:546
+msgid "ملاحظات"
+msgstr "comments"
+
+#: .\templates\core\vendor_dashboard.html:237
+msgid "لم يتم استلام أي دفعات بعد."
+msgstr "No payments have been received yet."
+
+#: .\templates\custom_admin\bulk_print_cards.html:7
+msgid "طباعة كروت الأطباء"
+msgstr "Printing doctors cards"
+
+#: .\templates\custom_admin\bulk_print_cards.html:38
+msgid "جاهز للطباعة الجماعية"
+msgstr "Ready for bulk printing"
+
+#: .\templates\custom_admin\bulk_print_cards.html:42
+msgid "ابدأ الطباعة الآن"
+msgstr "Start printing now"
+
+#: .\templates\custom_admin\companies_directory.html:52
+msgid "البحث عن شركة أو مندوب..."
+msgstr "Search for a company or representative..."
+
+#: .\templates\custom_admin\companies_directory.html:58
+#: .\templates\custom_admin\companies_directory.html:408
+msgid "إضافة مندوب جديد"
+msgstr "Add New Delegate"
+
+#: .\templates\custom_admin\companies_directory.html:61
+msgid "إضافة شركة جديدة"
+msgstr "Add New Company"
+
+#: .\templates\custom_admin\companies_directory.html:73
+msgid "التخصص المستهدف"
+msgstr "Target Specialty"
+
+#: .\templates\custom_admin\companies_directory.html:75
+#: .\templates\custom_admin\doctors_directory.html:155
+msgid "كل التخصصات"
+msgstr "All Specialties"
+
+#: .\templates\custom_admin\companies_directory.html:83
+#: .\templates\custom_admin\doctors_directory.html:163
+#: .\templates\custom_admin\vendors_directory.html:89
+msgid "حالة الحساب"
+msgstr "Account Status"
+
+#: .\templates\custom_admin\companies_directory.html:85
+#: .\templates\custom_admin\doctors_directory.html:165
+#: .\templates\custom_admin\vendors_directory.html:91
+msgid "الكل (نشط وغير نشط)"
+msgstr "All (Active & Inactive)"
+
+#: .\templates\custom_admin\companies_directory.html:86
+#: .\templates\custom_admin\doctors_directory.html:166
+#: .\templates\custom_admin\vendors_directory.html:92
+msgid "الحسابات النشطة فقط"
+msgstr "Active Accounts Only"
+
+#: .\templates\custom_admin\companies_directory.html:87
+#: .\templates\custom_admin\doctors_directory.html:167
+#: .\templates\custom_admin\vendors_directory.html:93
+msgid "الحسابات المتوقفة فقط"
+msgstr "Suspended Accounts Only"
+
+#: .\templates\custom_admin\companies_directory.html:93
+#: .\templates\custom_admin\doctors_directory.html:173
+#: .\templates\custom_admin\vendors_directory.html:99
+msgid "تصفية"
+msgstr "Filter"
+
+#: .\templates\custom_admin\companies_directory.html:117
+msgid "عنصر محدد"
+msgstr "Selected Item"
+
+#: .\templates\custom_admin\companies_directory.html:121
+msgid "تفعيل الحسابات"
+msgstr "Activate Accounts"
+
+#: .\templates\custom_admin\companies_directory.html:124
+msgid "إيقاف الحسابات"
+msgstr "Deactivate Accounts"
+
+#: .\templates\custom_admin\companies_directory.html:127
+#: .\templates\custom_admin\doctor_profile.html:273
+#: .\templates\custom_admin\doctors_directory.html:213
+#: .\templates\custom_admin\doctors_directory.html:375
+msgid "حذف"
+msgstr "Delete"
+
+#: .\templates\custom_admin\companies_directory.html:145
+msgid "الأرشيف"
+msgstr "Archive"
+
+#: .\templates\custom_admin\companies_directory.html:152
+msgid "تحديد كل الشركات"
+msgstr "Select All Companies"
+
+#: .\templates\custom_admin\companies_directory.html:195
+#: .\templates\custom_admin\delegate_profile.html:72
+msgid "لا يوجد حساب دخول"
+msgstr "No Login Account"
+
+#: .\templates\custom_admin\companies_directory.html:203
+msgid "لا توجد شركات طبية مسجلة"
+msgstr "No Medical Companies Registered"
+
+#: .\templates\custom_admin\companies_directory.html:204
+msgid "يمكنك إضافة أول شركة من خلال الزر في الأعلى."
+msgstr "You can add the first company using the button above."
+
+#: .\templates\custom_admin\companies_directory.html:214
+msgid "تحديد كل المناديب"
+msgstr "Select All Delegates"
+
+#: .\templates\custom_admin\companies_directory.html:240
+#: .\templates\custom_admin\delegate_profile.html:226
+msgid "الشركات الممثلة"
+msgstr "Represented Companies"
+
+#: .\templates\custom_admin\companies_directory.html:245
+msgid "عام (يمثل جميع الشركات)"
+msgstr "General (Represents All Companies)"
+
+#: .\templates\custom_admin\companies_directory.html:251
+#: .\templates\custom_admin\companies_directory.html:452
+#: .\templates\custom_admin\company_profile.html:345
+#: .\templates\custom_admin\delegate_profile.html:242
+#: .\templates\custom_admin\events_wizard.html:196
+msgid "التخصصات المستهدفة"
+msgstr "Targeted Specialties"
+
+#: .\templates\custom_admin\companies_directory.html:256
+#: .\templates\custom_admin\company_profile.html:203
+#: .\templates\custom_admin\delegate_profile.html:157
+msgid "كافة التخصصات"
+msgstr "All Specialties"
+
+#: .\templates\custom_admin\companies_directory.html:277
+msgid "بدون حساب دخول"
+msgstr "No Login Account"
+
+#: .\templates\custom_admin\companies_directory.html:284
+msgid "لا يوجد مناديب مسجلين"
+msgstr "No Delegates Registered"
+
+#: .\templates\custom_admin\companies_directory.html:285
+msgid "يمكنك إضافة أول مندوب من خلال الزر في الأعلى."
+msgstr "You can add the first delegate using the button above."
+
+#: .\templates\custom_admin\companies_directory.html:299
+#: .\templates\custom_admin\companies_directory.html:322
+#: .\templates\custom_admin\doctors_directory.html:309
+#: .\templates\custom_admin\vendors_directory.html:243
+msgid "محذوف / مؤرشف"
+msgstr "Deleted / Archived"
+
+#: .\templates\custom_admin\companies_directory.html:311
+msgid "لا يوجد شركات محذوفة."
+msgstr "No deleted companies."
+
+#: .\templates\custom_admin\companies_directory.html:337
+msgid "لا يوجد مناديب محذوفين."
+msgstr "No deleted delegates."
+
+#: .\templates\custom_admin\companies_directory.html:349
+msgid "إضافة شركة طبية جديدة"
+msgstr "Add New Medical Company"
+
+#: .\templates\custom_admin\companies_directory.html:356
+msgid "بيانات الدخول (حساب الشركة)"
+msgstr "Login Credentials (Company Account)"
+
+#: .\templates\custom_admin\companies_directory.html:359
+#: .\templates\custom_admin\companies_directory.html:418
+#: .\templates\custom_admin\doctors_directory.html:428
+msgid "اسم المستخدم (Login)"
+msgstr "Username (Login)"
+
+#: .\templates\custom_admin\companies_directory.html:363
+#: .\templates\custom_admin\companies_directory.html:422
+#: .\templates\custom_admin\doctors_directory.html:434
+#: .\templates\emails\account_credentials.html:40
+msgid "كلمة المرور المؤقتة"
+msgstr "Temporary Password"
+
+#: .\templates\custom_admin\companies_directory.html:370
+msgid "البيانات الأساسية"
+msgstr "Basic Information"
+
+#: .\templates\custom_admin\companies_directory.html:373
+msgid "اسم الشركة الطبية"
+msgstr "Medical Company Name"
+
+#: .\templates\custom_admin\companies_directory.html:377
+msgid "اسم جهة الاتصال (المسؤول)"
+msgstr "Contact Person (Manager)"
+
+#: .\templates\custom_admin\companies_directory.html:387
+msgid "رقم الهاتف الأساسي"
+msgstr "Primary Phone Number"
+
+#: .\templates\custom_admin\companies_directory.html:392
+msgid "عنوان المقر الرئيسي"
+msgstr "Headquarters Address"
+
+#: .\templates\custom_admin\companies_directory.html:398
+msgid "اعتماد وتسجيل الشركة"
+msgstr "Approve & Register Company"
+
+#: .\templates\custom_admin\companies_directory.html:415
+msgid "بيانات الدخول (حساب المندوب)"
+msgstr "Login Credentials (Delegate Account)"
+
+#: .\templates\custom_admin\companies_directory.html:429
+msgid "بيانات المندوب"
+msgstr "Delegate Information"
+
+#: .\templates\custom_admin\companies_directory.html:432
+#: .\templates\custom_admin\delegate_profile.html:176
+msgid "اسم المندوب"
+msgstr "Delegate Name"
+
+#: .\templates\custom_admin\companies_directory.html:436
+msgid "رقم الهاتف (الواتساب)"
+msgstr "Phone Number (WhatsApp)"
+
+#: .\templates\custom_admin\companies_directory.html:443
+msgid "يتبع شركة (أو شركات)"
+msgstr "Belongs to Company (or Companies)"
+
+#: .\templates\custom_admin\companies_directory.html:449
+msgid "اضغط Ctrl لاختيار أكثر من شركة"
+msgstr "Press Ctrl to select more than one company"
+
+#: .\templates\custom_admin\companies_directory.html:458
+msgid "اضغط Ctrl لاختيار أكثر من تخصص"
+msgstr "Press Ctrl to select more than one specialty"
+
+#: .\templates\custom_admin\companies_directory.html:464
+msgid "اعتماد وتسجيل المندوب"
+msgstr "Approve & Register Delegate"
+
+#: .\templates\custom_admin\company_portal.html:130
+msgid "بوابة الشريك التجاري"
+msgstr "Business Partner Portal"
+
+#: .\templates\custom_admin\company_portal.html:136
+msgid "مستخدم الشركة:"
+msgstr "Company User:"
+
+#: .\templates\custom_admin\company_portal.html:148
+msgid "نظرة عامة على الميزانيات والحملات"
+msgstr "Budget & Campaigns Overview"
+
+#: .\templates\custom_admin\company_portal.html:149
+msgid ""
+"متابعة الميزانيات القصوى المصرحة، القسائم الصادرة للأطباء، ومعدلات الاستهلاك"
+" الميداني الفعلي."
+msgstr ""
+"Track approved maximum budgets, issued vouchers for doctors, and actual "
+"field consumption rates."
+
+#: .\templates\custom_admin\company_portal.html:156
+msgid "إجمالي الميزانيات المعتمدة"
+msgstr "Total Approved Budgets"
+
+#: .\templates\custom_admin\company_portal.html:164
+msgid "المبالغ المشحونة (القسائم)"
+msgstr "Charged Amounts (Vouchers)"
+
+#: .\templates\custom_admin\company_portal.html:172
+msgid "الميزانية المتبقية للشحن"
+msgstr "Remaining Budget for Charging"
+
+#: .\templates\custom_admin\company_portal.html:180
+msgid "الاستهلاك الفعلي للمشتريات"
+msgstr "Actual Purchase Consumption"
+
+#: .\templates\custom_admin\company_portal.html:189
+msgid "الفعاليات المعتمدة"
+msgstr "Approved Events"
+
+#: .\templates\custom_admin\company_portal.html:190
+#: .\templates\custom_admin\delegate_portal.html:190
+msgid "الأطباء وقسائمهم الموزعة"
+msgstr "Doctors & Their Distributed Vouchers"
+
+#: .\templates\custom_admin\company_portal.html:204
+msgid "جارية"
+msgstr "Ongoing"
+
+#: .\templates\custom_admin\company_portal.html:212
+msgid "توزيع ميزانية القسائم"
+msgstr "Voucher Budget Distribution"
+
+#: .\templates\custom_admin\company_portal.html:221
+msgid "الأطباء:"
+msgstr "Doctors:"
+
+#: .\templates\custom_admin\company_portal.html:222
+msgid "الاستهلاك الفعلي:"
+msgstr "Actual Consumption:"
+
+#: .\templates\custom_admin\company_portal.html:228
+msgid "لم يتم تسجيل أي فعاليات لشركتكم بعد."
+msgstr "No events have been registered for your company yet."
+
+#: .\templates\custom_admin\company_portal.html:241
+msgid "الفعالية"
+msgstr "Event"
+
+#: .\templates\custom_admin\company_portal.html:242
+#: .\templates\custom_admin\delegate_portal.html:242
+msgid "تاريخ الشحن"
+msgstr "Charge Date"
+
+#: .\templates\custom_admin\company_portal.html:243
+#: .\templates\custom_admin\delegate_portal.html:243
+#: .\templates\custom_admin\events_wizard.html:309
+#: .\templates\custom_admin\events_wizard.html:344
+msgid "القيمة المبدئية"
+msgstr "Initial Value"
+
+#: .\templates\custom_admin\company_portal.html:244
+#: .\templates\custom_admin\company_profile.html:233
+#: .\templates\custom_admin\delegate_portal.html:244
+#: .\templates\custom_admin\doctor_vouchers.html:162
+#: .\templates\custom_admin\events_wizard.html:310
+msgid "الرصيد المتبقي"
+msgstr "Remaining Balance"
+
+#: .\templates\custom_admin\company_portal.html:245
+#: .\templates\custom_admin\delegate_portal.html:245
+#: .\templates\custom_admin\events_wizard.html:345
+msgid "المبلغ المستهلك"
+msgstr "Consumed Amount"
+
+#: .\templates\custom_admin\company_portal.html:246
+#: .\templates\custom_admin\delegate_portal.html:246
+#: .\templates\custom_admin\doctor_profile.html:220
+#: .\templates\custom_admin\doctors_directory.html:545
+#: .\templates\custom_admin\events_wizard.html:311
+#: .\templates\custom_admin\events_wizard.html:347
+msgid "تاريخ الانتهاء"
+msgstr "Expiry Date"
+
+#: .\templates\custom_admin\company_portal.html:247
+#: .\templates\custom_admin\delegate_portal.html:247
+#: .\templates\custom_admin\doctor_profile.html:219
+#: .\templates\custom_admin\doctor_profile.html:591
+#: .\templates\custom_admin\doctor_transactions.html:184
+#: .\templates\custom_admin\doctor_transfers.html:223
+#: .\templates\custom_admin\email_logs.html:108
+#: .\templates\custom_admin\system_settings.html:311
+#: .\templates\custom_admin\system_settings.html:404
+#: .\templates\custom_admin\vendor_profile.html:190
+#: .\templates\custom_admin\vendor_profile.html:420
+#: .\templates\custom_admin\vendor_settlements.html:247
+#: .\templates\custom_admin\vendor_settlements.html:298
+#: .\templates\custom_admin\vendor_settlements.html:350
+msgid "الحالة"
+msgstr "Status"
+
+#: .\templates\custom_admin\company_portal.html:265
+#: .\templates\custom_admin\delegate_portal.html:268
+#: .\templates\custom_admin\doctor_profile.html:608
+#: .\templates\custom_admin\system_settings.html:420
+#: .\templates\custom_admin\vendor_profile.html:214
+#: .\templates\custom_admin\vendor_profile.html:438
+#: .\templates\custom_admin\vendors_directory.html:167
+msgid "نشط"
+msgstr "Active"
+
+#: .\templates\custom_admin\company_portal.html:267
+#: .\templates\custom_admin\delegate_portal.html:270
+#: .\templates\custom_admin\doctors_directory.html:258
+msgid "غير نشط"
+msgstr "Inactive"
+
+#: .\templates\custom_admin\company_portal.html:273
+msgid "لم يتم إصدار أي قسائم بعد لأطباء الشركة."
+msgstr "No vouchers have been issued yet for company doctors."
+
+#: .\templates\custom_admin\company_profile.html:18
+#: .\templates\custom_admin\delegate_profile.html:18
+msgid "العودة لدليل الشركات والمناديب"
+msgstr "Back to Companies & Delegates Directory"
+
+#: .\templates\custom_admin\company_profile.html:43
+#: .\templates\custom_admin\delegate_profile.html:43
+msgid "محذوف"
+msgstr "Deleted"
+
+#: .\templates\custom_admin\company_profile.html:73
+msgid "إجمالي قيمة الرعايات والقسائم"
+msgstr "Total Value of Sponsorships & Vouchers"
+
+#: .\templates\custom_admin\company_profile.html:83
+msgid "لم يتم إنشاء حساب دخول (Login) لهذه الشركة"
+msgstr "No login account has been created for this company"
+
+#: .\templates\custom_admin\company_profile.html:92
+msgid "نشط ومفعل"
+msgstr "Active & Enabled"
+
+#: .\templates\custom_admin\company_profile.html:94
+msgid "موقوف / غير نشط"
+msgstr "Suspended / Inactive"
+
+#: .\templates\custom_admin\company_profile.html:104
+msgid "إدارة الارتباطات والتخصصات"
+msgstr "Manage Associations & Specialties"
+
+#: .\templates\custom_admin\company_profile.html:107
+#: .\templates\custom_admin\delegate_profile.html:85
+msgid "تعديل البيانات"
+msgstr "Edit Data"
+
+#: .\templates\custom_admin\company_profile.html:110
+#: .\templates\custom_admin\delegate_profile.html:88
+#: .\templates\custom_admin\system_settings.html:264
+msgid "الأمان وكلمة المرور"
+msgstr "Security & Password"
+
+#: .\templates\custom_admin\company_profile.html:131
+msgid "الرصيد المتبقي (غير مستهلك)"
+msgstr "Remaining Balance (Unconsumed)"
+
+#: .\templates\custom_admin\company_profile.html:135
+msgid "الرصيد المستهلك فعلياً"
+msgstr "Actually Consumed Balance"
+
+#: .\templates\custom_admin\company_profile.html:139
+msgid "عدد القسائم المصدرة"
+msgstr "Number of Issued Vouchers"
+
+#: .\templates\custom_admin\company_profile.html:158
+msgid "مناديب الشركة"
+msgstr "Company Delegates"
+
+#: .\templates\custom_admin\company_profile.html:171
+msgid "حساب مفعل"
+msgstr "Account Activated"
+
+#: .\templates\custom_admin\company_profile.html:173
+msgid "بدون حساب"
+msgstr "No Account"
+
+#: .\templates\custom_admin\company_profile.html:178
+msgid "لا يوجد مناديب مسجلين باسم هذه الشركة."
+msgstr "No delegates registered under this company."
+
+#: .\templates\custom_admin\company_profile.html:189
+#: .\templates\custom_admin\delegate_profile.html:143
+msgid "التخصصات الطبية المستهدفة"
+msgstr "Targeted Medical Specialties"
+
+#: .\templates\custom_admin\company_profile.html:204
+msgid "هذه الشركة تستهدف جميع الأطباء بمختلف تخصصاتهم."
+msgstr "This company targets all doctors across different specialties."
+
+#: .\templates\custom_admin\company_profile.html:216
+msgid "القسائم برعاية الشركة"
+msgstr "Company-Sponsored Vouchers"
+
+#: .\templates\custom_admin\company_profile.html:241
+msgid "لم تقم الشركة برعاية أي قسائم حتى الآن."
+msgstr "The company has not sponsored any vouchers yet."
+
+#: .\templates\custom_admin\company_profile.html:254
+msgid "تعديل بيانات الشركة"
+msgstr "Edit Company Data"
+
+#: .\templates\custom_admin\company_profile.html:262
+msgid "اسم الشركة"
+msgstr "Company Name"
+
+#: .\templates\custom_admin\company_profile.html:266
+msgid "جهة الاتصال"
+msgstr "Contact Person"
+
+#: .\templates\custom_admin\company_profile.html:283
+#: .\templates\custom_admin\vendor_profile.html:599
+#: .\templates\custom_admin\vendors_directory.html:332
+msgid "العنوان"
+msgstr "Address"
+
+#: .\templates\custom_admin\company_profile.html:288
+#: .\templates\custom_admin\delegate_profile.html:185
+#: .\templates\custom_admin\doctors_directory.html:504
+msgid "حفظ التعديلات"
+msgstr "Save Changes"
+
+#: .\templates\custom_admin\company_profile.html:298
+#: .\templates\custom_admin\delegate_profile.html:195
+msgid "تغيير كلمة المرور"
+msgstr "Change Password"
+
+#: .\templates\custom_admin\company_profile.html:305
+#: .\templates\custom_admin\delegate_profile.html:202
+#: .\templates\custom_admin\doctor_profile.html:537
+#: .\templates\custom_admin\doctor_settings.html:216
+#: .\templates\custom_admin\system_settings.html:275
+#: .\templates\custom_admin\vendor_profile.html:617
+msgid "كلمة المرور الجديدة"
+msgstr "New Password"
+
+#: .\templates\custom_admin\company_profile.html:310
+#: .\templates\custom_admin\delegate_profile.html:207
+#: .\templates\custom_admin\doctor_profile.html:532
+#: .\templates\custom_admin\doctor_settings.html:227
+#: .\templates\custom_admin\vendor_profile.html:612
+msgid "تحديث كلمة المرور"
+msgstr "Update Password"
+
+#: .\templates\custom_admin\company_profile.html:320
+msgid "إدارة ارتباطات الشركة"
+msgstr "Manage Company Associations"
+
+#: .\templates\custom_admin\company_profile.html:329
+msgid "المناديب الممثلين للشركة"
+msgstr "Delegates Representing the Company"
+
+#: .\templates\custom_admin\company_profile.html:358
+#: .\templates\custom_admin\delegate_profile.html:255
+#: .\templates\custom_admin\doctor_profile.html:562
+#: .\templates\custom_admin\doctor_settings.html:192
+msgid "حفظ التغييرات"
+msgstr "Save Changes"
+
+#: .\templates\custom_admin\dashboard_base.html:66
+msgid "Main Dashboard"
+msgstr "Main Dashboard"
+
+#: .\templates\custom_admin\dashboard_base.html:75
+msgid "Search in this page..."
+msgstr "Search in this page..."
+
+#: .\templates\custom_admin\dashboard_base.html:94
+msgid "System Admin"
+msgstr "System Admin"
+
+#: .\templates\custom_admin\dashboard_base.html:116
+msgid "new"
+msgstr "new"
+
+#: .\templates\custom_admin\dashboard_base.html:146
+msgid "ago"
+msgstr "ago"
+
+#: .\templates\custom_admin\dashboard_base.html:157
+msgid "No notifications currently"
+msgstr "No notifications currently"
+
+#: .\templates\custom_admin\dashboard_base.html:166
+msgid "Mark all as read"
+msgstr "Mark all as read"
+
+#: .\templates\custom_admin\delegate_portal.html:130
+msgid "بوابة المندوب التنفيذي"
+msgstr "Executive Delegate Portal"
+
+#: .\templates\custom_admin\delegate_portal.html:148
+msgid "نظرة عامة على الإنجاز الميداني"
+msgstr "Field Achievement Overview"
+
+#: .\templates\custom_admin\delegate_portal.html:149
+msgid ""
+"متابعة الفعاليات المسندة، الأطباء المستهدفين، والقيم الموزعة تحت إشرافكم."
+msgstr ""
+"Track assigned events, targeted doctors, and distributed values under your "
+"supervision."
+
+#: .\templates\custom_admin\delegate_portal.html:156
+msgid "الفعاليات المسندة (النشطة والمنتهية)"
+msgstr "Assigned Events (Active & Ended)"
+
+#: .\templates\custom_admin\delegate_portal.html:164
+msgid "عدد القسائم المُوزعة للأطباء"
+msgstr "Number of Vouchers Distributed to Doctors"
+
+#: .\templates\custom_admin\delegate_portal.html:172
+msgid "إجمالي القيمة الموزعة تحت إشرافك"
+msgstr "Total Value Distributed Under Your Supervision"
+
+#: .\templates\custom_admin\delegate_portal.html:180
+msgid "حجم استهلاك القسائم (المبيعات)"
+msgstr "Voucher Consumption Volume (Sales)"
+
+#: .\templates\custom_admin\delegate_portal.html:189
+msgid "الفعاليات المسندة"
+msgstr "Assigned Events"
+
+#: .\templates\custom_admin\delegate_portal.html:204
+#: .\templates\custom_admin\events_wizard.html:264
+msgid "نشط وجاري"
+msgstr "Active & Ongoing"
+
+#: .\templates\custom_admin\delegate_portal.html:212
+msgid "توزيع الميزانية للفعالية"
+msgstr "Event Budget Distribution"
+
+#: .\templates\custom_admin\delegate_portal.html:221
+msgid "إجمالي أطباء الفعالية:"
+msgstr "Total Event Doctors:"
+
+#: .\templates\custom_admin\delegate_portal.html:222
+msgid "استهلاك ميداني:"
+msgstr "Field Consumption:"
+
+#: .\templates\custom_admin\delegate_portal.html:228
+msgid "لم يتم إسناد أي فعاليات لك حتى الآن."
+msgstr "No events have been assigned to you yet."
+
+#: .\templates\custom_admin\delegate_portal.html:241
+msgid "الفعالية والشركة"
+msgstr "Event & Company"
+
+#: .\templates\custom_admin\delegate_portal.html:276
+msgid "لم يتم إصدار أي قسائم لأطباء تحت إشرافك بعد."
+msgstr "No vouchers have been issued for doctors under your supervision yet."
+
+#: .\templates\custom_admin\delegate_profile.html:47
+msgid "مندوب شركة دوائية"
+msgstr "Pharmaceutical Company Delegate"
+
+#: .\templates\custom_admin\delegate_profile.html:63
+msgid "حساب نشط"
+msgstr "Active Account"
+
+#: .\templates\custom_admin\delegate_profile.html:65
+msgid "حساب موقوف"
+msgstr "Suspended Account"
+
+#: .\templates\custom_admin\delegate_profile.html:82
+msgid "إدارة الشركات والتخصصات"
+msgstr "Manage Companies & Specialties"
+
+#: .\templates\custom_admin\delegate_profile.html:114
+msgid "الشركات التي يمثلها"
+msgstr "Companies He Represents"
+
+#: .\templates\custom_admin\delegate_profile.html:131
+msgid "مندوب عام"
+msgstr "General Delegate"
+
+#: .\templates\custom_admin\delegate_profile.html:132
+msgid "هذا المندوب غير مقيد بشركة معينة ويمثل عدة جهات."
+msgstr ""
+"This delegate is not restricted to a specific company and represents "
+"multiple entities."
+
+#: .\templates\custom_admin\delegate_profile.html:158
+msgid "هذا المندوب يستهدف جميع الأطباء بمختلف تخصصاتهم."
+msgstr "This delegate targets all doctors across different specialties."
+
+#: .\templates\custom_admin\delegate_profile.html:169
+msgid "تعديل بيانات المندوب"
+msgstr "Edit Delegate Data"
+
+#: .\templates\custom_admin\delegate_profile.html:217
+msgid "إدارة ارتباطات المندوب"
+msgstr "Manage Delegate Associations"
+
+#: .\templates\custom_admin\doctor_card.html:9
+msgid "كارت التعريف | بوابة الطبيب - حضرموت"
+msgstr "ID Card | Doctor Portal - Hadramout"
+
+#: .\templates\custom_admin\doctor_card.html:99
+#: .\templates\custom_admin\doctor_portal.html:90
+#: .\templates\custom_admin\doctor_portal.html:148
+#: .\templates\custom_admin\doctor_settings.html:69
+#: .\templates\custom_admin\doctor_transactions.html:75
+#: .\templates\custom_admin\doctor_transactions.html:132
+#: .\templates\custom_admin\doctor_transfers.html:74
+#: .\templates\custom_admin\doctor_transfers.html:131
+#: .\templates\custom_admin\doctor_vouchers.html:71
+#: .\templates\custom_admin\doctor_vouchers.html:128
+#: .\templates\custom_admin\includes\doctor_id_card_component.html:127
+msgid "حضرموت"
+msgstr "Hadramout"
+
+#: .\templates\custom_admin\doctor_card.html:100
+#: .\templates\custom_admin\doctor_portal.html:91
+#: .\templates\custom_admin\doctor_settings.html:70
+#: .\templates\custom_admin\doctor_transactions.html:76
+#: .\templates\custom_admin\doctor_transfers.html:75
+#: .\templates\custom_admin\doctor_vouchers.html:72
+msgid "بوابة الطبيب"
+msgstr "Doctor Portal"
+
+#: .\templates\custom_admin\doctor_card.html:111
+#: .\templates\custom_admin\doctor_portal.html:102
+#: .\templates\custom_admin\doctor_settings.html:81
+#: .\templates\custom_admin\doctor_transactions.html:87
+#: .\templates\custom_admin\doctor_transfers.html:86
+#: .\templates\custom_admin\doctor_vouchers.html:83
+msgid "القسائم الخاصة بي"
+msgstr "My Vouchers"
+
+#: .\templates\custom_admin\doctor_card.html:115
+#: .\templates\custom_admin\doctor_card.html:208
+#: .\templates\custom_admin\doctor_portal.html:106
+#: .\templates\custom_admin\doctor_portal.html:379
+#: .\templates\custom_admin\doctor_settings.html:85
+#: .\templates\custom_admin\doctor_settings.html:271
+#: .\templates\custom_admin\doctor_transactions.html:91
+#: .\templates\custom_admin\doctor_transactions.html:127
+#: .\templates\custom_admin\doctor_transactions.html:256
+#: .\templates\custom_admin\doctor_transfers.html:90
+#: .\templates\custom_admin\doctor_transfers.html:288
+#: .\templates\custom_admin\doctor_vouchers.html:87
+#: .\templates\custom_admin\doctor_vouchers.html:371
+msgid "سجل العمليات"
+msgstr "Transaction History"
+
+#: .\templates\custom_admin\doctor_card.html:119
+#: .\templates\custom_admin\doctor_card.html:212
+#: .\templates\custom_admin\doctor_portal.html:110
+#: .\templates\custom_admin\doctor_portal.html:383
+#: .\templates\custom_admin\doctor_profile.html:205
+#: .\templates\custom_admin\doctor_settings.html:89
+#: .\templates\custom_admin\doctor_settings.html:275
+#: .\templates\custom_admin\doctor_transactions.html:95
+#: .\templates\custom_admin\doctor_transactions.html:260
+#: .\templates\custom_admin\doctor_transfers.html:94
+#: .\templates\custom_admin\doctor_transfers.html:292
+#: .\templates\custom_admin\doctor_vouchers.html:91
+#: .\templates\custom_admin\doctor_vouchers.html:375
+msgid "التحويلات"
+msgstr "Transfers"
+
+#: .\templates\custom_admin\doctor_card.html:123
+#: .\templates\custom_admin\doctor_portal.html:114
+#: .\templates\custom_admin\doctor_settings.html:93
+#: .\templates\custom_admin\doctor_transactions.html:99
+#: .\templates\custom_admin\doctor_transfers.html:98
+#: .\templates\custom_admin\doctor_vouchers.html:95
+msgid "كارت التعريف"
+msgstr "ID Card"
+
+#: .\templates\custom_admin\doctor_card.html:127
+#: .\templates\custom_admin\doctor_card.html:216
+#: .\templates\custom_admin\doctor_portal.html:118
+#: .\templates\custom_admin\doctor_portal.html:387
+#: .\templates\custom_admin\doctor_settings.html:97
+#: .\templates\custom_admin\doctor_settings.html:125
+#: .\templates\custom_admin\doctor_settings.html:279
+#: .\templates\custom_admin\doctor_transactions.html:103
+#: .\templates\custom_admin\doctor_transactions.html:264
+#: .\templates\custom_admin\doctor_transfers.html:102
+#: .\templates\custom_admin\doctor_transfers.html:296
+#: .\templates\custom_admin\doctor_vouchers.html:99
+#: .\templates\custom_admin\doctor_vouchers.html:379
+#: .\templates\custom_admin\vendor_base.html:39
+msgid "الإعدادات"
+msgstr "Settings"
+
+#: .\templates\custom_admin\doctor_card.html:149
+msgid "كارت التعريف الميداني"
+msgstr "Field ID Card"
+
+#: .\templates\custom_admin\doctor_card.html:154
+#: .\templates\custom_admin\doctor_profile.html:449
+msgid "طباعة البطاقة"
+msgstr "Print Card"
+
+#: .\templates\custom_admin\doctor_card.html:155
+msgid "طباعة"
+msgstr "Print"
+
+#: .\templates\custom_admin\doctor_card.html:164
+msgid "تعليمات استخدام الكارت"
+msgstr "Card Usage Instructions"
+
+#: .\templates\custom_admin\doctor_card.html:165
+msgid ""
+"يمكنك استخدام هذا الكارت لإثبات هويتك لدى المتاجر والشركاء المتعاقدين. يرجى "
+"مسح الرمز ضوئياً لمعرفة الرصيد المتاح."
+msgstr ""
+"You can use this card to verify your identity at contracted stores and "
+"partners. Please scan the code to check the available balance."
+
+#: .\templates\custom_admin\doctor_card.html:178
+#: .\templates\custom_admin\doctor_portal.html:349
+#: .\templates\custom_admin\doctor_settings.html:241
+#: .\templates\custom_admin\doctor_transactions.html:226
+#: .\templates\custom_admin\doctor_transfers.html:258
+#: .\templates\custom_admin\doctor_vouchers.html:341
+msgid "الرئيسية"
+msgstr "Home"
+
+#: .\templates\custom_admin\doctor_card.html:182
+#: .\templates\custom_admin\doctor_portal.html:353
+#: .\templates\custom_admin\doctor_settings.html:245
+#: .\templates\custom_admin\doctor_transactions.html:230
+#: .\templates\custom_admin\doctor_transfers.html:262
+#: .\templates\custom_admin\doctor_vouchers.html:123
+#: .\templates\custom_admin\doctor_vouchers.html:345
+msgid "قسائمي"
+msgstr "My Vouchers"
+
+#: .\templates\custom_admin\doctor_card.html:191
+#: .\templates\custom_admin\doctor_portal.html:362
+#: .\templates\custom_admin\doctor_settings.html:254
+#: .\templates\custom_admin\doctor_transactions.html:239
+#: .\templates\custom_admin\doctor_transfers.html:271
+#: .\templates\custom_admin\doctor_vouchers.html:354
+msgid "الكارت"
+msgstr "Card"
+
+#: .\templates\custom_admin\doctor_card.html:195
+#: .\templates\custom_admin\doctor_portal.html:366
+#: .\templates\custom_admin\doctor_settings.html:258
+#: .\templates\custom_admin\doctor_transactions.html:243
+#: .\templates\custom_admin\doctor_transfers.html:275
+#: .\templates\custom_admin\doctor_vouchers.html:358
+msgid "المزيد"
+msgstr "More"
+
+#: .\templates\custom_admin\doctor_card.html:203
+#: .\templates\custom_admin\doctor_portal.html:374
+#: .\templates\custom_admin\doctor_settings.html:266
+#: .\templates\custom_admin\doctor_transactions.html:251
+#: .\templates\custom_admin\doctor_transfers.html:283
+#: .\templates\custom_admin\doctor_vouchers.html:366
+msgid "القائمة الإضافية"
+msgstr "Additional Menu"
+
+#: .\templates\custom_admin\doctor_card.html:222
+#: .\templates\custom_admin\doctor_portal.html:393
+#: .\templates\custom_admin\doctor_settings.html:285
+#: .\templates\custom_admin\doctor_transactions.html:270
+#: .\templates\custom_admin\doctor_transfers.html:302
+#: .\templates\custom_admin\doctor_vouchers.html:385
+msgid "خروج"
+msgstr "Logout"
+
+#: .\templates\custom_admin\doctor_card.html:227
+#: .\templates\custom_admin\doctor_card.html:244
+#: .\templates\custom_admin\doctor_portal.html:398
+#: .\templates\custom_admin\doctor_portal.html:415
+#: .\templates\custom_admin\doctor_settings.html:290
+#: .\templates\custom_admin\doctor_settings.html:307
+#: .\templates\custom_admin\doctor_transactions.html:275
+#: .\templates\custom_admin\doctor_transactions.html:292
+#: .\templates\custom_admin\doctor_transfers.html:307
+#: .\templates\custom_admin\doctor_transfers.html:324
+#: .\templates\custom_admin\doctor_vouchers.html:390
+#: .\templates\custom_admin\doctor_vouchers.html:407
+#: .\templates\custom_admin\vendor_portal.html:642
+msgid "إغلاق"
+msgstr "Close"
+
+#: .\templates\custom_admin\doctor_card.html:235
+#: .\templates\custom_admin\doctor_portal.html:406
+#: .\templates\custom_admin\doctor_settings.html:298
+#: .\templates\custom_admin\doctor_transactions.html:283
+#: .\templates\custom_admin\doctor_transfers.html:315
+#: .\templates\custom_admin\doctor_vouchers.html:398
+msgid "رمز التعريف الموحد"
+msgstr "Unified Identification Code"
+
+#: .\templates\custom_admin\doctor_card.html:236
+#: .\templates\custom_admin\doctor_portal.html:407
+#: .\templates\custom_admin\doctor_settings.html:299
+#: .\templates\custom_admin\doctor_transactions.html:284
+#: .\templates\custom_admin\doctor_transfers.html:316
+#: .\templates\custom_admin\doctor_vouchers.html:399
+msgid ""
+"قم بإظهار هذا الرمز للكاشير عند إتمام عملية الشراء لإتمام الخصم من رصيدك."
+msgstr ""
+"Show this code to the cashier when completing the purchase to apply the "
+"discount from your balance."
+
+#: .\templates\custom_admin\doctor_portal.html:158
+#: .\templates\custom_admin\doctor_transactions.html:141
+#: .\templates\custom_admin\doctor_transfers.html:140
+#: .\templates\custom_admin\doctor_vouchers.html:137
+msgid "الملف الشخصي"
+msgstr "Profile"
+
+#: .\templates\custom_admin\doctor_portal.html:178
+#: .\templates\custom_admin\doctor_profile.html:82
+msgid "الرصيد المتاح حالياً"
+msgstr "Currently Available Balance"
+
+#: .\templates\custom_admin\doctor_portal.html:189
+msgid "المعرف الرقمي"
+msgstr "Digital ID"
+
+#: .\templates\custom_admin\doctor_portal.html:195
+#: .\templates\custom_admin\doctor_vouchers.html:198
+msgid "تحويل لزميل"
+msgstr "Transfer to Colleague"
+
+#: .\templates\custom_admin\doctor_portal.html:199
+#: .\templates\custom_admin\doctor_vouchers.html:200
+#: .\templates\custom_admin\vendor_portal.html:432
+msgid "التفاصيل"
+msgstr "Details"
+
+#: .\templates\custom_admin\doctor_portal.html:218
+msgid "منصرف الشهر"
+msgstr "Monthly Spending"
+
+#: .\templates\custom_admin\doctor_portal.html:227
+#: .\templates\custom_admin\doctor_vouchers.html:149
+msgid "القسائم النشطة"
+msgstr "Active Vouchers"
+
+#: .\templates\custom_admin\doctor_portal.html:228
+#: .\templates\custom_admin\doctor_transfers.html:155
+#: .\templates\custom_admin\doctor_transfers.html:166
+msgid "قسيمة"
+msgstr "Voucher"
+
+#: .\templates\custom_admin\doctor_portal.html:238
+msgid "أحدث المشتريات"
+msgstr "Latest Purchases"
+
+#: .\templates\custom_admin\doctor_portal.html:239
+#: .\templates\custom_admin\doctor_portal.html:265
+#: .\templates\custom_admin\email_logs.html:92
+#: .\templates\custom_admin\email_logs.html:190
+#: .\templates\custom_admin\email_logs.html:260
+#: .\templates\custom_admin\email_logs.html:269
+#: .\templates\custom_admin\manager_dashboard.html:369
+#: .\templates\custom_admin\manager_dashboard.html:392
+#: .\templates\custom_admin\manager_dashboard.html:444
+msgid "الكل"
+msgstr "All"
+
+#: .\templates\custom_admin\doctor_portal.html:256
+msgid "لا توجد مشتريات"
+msgstr "No Purchases"
+
+#: .\templates\custom_admin\doctor_portal.html:264
+msgid "أحدث التحويلات"
+msgstr "Latest Transfers"
+
+#: .\templates\custom_admin\doctor_portal.html:277
+msgid "صادرة"
+msgstr "Outgoing"
+
+#: .\templates\custom_admin\doctor_portal.html:285
+msgid "واردة"
+msgstr "Incoming"
+
+#: .\templates\custom_admin\doctor_portal.html:292
+msgid "لا توجد تحويلات"
+msgstr "No Transfers"
+
+#: .\templates\custom_admin\doctor_portal.html:305
+msgid "قسائمي الحالية"
+msgstr "My Current Vouchers"
+
+#: .\templates\custom_admin\doctor_portal.html:312
+msgid "قسيمة نشطة"
+msgstr "Active Voucher"
+
+#: .\templates\custom_admin\doctor_portal.html:323
+msgid "لا توجد قسائم نشطة حالياً"
+msgstr "No active vouchers currently"
+
+#: .\templates\custom_admin\doctor_portal.html:326
+msgid "استعراض سجل القسائم"
+msgstr "View Vouchers History"
+
+#: .\templates\custom_admin\doctor_portal.html:333
+msgid "نصيحة أمنية"
+msgstr "Security Tip"
+
+#: .\templates\custom_admin\doctor_profile.html:31
+msgid "العودة لدليل الأطباء"
+msgstr "Back to Doctors Directory"
+
+#: .\templates\custom_admin\doctor_profile.html:92
+msgid "الحساب محذوف ومؤرشف"
+msgstr "Account Deleted & Archived"
+
+#: .\templates\custom_admin\doctor_profile.html:93
+msgid "للاطلاع فقط. لا يمكن إجراء عمليات مالية جديدة أو تعديل البيانات."
+msgstr ""
+"View only. No new financial operations or data modifications are allowed."
+
+#: .\templates\custom_admin\doctor_profile.html:99
+msgid "شحن رصيد"
+msgstr "Charge Balance"
+
+#: .\templates\custom_admin\doctor_profile.html:102
+msgid "البيانات"
+msgstr "Data"
+
+#: .\templates\custom_admin\doctor_profile.html:105
+#: .\templates\custom_admin\vendor_profile.html:91
+msgid "الأمان"
+msgstr "Security"
+
+#: .\templates\custom_admin\doctor_profile.html:125
+msgid "تحليل استهلاك الرصيد الكلي"
+msgstr "Total Balance Consumption Analysis"
+
+#: .\templates\custom_admin\doctor_profile.html:133
+msgid "إجمالي المشحون"
+msgstr "Total Charged"
+
+#: .\templates\custom_admin\doctor_profile.html:147
+msgid "منحنى الإنفاق الشهري"
+msgstr "Monthly Spending Curve"
+
+#: .\templates\custom_admin\doctor_profile.html:153
+msgid "متوسط الصرف"
+msgstr "Average Spending"
+
+#: .\templates\custom_admin\doctor_profile.html:167
+msgid "إجمالي القسائم"
+msgstr "Total Vouchers"
+
+#: .\templates\custom_admin\doctor_profile.html:174
+#: .\templates\custom_admin\vendor_portal.html:168
+#: .\templates\custom_admin\vendor_profile.html:152
+msgid "إجمالي العمليات"
+msgstr "Total Transactions"
+
+#: .\templates\custom_admin\doctor_profile.html:181
+#: .\templates\custom_admin\doctor_transfers.html:154
+msgid "تحويلات صادرة"
+msgstr "Outgoing Transfers"
+
+#: .\templates\custom_admin\doctor_profile.html:188
+msgid "تحويلات واردة"
+msgstr "Incoming Transfers"
+
+#: .\templates\custom_admin\doctor_profile.html:199
+msgid "إدارة القسائم"
+msgstr "Manage Vouchers"
+
+#: .\templates\custom_admin\doctor_profile.html:202
+msgid "سجل المشتريات"
+msgstr "Purchase History"
+
+#: .\templates\custom_admin\doctor_profile.html:216
+msgid "القسيمة / الشركة"
+msgstr "Voucher / Company"
+
+#: .\templates\custom_admin\doctor_profile.html:217
+#: .\templates\custom_admin\vendor_portal.html:430
+#: .\templates\custom_admin\vendor_profile.html:242
+msgid "المبلغ الأصلي"
+msgstr "Original Amount"
+
+#: .\templates\custom_admin\doctor_profile.html:218
+#: .\templates\custom_admin\doctor_profile.html:589
+#: .\templates\custom_admin\doctor_vouchers.html:184
+msgid "المتبقي"
+msgstr "Remaining"
+
+#: .\templates\custom_admin\doctor_profile.html:246
+msgid "معطلة"
+msgstr "Disabled"
+
+#: .\templates\custom_admin\doctor_profile.html:258
+#: .\templates\custom_admin\doctors_directory.html:372
+msgid "تعديل"
+msgstr "Edit"
+
+#: .\templates\custom_admin\doctor_profile.html:265
+msgid "تفعيل/تعطيل"
+msgstr "Enable/Disable"
+
+#: .\templates\custom_admin\doctor_profile.html:307
+msgid "لا يوجد سجل مشتريات للطبيب"
+msgstr "No purchase history for the doctor"
+
+#: .\templates\custom_admin\doctor_profile.html:318
+#: .\templates\custom_admin\doctor_profile.html:703
+msgid "الحوالات الصادرة"
+msgstr "Outgoing Transfers"
+
+#: .\templates\custom_admin\doctor_profile.html:338
+msgid "إلغاء التحويل"
+msgstr "Cancel Transfer"
+
+#: .\templates\custom_admin\doctor_profile.html:345
+msgid "لا توجد تحويلات صادرة"
+msgstr "No outgoing transfers"
+
+#: .\templates\custom_admin\doctor_profile.html:352
+#: .\templates\custom_admin\doctor_profile.html:726
+msgid "الحوالات الواردة"
+msgstr "Incoming Transfers"
+
+#: .\templates\custom_admin\doctor_profile.html:372
+msgid "إلغاء وإرجاع"
+msgstr "Cancel & Return"
+
+#: .\templates\custom_admin\doctor_profile.html:379
+msgid "لا توجد تحويلات واردة"
+msgstr "No incoming transfers"
+
+#: .\templates\custom_admin\doctor_profile.html:391
+msgid "عرض كافة قسائم الطبيب"
+msgstr "View All Doctor's Vouchers"
+
+#: .\templates\custom_admin\doctor_profile.html:396
+msgid "عرض كامل سجل مشتريات الطبيب"
+msgstr "View Complete Doctor's Purchase History"
+
+#: .\templates\custom_admin\doctor_profile.html:401
+msgid "عرض كامل سجل تحويلات الطبيب"
+msgstr "View Complete Doctor's Transfer History"
+
+#: .\templates\custom_admin\doctor_profile.html:412
+msgid "ملاحظات إدارية خاصة"
+msgstr "Private Administrative Notes"
+
+#: .\templates\custom_admin\doctor_profile.html:413
+msgid "حفظ تلقائي"
+msgstr "Auto Save"
+
+#: .\templates\custom_admin\doctor_profile.html:415
+msgid ""
+"اكتب هنا أي ملاحظات إدارية تخص هذا الطبيب... (هذه الملاحظات سرية ولا تظهر "
+"للطبيب)"
+msgstr ""
+"Write any administrative notes about this doctor here... (These notes are "
+"confidential and not visible to the doctor)"
+
+#: .\templates\custom_admin\doctor_profile.html:421
+msgid "تواصل إداري سريع"
+msgstr "Quick Administrative Contact"
+
+#: .\templates\custom_admin\doctor_profile.html:426
+msgid "اتصال مباشر"
+msgstr "Direct Call"
+
+#: .\templates\custom_admin\doctor_profile.html:445
+msgid "بطاقة الهوية الاعتمادية"
+msgstr "Accreditation ID Card"
+
+#: .\templates\custom_admin\doctor_profile.html:446
+msgid "إصدار بطاقة الهوية الذكية للطبيب"
+msgstr "Issue Smart ID Card for Doctor"
+
+#: .\templates\custom_admin\doctor_profile.html:464
+msgid "إضافة قسيمة جديدة"
+msgstr "Add New Voucher"
+
+#: .\templates\custom_admin\doctor_profile.html:465
+msgid "سيتم إنشاء قسيمة جديدة برصيد محدد للطبيب."
+msgstr ""
+"A new voucher with a specified balance will be created for the doctor."
+
+#: .\templates\custom_admin\doctor_profile.html:471
+msgid "قيمة الشحن (ج.م)"
+msgstr "Charge Amount (EGP)"
+
+#: .\templates\custom_admin\doctor_profile.html:475
+msgid "الشركة الدوائية"
+msgstr "Pharmaceutical Company"
+
+#: .\templates\custom_admin\doctor_profile.html:477
+msgid "-- شحن عام --"
+msgstr "-- General Charge --"
+
+#: .\templates\custom_admin\doctor_profile.html:484
+#: .\templates\emails\voucher_notification.html:39
+msgid "تاريخ انتهاء الصلاحية"
+msgstr "Expiry Date"
+
+#: .\templates\custom_admin\doctor_profile.html:487
+msgid "تأكيد عملية الشحن"
+msgstr "Confirm Charging Operation"
+
+#: .\templates\custom_admin\doctor_profile.html:496
+msgid "تعديل بيانات الطبيب"
+msgstr "Edit Doctor Data"
+
+#: .\templates\custom_admin\doctor_profile.html:523
+#: .\templates\custom_admin\vendor_profile.html:603
+msgid "حفظ البيانات المحدثة"
+msgstr "Save Updated Data"
+
+#: .\templates\custom_admin\doctor_profile.html:533
+msgid "تغيير كلمة المرور بشكل فوري للطبيب."
+msgstr "Change the doctor's password immediately."
+
+#: .\templates\custom_admin\doctor_profile.html:538
+#: .\templates\custom_admin\vendor_portal.html:519
+#: .\templates\custom_admin\vendor_profile.html:618
+msgid "تغيير كلمة السر"
+msgstr "Change Password"
+
+#: .\templates\custom_admin\doctor_profile.html:547
+msgid "تعديل قسيمة"
+msgstr "Edit Voucher"
+
+#: .\templates\custom_admin\doctor_profile.html:548
+msgid "تعديل الرصيد المتبقي أو تاريخ الصلاحية يدوياً."
+msgstr "Manually edit the remaining balance or expiry date."
+
+#: .\templates\custom_admin\doctor_profile.html:555
+msgid "الرصيد المتبقي الحالي"
+msgstr "Current Remaining Balance"
+
+#: .\templates\custom_admin\doctor_profile.html:559
+msgid "تحديث تاريخ الصلاحية"
+msgstr "Update Expiry Date"
+
+#: .\templates\custom_admin\doctor_profile.html:572
+msgid "إدارة كافة القسائم"
+msgstr "Manage All Vouchers"
+
+#: .\templates\custom_admin\doctor_profile.html:573
+msgid "السجل الكامل لقسائم الطبيب مع أدوات التحكم"
+msgstr "Complete record of the doctor's vouchers with control tools"
+
+#: .\templates\custom_admin\doctor_profile.html:578
+msgid "بحث في القسائم..."
+msgstr "Search vouchers..."
+
+#: .\templates\custom_admin\doctor_profile.html:587
+msgid "الشركة / القسيمة"
+msgstr "Company / Voucher"
+
+#: .\templates\custom_admin\doctor_profile.html:588
+msgid "الرصيد الأصلي"
+msgstr "Original Balance"
+
+#: .\templates\custom_admin\doctor_profile.html:590
+msgid "انتهاء الصلاحية"
+msgstr "Expiry"
+
+#: .\templates\custom_admin\doctor_profile.html:592
+#: .\templates\custom_admin\doctor_profile.html:653
+msgid "إجراءات"
+msgstr "Actions"
+
+#: .\templates\custom_admin\doctor_profile.html:606
+#: .\templates\custom_admin\vendor_profile.html:216
+#: .\templates\custom_admin\vendor_profile.html:440
+msgid "معطل"
+msgstr "Disabled"
+
+#: .\templates\custom_admin\doctor_profile.html:607
+msgid "منتهي"
+msgstr "Expired"
+
+#: .\templates\custom_admin\doctor_profile.html:630
+msgid "إدارة المشتريات"
+msgstr "Manage Purchases"
+
+#: .\templates\custom_admin\doctor_profile.html:631
+msgid "عرض وإلغاء العمليات المالية (Refund)"
+msgstr "View & Cancel Financial Operations (Refund)"
+
+#: .\templates\custom_admin\doctor_profile.html:635
+#: .\templates\custom_admin\vendor_profile.html:471
+#: .\templates\custom_admin\vendor_profile.html:530
+msgid "تصدير Excel"
+msgstr "Export Excel"
+
+#: .\templates\custom_admin\doctor_profile.html:639
+msgid "بحث في الفواتير..."
+msgstr "Search invoices..."
+
+#: .\templates\custom_admin\doctor_profile.html:648
+msgid "الفاتورة / البائع"
+msgstr "Invoice / Seller"
+
+#: .\templates\custom_admin\doctor_profile.html:651
+msgid "المخصوم (رصيد)"
+msgstr "Deducted (Balance)"
+
+#: .\templates\custom_admin\doctor_profile.html:652
+msgid "الموظف المسؤول"
+msgstr "Responsible Employee"
+
+#: .\templates\custom_admin\doctor_profile.html:672
+msgid "إلغاء العملية (Refund)"
+msgstr "Cancel Operation (Refund)"
+
+#: .\templates\custom_admin\doctor_profile.html:688
+msgid "إدارة التحويلات"
+msgstr "Manage Transfers"
+
+#: .\templates\custom_admin\doctor_profile.html:689
+msgid "إلغاء واستعادة القسائم المحولة"
+msgstr "Cancel & Restore Transferred Vouchers"
+
+#: .\templates\custom_admin\doctor_profile.html:694
+msgid "بحث في التحويلات..."
+msgstr "Search transfers..."
+
+#: .\templates\custom_admin\doctor_settings.html:9
+msgid "الإعدادات | بوابة الطبيب - حضرموت"
+msgstr "Settings | Doctor Portal - Hadramout"
+
+#: .\templates\custom_admin\doctor_settings.html:150
+#: .\templates\custom_admin\system_settings.html:232
+msgid "البيانات الشخصية"
+msgstr "Personal Data"
+
+#: .\templates\custom_admin\doctor_settings.html:151
+msgid "تحديث معلوماتك الأساسية وصورتك الشخصية"
+msgstr "Update your basic information and profile picture"
+
+#: .\templates\custom_admin\doctor_settings.html:169
+msgid "الصورة الشخصية"
+msgstr "Profile Picture"
+
+#: .\templates\custom_admin\doctor_settings.html:170
+msgid ""
+"يُفضل استخدام صورة احترافية بأبعاد مربعة (512x512) وبحجم لا يتعدى 2 "
+"ميجابايت."
+msgstr ""
+"A professional square photo (512x512) with a maximum size of 2 MB is "
+"preferred."
+
+#: .\templates\custom_admin\doctor_settings.html:171
+msgid "اختر صورة"
+msgstr "Choose Photo"
+
+#: .\templates\custom_admin\doctor_settings.html:205
+msgid "أمان الحساب"
+msgstr "Account Security"
+
+#: .\templates\custom_admin\doctor_settings.html:206
+msgid "تغيير كلمة المرور الخاصة بك"
+msgstr "Change Your Password"
+
+#: .\templates\custom_admin\doctor_transactions.html:9
+msgid "سجل العمليات | بوابة الطبيب - حضرموت"
+msgstr "Transaction History | Doctor Portal - Hadramout"
+
+#: .\templates\custom_admin\doctor_transactions.html:155
+msgid "إجمالي المصروفات"
+msgstr "Total Expenditures"
+
+#: .\templates\custom_admin\doctor_transactions.html:168
+msgid "آخر العمليات المكتملة"
+msgstr "Last Completed Operations"
+
+#: .\templates\custom_admin\doctor_transactions.html:181
+msgid "المتجر / المورد"
+msgstr "Store / Vendor"
+
+#: .\templates\custom_admin\doctor_transactions.html:183
+#: .\templates\custom_admin\doctor_transfers.html:191
+msgid "القيمة"
+msgstr "Amount"
+
+#: .\templates\custom_admin\doctor_transactions.html:206
+msgid "مكتملة"
+msgstr "Completed"
+
+#: .\templates\custom_admin\doctor_transactions.html:212
+msgid "لم يتم العثور على أي عمليات مسجلة حالياً."
+msgstr "No recorded operations found currently."
+
+#: .\templates\custom_admin\doctor_transfers.html:9
+msgid "تاريخ التحويلات | بوابة الطبيب - حضرموت"
+msgstr "Transfer History | Doctor Portal - Hadramout"
+
+#: .\templates\custom_admin\doctor_transfers.html:126
+msgid "تاريخ التحويلات"
+msgstr "Transfer History"
+
+#: .\templates\custom_admin\doctor_transfers.html:165
+msgid "تحويلات مستلمة"
+msgstr "Received Transfers"
+
+#: .\templates\custom_admin\doctor_transfers.html:177
+msgid "التحويلات المرسلة (الصادرة)"
+msgstr "Sent Transfers (Outgoing)"
+
+#: .\templates\custom_admin\doctor_transfers.html:178
+msgid "التحويلات المستلمة (الواردة)"
+msgstr "Received Transfers (Incoming)"
+
+#: .\templates\custom_admin\doctor_transfers.html:187
+msgid "تاريخ التحويل"
+msgstr "Transfer Date"
+
+#: .\templates\custom_admin\doctor_transfers.html:188
+msgid "المستلم (الطبيب)"
+msgstr "Recipient (Doctor)"
+
+#: .\templates\custom_admin\doctor_transfers.html:189
+msgid "تخصص المستلم"
+msgstr "Recipient's Specialty"
+
+#: .\templates\custom_admin\doctor_transfers.html:190
+#: .\templates\custom_admin\doctor_transfers.html:221
+msgid "القسيمة / الفعالية"
+msgstr "Voucher / Event"
+
+#: .\templates\custom_admin\doctor_transfers.html:205
+msgid "لم تقم بإجراء أي تحويلات حتى الآن."
+msgstr "You have not made any transfers yet."
+
+#: .\templates\custom_admin\doctor_transfers.html:220
+msgid "المرسل (الطبيب)"
+msgstr "Sender (Doctor)"
+
+#: .\templates\custom_admin\doctor_transfers.html:222
+msgid "القيمة الحالية"
+msgstr "Current Value"
+
+#: .\templates\custom_admin\doctor_transfers.html:237
+msgid "غير نشطة"
+msgstr "Inactive"
+
+#: .\templates\custom_admin\doctor_transfers.html:243
+msgid "لا يوجد تحويلات واردة حالياً."
+msgstr "No incoming transfers currently."
+
+#: .\templates\custom_admin\doctor_vouchers.html:9
+msgid "قسائمي | بوابة الطبيب - حضرموت"
+msgstr "My Vouchers | Doctor Portal - Hadramout"
+
+#: .\templates\custom_admin\doctor_vouchers.html:150
+msgid "القسائم المنتهية / المستخدمة"
+msgstr "Expired / Used Vouchers"
+
+#: .\templates\custom_admin\doctor_vouchers.html:180
+msgid "المستهلك"
+msgstr "Consumed"
+
+#: .\templates\custom_admin\doctor_vouchers.html:204
+msgid "لا يوجد قسائم نشطة حالياً."
+msgstr "No active vouchers currently."
+
+#: .\templates\custom_admin\doctor_vouchers.html:226
+msgid "الاسم، الهاتف، أو المعرف"
+msgstr "Name, Phone, or ID"
+
+#: .\templates\custom_admin\doctor_vouchers.html:238
+msgid "سيتم إرسال رمز تحقق (OTP) إلى الطبيب المستلم لتأكيد العملية."
+msgstr ""
+"A verification code (OTP) will be sent to the recipient doctor to confirm "
+"the operation."
+
+#: .\templates\custom_admin\doctor_vouchers.html:243
+msgid "إرسال رمز التحقق"
+msgstr "Send Verification Code"
+
+#: .\templates\custom_admin\doctor_vouchers.html:262
+msgid "تم إرسال الرمز للطبيب:"
+msgstr "Code sent to doctor:"
+
+#: .\templates\custom_admin\doctor_vouchers.html:263
+msgid "يرجى إدخال الرمز المكون من 6 أرقام."
+msgstr "Please enter the 6-digit code."
+
+#: .\templates\custom_admin\doctor_vouchers.html:268
+msgid "رمز التحقق (OTP)"
+msgstr "Verification Code (OTP)"
+
+#: .\templates\custom_admin\doctor_vouchers.html:273
+msgid "تأكيد وتحويل"
+msgstr "Confirm & Transfer"
+
+#: .\templates\custom_admin\doctor_vouchers.html:274
+msgid "رجوع"
+msgstr "Back"
+
+#: .\templates\custom_admin\doctor_vouchers.html:291
+msgid "رصيد نهائي"
+msgstr "Final Balance"
+
+#: .\templates\custom_admin\doctor_vouchers.html:306
+msgid "محولة"
+msgstr "Transferred"
+
+#: .\templates\custom_admin\doctor_vouchers.html:314
+msgid "المبلغ المحول"
+msgstr "Transferred Amount"
+
+#: .\templates\custom_admin\doctor_vouchers.html:330
+msgid "لا يوجد سجل قسائم سابقة أو محولة."
+msgstr "No previous or transferred voucher records."
+
+#: .\templates\custom_admin\doctor_vouchers.html:554
+msgid "لم يتم العثور على أطباء"
+msgstr "No doctors found"
+
+#: .\templates\custom_admin\doctors_directory.html:135
+msgid "البحث باسم واسم عائلة الطبيب..."
+msgstr "Search by doctor's first and last name..."
+
+#: .\templates\custom_admin\doctors_directory.html:141
+msgid "إضافة طبيب جديد"
+msgstr "Add New Doctor"
+
+#: .\templates\custom_admin\doctors_directory.html:153
+msgid "التخصص الطبي"
+msgstr "Medical Specialty"
+
+#: .\templates\custom_admin\doctors_directory.html:197
+msgid "طبيب محدد"
+msgstr "Selected Doctor"
+
+#: .\templates\custom_admin\doctors_directory.html:201
+msgid "إضافة كوبونات"
+msgstr "Add Coupons"
+
+#: .\templates\custom_admin\doctors_directory.html:204
+msgid "طباعة الكروت"
+msgstr "Print Cards"
+
+#: .\templates\custom_admin\doctors_directory.html:207
+msgid "تفعيل"
+msgstr "Activate"
+
+#: .\templates\custom_admin\doctors_directory.html:210
+#: .\templates\custom_admin\system_settings.html:363
+msgid "تعطيل"
+msgstr "Deactivate"
+
+#: .\templates\custom_admin\doctors_directory.html:236
+msgid "تحديد كافة الأطباء في هذه الصفحة"
+msgstr "Select All Doctors on This Page"
+
+#: .\templates\custom_admin\doctors_directory.html:263
+msgid "الرصيد المتاح (ج.م)"
+msgstr "Available Balance (EGP)"
+
+#: .\templates\custom_admin\doctors_directory.html:270
+msgid "الهوية"
+msgstr "ID"
+
+#: .\templates\custom_admin\doctors_directory.html:273
+msgid "ملف"
+msgstr "File"
+
+#: .\templates\custom_admin\doctors_directory.html:280
+msgid "لا يوجد أطباء مسجلين حالياً يتطابقون مع بحثك."
+msgstr "No registered doctors currently matching your search."
+
+#: .\templates\custom_admin\doctors_directory.html:289
+msgid "السابق"
+msgstr "Previous"
+
+#: .\templates\custom_admin\doctors_directory.html:295
+msgid "التالي"
+msgstr "Next"
+
+#: .\templates\custom_admin\doctors_directory.html:322
+msgid "إجمالي المبالغ المؤرشفة"
+msgstr "Total Archived Amounts"
+
+#: .\templates\custom_admin\doctors_directory.html:329
+#: .\templates\custom_admin\vendors_directory.html:261
+msgid "عرض السجل التاريخي"
+msgstr "View Historical Record"
+
+#: .\templates\custom_admin\doctors_directory.html:336
+#: .\templates\custom_admin\vendors_directory.html:268
+msgid "سجل الأرشيف فارغ. لا توجد حسابات محذوفة."
+msgstr "Archive record is empty. No deleted accounts."
+
+#: .\templates\custom_admin\doctors_directory.html:345
+msgid "التخصصات الطبية المتوفرة"
+msgstr "Available Medical Specialties"
+
+#: .\templates\custom_admin\doctors_directory.html:347
+#: .\templates\custom_admin\doctors_directory.html:471
+msgid "إضافة تخصص جديد"
+msgstr "Add New Specialty"
+
+#: .\templates\custom_admin\doctors_directory.html:364
+msgid "الأطباء المسجلين"
+msgstr "Registered Doctors"
+
+#: .\templates\custom_admin\doctors_directory.html:366
+msgid "طبيب"
+msgstr "Doctor"
+
+#: .\templates\custom_admin\doctors_directory.html:371
+msgid "تعديل اسم التخصص"
+msgstr "Edit Specialty Name"
+
+#: .\templates\custom_admin\doctors_directory.html:374
+msgid "حذف التخصص"
+msgstr "Delete Specialty"
+
+#: .\templates\custom_admin\doctors_directory.html:382
+msgid "لا يوجد أي تخصص طبي مضاف حالياً."
+msgstr "No medical specialty has been added yet."
+
+#: .\templates\custom_admin\doctors_directory.html:396
+msgid "إضافة طبيب جديد للمنظومة"
+msgstr "Add New Doctor to the System"
+
+#: .\templates\custom_admin\doctors_directory.html:421
+msgid "اختر التخصص..."
+msgstr "Choose Specialty..."
+
+#: .\templates\custom_admin\doctors_directory.html:439
+msgid "اعتماد وإضافة الطبيب"
+msgstr "Approve & Add Doctor"
+
+#: .\templates\custom_admin\doctors_directory.html:453
+msgid "اسم الطبيب"
+msgstr "Doctor Name"
+
+#: .\templates\custom_admin\doctors_directory.html:461
+msgid "طباعة كارت الهوية"
+msgstr "Print ID Card"
+
+#: .\templates\custom_admin\doctors_directory.html:477
+#: .\templates\custom_admin\doctors_directory.html:499
+msgid "اسم التخصص الطبي"
+msgstr "Medical Specialty Name"
+
+#: .\templates\custom_admin\doctors_directory.html:478
+msgid "مثال: نساء وتوليد، قلب وأوعية دموية..."
+msgstr "Example: Obstetrics & Gynecology, Cardiology..."
+
+#: .\templates\custom_admin\doctors_directory.html:482
+msgid "إضافة التخصص"
+msgstr "Add Specialty"
+
+#: .\templates\custom_admin\doctors_directory.html:492
+msgid "تعديل التخصص الطبي"
+msgstr "Edit Medical Specialty"
+
+#: .\templates\custom_admin\doctors_directory.html:521
+msgid "إصدار قسائم جماعية"
+msgstr "Issue Bulk Vouchers"
+
+#: .\templates\custom_admin\doctors_directory.html:522
+msgid "سيتم إصدار قسيمة جديدة لكافة الأطباء المحددين ("
+msgstr "A new voucher will be issued to all selected doctors ("
+
+#: .\templates\custom_admin\doctors_directory.html:522
+msgid "طبيب)."
+msgstr "doctor)."
+
+#: .\templates\custom_admin\doctors_directory.html:530
+msgid "قيمة القسيمة (ج.م)"
+msgstr "Voucher Amount (EGP)"
+
+#: .\templates\custom_admin\doctors_directory.html:531
+msgid "مثال: 500"
+msgstr "Example: 500"
+
+#: .\templates\custom_admin\doctors_directory.html:551
+msgid "أي ملاحظات إضافية بخصوص القسائم..."
+msgstr "Any additional notes regarding the vouchers..."
+
+#: .\templates\custom_admin\doctors_directory.html:555
+msgid "إصدار القسائم الآن"
+msgstr "Issue Vouchers Now"
+
+#: .\templates\custom_admin\email_logs.html:11
+msgid "إعادة إرسال بيانات دخول"
+msgstr "Resend Login Credentials"
+
+#: .\templates\custom_admin\email_logs.html:12
+msgid "إعادة إرسال بيانات"
+msgstr "Resend Data"
+
+#: .\templates\custom_admin\email_logs.html:15
+msgid "إرسال إيميل"
+msgstr "Send Email"
+
+#: .\templates\custom_admin\email_logs.html:59
+msgid "إجمالي المرسلة"
+msgstr "Total Sent"
+
+#: .\templates\custom_admin\email_logs.html:66
+msgid "نجاح الإرسال"
+msgstr "Successful Sends"
+
+#: .\templates\custom_admin\email_logs.html:73
+msgid "فشل الإرسال"
+msgstr "Failed Sends"
+
+#: .\templates\custom_admin\email_logs.html:80
+#: .\templates\custom_admin\vendor_portal.html:207
+msgid "آخر 7 أيام"
+msgstr "Last 7 Days"
+
+#: .\templates\custom_admin\email_logs.html:90
+msgid "بحث باسم المرسل أو عنوان الإيميل..."
+msgstr "Search by sender name or email address..."
+
+#: .\templates\custom_admin\email_logs.html:93
+msgid "نجح"
+msgstr "Success"
+
+#: .\templates\custom_admin\email_logs.html:94
+#: .\templates\custom_admin\email_logs.html:128
+msgid "فشل"
+msgstr "Failed"
+
+#: .\templates\custom_admin\email_logs.html:95
+msgid "بحث"
+msgstr "Search"
+
+#: .\templates\custom_admin\email_logs.html:105
+msgid "المرسل إليه"
+msgstr "Recipient"
+
+#: .\templates\custom_admin\email_logs.html:106
+msgid "عنوان الرسالة"
+msgstr "Message Subject"
+
+#: .\templates\custom_admin\email_logs.html:107
+msgid "القالب"
+msgstr "Template"
+
+#: .\templates\custom_admin\email_logs.html:109
+msgid "تاريخ الإرسال"
+msgstr "Send Date"
+
+#: .\templates\custom_admin\email_logs.html:126
+msgid "نجاح"
+msgstr "Success"
+
+#: .\templates\custom_admin\email_logs.html:141
+msgid "لا توجد سجلات إيميلات حتى الآن"
+msgstr "No email records yet"
+
+#: .\templates\custom_admin\email_logs.html:142
+msgid "سيتم تسجيل كل إيميل مرسل من النظام هنا تلقائياً"
+msgstr "All emails sent from the system will be automatically recorded here"
+
+#: .\templates\custom_admin\email_logs.html:175
+msgid "إعادة إرسال بيانات الدخول"
+msgstr "Resend Login Credentials"
+
+#: .\templates\custom_admin\email_logs.html:185
+msgid ""
+"سيتم توليد كلمة مرور جديدة تلقائياً وإرسالها مع بيانات الدخول إلى بريد "
+"المستخدم."
+msgstr ""
+"A new password will be automatically generated and sent with login "
+"credentials to the user's email."
+
+#: .\templates\custom_admin\email_logs.html:188
+msgid "اختر المستخدم"
+msgstr "Choose User"
+
+#: .\templates\custom_admin\email_logs.html:191
+#: .\templates\custom_admin\email_logs.html:245
+#: .\templates\custom_admin\email_logs.html:270
+msgid "أطباء"
+msgstr "Doctors"
+
+#: .\templates\custom_admin\email_logs.html:192
+#: .\templates\custom_admin\email_logs.html:248
+#: .\templates\custom_admin\email_logs.html:271
+msgid "تجار"
+msgstr "Vendors"
+
+#: .\templates\custom_admin\email_logs.html:193
+#: .\templates\custom_admin\email_logs.html:251
+#: .\templates\custom_admin\email_logs.html:272
+msgid "شركات"
+msgstr "Companies"
+
+#: .\templates\custom_admin\email_logs.html:194
+#: .\templates\custom_admin\email_logs.html:254
+#: .\templates\custom_admin\email_logs.html:273
+msgid "مناديب"
+msgstr "Delegates"
+
+#: .\templates\custom_admin\email_logs.html:195
+#: .\templates\custom_admin\email_logs.html:257
+#: .\templates\custom_admin\email_logs.html:274
+#: .\templates\custom_admin\manager_dashboard.html:350
+#: .\templates\custom_admin\vendor_portal.html:505
+msgid "إدارة"
+msgstr "Admin"
+
+#: .\templates\custom_admin\email_logs.html:197
+msgid "بحث بالاسم أو البريد..."
+msgstr "Search by name or email..."
+
+#: .\templates\custom_admin\email_logs.html:213
+msgid "إرسال البيانات"
+msgstr "Send Data"
+
+#: .\templates\custom_admin\email_logs.html:239
+msgid "المرسل إليهم"
+msgstr "Recipients"
+
+#: .\templates\custom_admin\email_logs.html:242
+msgid "محددين"
+msgstr "Selected"
+
+#: .\templates\custom_admin\email_logs.html:267
+msgid "اختر المستخدمين"
+msgstr "Choose Users"
+
+#: .\templates\custom_admin\email_logs.html:276
+msgid "بحث في المستخدمين..."
+msgstr "Search users..."
+
+#: .\templates\custom_admin\email_logs.html:292
+msgid "عنوان الإيميل"
+msgstr "Email Address"
+
+#: .\templates\custom_admin\email_logs.html:293
+msgid "أدخل عنوان الرسالة..."
+msgstr "Enter message subject..."
+
+#: .\templates\custom_admin\email_logs.html:298
+msgid "محتوى الرسالة"
+msgstr "Message Content"
+
+#: .\templates\custom_admin\email_logs.html:299
+msgid "اكتب محتوى رسالتك هنا..."
+msgstr "Write your message content here..."
+
+#: .\templates\custom_admin\email_logs.html:305
+msgid "إرسال الرسالة"
+msgstr "Send Message"
+
+#: .\templates\custom_admin\events_wizard.html:133
+msgid "إدارة الحملات وتوليد القسائم"
+msgstr "Campaign Management & Voucher Generation"
+
+#: .\templates\custom_admin\events_wizard.html:134
+msgid ""
+"المركز الموحد لإنشاء الندوات العلمية وضخ الميزانيات الترويجية (Vouchers) "
+"للأطباء."
+msgstr ""
+"Unified center for creating scientific seminars and injecting promotional "
+"budgets (Vouchers) for doctors."
+
+#: .\templates\custom_admin\events_wizard.html:139
+msgid "إصدار قسائم سريعة"
+msgstr "Issue Quick Vouchers"
+
+#: .\templates\custom_admin\events_wizard.html:142
+msgid "إدارة النظام"
+msgstr "System Management"
+
+#: .\templates\custom_admin\events_wizard.html:172
+msgid "إطلاق فعالية جديدة"
+msgstr "Launch New Event"
+
+#: .\templates\custom_admin\events_wizard.html:176
+msgid "اسم الفعالية / المؤتمر"
+msgstr "Event / Conference Name"
+
+#: .\templates\custom_admin\events_wizard.html:177
+msgid "مثال: مؤتمر طب الأسنان الدولي 2024"
+msgstr "Example: International Dentistry Conference 2024"
+
+#: .\templates\custom_admin\events_wizard.html:180
+#: .\templates\custom_admin\events_wizard.html:391
+msgid "الشركة الطبية الراعية"
+msgstr "Sponsoring Medical Company"
+
+#: .\templates\custom_admin\events_wizard.html:180
+#: .\templates\custom_admin\events_wizard.html:196
+#: .\templates\custom_admin\events_wizard.html:205
+#: .\templates\custom_admin\events_wizard.html:391
+msgid "(اختياري)"
+msgstr "(Optional)"
+
+#: .\templates\custom_admin\events_wizard.html:182
+msgid "بدون شركة (شحن عام)..."
+msgstr "No company (General charge)..."
+
+#: .\templates\custom_admin\events_wizard.html:189
+msgid "تاريخ البدء"
+msgstr "Start Date"
+
+#: .\templates\custom_admin\events_wizard.html:198
+msgid "-- اختر التخصص --"
+msgstr "-- Choose Specialty --"
+
+#: .\templates\custom_admin\events_wizard.html:205
+msgid "المناديب المشرفين"
+msgstr "Supervising Delegates"
+
+#: .\templates\custom_admin\events_wizard.html:207
+#: .\templates\custom_admin\vendor_settlements.html:411
+msgid "-- اختر المندوب --"
+msgstr "-- Choose Delegate --"
+
+#: .\templates\custom_admin\events_wizard.html:216
+msgid "الميزانية القصوى للفعالية (ج.م)"
+msgstr "Maximum Event Budget (EGP)"
+
+#: .\templates\custom_admin\events_wizard.html:217
+msgid "الميزانية الإجمالية... مثلا 50000"
+msgstr "Total budget... e.g. 50000"
+
+#: .\templates\custom_admin\events_wizard.html:220
+msgid "قيمة القسيمة الافتراضية لكل طبيب (ج.م)"
+msgstr "Default Voucher Value per Doctor (EGP)"
+
+#: .\templates\custom_admin\events_wizard.html:224
+msgid "صلاحية القسائم الافتراضية (أيام)"
+msgstr "Default Voucher Validity (Days)"
+
+#: .\templates\custom_admin\events_wizard.html:228
+msgid "نوع تسوية الدفع"
+msgstr "Payment Settlement Type"
+
+#: .\templates\custom_admin\events_wizard.html:230
+msgid "آجل (Deferred)"
+msgstr "Deferred"
+
+#: .\templates\custom_admin\events_wizard.html:231
+msgid "نقدي (Cash)"
+msgstr "Cash"
+
+#: .\templates\custom_admin\events_wizard.html:238
+msgid "إطلاق الفعالية"
+msgstr "Launch Event"
+
+#: .\templates\custom_admin\events_wizard.html:266
+#: .\templates\custom_admin\vendor_portal.html:302
+#: .\templates\custom_admin\vendor_portal.html:469
+msgid "مكتمل"
+msgstr "Completed"
+
+#: .\templates\custom_admin\events_wizard.html:273
+msgid "شحن قسائم للأطباء"
+msgstr "Charge Vouchers for Doctors"
+
+#: .\templates\custom_admin\events_wizard.html:279
+msgid "تخصيص الميزانية القصوى (القسائم الصادرة)"
+msgstr "Allocate Maximum Budget (Issued Vouchers)"
+
+#: .\templates\custom_admin\events_wizard.html:286
+msgid "تم إصدار قسائم لعدد"
+msgstr "Vouchers issued for"
+
+#: .\templates\custom_admin\events_wizard.html:286
+msgid "حتى الآن."
+msgstr "so far."
+
+#: .\templates\custom_admin\events_wizard.html:287
+msgid "الاستهلاك الميداني الفعلي:"
+msgstr "Actual Field Consumption:"
+
+#: .\templates\custom_admin\events_wizard.html:294
+msgid "لا يوجد أي حملات أو فعاليات مسجلة بالنظام حالياً."
+msgstr "No campaigns or events registered in the system currently."
+
+#: .\templates\custom_admin\events_wizard.html:307
+msgid "الشركة المسندة"
+msgstr "Assigned Company"
+
+#: .\templates\custom_admin\events_wizard.html:308
+#: .\templates\emails\voucher_notification.html:35
+msgid "تاريخ الإصدار"
+msgstr "Issue Date"
+
+#: .\templates\custom_admin\events_wizard.html:328
+msgid "لم يتم إصدار أي قسائم سريعة حتى الآن."
+msgstr "No quick vouchers have been issued yet."
+
+#: .\templates\custom_admin\events_wizard.html:343
+msgid "الفعالية / الشركة"
+msgstr "Event / Company"
+
+#: .\templates\custom_admin\events_wizard.html:346
+msgid "الرصيد المهدور (المنتهي)"
+msgstr "Wasted Balance (Expired)"
+
+#: .\templates\custom_admin\events_wizard.html:367
+msgid "لا توجد أي قسائم منتهية الصلاحية في الأرشيف."
+msgstr "No expired vouchers in the archive."
+
+#: .\templates\custom_admin\events_wizard.html:379
+msgid "إصدار قسائم -"
+msgstr "Issue Vouchers -"
+
+#: .\templates\custom_admin\events_wizard.html:383
+msgid ""
+"قم بتحديد مجموعة من الأطباء من القائمة وضخ مبلغ القسيمة بحساباتهم فوراً "
+"للاستخدام الميداني بالباركود الخاص بهم."
+msgstr ""
+"Select a group of doctors from the list and inject the voucher amount into "
+"their accounts immediately for field use with their barcodes."
+
+#: .\templates\custom_admin\events_wizard.html:393
+msgid "قسيمة عامة (بدون شركة)"
+msgstr "General Voucher (No Company)"
+
+#: .\templates\custom_admin\events_wizard.html:401
+msgid "تصفية الأطباء حسب التخصص (اختياري):"
+msgstr "Filter Doctors by Specialty (Optional):"
+
+#: .\templates\custom_admin\events_wizard.html:403
+msgid "الكل (جميع التخصصات)"
+msgstr "All (All Specialties)"
+
+#: .\templates\custom_admin\events_wizard.html:410
+msgid "تحديد الأطباء المستفيدين"
+msgstr "Select Beneficiary Doctors"
+
+#: .\templates\custom_admin\events_wizard.html:419
+msgid "لا يوجد أطباء نشطين لتحديدهم."
+msgstr "No active doctors to select."
+
+#: .\templates\custom_admin\events_wizard.html:426
+msgid "قيمة القسيمة لكل طبيب (ج.م)"
+msgstr "Voucher Value per Doctor (EGP)"
+
+#: .\templates\custom_admin\events_wizard.html:430
+msgid "تاريخ الصلاحية"
+msgstr "Expiry Date"
+
+#: .\templates\custom_admin\events_wizard.html:436
+msgid "الإجمالي المُستقطع من ميزانية الفعالية:"
+msgstr "Total Deducted from Event Budget:"
+
+#: .\templates\custom_admin\events_wizard.html:437
+msgid "- 0 ج.م"
+msgstr "- 0 EGP"
+
+#: .\templates\custom_admin\events_wizard.html:441
+msgid "توليد وإرسال القسائم للمحافظ"
+msgstr "Generate & Send Vouchers to Wallets"
+
+#: .\templates\custom_admin\includes\doctor_id_card_component.html:54
+msgid "✦ الوجه الأمامي"
+msgstr "✦ Front Side"
+
+#: .\templates\custom_admin\includes\doctor_id_card_component.html:87
+msgid "اسم الطبيب المعتمد"
+msgstr "Accredited Doctor Name"
+
+#: .\templates\custom_admin\includes\doctor_id_card_component.html:109
+msgid "🔷 الوجه الخلفي"
+msgstr "🔷 Back Side"
+
+#: .\templates\custom_admin\includes\doctor_id_card_component.html:129
+msgid "هوية مهنية معتمدة"
+msgstr "Accredited Professional ID"
+
+#: .\templates\custom_admin\includes\doctor_id_card_component.html:135
+msgid "يمنع تداول البطاقة مع أشخاص غير مصرح لهم."
+msgstr "Sharing this card with unauthorized persons is prohibited."
+
+#: .\templates\custom_admin\includes\sidebar.html:18
+msgid "لوحة القياس"
+msgstr "Dashboard"
+
+#: .\templates\custom_admin\includes\sidebar.html:19
+msgid "نقطة البيع (POS)"
+msgstr "Point of Sale (POS)"
+
+#: .\templates\custom_admin\includes\sidebar.html:21
+msgid "الشركات والمناديب"
+msgstr "Companies & Delegates"
+
+#: .\templates\custom_admin\includes\sidebar.html:22
+msgid "التجار"
+msgstr "Vendors"
+
+#: .\templates\custom_admin\includes\sidebar.html:23
+msgid "الفعاليات والقسائم"
+msgstr "Events & Vouchers"
+
+#: .\templates\custom_admin\includes\sidebar.html:24
+msgid "تسويات المتاجر"
+msgstr "Store Settlements"
+
+#: .\templates\custom_admin\includes\sidebar.html:27
+#: .\templates\custom_admin\vendor_base.html:101
+msgid "الإشعارات"
+msgstr "Notifications"
+
+#: .\templates\custom_admin\includes\sidebar.html:33
+msgid "سجل الإيميلات"
+msgstr "Email Log"
+
+#: .\templates\custom_admin\includes\sidebar.html:34
+msgid "إعدادات المنظومة"
+msgstr "System Settings"
+
+#: .\templates\custom_admin\includes\sidebar.html:41
+msgid "Interface Language"
+msgstr "Interface Language"
+
+#: .\templates\custom_admin\includes\sidebar.html:49
+msgid "🇸🇦 عربي"
+msgstr "🇬🇧 English"
+
+#: .\templates\custom_admin\login_gateway.html:84
+#: .\templates\registration\login.html:81
+msgid "نظام الإدارة"
+msgstr "Management System"
+
+#: .\templates\custom_admin\login_gateway.html:84
+#: .\templates\registration\login.html:81
+msgid "الذكي المتكامل"
+msgstr "Integrated Smart"
+
+#: .\templates\custom_admin\login_gateway.html:117
+msgid "مرحباً بك مجدداً"
+msgstr "Welcome Back"
+
+#: .\templates\custom_admin\login_gateway.html:118
+msgid "أدخل بيانات وصولك للمتابعة"
+msgstr "Enter your access credentials to continue"
+
+#: .\templates\custom_admin\login_gateway.html:123
+#: .\templates\registration\login.html:121
+msgid "اسم المستخدم / البريد"
+msgstr "Username / Email"
+
+#: .\templates\custom_admin\login_gateway.html:136
+msgid "نسيت السر؟"
+msgstr "Forgot Password?"
+
+#: .\templates\custom_admin\login_gateway.html:152
+msgid "تسجيل الدخول والمتابعة"
+msgstr "Login & Continue"
+
+#: .\templates\custom_admin\login_gateway.html:159
+msgid "إنشاء حساب جديد للمنظومة"
+msgstr "Create New System Account"
+
+#: .\templates\custom_admin\manager_dashboard.html:188
+msgid "إنشاء فعالية"
+msgstr "Create Event"
+
+#: .\templates\custom_admin\manager_dashboard.html:191
+msgid "إضافة طبيب"
+msgstr "Add Doctor"
+
+#: .\templates\custom_admin\manager_dashboard.html:194
+#: .\templates\custom_admin\vendor_base.html:33
+#: .\templates\custom_admin\vendor_portal.html:99
+msgid "التسويات"
+msgstr "Settlements"
+
+#: .\templates\custom_admin\manager_dashboard.html:197
+msgid "طباعة التقرير"
+msgstr "Print Report"
+
+#: .\templates\custom_admin\manager_dashboard.html:209
+msgid "إجمالي الإيرادات الكلية"
+msgstr "Total Overall Revenue"
+
+#: .\templates\custom_admin\manager_dashboard.html:225
+msgid "إيرادات هذا الشهر"
+msgstr "This Month Revenue"
+
+#: .\templates\custom_admin\manager_dashboard.html:232
+msgid "الشهر الحالي"
+msgstr "Current Month"
+
+#: .\templates\custom_admin\manager_dashboard.html:240
+msgid "إجمالي العمولات المحصّلة"
+msgstr "Total Collected Commissions"
+
+#: .\templates\custom_admin\manager_dashboard.html:247
+msgid "عوائد المنظومة"
+msgstr "System Returns"
+
+#: .\templates\custom_admin\manager_dashboard.html:255
+msgid "التسويات المعلقة للموردين"
+msgstr "Pending Vendor Settlements"
+
+#: .\templates\custom_admin\manager_dashboard.html:263
+msgid "تحتاج مراجعة"
+msgstr "Needs Review"
+
+#: .\templates\custom_admin\manager_dashboard.html:266
+msgid "لا توجد ديون"
+msgstr "No Debts"
+
+#: .\templates\custom_admin\manager_dashboard.html:280
+msgid "الأطباء النشطين"
+msgstr "Active Doctors"
+
+#: .\templates\custom_admin\manager_dashboard.html:289
+msgid "الموردين النشطين"
+msgstr "Active Vendors"
+
+#: .\templates\custom_admin\manager_dashboard.html:298
+msgid "الشركات الدوائية"
+msgstr "Pharmaceutical Companies"
+
+#: .\templates\custom_admin\manager_dashboard.html:307
+msgid "المناديب"
+msgstr "Delegates"
+
+#: .\templates\custom_admin\manager_dashboard.html:321
+msgid "اتجاهات الاستهلاك (آخر 30 يوم)"
+msgstr "Consumption Trends (Last 30 Days)"
+
+#: .\templates\custom_admin\manager_dashboard.html:336
+msgid "توزيع التخصصات"
+msgstr "Specialties Distribution"
+
+#: .\templates\custom_admin\manager_dashboard.html:337
+msgid "تفاصيل"
+msgstr "Details"
+
+#: .\templates\custom_admin\manager_dashboard.html:343
+msgid "لا توجد بيانات تخصصات"
+msgstr "No specialty data"
+
+#: .\templates\custom_admin\manager_dashboard.html:349
+msgid "حالة القسائم"
+msgstr "Vouchers Status"
+
+#: .\templates\custom_admin\manager_dashboard.html:368
+msgid "أفضل الفعاليات"
+msgstr "Top Events"
+
+#: .\templates\custom_admin\manager_dashboard.html:383
+msgid "لا توجد فعاليات بها عمليات بعد"
+msgstr "No events with operations yet"
+
+#: .\templates\custom_admin\manager_dashboard.html:391
+msgid "الموردون الأكثر مبيعاً"
+msgstr "Top Selling Vendors"
+
+#: .\templates\custom_admin\manager_dashboard.html:406
+msgid "لا توجد بيانات مبيعات بعد"
+msgstr "No sales data yet"
+
+#: .\templates\custom_admin\manager_dashboard.html:421
+msgid "أحدث العمليات"
+msgstr "Recent Transactions"
+
+#: .\templates\custom_admin\manager_dashboard.html:422
+msgid "كل السجل"
+msgstr "Full Record"
+
+#: .\templates\custom_admin\manager_dashboard.html:435
+msgid "لا توجد عمليات بعد"
+msgstr "No operations yet"
+
+#: .\templates\custom_admin\manager_dashboard.html:443
+msgid "آخر الأطباء المسجلين"
+msgstr "Recently Registered Doctors"
+
+#: .\templates\custom_admin\manager_dashboard.html:454
+#: .\templates\custom_admin\vendor_settlements.html:261
+#: .\templates\custom_admin\vendor_settlements.html:313
+#: .\templates\custom_admin\vendor_settlements.html:365
+msgid "عرض"
+msgstr "View"
+
+#: .\templates\custom_admin\manager_dashboard.html:457
+msgid "لا يوجد أطباء مسجلين"
+msgstr "No registered doctors"
+
+#: .\templates\custom_admin\manager_dashboard.html:466
+msgid "تنبيه: ديون معلقة للموردين"
+msgstr "Alert: Pending Vendor Debts"
+
+#: .\templates\custom_admin\manager_dashboard.html:473
+msgid "مبالغ مستحقة للموردين لم تُسوَّ بعد"
+msgstr "Amounts owed to vendors not yet settled"
+
+#: .\templates\custom_admin\manager_dashboard.html:476
+msgid "إدارة التسويات الآن"
+msgstr "Manage Settlements Now"
+
+#: .\templates\custom_admin\register_gateway.html:81
+msgid "ابدأ رحلتك"
+msgstr "Start Your Journey"
+
+#: .\templates\custom_admin\register_gateway.html:84
+msgid ""
+"انضم لمجتمعنا الاحترافي واستمتع بدقة الإدارة الرقمية المتكاملة لجميع عملياتك"
+" الميدانية."
+msgstr ""
+"Join our professional community and enjoy the precision of integrated "
+"digital management for all your field operations."
+
+#: .\templates\custom_admin\register_gateway.html:113
+msgid "إنشاء حساب جديد"
+msgstr "Create New Account"
+
+#: .\templates\custom_admin\register_gateway.html:114
+msgid "املأ البيانات التالية للانضمام إلينا"
+msgstr "Fill in the following data to join us"
+
+#: .\templates\custom_admin\register_gateway.html:122
+msgid "د. محمد السيد"
+msgstr "Dr. Mohamed El-Sayed"
+
+#: .\templates\custom_admin\register_gateway.html:152
+msgid "إتمام التسجيل والمتابعة"
+msgstr "Complete Registration & Continue"
+
+#: .\templates\custom_admin\register_gateway.html:159
+msgid "تسجيل الدخول الآن"
+msgstr "Login Now"
+
+#: .\templates\custom_admin\system_settings.html:212
+msgid "حسابي وملفي"
+msgstr "My Account & Profile"
+
+#: .\templates\custom_admin\system_settings.html:215
+msgid "العمولات والاستقطاعات"
+msgstr "Commissions & Deductions"
+
+#: .\templates\custom_admin\system_settings.html:218
+msgid "حسابات الإدارة"
+msgstr "Admin Accounts"
+
+#: .\templates\custom_admin\system_settings.html:222
+msgid "هوية المؤسسة"
+msgstr "Institution Identity"
+
+#: .\templates\custom_admin\system_settings.html:239
+msgid "الاسم الأول"
+msgstr "First Name"
+
+#: .\templates\custom_admin\system_settings.html:243
+msgid "الاسم الأخير"
+msgstr "Last Name"
+
+#: .\templates\custom_admin\system_settings.html:249
+msgid "البريد الإلكتروني الأساسي"
+msgstr "Primary Email"
+
+#: .\templates\custom_admin\system_settings.html:257
+msgid "تحديث ومزامنة البيانات"
+msgstr "Update & Sync Data"
+
+#: .\templates\custom_admin\system_settings.html:270
+msgid "كلمة المرور الحالية"
+msgstr "Current Password"
+
+#: .\templates\custom_admin\system_settings.html:280
+msgid "تأكيد كلمة المرور الجديدة"
+msgstr "Confirm New Password"
+
+#: .\templates\custom_admin\system_settings.html:285
+msgid "فرض تغيير كلمة المرور"
+msgstr "Force Password Change"
+
+#: .\templates\custom_admin\system_settings.html:299
+msgid "الضوابط المالية ونسب العمولة"
+msgstr "Financial Controls & Commission Rates"
+
+#: .\templates\custom_admin\system_settings.html:300
+msgid "حدد نسبة الاستقطاع لكل مورد ليتم خصمها تلقائياً عند إجراء التسويات."
+msgstr ""
+"Set the deduction percentage for each vendor to be automatically deducted "
+"when making settlements."
+
+#: .\templates\custom_admin\system_settings.html:308
+msgid "المورد / الشريك"
+msgstr "Vendor / Partner"
+
+#: .\templates\custom_admin\system_settings.html:309
+#, python-format
+msgid "النسبة المئوية (%%)"
+msgstr "Percentage (%%)"
+
+#: .\templates\custom_admin\system_settings.html:310
+msgid "التطبيق التلقائي"
+msgstr "Auto Application"
+
+#: .\templates\custom_admin\system_settings.html:312
+msgid "إجراءات إدارية"
+msgstr "Administrative Actions"
+
+#: .\templates\custom_admin\system_settings.html:347
+msgid "مفعل"
+msgstr "Active"
+
+#: .\templates\custom_admin\system_settings.html:349
+#: .\templates\custom_admin\system_settings.html:422
+#: .\templates\custom_admin\vendors_directory.html:169
+msgid "موقوف"
+msgstr "Suspended"
+
+#: .\templates\custom_admin\system_settings.html:355
+msgid "حفظ"
+msgstr "Save"
+
+#: .\templates\custom_admin\system_settings.html:363
+msgid "إيقاف المورد"
+msgstr "Suspend Vendor"
+
+#: .\templates\custom_admin\system_settings.html:365
+msgid "تفعيل المورد"
+msgstr "Activate Vendor"
+
+#: .\templates\custom_admin\system_settings.html:365
+msgid "تنشيط"
+msgstr "Activate"
+
+#: .\templates\custom_admin\system_settings.html:375
+msgid "لا يوجد موردين متاحين حالياً"
+msgstr "No vendors available currently"
+
+#: .\templates\custom_admin\system_settings.html:392
+msgid "حسابات الإدارة المركزية (Staff)"
+msgstr "Central Admin Accounts (Staff)"
+
+#: .\templates\custom_admin\system_settings.html:393
+msgid "الحسابات التي تملك صلاحية الدخول لمركز إدارة النظام والتحكم الكامل."
+msgstr ""
+"Accounts that have access to the system management center and full control."
+
+#: .\templates\custom_admin\system_settings.html:405
+msgid "إدارة الحساب"
+msgstr "Manage Account"
+
+#: .\templates\custom_admin\system_settings.html:431
+msgid "حسابك الحالي"
+msgstr "Your Current Account"
+
+#: .\templates\custom_admin\system_settings.html:433
+msgid "سحب الصلاحية"
+msgstr "Revoke Permission"
+
+#: .\templates\custom_admin\system_settings.html:435
+msgid "إعادة تنشيط"
+msgstr "Reactivate"
+
+#: .\templates\custom_admin\system_settings.html:454
+msgid "الهوية المؤسسية"
+msgstr "Institutional Identity"
+
+#: .\templates\custom_admin\system_settings.html:464
+msgid "تحديث شعار المؤسسة"
+msgstr "Update Institution Logo"
+
+#: .\templates\custom_admin\system_settings.html:470
+msgid "الاسم التجاري للمؤسسة"
+msgstr "Institution Trade Name"
+
+#: .\templates\custom_admin\system_settings.html:475
+msgid "المدير المسؤول"
+msgstr "Responsible Manager"
+
+#: .\templates\custom_admin\system_settings.html:479
+msgid "رقم الهاتف المعتمد"
+msgstr "Approved Phone Number"
+
+#: .\templates\custom_admin\system_settings.html:484
+msgid "البريد الإلكتروني للشكاوى"
+msgstr "Complaints Email"
+
+#: .\templates\custom_admin\system_settings.html:488
+msgid "العنوان التفصيلي المقر"
+msgstr "Detailed Headquarters Address"
+
+#: .\templates\custom_admin\system_settings.html:493
+msgid "حفظ تحديثات الهوية"
+msgstr "Save Identity Updates"
+
+#: .\templates\custom_admin\system_settings.html:501
+msgid "البيانات المالية البنكية"
+msgstr "Bank Financial Data"
+
+#: .\templates\custom_admin\system_settings.html:507
+msgid "البيانات البنكية الأساسية (IBAN, حساب)"
+msgstr "Basic Bank Data (IBAN, Account)"
+
+#: .\templates\custom_admin\system_settings.html:508
+msgid "أدخل اسم البنك، رقم الحساب، والآيبان بدقة..."
+msgstr "Enter bank name, account number, and IBAN accurately..."
+
+#: .\templates\custom_admin\system_settings.html:512
+msgid "المحافظ الإلكترونية (للدفع السريع)"
+msgstr "E-Wallets (For Quick Payment)"
+
+#: .\templates\custom_admin\system_settings.html:513
+msgid "فودافون كاش - اتصالات كاش..."
+msgstr "Vodafone Cash - Etisalat Cash..."
+
+#: .\templates\custom_admin\system_settings.html:517
+msgid "إرشادات وتعليمات مالية إضافية"
+msgstr "Additional Financial Instructions & Guidelines"
+
+#: .\templates\custom_admin\system_settings.html:518
+msgid "أي تعليمات تود إظهارها للموردين بخصوص التحويلات..."
+msgstr "Any instructions you want to show vendors regarding transfers..."
+
+#: .\templates\custom_admin\system_settings.html:522
+msgid "توثيق البيانات المالية"
+msgstr "Document Financial Data"
+
+#: .\templates\custom_admin\vendor_base.html:17
+msgid "بوابة الشركاء"
+msgstr "Partners Portal"
+
+#: .\templates\custom_admin\vendor_base.html:26
+msgid "الخصم (POS)"
+msgstr "Discount (POS)"
+
+#: .\templates\custom_admin\vendor_base.html:29
+#: .\templates\custom_admin\vendor_portal.html:96
+msgid "الفواتير"
+msgstr "Invoices"
+
+#: .\templates\custom_admin\vendor_base.html:36
+msgid "الكاشيرات"
+msgstr "Cashiers"
+
+#: .\templates\custom_admin\vendor_base.html:46
+msgid "قسيمة جديدة"
+msgstr "New Voucher"
+
+#: .\templates\custom_admin\vendor_base.html:52
+msgid "تسجيل خروج"
+msgstr "Logout"
+
+#: .\templates\custom_admin\vendor_base.html:62
+msgid "بحث باسم أو موبايل..."
+msgstr "Search by name or mobile..."
+
+#: .\templates\custom_admin\vendor_base.html:141
+msgid "لا توجد إشعارات حالياً"
+msgstr "No notifications currently"
+
+#: .\templates\custom_admin\vendor_base.html:150
+msgid "تحديد الكل كمقروء"
+msgstr "Mark All as Read"
+
+#: .\templates\custom_admin\vendor_portal.html:61
+msgid "بحث عام عن طبيب أو فاتورة..."
+msgstr "General search for a doctor or invoice..."
+
+#: .\templates\custom_admin\vendor_portal.html:90
+msgid "الإحصائيات"
+msgstr "Statistics"
+
+#: .\templates\custom_admin\vendor_portal.html:93
+msgid "نقطة البيع"
+msgstr "Point of Sale"
+
+#: .\templates\custom_admin\vendor_portal.html:102
+msgid "الموظفين"
+msgstr "Employees"
+
+#: .\templates\custom_admin\vendor_portal.html:105
+msgid "الإعدادات المركزية"
+msgstr "Central Settings"
+
+#: .\templates\custom_admin\vendor_portal.html:111
+msgid "مـلف التـاجر"
+msgstr "Vendor Profile"
+
+#: .\templates\custom_admin\vendor_portal.html:129
+msgid "الرصيد الإجمالي المتاح"
+msgstr "Total Available Balance"
+
+#: .\templates\custom_admin\vendor_portal.html:135
+#, python-format
+msgid "+12.5%% منذ الشهر الماضي"
+msgstr "+12.5%% since last month"
+
+#: .\templates\custom_admin\vendor_portal.html:142
+msgid "سحب الأرباح"
+msgstr "Withdraw Profits"
+
+#: .\templates\custom_admin\vendor_portal.html:146
+msgid "سـجل مبيعاتي"
+msgstr "My Sales Record"
+
+#: .\templates\custom_admin\vendor_portal.html:159
+msgid "كود التاجر"
+msgstr "Vendor Code"
+
+#: .\templates\custom_admin\vendor_portal.html:178
+msgid "إجمالي التسويات المدفوعة"
+msgstr "Total Paid Settlements"
+
+#: .\templates\custom_admin\vendor_portal.html:186
+msgid "مبيعاتك اليوم"
+msgstr "Today's Sales"
+
+#: .\templates\custom_admin\vendor_portal.html:199
+msgid "الإحصائيات والتحليلات"
+msgstr "Statistics & Analytics"
+
+#: .\templates\custom_admin\vendor_portal.html:206
+msgid "اتجاهات المبيعات"
+msgstr "Sales Trends"
+
+#: .\templates\custom_admin\vendor_portal.html:219
+msgid "نشاط المبيعات"
+msgstr "Sales Activity"
+
+#: .\templates\custom_admin\vendor_portal.html:220
+msgid "مقارنة أداء الأسبوع"
+msgstr "Weekly Performance Comparison"
+
+#: .\templates\custom_admin\vendor_portal.html:235
+msgid "متوسط قيمة المعاملة"
+msgstr "Average Transaction Value"
+
+#: .\templates\custom_admin\vendor_portal.html:243
+msgid "الاحتساب: إجمالي المبيعات ÷ مجموع المعاملات"
+msgstr "Calculation: Total Sales ÷ Total Transactions"
+
+#: .\templates\custom_admin\vendor_portal.html:249
+msgid "إجمالي المبيعات والعوائد"
+msgstr "Total Sales & Returns"
+
+#: .\templates\custom_admin\vendor_portal.html:260
+msgid "موظفي الكاشير"
+msgstr "Cashier Employees"
+
+#: .\templates\custom_admin\vendor_portal.html:264
+msgid "مسجلين وقيد العمل"
+msgstr "Registered & Working"
+
+#: .\templates\custom_admin\vendor_portal.html:269
+msgid "آخر عملية بيع"
+msgstr "Last Sale Operation"
+
+#: .\templates\custom_admin\vendor_portal.html:273
+msgid "تم تنفيذها بنجاح"
+msgstr "Executed Successfully"
+
+#: .\templates\custom_admin\vendor_portal.html:282
+msgid "أحدث المعاملات"
+msgstr "Latest Transactions"
+
+#: .\templates\custom_admin\vendor_portal.html:283
+msgid "عرض الكل"
+msgstr "View All"
+
+#: .\templates\custom_admin\vendor_portal.html:306
+msgid "لا توجد معاملات مكتملة بعد"
+msgstr "No completed transactions yet"
+
+#: .\templates\custom_admin\vendor_portal.html:319
+msgid "معالجة فاتورة (POS)"
+msgstr "Process Invoice (POS)"
+
+#: .\templates\custom_admin\vendor_portal.html:321
+msgid "القيمة الكلية للطلب"
+msgstr "Total Order Value"
+
+#: .\templates\custom_admin\vendor_portal.html:330
+msgid "اضغط لمسح الباركود"
+msgstr "Press to Scan Barcode"
+
+#: .\templates\custom_admin\vendor_portal.html:331
+msgid "قم بمسح الباركود الخاص بالطبيب لإتمام عملية الخصم مباشرة"
+msgstr "Scan the doctor's barcode to complete the discount operation directly"
+
+#: .\templates\custom_admin\vendor_portal.html:337
+msgid "البحث برقم الهاتف أو الاسم"
+msgstr "Search by phone number or name"
+
+#: .\templates\custom_admin\vendor_portal.html:338
+msgid "ابحث عن العميل..."
+msgstr "Search for client..."
+
+#: .\templates\custom_admin\vendor_portal.html:342
+msgid "القيمة الإجمالية"
+msgstr "Total Value"
+
+#: .\templates\custom_admin\vendor_portal.html:348
+msgid "أضف وصف للفاتورة (خياري)"
+msgstr "Add invoice description (optional)"
+
+#: .\templates\custom_admin\vendor_portal.html:349
+msgid "مثال: الباقة التجميلية أو رقم الإيصال الورقي..."
+msgstr "Example: Beauty package or paper receipt number..."
+
+#: .\templates\custom_admin\vendor_portal.html:353
+msgid "طلب الخصم وإرسال الرمز"
+msgstr "Request Discount & Send Code"
+
+#: .\templates\custom_admin\vendor_portal.html:364
+msgid "يجب تعيين العميل أولاً لإتمام الخصم."
+msgstr "The client must be set first to complete the discount."
+
+#: .\templates\custom_admin\vendor_portal.html:368
+msgid "تحقق من هوية العميل"
+msgstr "Verify Client Identity"
+
+#: .\templates\custom_admin\vendor_portal.html:374
+msgid "الرصيد الحالي المتوفر"
+msgstr "Currently Available Balance"
+
+#: .\templates\custom_admin\vendor_portal.html:375
+msgid "0.00 ج.م"
+msgstr "0.00 EGP"
+
+#: .\templates\custom_admin\vendor_portal.html:382
+msgid "نشاط اليوم"
+msgstr "Today's Activity"
+
+#: .\templates\custom_admin\vendor_portal.html:393
+msgid "لا توجد حركات بيع اليوم"
+msgstr "No sales transactions today"
+
+#: .\templates\custom_admin\vendor_portal.html:399
+msgid "عرض كافة العمليات"
+msgstr "View All Operations"
+
+#: .\templates\custom_admin\vendor_portal.html:412
+msgid "السـجل العـام للعمليات"
+msgstr "General Operations Record"
+
+#: .\templates\custom_admin\vendor_portal.html:413
+msgid "الاطلاع وطباعة فواتير المعاملات السابقة."
+msgstr "View and print previous transaction invoices."
+
+#: .\templates\custom_admin\vendor_portal.html:416
+msgid "مؤرشف"
+msgstr "Archived"
+
+#: .\templates\custom_admin\vendor_portal.html:426
+msgid "رمز العملية"
+msgstr "Operation Code"
+
+#: .\templates\custom_admin\vendor_portal.html:427
+msgid "تاريخ الإجراء"
+msgstr "Action Date"
+
+#: .\templates\custom_admin\vendor_portal.html:428
+msgid "الطبيب المسجل"
+msgstr "Registered Doctor"
+
+#: .\templates\custom_admin\vendor_portal.html:431
+msgid "الإجمالي المطلوب"
+msgstr "Total Required"
+
+#: .\templates\custom_admin\vendor_portal.html:451
+msgid "سجل الفواتير فارغ حالياً"
+msgstr "Invoice record is currently empty"
+
+#: .\templates\custom_admin\vendor_portal.html:463
+msgid "أرشيف التسويات والتحويلات"
+msgstr "Settlements & Transfers Archive"
+
+#: .\templates\custom_admin\vendor_portal.html:477
+msgid "لم يتم إتمام أي تسوية مالية لحسابكم حتى الآن."
+msgstr "No financial settlement has been completed for your account yet."
+
+#: .\templates\custom_admin\vendor_portal.html:491
+msgid "حسابات الموظفين (الكاشير)"
+msgstr "Employee Accounts (Cashier)"
+
+#: .\templates\custom_admin\vendor_portal.html:492
+msgid "تحديد صلاحيات الاستخدام للأفراد والموظفين"
+msgstr "Set Usage Permissions for Individuals & Employees"
+
+#: .\templates\custom_admin\vendor_portal.html:495
+msgid "تسجيل موظف جديد"
+msgstr "Register New Employee"
+
+#: .\templates\custom_admin\vendor_portal.html:502
+msgid "إسم الموظف"
+msgstr "Employee Name"
+
+#: .\templates\custom_admin\vendor_portal.html:503
+msgid "المعرف (يوزر)"
+msgstr "Identifier (Username)"
+
+#: .\templates\custom_admin\vendor_portal.html:504
+msgid "الهاتف المسجل"
+msgstr "Registered Phone"
+
+#: .\templates\custom_admin\vendor_portal.html:522
+msgid "استبعاد"
+msgstr "Exclude"
+
+#: .\templates\custom_admin\vendor_portal.html:528
+msgid "الرجاء إضافة كاشير ليتمكنوا من معالجة الخصومات"
+msgstr "Please add a cashier so they can process discounts"
+
+#: .\templates\custom_admin\vendor_portal.html:554
+msgid "مسح عدسة الاستشعار"
+msgstr "Clear Scanner Lens"
+
+#: .\templates\custom_admin\vendor_portal.html:556
+msgid "إيقاف وإلغاء"
+msgstr "Stop & Cancel"
+
+#: .\templates\custom_admin\vendor_portal.html:571
+msgid "وثيقة حماية"
+msgstr "Protection Document"
+
+#: .\templates\custom_admin\vendor_portal.html:572
+msgid "أدخل رمز التأكيد المرسل للطبيب على:"
+msgstr "Enter the confirmation code sent to the doctor at:"
+
+#: .\templates\custom_admin\vendor_portal.html:577
+msgid "قيمة الخدمة/المنتج:"
+msgstr "Service/Product Value:"
+
+#: .\templates\custom_admin\vendor_portal.html:581
+msgid "الرسوم الإدارية:"
+msgstr "Administrative Fees:"
+
+#: .\templates\custom_admin\vendor_portal.html:586
+msgid "الإجمالي للمصادقة:"
+msgstr "Total for Authentication:"
+
+#: .\templates\custom_admin\vendor_portal.html:593
+msgid ""
+"تنبيه: الكود صالح لمدة دقائق معدودة. ومحاولات إعادة الإرسال محدودة حسب "
+"النظام."
+msgstr ""
+"Warning: The code is valid for a few minutes. Resend attempts are limited "
+"per system."
+
+#: .\templates\custom_admin\vendor_portal.html:599
+msgid "تأكيد المعاملة"
+msgstr "Confirm Transaction"
+
+#: .\templates\custom_admin\vendor_portal.html:601
+msgid "إعادة إرسال"
+msgstr "Resend"
+
+#: .\templates\custom_admin\vendor_portal.html:618
+msgid "سجل إيصال"
+msgstr "Receipt Record"
+
+#: .\templates\custom_admin\vendor_portal.html:626
+msgid "معرف العميل (الطبيب الطبي)"
+msgstr "Client ID (Medical Doctor)"
+
+#: .\templates\custom_admin\vendor_portal.html:628
+msgid "بصمة الإصدار الزمنية"
+msgstr "Temporal Issue Stamp"
+
+#: .\templates\custom_admin\vendor_portal.html:630
+msgid "صافي سعر السلعة المباعة"
+msgstr "Net Price of Sold Item"
+
+#: .\templates\custom_admin\vendor_portal.html:636
+msgid "الكتلة الخصمية المستقرة"
+msgstr "Stable Discount Block"
+
+#: .\templates\custom_admin\vendor_portal.html:641
+msgid "طباعة الفاتورة للعميل"
+msgstr "Print Invoice for Client"
+
+#: .\templates\custom_admin\vendor_portal.html:653
+msgid "شهادة اعتماد وإيداع"
+msgstr "Accreditation & Deposit Certificate"
+
+#: .\templates\custom_admin\vendor_portal.html:656
+msgid "النسق الزمني للإيداع"
+msgstr "Deposit Time Format"
+
+#: .\templates\custom_admin\vendor_portal.html:659
+msgid "بيان الإعتماد الصادر من المراجع"
+msgstr "Accreditation Statement from Auditor"
+
+#: .\templates\custom_admin\vendor_portal.html:664
+msgid "مقدار العملة المحولة كلياً"
+msgstr "Total Currency Transferred"
+
+#: .\templates\custom_admin\vendor_portal.html:667
+msgid "تأكيد الإغلاق"
+msgstr "Confirm Close"
+
+#: .\templates\custom_admin\vendor_portal.html:674
+msgid "دمج كادر كاشير جديد"
+msgstr "Register New Cashier Staff"
+
+#: .\templates\custom_admin\vendor_portal.html:678
+msgid "اسم المستخدم للدخول للرابط (يوزر)"
+msgstr "Username for Login (User)"
+
+#: .\templates\custom_admin\vendor_portal.html:679
+msgid "المسمى الحقيقي الظاهر بالواجهة"
+msgstr "Real Name Shown in Interface"
+
+#: .\templates\custom_admin\vendor_portal.html:680
+msgid "كلمة سر الدخول"
+msgstr "Login Password"
+
+#: .\templates\custom_admin\vendor_portal.html:681
+msgid "جوال الاتصال"
+msgstr "Contact Mobile"
+
+#: .\templates\custom_admin\vendor_portal.html:684
+msgid "اعتماد وإنشاء الهوية"
+msgstr "Approve & Create Identity"
+
+#: .\templates\custom_admin\vendor_portal.html:697
+msgid "تهيئة أمان الكاشير"
+msgstr "Configure Cashier Security"
+
+#: .\templates\custom_admin\vendor_portal.html:698
+msgid "تغيير الدخول السري للحساب:"
+msgstr "Change Secret Login for Account:"
+
+#: .\templates\custom_admin\vendor_portal.html:707
+msgid "تغيير واعتماد"
+msgstr "Change & Approve"
+
+#: .\templates\custom_admin\vendor_portal.html:708
+msgid "رجوع للقائمة"
+msgstr "Back to List"
+
+#: .\templates\custom_admin\vendor_portal.html:729
+msgid "مبيعات وأصل"
+msgstr "Sales & Principal"
+
+#: .\templates\custom_admin\vendor_portal.html:733
+msgid "رسوم"
+msgstr "Fees"
+
+#: .\templates\custom_admin\vendor_portal.html:737
+msgid "إجمالي مدفوع"
+msgstr "Total Paid"
+
+#: .\templates\custom_admin\vendor_portal.html:742
+msgid "إيصال رقمي مصدق"
+msgstr "Certified Digital Receipt"
+
+#: .\templates\custom_admin\vendor_profile.html:24
+msgid "العودة لدليل التجار"
+msgstr "Back to Vendors Directory"
+
+#: .\templates\custom_admin\vendor_profile.html:76
+msgid "الرصيد المتاح للتسوية"
+msgstr "Balance Available for Settlement"
+
+#: .\templates\custom_admin\vendor_profile.html:81
+msgid "(بعد خصم نسبة المنظومة والتسويات السابقة)"
+msgstr "(After deducting system percentage and previous settlements)"
+
+#: .\templates\custom_admin\vendor_profile.html:85
+msgid "إضافة تسوية جديدة"
+msgstr "Add New Settlement"
+
+#: .\templates\custom_admin\vendor_profile.html:88
+msgid "تعديل المتجر"
+msgstr "Edit Store"
+
+#: .\templates\custom_admin\vendor_profile.html:111
+msgid "منحنى المبيعات الصافية"
+msgstr "Net Sales Curve"
+
+#: .\templates\custom_admin\vendor_profile.html:117
+msgid "إجمالي المبيعات الكاملة"
+msgstr "Total Complete Sales"
+
+#: .\templates\custom_admin\vendor_profile.html:131
+msgid "صافي المبيعات"
+msgstr "Net Sales"
+
+#: .\templates\custom_admin\vendor_profile.html:138
+msgid "إجمالي العمولات"
+msgstr "Total Commissions"
+
+#: .\templates\custom_admin\vendor_profile.html:145
+msgid "المدفوعات والتسويات"
+msgstr "Payments & Settlements"
+
+#: .\templates\custom_admin\vendor_profile.html:163
+msgid "نقاط البيع (الكاشيرية)"
+msgstr "Points of Sale (Cashiers)"
+
+#: .\templates\custom_admin\vendor_profile.html:166
+msgid "سجل المبيعات"
+msgstr "Sales Record"
+
+#: .\templates\custom_admin\vendor_profile.html:169
+msgid "سجل التسويات المالية"
+msgstr "Financial Settlements Record"
+
+#: .\templates\custom_admin\vendor_profile.html:177
+msgid "حسابات الكاشير ونقاط البيع"
+msgstr "Cashier Accounts & Points of Sale"
+
+#: .\templates\custom_admin\vendor_profile.html:179
+#: .\templates\custom_admin\vendor_profile.html:364
+msgid "إضافة كاشير جديد"
+msgstr "Add New Cashier"
+
+#: .\templates\custom_admin\vendor_profile.html:186
+msgid "اسم نقطة البيع / الكاشير"
+msgstr "POS Name / Cashier"
+
+#: .\templates\custom_admin\vendor_profile.html:187
+msgid "حساب الدخول"
+msgstr "Login Account"
+
+#: .\templates\custom_admin\vendor_profile.html:222
+msgid "لا يوجد كاشيرية مسجلين لهذا التاجر."
+msgstr "No cashiers registered for this vendor."
+
+#: .\templates\custom_admin\vendor_profile.html:233
+msgid "أحدث عمليات البيع"
+msgstr "Latest Sales Operations"
+
+#: .\templates\custom_admin\vendor_profile.html:239
+msgid "التاريخ / الفاتورة"
+msgstr "Date / Invoice"
+
+#: .\templates\custom_admin\vendor_profile.html:241
+msgid "الكاشير المنفذ"
+msgstr "Executing Cashier"
+
+#: .\templates\custom_admin\vendor_profile.html:244
+msgid "الصافي للمتجر"
+msgstr "Net for Store"
+
+#: .\templates\custom_admin\vendor_profile.html:245
+msgid "التسوية"
+msgstr "Settlement"
+
+#: .\templates\custom_admin\vendor_profile.html:262
+#: .\templates\custom_admin\vendor_profile.html:507
+msgid "تم التسوية"
+msgstr "Settled"
+
+#: .\templates\custom_admin\vendor_profile.html:264
+#: .\templates\custom_admin\vendor_profile.html:509
+msgid "معلق"
+msgstr "Pending"
+
+#: .\templates\custom_admin\vendor_profile.html:270
+msgid "لا يوجد أي مبيعات لهذا التاجر."
+msgstr "No sales for this vendor."
+
+#: .\templates\custom_admin\vendor_profile.html:281
+msgid "سجل المدفوعات للتاجر"
+msgstr "Vendor Payments Record"
+
+#: .\templates\custom_admin\vendor_profile.html:290
+msgid "حوالة تسوية مستحقات"
+msgstr "Due Settlement Transfer"
+
+#: .\templates\custom_admin\vendor_profile.html:302
+msgid "لم يتم تسجيل أي تسويات مالية سابقة لهذا التاجر."
+msgstr "No previous financial settlements recorded for this vendor."
+
+#: .\templates\custom_admin\vendor_profile.html:312
+msgid "عرض وإدارة كافة حسابات الكاشير"
+msgstr "View & Manage All Cashier Accounts"
+
+#: .\templates\custom_admin\vendor_profile.html:317
+msgid "عرض كامل سجل عمليات البيع"
+msgstr "View Complete Sales Operations Record"
+
+#: .\templates\custom_admin\vendor_profile.html:322
+msgid "عرض كافة التسويات المالية"
+msgstr "View All Financial Settlements"
+
+#: .\templates\custom_admin\vendor_profile.html:336
+msgid "إصدار تسوية مالية للتاجر"
+msgstr "Issue Financial Settlement for Vendor"
+
+#: .\templates\custom_admin\vendor_profile.html:337
+msgid ""
+"تسجيل المبالغ التي تم دفعها للتاجر ليتم خصمها من رصيد المديونية المستحقة."
+msgstr ""
+"Record amounts paid to the vendor to be deducted from the outstanding debt "
+"balance."
+
+#: .\templates\custom_admin\vendor_profile.html:340
+msgid "الرصيد المتاح للسحب:"
+msgstr "Balance Available for Withdrawal:"
+
+#: .\templates\custom_admin\vendor_profile.html:348
+msgid "المبلغ المسدد (ج.م)"
+msgstr "Paid Amount (EGP)"
+
+#: .\templates\custom_admin\vendor_profile.html:352
+msgid "ملاحظات التحويل/الدفع (اختياري)"
+msgstr "Transfer/Payment Notes (Optional)"
+
+#: .\templates\custom_admin\vendor_profile.html:353
+msgid "رقم الحوالة أو إيصال السداد..."
+msgstr "Transfer number or payment receipt..."
+
+#: .\templates\custom_admin\vendor_profile.html:355
+msgid "اعتماد التسوية المالية"
+msgstr "Approve Financial Settlement"
+
+#: .\templates\custom_admin\vendor_profile.html:365
+msgid "تسجيل حساب نقطة بيع تابع لهذا المتجر."
+msgstr "Register a POS account belonging to this store."
+
+#: .\templates\custom_admin\vendor_profile.html:371
+msgid "اسم الكاشير/نقطة البيع"
+msgstr "Cashier/POS Name"
+
+#: .\templates\custom_admin\vendor_profile.html:372
+msgid "مثال: كاشير فرع 1"
+msgstr "Example: Branch 1 Cashier"
+
+#: .\templates\custom_admin\vendor_profile.html:375
+msgid "الموظف المسئول"
+msgstr "Responsible Employee"
+
+#: .\templates\custom_admin\vendor_profile.html:376
+msgid "اسم الموظف"
+msgstr "Employee Name"
+
+#: .\templates\custom_admin\vendor_profile.html:384
+msgid "يوزر الدخول"
+msgstr "Login Username"
+
+#: .\templates\custom_admin\vendor_profile.html:392
+msgid "إضافة حساب الكاشير"
+msgstr "Add Cashier Account"
+
+#: .\templates\custom_admin\vendor_profile.html:402
+msgid "إدارة كافة الكاشيرية"
+msgstr "Manage All Cashiers"
+
+#: .\templates\custom_admin\vendor_profile.html:403
+msgid "التحكم في تشغيل وإيقاف نقاط البيع للمتجر"
+msgstr "Control enabling & disabling POS for the store"
+
+#: .\templates\custom_admin\vendor_profile.html:408
+msgid "بحث في الكاشيرية..."
+msgstr "Search cashiers..."
+
+#: .\templates\custom_admin\vendor_profile.html:417
+msgid "الكاشير / الموظف"
+msgstr "Cashier / Employee"
+
+#: .\templates\custom_admin\vendor_profile.html:418
+msgid "بيانات الدخول"
+msgstr "Login Data"
+
+#: .\templates\custom_admin\vendor_profile.html:466
+msgid "سجل المبيعات الشامل"
+msgstr "Comprehensive Sales Record"
+
+#: .\templates\custom_admin\vendor_profile.html:467
+msgid "عرض وتصدير كامل عمليات المتجر"
+msgstr "View & Export All Store Operations"
+
+#: .\templates\custom_admin\vendor_profile.html:475
+msgid "بحث برقم الفاتورة أو الطبيب..."
+msgstr "Search by invoice number or doctor..."
+
+#: .\templates\custom_admin\vendor_profile.html:484
+msgid "رقم الفاتورة / التاريخ"
+msgstr "Invoice Number / Date"
+
+#: .\templates\custom_admin\vendor_profile.html:485
+msgid "الكاشير"
+msgstr "Cashier"
+
+#: .\templates\custom_admin\vendor_profile.html:486
+msgid "الطبيب المستفيد"
+msgstr "Beneficiary Doctor"
+
+#: .\templates\custom_admin\vendor_profile.html:487
+msgid "المبلغ المستقطع"
+msgstr "Deducted Amount"
+
+#: .\templates\custom_admin\vendor_profile.html:488
+msgid "عمولة الإدارة"
+msgstr "Admin Commission"
+
+#: .\templates\custom_admin\vendor_profile.html:489
+msgid "صافي للمتجر"
+msgstr "Net for Store"
+
+#: .\templates\custom_admin\vendor_profile.html:490
+msgid "حالة التسوية"
+msgstr "Settlement Status"
+
+#: .\templates\custom_admin\vendor_profile.html:525
+msgid "كافة التسويات المالية"
+msgstr "All Financial Settlements"
+
+#: .\templates\custom_admin\vendor_profile.html:526
+msgid "سجل المبالغ المحولة للتاجر"
+msgstr "Record of Amounts Transferred to Vendor"
+
+#: .\templates\custom_admin\vendor_profile.html:534
+msgid "بحث..."
+msgstr "Search..."
+
+#: .\templates\custom_admin\vendor_profile.html:543
+msgid "رقم العملية (ID)"
+msgstr "Operation Number (ID)"
+
+#: .\templates\custom_admin\vendor_profile.html:544
+msgid "تاريخ التسوية"
+msgstr "Settlement Date"
+
+#: .\templates\custom_admin\vendor_profile.html:545
+msgid "المبلغ المسدد"
+msgstr "Paid Amount"
+
+#: .\templates\custom_admin\vendor_profile.html:568
+msgid "تعديل بيانات التاجر"
+msgstr "Edit Vendor Data"
+
+#: .\templates\custom_admin\vendor_profile.html:575
+msgid "اسم المتجر"
+msgstr "Store Name"
+
+#: .\templates\custom_admin\vendor_profile.html:579
+#: .\templates\custom_admin\vendors_directory.html:313
+msgid "التصنيف"
+msgstr "Classification"
+
+#: .\templates\custom_admin\vendor_profile.html:583
+#: .\templates\custom_admin\vendors_directory.html:176
+#: .\templates\custom_admin\vendors_directory.html:249
+#: .\templates\custom_admin\vendors_directory.html:297
+msgid "مسئول التواصل"
+msgstr "Communication Manager"
+
+#: .\templates\custom_admin\vendor_profile.html:595
+#: .\templates\custom_admin\vendors_directory.html:325
+#, python-format
+msgid "نسبة عمولة المنظومة (%%)"
+msgstr "System Commission Rate (%%)"
+
+#: .\templates\custom_admin\vendor_profile.html:613
+msgid "تغيير كلمة المرور الخاصة بحساب الإدارة للتاجر."
+msgstr "Change the password for the vendor's admin account."
+
+#: .\templates\custom_admin\vendor_settlements.html:149
+msgid "تصدير إكسيل"
+msgstr "Export Excel"
+
+#: .\templates\custom_admin\vendor_settlements.html:173
+msgid "إجمالي الديون المعلقة (للموردين)"
+msgstr "Total Pending Debts (for Vendors)"
+
+#: .\templates\custom_admin\vendor_settlements.html:182
+msgid "الرسوم الإدارية المتوقعة"
+msgstr "Expected Administrative Fees"
+
+#: .\templates\custom_admin\vendor_settlements.html:191
+msgid "تسويات الموردين"
+msgstr "Vendor Settlements"
+
+#: .\templates\custom_admin\vendor_settlements.html:192
+msgid "تسويات الشركات"
+msgstr "Company Settlements"
+
+#: .\templates\custom_admin\vendor_settlements.html:193
+#: .\templates\custom_admin\vendor_settlements.html:329
+msgid "تسويات المناديب"
+msgstr "Delegate Settlements"
+
+#: .\templates\custom_admin\vendor_settlements.html:199
+msgid "الموردين المستحقين"
+msgstr "Due Vendors"
+
+#: .\templates\custom_admin\vendor_settlements.html:201
+msgid "البحث باسم المورد..."
+msgstr "Search by vendor name..."
+
+#: .\templates\custom_admin\vendor_settlements.html:220
+msgid "عدد الفواتير"
+msgstr "Number of Invoices"
+
+#: .\templates\custom_admin\vendor_settlements.html:224
+msgid "الإجمالي غير المسدد"
+msgstr "Total Unpaid"
+
+#: .\templates\custom_admin\vendor_settlements.html:230
+msgid "محاسبة وإصدار إيصال"
+msgstr "Accounting & Issue Receipt"
+
+#: .\templates\custom_admin\vendor_settlements.html:235
+msgid "لا يوجد موردين لديهم مديونيات معلقة حالياً."
+msgstr "No vendors with pending debts currently."
+
+#: .\templates\custom_admin\vendor_settlements.html:240
+msgid "سجل تسويات الموردين السابقة"
+msgstr "Previous Vendor Settlements Record"
+
+#: .\templates\custom_admin\vendor_settlements.html:243
+msgid "المورد"
+msgstr "Vendor"
+
+#: .\templates\custom_admin\vendor_settlements.html:246
+msgid "طريقة الدفع"
+msgstr "Payment Method"
+
+#: .\templates\custom_admin\vendor_settlements.html:248
+#: .\templates\custom_admin\vendor_settlements.html:299
+#: .\templates\custom_admin\vendor_settlements.html:351
+msgid "الإيصال"
+msgstr "Receipt"
+
+#: .\templates\custom_admin\vendor_settlements.html:263
+#: .\templates\custom_admin\vendor_settlements.html:315
+#: .\templates\custom_admin\vendor_settlements.html:367
+msgid "لا يوجد"
+msgstr "None"
+
+#: .\templates\custom_admin\vendor_settlements.html:268
+msgid "لا توجد تسويات سابقة."
+msgstr "No previous settlements."
+
+#: .\templates\custom_admin\vendor_settlements.html:277
+msgid "تسويات الشركات الدوائية"
+msgstr "Pharmaceutical Company Settlements"
+
+#: .\templates\custom_admin\vendor_settlements.html:280
+msgid "البحث باسم الشركة..."
+msgstr "Search by company name..."
+
+#: .\templates\custom_admin\vendor_settlements.html:286
+msgid "تسوية شركة جديدة"
+msgstr "New Company Settlement"
+
+#: .\templates\custom_admin\vendor_settlements.html:293
+#: .\templates\custom_admin\vendor_settlements.html:346
+msgid "الشركة"
+msgstr "Company"
+
+#: .\templates\custom_admin\vendor_settlements.html:294
+msgid "الميزانية المخصصة"
+msgstr "Allocated Budget"
+
+#: .\templates\custom_admin\vendor_settlements.html:295
+msgid "الموزع"
+msgstr "Distributed"
+
+#: .\templates\custom_admin\vendor_settlements.html:296
+msgid "المستحق تسويته"
+msgstr "Due for Settlement"
+
+#: .\templates\custom_admin\vendor_settlements.html:320
+msgid "لا توجد تسويات شركات سابقة."
+msgstr "No previous company settlements."
+
+#: .\templates\custom_admin\vendor_settlements.html:332
+msgid "البحث باسم المندوب..."
+msgstr "Search by delegate name..."
+
+#: .\templates\custom_admin\vendor_settlements.html:338
+msgid "تسوية مندوب جديدة"
+msgstr "New Delegate Settlement"
+
+#: .\templates\custom_admin\vendor_settlements.html:345
+msgid "المندوب"
+msgstr "Delegate"
+
+#: .\templates\custom_admin\vendor_settlements.html:347
+msgid "العمولة المستحقة"
+msgstr "Due Commission"
+
+#: .\templates\custom_admin\vendor_settlements.html:348
+msgid "الفعاليات/الأطباء"
+msgstr "Events/Doctors"
+
+#: .\templates\custom_admin\vendor_settlements.html:372
+msgid "لا توجد تسويات مناديب سابقة."
+msgstr "No previous delegate settlements."
+
+#: .\templates\custom_admin\vendor_settlements.html:388
+msgid "إيصال تصفية"
+msgstr "Liquidation Receipt"
+
+#: .\templates\custom_admin\vendor_settlements.html:400
+msgid "الشركة الدوائية:"
+msgstr "Pharmaceutical Company:"
+
+#: .\templates\custom_admin\vendor_settlements.html:409
+msgid "المندوب:"
+msgstr "Delegate:"
+
+#: .\templates\custom_admin\vendor_settlements.html:420
+msgid "المبلغ المستحق (ج.م):"
+msgstr "Due Amount (EGP):"
+
+#: .\templates\custom_admin\vendor_settlements.html:425
+msgid "تاريخ التسوية:"
+msgstr "Settlement Date:"
+
+#: .\templates\custom_admin\vendor_settlements.html:430
+msgid "طريقة الدفع:"
+msgstr "Payment Method:"
+
+#: .\templates\custom_admin\vendor_settlements.html:432
+msgid "نقدي"
+msgstr "Cash"
+
+#: .\templates\custom_admin\vendor_settlements.html:433
+msgid "تحويل بنكي"
+msgstr "Bank Transfer"
+
+#: .\templates\custom_admin\vendor_settlements.html:434
+msgid "شيك"
+msgstr "Check"
+
+#: .\templates\custom_admin\vendor_settlements.html:439
+msgid "ملاحظات (اختياري):"
+msgstr "Notes (Optional):"
+
+#: .\templates\custom_admin\vendor_settlements.html:444
+msgid "إرفاق صورة الإيصال (اختياري):"
+msgstr "Attach Receipt Photo (Optional):"
+
+#: .\templates\custom_admin\vendor_settlements.html:451
+msgid "اعتماد وحفظ"
+msgstr "Approve & Save"
+
+#: .\templates\custom_admin\vendors_directory.html:61
+msgid "البحث باسم المتجر أو الإيميل أو الهاتف..."
+msgstr "Search by store name, email, or phone..."
+
+#: .\templates\custom_admin\vendors_directory.html:67
+msgid "إضافة تاجر جديد"
+msgstr "Add New Vendor"
+
+#: .\templates\custom_admin\vendors_directory.html:79
+msgid "فئة المتجر"
+msgstr "Store Category"
+
+#: .\templates\custom_admin\vendors_directory.html:81
+msgid "كل الفئات"
+msgstr "All Categories"
+
+#: .\templates\custom_admin\vendors_directory.html:118
+msgid "متجر محدد"
+msgstr "Selected Store"
+
+#: .\templates\custom_admin\vendors_directory.html:122
+msgid "تنشيط المحدد"
+msgstr "Activate Selected"
+
+#: .\templates\custom_admin\vendors_directory.html:125
+msgid "إيقاف"
+msgstr "Deactivate"
+
+#: .\templates\custom_admin\vendors_directory.html:128
+msgid "حذف وأرشفة"
+msgstr "Delete & Archive"
+
+#: .\templates\custom_admin\vendors_directory.html:147
+msgid "تحديد كافة التجار في هذه الصفحة"
+msgstr "Select All Vendors on This Page"
+
+#: .\templates\custom_admin\vendors_directory.html:184
+msgid "حسابات الكاشير"
+msgstr "Cashier Accounts"
+
+#: .\templates\custom_admin\vendors_directory.html:192
+msgid "استعراض الملف والتقارير"
+msgstr "View Profile & Reports"
+
+#: .\templates\custom_admin\vendors_directory.html:199
+msgid "لم يتم العثور على أي تجار مطابقين للبحث."
+msgstr "No vendors found matching the search."
+
+#: .\templates\custom_admin\vendors_directory.html:282
+msgid "إضافة تاجر رئيسي جديد"
+msgstr "Add New Main Vendor"
+
+#: .\templates\custom_admin\vendors_directory.html:283
+msgid "تسجيل متجر جديد. هذا الحساب سيكون هو الحساب الإداري (Manager) للتاجر."
+msgstr ""
+"Register a new store. This account will be the admin account (Manager) for "
+"the vendor."
+
+#: .\templates\custom_admin\vendors_directory.html:293
+msgid "اسم المتجر/الشركة"
+msgstr "Store/Company Name"
+
+#: .\templates\custom_admin\vendors_directory.html:294
+msgid "مثال: أسواق العثيم"
+msgstr "Example: Al-Othaim Markets"
+
+#: .\templates\custom_admin\vendors_directory.html:298
+msgid "اسم الشخص المسئول"
+msgstr "Responsible Person Name"
+
+#: .\templates\custom_admin\vendors_directory.html:306
+msgid "الايميل إن وجد"
+msgstr "Email if available"
+
+#: .\templates\custom_admin\vendors_directory.html:314
+msgid "مثال: سوبرماركت، مطعم..."
+msgstr "Example: Supermarket, Restaurant..."
+
+#: .\templates\custom_admin\vendors_directory.html:317
+msgid "اسم المستخدم للدخول (Login)"
+msgstr "Login Username"
+
+#: .\templates\custom_admin\vendors_directory.html:333
+msgid "عنوان المتجر بالتفصيل..."
+msgstr "Store address in detail..."
+
+#: .\templates\custom_admin\vendors_directory.html:339
+msgid "حفظ بيانات التاجر"
+msgstr "Save Vendor Data"
+
+#: .\templates\emails\account_credentials.html:6
+msgid "تفاصيل الحساب الجديد"
+msgstr "New Account Details"
+
+#: .\templates\emails\account_credentials.html:7
+#: .\templates\emails\custom_message_email.html:7
+msgid "نظام إدارة الفعاليات — حضرموت"
+msgstr "Events Management System — Hadramout"
+
+#: .\templates\emails\account_credentials.html:14
+msgid "تم إنشاء حسابك في"
+msgstr "Your account has been created in"
+
+#: .\templates\emails\account_credentials.html:14
+#: .\templates\emails\welcome_email.html:6
+msgid "نظام إدارة الفعاليات"
+msgstr "Events Management System"
+
+#: .\templates\emails\account_credentials.html:14
+msgid ". فيما يلي بيانات الدخول الخاصة بك، احتفظ بها في مكان آمن."
+msgstr ". Below are your login credentials, keep them in a safe place."
+
+#: .\templates\emails\account_credentials.html:18
+msgid "🔐 بيانات تسجيل الدخول"
+msgstr "🔐 Login Credentials"
+
+#: .\templates\emails\account_credentials.html:20
+msgid "رابط الموقع"
+msgstr "Website Link"
+
+#: .\templates\emails\account_credentials.html:46
+msgid "🚀 تسجيل الدخول الآن"
+msgstr "🚀 Login Now"
+
+#: .\templates\emails\account_credentials.html:52
+msgid ""
+"⚠️ يُنصح بتغيير كلمة المرور فور تسجيل الدخول للمرة الأولى. لا تشارك هذه "
+"البيانات مع أحد."
+msgstr ""
+"⚠️ It is recommended to change the password upon first login. Do not share "
+"this data with anyone."
+
+#: .\templates\emails\base_email.html:222
+msgid "هذه رسالة آلية من النظام، يرجى عدم الرد عليها."
+msgstr "This is an automated system message, please do not reply to it."
+
+#: .\templates\emails\base_email.html:223
+msgid "إذا لم تكن أنت من طلب هذه الرسالة، يرجى تجاهلها بالكامل."
+msgstr "If you did not request this message, please ignore it completely."
+
+#: .\templates\emails\custom_message_email.html:6
+msgid "إشعار جديد"
+msgstr "New Notification"
+
+#: .\templates\emails\custom_message_email.html:20
+msgid "إذا كان لديك أي استفسار، يرجى التواصل مع إدارة النظام."
+msgstr "If you have any inquiries, please contact the system administration."
+
+#: .\templates\emails\otp_email.html:6
+msgid "رمز التحقق OTP"
+msgstr "OTP Verification Code"
+
+#: .\templates\emails\otp_email.html:16
+msgid "تحويل قسيمة"
+msgstr "Voucher Transfer"
+
+#: .\templates\emails\otp_email.html:18
+msgid "خصم مبلغ"
+msgstr "Deduct Amount"
+
+#: .\templates\emails\otp_email.html:25
+msgid "⏱️ صالح لمدة"
+msgstr "⏱️ Valid for"
+
+#: .\templates\emails\otp_email.html:25
+msgid "10 دقائق فقط"
+msgstr "10 minutes only"
+
+#: .\templates\emails\otp_email.html:25
+msgid "— بحد أقصى"
+msgstr "— maximum"
+
+#: .\templates\emails\otp_email.html:25
+msgid "5 محاولات"
+msgstr "5 attempts"
+
+#: .\templates\emails\otp_email.html:30
+msgid "📤 تفاصيل طلب التحويل"
+msgstr "📤 Transfer Request Details"
+
+#: .\templates\emails\otp_email.html:32
+msgid "المُرسِل"
+msgstr "Sender"
+
+#: .\templates\emails\otp_email.html:36
+msgid "قيمة القسيمة"
+msgstr "Voucher Value"
+
+#: .\templates\emails\otp_email.html:42
+msgid "🛒 تفاصيل عملية الخصم"
+msgstr "🛒 Discount Operation Details"
+
+#: .\templates\emails\otp_email.html:44
+msgid "المتجر"
+msgstr "Store"
+
+#: .\templates\emails\otp_email.html:48
+msgid "المبلغ المطلوب"
+msgstr "Required Amount"
+
+#: .\templates\emails\otp_email.html:57
+msgid "🚫 إذا لم تكن أنت من طلب هذه العملية،"
+msgstr "🚫 If you did not request this operation,"
+
+#: .\templates\emails\otp_email.html:57
+msgid "تجاهل هذه الرسالة فوراً"
+msgstr "ignore this message immediately"
+
+#: .\templates\emails\otp_email.html:57
+msgid "ولا تُعطِ الرمز لأحد."
+msgstr "and do not give the code to anyone."
+
+#: .\templates\emails\voucher_notification.html:6
+msgid "قسيمة شراء جديدة!"
+msgstr "New Purchase Voucher!"
+
+#: .\templates\emails\voucher_notification.html:14
+msgid "يسعدنا إعلامكم بأنه تم إصدار"
+msgstr "We are pleased to inform you that a"
+
+#: .\templates\emails\voucher_notification.html:14
+msgid "قسيمة شراء جديدة"
+msgstr "new purchase voucher"
+
+#: .\templates\emails\voucher_notification.html:14
+msgid ""
+"لسيادتكم. يمكنكم استخدامها في أي متجر مشترك بالنظام خلال فترة صلاحيتها."
+msgstr ""
+"has been issued for you. You can use it at any partner store in the system "
+"during its validity period."
+
+#: .\templates\emails\voucher_notification.html:19
+msgid "💰 إجمالي قيمة القسيمة"
+msgstr "💰 Total Voucher Value"
+
+#: .\templates\emails\voucher_notification.html:23
+msgid "📋 تفاصيل القسيمة"
+msgstr "📋 Voucher Details"
+
+#: .\templates\emails\voucher_notification.html:25
+msgid "الشركة الممولة"
+msgstr "Funding Company"
+
+#: .\templates\emails\voucher_notification.html:30
+msgid "الندوة / الفعالية"
+msgstr "Seminar / Event"
+
+#: .\templates\emails\voucher_notification.html:43
+msgid "مدة الصلاحية"
+msgstr "Validity Period"
+
+#: .\templates\emails\voucher_notification.html:49
+msgid "✅ القسيمة نشطة ويمكن استخدامها الآن في جميع المتاجر المشتركة."
+msgstr "✅ The voucher is active and can be used now at all partner stores."
+
+#: .\templates\emails\voucher_notification.html:55
+msgid "⏰ تنبيه: القسيمة تنتهي بتاريخ"
+msgstr "⏰ Warning: The voucher expires on"
+
+#: .\templates\emails\voucher_notification.html:55
+msgid ". تأكد من استخدامها قبل انتهاء صلاحيتها."
+msgstr ". Make sure to use it before it expires."
+
+#: .\templates\emails\welcome_email.html:7
+msgid "حضرموت ميت غمر"
+msgstr "Hadramout Mit Ghamr"
+
+#: .\templates\emails\welcome_email.html:14
+msgid "يسعدنا أن نُعلمك بأنه تم إنشاء حسابك بنجاح في"
+msgstr ""
+"We are pleased to inform you that your account has been successfully created"
+" in"
+
+#: .\templates\emails\welcome_email.html:14
+msgid "نظام قسائم حضرموت"
+msgstr "Hadramout Vouchers System"
+
+#: .\templates\emails\welcome_email.html:14
+msgid ". يمكنك الآن الدخول للنظام ومتابعة قسائمك وعملياتك المالية بسهولة."
+msgstr ""
+". You can now log in to the system and easily track your vouchers and "
+"financial operations."
+
+#: .\templates\emails\welcome_email.html:18
+msgid "✅ تم تسجيل حسابك وهو جاهز للاستخدام الآن!"
+msgstr "✅ Your account has been registered and is ready to use now!"
+
+#: .\templates\emails\welcome_email.html:22
+msgid "📋 بيانات حسابك"
+msgstr "📋 Your Account Data"
+
+#: .\templates\emails\welcome_email.html:48
+msgid "🚀 الدخول للنظام الآن"
+msgstr "🚀 Login to System Now"
+
+#: .\templates\emails\welcome_email.html:54
+msgid ""
+"⚠️ احتفظ ببيانات دخولك في مكان آمن. في حال نسيت كلمة المرور يرجى التواصل مع "
+"مسؤول النظام."
+msgstr ""
+"⚠️ Keep your login credentials in a safe place. If you forget the password, "
+"please contact the system administrator."
+
+#: .\templates\registration\login.html:84
+msgid ""
+"دقة متناهية تمزج بين الأصالة والابتكار لإدارة عمليات قرية حضر موت بكل سلاسة "
+"واحترافية."
+msgstr ""
+"Exquisite precision that combines authenticity and innovation to manage "
+"Hadramout Village operations with complete smoothness and professionalism."
+
+#: .\templates\registration\login.html:106
+msgid "أدخل بياناتك للمتابعة إلى المنظومة"
+msgstr "Enter your data to proceed to the system"
+
+#: .\templates\registration\login.html:115
+msgid "بيانات الدخول غير صحيحة، يرجى المحاولة مرة أخرى."
+msgstr "Incorrect login credentials, please try again."
+
+#: .\templates\registration\login.html:148
+msgid "دخول ومتابعة"
+msgstr "Login & Continue"
+
+#: .\templates\registration\login.html:155
+msgid "إنشاء حساب طبيب جديد"
+msgstr "Create New Doctor Account"
+
+#: .\templates\registration\login.html:164
+msgid "الخصوصية"
+msgstr "Privacy"

@@ -1,0 +1,281 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>تسجيل طبيب جديد | {{ global_system_vendor.name|default:'النظام' }}</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                primary: "#005353",
+                primaryDark: "#003b3b",
+                accent: "#006d6d",
+                surface: "#f0f4f8",
+                onSurface: "#1a1c1c",
+                onSurfaceVariant: "#3e4948"
+              },
+              borderRadius: {
+                '3xl': '1.5rem',
+                '4xl': '2.5rem'
+              },
+              fontFamily: {
+                sans: ['IBM Plex Sans Arabic', 'sans-serif'],
+              }
+            },
+          },
+        }
+    </script>
+
+    <style>
+        body { font-family: 'IBM Plex Sans Arabic', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+
+        .internal-card {
+            background: #ffffff;
+            box-shadow: 0 40px 100px -20px rgba(0, 83, 83, 0.15), 
+                        0 20px 40px -15px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-section {
+            background-image: linear-gradient(135deg, rgba(0,83,83,0.92) 0%, rgba(0,50,50,0.96) 100%), 
+                             url('https://images.unsplash.com/photo-1541746972996-4e0b0f43e01a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .premium-input {
+            background: #f8fafc;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .premium-input:focus {
+            background: #ffffff;
+            border-color: rgba(0, 83, 83, 0.1);
+            box-shadow: 0 10px 20px -10px rgba(0, 83, 83, 0.1);
+        }
+        
+        .specialty-dropdown {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            z-index: 50;
+        }
+        .specialty-option {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .specialty-option:hover {
+            background: #f1f5f9;
+            color: var(--primary);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-reveal { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+</head>
+<body class="bg-surface text-onSurface min-h-screen">
+
+<main class="min-h-screen flex flex-col md:flex-row overflow-hidden">
+    
+    <!-- Left Hero -->
+    <section class="hidden md:flex md:w-5/12 lg:w-1/2 hero-section relative items-center justify-center p-16 lg:p-24 overflow-hidden">
+        <div class="relative z-30 text-right animate-reveal">
+            <h1 class="text-6xl lg:text-7xl font-black text-white leading-tight mb-8 tracking-tighter">
+                {% trans 'انضم لمجتمع' %} <br/>{% trans 'أطباء حضرموت' %}
+            </h1>
+            <p class="text-xl lg:text-2xl text-white/70 font-light max-w-lg mr-2">
+                {% trans 'سجل حسابك الآن لتبدأ في استخدام نظام القسائم والمزايا الحصرية للأطباء المعتمدين.' %}
+            </p>
+            <div class="mt-20 flex gap-4 items-center">
+                <div class="w-10 h-1 bg-white rounded-full shadow-[0_0_20px_rgba(255,255,255,0.4)]"></div>
+                <div class="w-20 h-1 bg-white/10 rounded-full"></div>
+                <div class="w-20 h-1 bg-white/10 rounded-full"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Right Form -->
+    <section class="w-full md:w-7/12 lg:w-1/2 flex items-center justify-center p-6 bg-surface overflow-y-auto">
+        <div class="internal-card w-full max-w-xl p-8 md:p-12 rounded-4xl animate-reveal my-10">
+            
+            <header class="flex flex-col items-center md:items-start text-center md:text-right mb-8">
+                <div class="flex items-center gap-5 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center text-white">
+                        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">person_add</span>
+                    </div>
+                </div>
+                <h3 class="text-2xl font-bold text-onSurface mb-1">{% trans 'تسجيل طبيب جديد' %}</h3>
+                <p class="text-onSurfaceVariant text-sm opacity-60">{% trans 'أنشئ حسابك للاستفادة من خدمات المنظومة' %}</p>
+            </header>
+
+            {% if errors %}
+            <div class="mb-6 p-4 bg-red-50 text-red-700 rounded-2xl text-sm font-bold animate-reveal">
+                <ul class="space-y-1 pr-4 list-disc">
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <form method="post" id="register-form" class="space-y-5">
+                {% csrf_token %}
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-bold text-onSurfaceVariant mr-2">{% trans 'الاسم الكامل' %} <span class="text-red-500">*</span></label>
+                        <input type="text" name="name" required value="{{ form_data.name|default:'' }}"
+                               class="premium-input w-full h-12 px-4 border-none rounded-2xl text-base font-medium outline-none focus:ring-0" 
+                               placeholder="{% trans 'مثال: د. أحمد محمد' %}">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-bold text-onSurfaceVariant mr-2">{% trans 'رقم الهاتف' %} <span class="text-red-500">*</span></label>
+                        <input type="tel" name="phone" required value="{{ form_data.phone|default:'' }}"
+                               class="premium-input w-full h-12 px-4 border-none rounded-2xl text-base font-medium outline-none focus:ring-0" 
+                               placeholder="01xxxxxxxxx">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-bold text-onSurfaceVariant mr-2">{% trans 'اسم المستخدم' %}</label>
+                        <input type="text" name="username" value="{{ form_data.username|default:'' }}"
+                               class="premium-input w-full h-12 px-4 border-none rounded-2xl text-base font-medium outline-none focus:ring-0" 
+                               placeholder="{% trans 'اختياري' %}">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-bold text-onSurfaceVariant mr-2">{% trans 'البريد الإلكتروني' %}</label>
+                        <input type="email" name="email" value="{{ form_data.email|default:'' }}"
+                               class="premium-input w-full h-12 px-4 border-none rounded-2xl text-base font-medium outline-none focus:ring-0" 
+                               placeholder="example@gmail.com">
+                    </div>
+                </div>
+
+                <!-- Specialty Selector -->
+                <div class="space-y-2 relative">
+                    <label class="block text-sm font-bold text-onSurfaceVariant mr-2">{% trans 'التخصص' %}</label>
+                    <input type="hidden" name="specialty" id="specialty-id" value="{{ form_data.specialty_id|default:'' }}">
+                    <div class="relative group">
+                        <span class="absolute inset-y-0 right-4 flex items-center text-onSurfaceVariant/40">
+                            <span class="material-symbols-outlined">search</span>
+                        </span>
+                        <input type="text" id="specialty-search" autocomplete="off"
+                               class="premium-input w-full h-12 pr-12 pl-4 border-none rounded-2xl text-base font-medium outline-none focus:ring-0" 
+                               placeholder="{% trans 'ابحث عن تخصصك هنا...' %}">
+                    </div>
+                    <div id="specialty-dropdown" class="specialty-dropdown absolute left-0 right-0 mt-2"></div>
+                    <div id="selected-specialty" class="mt-2"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-bold text-onSurfaceVariant mr-2">{% trans 'كلمة المرور' %} <span class="text-red-500">*</span></label>
+                        <input type="password" name="password" required minlength="6"
+                               class="premium-input w-full h-12 px-4 border-none rounded-2xl text-base font-medium outline-none focus:ring-0" 
+                               placeholder="••••••••">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-bold text-onSurfaceVariant mr-2">{% trans 'تأكيد كلمة المرور' %} <span class="text-red-500">*</span></label>
+                        <input type="password" name="password_confirm" required
+                               class="premium-input w-full h-12 px-4 border-none rounded-2xl text-base font-medium outline-none focus:ring-0" 
+                               placeholder="••••••••">
+                    </div>
+                </div>
+
+                <div class="pt-6 space-y-6">
+                    <button type="submit" class="w-full h-16 bg-primary hover:bg-primaryDark text-white rounded-2xl font-bold text-lg flex items-center justify-center gap-3 shadow-2xl shadow-primary/20 transition-all active:scale-95">
+                        {% trans 'إنشاء الحساب والمتابعة' %}
+                        <span class="material-symbols-outlined">how_to_reg</span>
+                    </button>
+                    
+                    <div class="text-center">
+                        <span class="text-onSurfaceVariant text-sm opacity-60">{% trans 'لديك حساب بالفعل؟' %}</span>
+                        <a href="{% url 'login' %}" class="text-primary font-bold text-base hover:underline decoration-2 underline-offset-4 mr-2">{% trans 'دخول' %}</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+
+<script>
+const allSpecialties = [
+    {% for s in specialties %}
+    { id: {{ s.id }}, name: "{{ s.name }}" },
+    {% endfor %}
+];
+
+const searchInput = document.getElementById('specialty-search');
+const dropdown = document.getElementById('specialty-dropdown');
+const hiddenInput = document.getElementById('specialty-id');
+const selectedDiv = document.getElementById('selected-specialty');
+
+function renderDropdown(filter) {
+    const filtered = filter
+        ? allSpecialties.filter(s => s.name.includes(filter))
+        : allSpecialties;
+
+    if (filtered.length === 0) {
+        dropdown.innerHTML = '<div class="p-4 text-center text-sm text-gray-400">{% trans 'لا توجد نتائج' %}</div>';
+    } else {
+        dropdown.innerHTML = filtered.map(s =>
+            `<div class="specialty-option text-sm" data-id="${s.id}" data-name="${s.name}">${s.name}</div>`
+        ).join('');
+    }
+    dropdown.style.display = 'block';
+
+    dropdown.querySelectorAll('.specialty-option').forEach(opt => {
+        opt.onclick =  => selectSpecialty(opt.dataset.id, opt.dataset.name);
+    });
+}
+
+function selectSpecialty(id, name) {
+    hiddenInput.value = id;
+    searchInput.value = '';
+    dropdown.style.display = 'none';
+    selectedDiv.innerHTML = `
+        <div class="inline-flex items-center gap-2 bg-primary/5 text-primary text-xs px-4 py-2 rounded-full border border-primary/10">
+            <span>${name}</span>
+            <button type="button" onclick="clearSpecialty" class="hover:text-red-500">✕</button>
+        </div>
+    `;
+}
+
+function clearSpecialty {
+    hiddenInput.value = '';
+    selectedDiv.innerHTML = '';
+}
+
+searchInput.onfocus =  => renderDropdown(searchInput.value);
+searchInput.oninput =  => renderDropdown(searchInput.value);
+
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('#specialty-search') && !e.target.closest('#specialty-dropdown')) {
+        dropdown.style.display = 'none';
+    }
+});
+
+{% if form_data.specialty_id %}
+    const preselect = allSpecialties.find(s => s.id == {{ form_data.specialty_id }});
+    if (preselect) selectSpecialty(preselect.id, preselect.name);
+{% endif %}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,144 @@
+{% load i18n %}
+{% load static %}
+
+<!-- 🩺 بطاقة طبيب احترافية - تصميم انسيابي محكم 🩺 -->
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap');
+
+    * { font-family: 'Inter', 'Tajawal', system-ui, sans-serif; }
+
+    @media print {
+        body * { visibility: hidden; }
+        #printable-card-area, #printable-card-area * { visibility: visible; }
+        #printable-card-area {
+            position: absolute !important;
+            left: 0; top: 0;
+            width: 100%; background: white !important;
+            padding: 12mm; margin: 0;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .no-print { display: none !important; }
+        .card-wrapper {
+            display: flex !important;
+            flex-direction: row !important;
+            gap: 12mm !important;
+            break-inside: avoid;
+        }
+        * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    }
+
+    .card-front, .card-back {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .custom-header {
+        background: linear-gradient(135deg, #005050, #002e2e);
+        border-bottom-right-radius: 4rem;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 15% 100%, 0 75%);
+    }
+</style>
+
+<div id="printable-card-area" class="relative flex flex-col xl:flex-row items-center justify-center {% if not pos_mini_view %}gap-12 p-10 md:p-20 rounded-[4rem] overflow-hidden{% endif %}"
+     {% if not pos_mini_view %}style="background: radial-gradient(ellipse at 30% 30%, #0f172a, #020617);"{% endif %}>
+    
+    <!-- خلفيات زخرفية -->
+    {% if not pos_mini_view %}
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_40%,rgba(13,148,136,0.15),transparent_60%)] no-print"></div>
+    {% endif %}
+
+    <div class="card-wrapper flex flex-col xl:flex-row gap-12 xl:gap-20 z-10">
+        
+        <!-- 🟢 الوجه الأمامي 🟢 -->
+        <div class="flex flex-col items-center gap-5">
+            {% if not pos_mini_view %}
+            <span class="no-print text-[11px] font-black uppercase tracking-[0.25em] px-5 py-2 bg-slate-800/60 backdrop-blur-md rounded-full text-teal-400 border border-teal-500/30">{% trans '✦ الوجه الأمامي' %}</span>
+            {% endif %}
+            
+            <div class="card-front relative w-[420px] h-[260px] rounded-2xl overflow-hidden shadow-2xl bg-white"
+                 style="border: 1px solid rgba(0, 80, 80, 0.1);">
+                
+                <div class="custom-header absolute top-0 w-full h-[95px] flex justify-center items-center pt-2 shadow-lg">
+                    <!-- اللوجو بخلفية شفافة تماماً -->
+                    <img src="{% static 'logo.png' %}" class="max-h-[60px] max-w-full object-contain" alt="Logo">
+                </div>
+
+                <!-- صورة الطبيب -->
+                <div id="printAvatarContainer" class="absolute top-[35px] left-7 w-[82px] h-[82px] bg-white rounded-2xl flex items-center justify-center shadow-2xl border-4 border-white overflow-hidden z-20">
+                    {% if doctor.get_avatar_url %}
+                    <img src="{{ doctor.get_avatar_url }}" class="w-full h-full object-cover">
+                    {% else %}
+                    <i class="fa-solid fa-user-md text-[42px] text-[#005050]"></i>
+                    {% endif %}
+                </div>
+
+                <!-- الـ QR -->
+                <div class="absolute top-[35px] right-7 w-[85px] h-[85px] bg-white/95 p-1.5 rounded-2xl shadow-xl border border-stone-100 z-20">
+                    <div id="printQR" class="qr-container w-full h-full rounded-lg overflow-hidden flex items-center justify-center" data-qr-content="{% if doctor %}{% if doctor.qr_code %}{{ doctor.qr_code }}{% else %}doctor_id={{ doctor.id }}{% endif %}{% endif %}">
+                        {% if doctor.qr_code %}
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ doctor.qr_code }}&color=005050" alt="QR" class="w-full h-full object-contain fallback-qr">
+                        {% else %}
+                        <i class="fa-solid fa-qrcode text-3xl text-stone-200 fallback-qr"></i>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- معلومات الطبيب -->
+                <div class="absolute bottom-6 left-7 right-7 text-right" dir="rtl">
+                    <p class="text-[9px] font-bold text-stone-400 uppercase tracking-widest mb-1">{% trans 'اسم الطبيب المعتمد' %}</p>
+                    <h2 id="printName" class="text-2xl font-black text-[#005050] mb-3 leading-tight">
+                        {{ doctor.name|default:"اسم الطبيب" }}
+                    </h2>
+                    
+                    <div class="flex gap-6 border-t border-stone-100 pt-3">
+                        <div>
+                            <p class="text-[8px] text-stone-400 font-bold mb-0.5">{% trans 'التخصص' %}</p>
+                            <p id="printSpecialty" class="text-[11px] text-stone-700 font-black">{{ doctor.specialty.name|default:"طبيب عام" }}</p>
+                        </div>
+                        <div>
+                            <p class="text-[8px] text-stone-400 font-bold mb-0.5">{% trans 'الهاتف' %}</p>
+                            <p id="printPhone" class="text-[11px] text-stone-700 font-bold num-font" dir="ltr">{{ doctor.phone|default:"000 000 000" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% if not pos_mini_view %}
+        <!-- 🔵 الوجه الخلفي (رفع النص وتصفية الخلفية) 🔵 -->
+        <div class="flex flex-col items-center gap-5">
+            <span class="no-print text-[11px] font-black uppercase tracking-[0.25em] px-5 py-2 bg-slate-800/60 backdrop-blur-md rounded-full text-teal-400 border border-teal-500/30">{% trans '🔷 الوجه الخلفي' %}</span>
+            
+            <div class="card-back relative w-[420px] h-[260px] rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-[#005050] via-[#004040] to-[#002e2e] flex flex-col items-center py-6 px-10">
+                
+                <!-- أشكال زخرفية -->
+                <div class="absolute inset-0 overflow-hidden opacity-20 pointer-events-none">
+                    <div class="absolute -top-10 -right-10 w-64 h-64 rounded-full bg-[#007777]/20 blur-3xl"></div>
+                    <div class="absolute -bottom-10 -left-10 w-64 h-64 rounded-full bg-[#002e2e]/60 blur-3xl"></div>
+                </div>
+
+                <!-- المحتوى المركزي -->
+                <div class="relative z-10 flex flex-col items-center w-full">
+                    <!-- حاوية اللوجو (شفافة تماماً وبدون خلفية بيضاء) -->
+                    <div class="w-24 h-20 flex items-center justify-center mb-2">
+                        <img src="{% static 'logo.png' %}" class="max-h-full max-w-full object-contain" alt="Logo">
+                    </div>
+                    
+                    <!-- الاسم والوصف -->
+                    <h2 class="text-2xl font-black text-white tracking-[0.1em] mb-1">{% trans 'حضرموت' %}</h2>
+                    <div class="w-10 h-0.5 bg-teal-400/40 rounded-full mb-2"></div>
+                    <p class="text-[10px] font-bold text-teal-300/80 uppercase tracking-[0.4em] mb-4">{% trans 'هوية مهنية معتمدة' %}</p>
+
+                    <!-- النص التحذيري (تم رفعه للأعلى قليلاً لضمان بقائه في الإطار) -->
+                    <div class="w-full bg-black/30 backdrop-blur-md rounded-xl p-2.5 border border-white/10 shadow-inner">
+                        <p class="text-[8px] text-white/70 font-medium leading-relaxed text-center">
+                            هذه البطاقة وثيقة رسمية مخصصة حصرياً للاستخدام داخل منشآت {{ global_system_vendor.name|default:'النظام' }}.<br>
+                            {% trans 'يمنع تداول البطاقة مع أشخاص غير مصرح لهم.' %}
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>

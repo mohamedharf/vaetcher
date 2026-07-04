@@ -1,0 +1,57 @@
+{% extends 'emails/base_email.html' %}
+{% load i18n %}
+
+{% block header %}
+<div class="header-icon">🎁</div>
+<div class="logo-text">{% trans 'قسيمة شراء جديدة!' %}</div>
+<div class="logo-sub">تم إضافتها لحسابك في {{ global_system_vendor.name|default:'النظام' }}</div>
+{% endblock %}
+
+{% block body %}
+<div class="greeting">د. {{ doctor_name }}،</div>
+
+<p class="intro-text">
+    {% trans 'يسعدنا إعلامكم بأنه تم إصدار' %} <strong>{% trans 'قسيمة شراء جديدة' %}</strong> {% trans 'لسيادتكم. يمكنكم استخدامها في أي متجر مشترك بالنظام خلال فترة صلاحيتها.' %}
+</p>
+
+<div class="highlight-box">
+    <div class="amount">{{ voucher_value }} </div>
+    <div class="amount-label">{% trans '💰 إجمالي قيمة القسيمة' %}</div>
+</div>
+
+<div class="info-card">
+    <div class="card-title">{% trans '📋 تفاصيل القسيمة' %}</div>
+    <div class="info-row">
+        <span class="label">{% trans 'الشركة الممولة' %}</span>
+        <span class="value">{{ company_name }}</span>
+    </div>
+    {% if event_name %}
+    <div class="info-row">
+        <span class="label">{% trans 'الندوة / الفعالية' %}</span>
+        <span class="value">{{ event_name }}</span>
+    </div>
+    {% endif %}
+    <div class="info-row">
+        <span class="label">{% trans 'تاريخ الإصدار' %}</span>
+        <span class="value">{{ issue_date }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">{% trans 'تاريخ انتهاء الصلاحية' %}</span>
+        <span class="value">{{ expiry_date }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">{% trans 'مدة الصلاحية' %}</span>
+        <span class="value">{{ validity_days }} يوم</span>
+    </div>
+</div>
+
+<div class="success-box">
+    {% trans '✅ القسيمة نشطة ويمكن استخدامها الآن في جميع المتاجر المشتركة.' %}
+</div>
+
+<hr class="divider">
+
+<div class="alert-box">
+    {% trans '⏰ تنبيه: القسيمة تنتهي بتاريخ' %} <strong>{{ expiry_date }}</strong>{% trans '. تأكد من استخدامها قبل انتهاء صلاحيتها.' %}
+</div>
+{% endblock %}

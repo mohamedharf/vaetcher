@@ -1,0 +1,263 @@
+{% extends 'custom_admin/portal_base.html' %}
+{% load i18n %}
+
+{% block title %}بوابة المندوب التنفيذي | {{ global_system_vendor.name|default:'النظام' }}{% endblock %}
+
+{# -------- Sidebar Identity -------- #}
+{% block portal_icon %}fa-user-tie{% endblock %}
+{% block portal_title %}{% trans 'بوابة المندوب التنفيذي' %}{% endblock %}
+{% block portal_subtitle %}{{ delegate_profile.name }}{% endblock %}
+
+{# -------- Sidebar Nav Links -------- #}
+{% block sidebar_nav %}
+{% include 'custom_admin/includes/delegate_sidebar_nav_full.html' %}
+{% endblock %}
+
+{# -------- Settings URL -------- #}
+{% block settings_url %}{% url 'delegate_portal_settings' %}{% endblock %}
+
+{# -------- User Role -------- #}
+{% block user_role_label %}{% trans 'مندوب تنفيذي' %}{% endblock %}
+
+{# -------- Header -------- #}
+{% block header_icon %}fa-gauge-high{% endblock %}
+{% block header_title %}{% trans 'نظرة عامة على الإنجاز الميداني' %}{% endblock %}
+{% block header_subtitle %}{{ delegate_profile.name }} | <i class="fa-solid fa-phone"></i> {{ delegate_profile.clean_phone }}{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'custom_event_request_create' %}" style="
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 18px; border-radius: 10px;
+    background: linear-gradient(135deg, #005353, #007a7a); color: white;
+    font-size: 0.82rem; font-weight: 700; text-decoration: none;
+    transition: opacity 0.2s;
+" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+    <i class="fa-solid fa-plus"></i> {% trans 'طلب فعالية جديدة' %}
+</a>
+{% endblock %}
+
+{# -------- Extra CSS -------- #}
+{% block extra_head %}
+{{ block.super }}
+{% include 'custom_admin/includes/portal_common_styles.html' %}
+{% endblock %}
+
+{# -------- Main Portal Content -------- #}
+{% block portal_content %}
+
+{# Stats Cards #}
+<div class="stats-grid">
+    <div class="stat-card stat-card-clickable" onclick="switchTab('events')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();switchTab('events')}">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.78rem; font-weight:700; color:#6e7979;">{% trans 'الفعاليات المسندة' %}</span>
+            <div class="stat-icon" style="background:rgba(0,83,83,0.07); color:#005353;"><i class="fa-solid fa-calendar-check"></i></div>
+        </div>
+        <h2 style="font-size:1.6rem; font-weight:900; margin:4px 0 0 0; color:#005353; font-family:'Inter',sans-serif;">{{ total_events_count }}</h2>
+    </div>
+    <div class="stat-card stat-card-clickable" onclick="switchTab('vouchers')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();switchTab('vouchers')}">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.78rem; font-weight:700; color:#6e7979;">{% trans 'القسائم الموزعة للأطباء' %}</span>
+            <div class="stat-icon" style="background:#e0f2f1; color:#00796b;"><i class="fa-solid fa-users"></i></div>
+        </div>
+        <h2 style="font-size:1.6rem; font-weight:900; margin:4px 0 0 0; color:#00796b; font-family:'Inter',sans-serif;">{{ total_vouchers_count }}</h2>
+    </div>
+    <div class="stat-card stat-card-clickable" onclick="switchTab('vouchers')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();switchTab('vouchers')}">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.78rem; font-weight:700; color:#6e7979;">{% trans 'إجمالي القيمة الموزعة' %}</span>
+            <div class="stat-icon" style="background:#efebe9; color:#5d4037;"><i class="fa-solid fa-sack-dollar"></i></div>
+        </div>
+        <h2 style="font-size:1.6rem; font-weight:900; margin:4px 0 0 0; color:#5d4037; font-family:'Inter',sans-serif;">{{ total_distributed|floatformat:2 }} <span style="font-size:0.85rem; font-weight:600;"></span></h2>
+    </div>
+    <div class="stat-card stat-card-clickable" onclick="switchTab('vouchers')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();switchTab('vouchers')}">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.78rem; font-weight:700; color:#6e7979;">{% trans 'حجم استهلاك القسائم' %}</span>
+            <div class="stat-icon" style="background:#fce4ec; color:#c62828;"><i class="fa-solid fa-cart-arrow-down"></i></div>
+        </div>
+        <h2 style="font-size:1.6rem; font-weight:900; margin:4px 0 0 0; color:#c62828; font-family:'Inter',sans-serif;">{{ total_spent|floatformat:2 }} <span style="font-size:0.85rem; font-weight:600;"></span></h2>
+    </div>
+    <div class="stat-card stat-card-clickable" onclick="switchTab('requests')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();switchTab('requests')}">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.78rem; font-weight:700; color:#6e7979;">{% trans 'طلبات الفعاليات' %}</span>
+            <div class="stat-icon" style="background:#fff8e1; color:#f57f17;"><i class="fa-solid fa-code-pull-request"></i></div>
+        </div>
+        <h2 style="font-size:1.6rem; font-weight:900; margin:4px 0 0 0; color:#f57f17; font-family:'Inter',sans-serif;">{{ event_requests|length }} <span style="font-size:0.85rem; font-weight:600;">{% trans 'طلب' %}</span></h2>
+    </div>
+</div>
+
+{# Tab Bar #}
+<div id="portal-tabs" class="portal-internal-nav">
+    <div class="portal-internal-nav-links">
+        <button class="portal-tab-btn active" id="btn-events" onclick="switchTab('events')"><i class="fa-solid fa-flag"></i> {% trans 'الفعاليات المسندة' %}</button>
+        <button class="portal-tab-btn" id="btn-requests" onclick="switchTab('requests')"><i class="fa-solid fa-code-pull-request"></i> {% trans 'طلبات الفعاليات' %}</button>
+        <button class="portal-tab-btn" id="btn-vouchers" onclick="switchTab('vouchers')"><i class="fa-solid fa-address-book"></i> {% trans 'الأطباء والقسائم' %}</button>
+        <a href="{% url 'delegate_doctors' %}" class="portal-tab-btn"><i class="fa-solid fa-user-doctor"></i> {% trans 'الأطباء والشركات' %}</a>
+    </div>
+    <a href="{% url 'custom_event_request_create' %}" class="portal-action-btn">
+        <i class="fa-solid fa-plus"></i> {% trans 'طلب فعالية جديدة' %}
+    </a>
+</div>
+
+{# Tab 1: Events #}
+<div id="tab-events">
+    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap:22px;">
+        {% for event in events_list %}
+        <div class="event-card">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                    <h3 style="margin:0 0 5px 0; font-size:1.1rem; font-weight:900; color:#005353;">{{ event.name }}</h3>
+                    <span style="font-size:0.73rem; font-weight:600; color:#6e7979;"><i class="fa-solid fa-building"></i> {{ event.company.clean_name }} | <i class="fa-solid fa-calendar-day"></i> {{ event.date|date:"d M Y" }}</span>
+                </div>
+                {% if event.is_active_campaign %}
+                    <span style="background:#e8f5e9; color:#2e7d32; font-size:0.72rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'نشط وجاري' %}</span>
+                {% else %}
+                    <span style="background:#f5f5f5; color:#757575; font-size:0.72rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'منتهية' %}</span>
+                {% endif %}
+            </div>
+            <div>
+                <div style="display:flex; justify-content:space-between; font-size:0.78rem; font-weight:700; margin-bottom:6px; color:#3e4948;">
+                    <span>{% trans 'توزيع الميزانية للفعالية' %}</span>
+                    <span style="font-family:'Inter',sans-serif;">{{ event.total_initial|floatformat:0 }} / {{ event.max_budget|floatformat:0 }} </span>
+                </div>
+                <div class="progress-track"><div class="progress-fill" style="width: {{ event.progress_percentage }}%;"></div></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-weight:600; color:#6e7979; border-top:1px solid #f5f5f5; padding-top:12px;">
+                <span><i class="fa-solid fa-user-doctor"></i> {% trans 'إجمالي أطباء الفعالية:' %} <b style="color:#005353;">{{ event.total_vouchers }}</b></span>
+                <span>{% trans 'استهلاك ميداني:' %} <b style="color:#c62828; font-family:'Inter',sans-serif;">{{ event.total_spent|floatformat:2 }} </b></span>
+            </div>
+        </div>
+        {% empty %}
+        <div style="grid-column:1/-1; background:#fff; padding:50px; border-radius:14px; text-align:center; border:2px dashed #e0e0e0;">
+            <i class="fa-solid fa-clipboard-list" style="font-size:2.5rem; color:#ccc; display:block; margin-bottom:12px;"></i>
+            <p style="font-weight:700; color:#aaa; margin:0;">{% trans 'لم يتم إسناد أي فعاليات لك حتى الآن.' %}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{# Tab 2: Vouchers #}
+<div id="tab-vouchers" style="display:none;">
+    <div class="table-container">
+        <table class="v-table">
+            <thead>
+                <tr>
+                    <th>{% trans 'الطبيب' %}</th>
+                    <th>{% trans 'الفعالية والشركة' %}</th>
+                    <th>{% trans 'تاريخ الشحن' %}</th>
+                    <th>{% trans 'القيمة المبدئية' %}</th>
+                    <th>{% trans 'الرصيد المتبقي' %}</th>
+                    <th>{% trans 'المبلغ المستهلك' %}</th>
+                    <th>{% trans 'تاريخ الانتهاء' %}</th>
+                    <th>{% trans 'الحالة' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for voucher in vouchers_list %}
+                <tr>
+                    <td>
+                        <div style="font-weight:800; color:#005353;">د. {{ voucher.doctor.name }}</div>
+                        <div style="font-size:0.73rem; color:#6e7979;">{{ voucher.doctor.specialty.name|default:"عام" }}</div>
+                    </td>
+                    <td>
+                        <div style="font-weight:700; color:#1a1c1c;">{{ voucher.event.name|default:"شحن مباشر" }}</div>
+                        <div style="font-size:0.73rem; color:#6e7979;">{{ voucher.company.clean_name }}</div>
+                    </td>
+                    <td style="font-family:'Inter',sans-serif;">{{ voucher.issue_date|date:"Y-m-d" }}</td>
+                    <td style="font-family:'Inter',sans-serif; color:#005353;">{{ voucher.initial_value|floatformat:2 }} </td>
+                    <td style="font-family:'Inter',sans-serif; color:#00796b;">{{ voucher.current_balance|floatformat:2 }} </td>
+                    <td style="font-family:'Inter',sans-serif; color:#733a1a;">{{ voucher.consumed_amount|floatformat:2 }} </td>
+                    <td style="font-family:'Inter',sans-serif;">{{ voucher.expiry_date|date:"Y-m-d" }}</td>
+                    <td>
+                        {% if voucher.is_active %}
+                            <span style="background:#e8f5e9; color:#2e7d32; font-size:0.72rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'نشط' %}</span>
+                        {% else %}
+                            <span style="background:#ffebee; color:#c62828; font-size:0.72rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'غير نشط' %}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="8" style="text-align:center; padding:40px; color:#aaa;">{% trans 'لم يتم إصدار أي قسائم لأطباء تحت إشرافك بعد.' %}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{# Tab 3: Requests #}
+<div id="tab-requests" style="display:none;">
+    <div class="table-container">
+        <table class="v-table">
+            <thead>
+                <tr>
+                    <th>{% trans 'اسم الفعالية' %}</th>
+                    <th>{% trans 'التاريخ' %}</th>
+                    <th>{% trans 'الميزانية' %}</th>
+                    <th>{% trans 'قيمة القسيمة' %}</th>
+                    <th>{% trans 'تاريخ الطلب' %}</th>
+                    <th>{% trans 'الحالة' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in event_requests %}
+                <tr>
+                    <td style="font-weight:800; color:#005353;">{{ req.name }}</td>
+                    <td style="font-family:'Inter',sans-serif;">{{ req.date|date:"Y-m-d" }}</td>
+                    <td style="font-family:'Inter',sans-serif; color:#005353;">{{ req.max_budget|floatformat:2 }} </td>
+                    <td style="font-family:'Inter',sans-serif; color:#733a1a;">{{ req.voucher_value|floatformat:2 }} </td>
+                    <td style="font-family:'Inter',sans-serif;">{{ req.created_at|date:"Y-m-d H:i" }}</td>
+                    <td>
+                        {% if req.status == 'PENDING' %}
+                            <span style="background:#fff8e1; color:#f57f17; font-size:0.72rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'قيد المراجعة' %}</span>
+                        {% elif req.status == 'APPROVED' %}
+                            <span style="background:#e8f5e9; color:#2e7d32; font-size:0.72rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'معتمد' %}</span>
+                        {% else %}
+                            <span style="background:#ffebee; color:#c62828; font-size:0.72rem; padding:4px 10px; border-radius:20px; font-weight:800;">{% trans 'مرفوض' %}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" style="text-align:center; padding:40px; color:#aaa;">{% trans 'لا توجد طلبات فعاليات سابقة.' %}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+const tabs = ['events', 'vouchers', 'requests'];
+function switchTab(tabId) {
+    tabs.forEach(t => {
+        document.getElementById('tab-' + t).style.display = t === tabId ? 'block' : 'none';
+        const btn = document.getElementById('btn-' + t);
+        if (btn) btn.classList.toggle('active', t === tabId);
+        const navLink = document.getElementById('nav-' + t);
+        if (navLink) {
+            navLink.style.background = t === tabId ? 'rgba(0,83,83,0.07)' : 'transparent';
+            navLink.style.color = t === tabId ? '#005353' : '#3e4948';
+            navLink.style.fontWeight = t === tabId ? '700' : '600';
+        }
+    });
+    if (typeof closeMobileMenu === 'function') closeMobileMenu();
+    document.getElementById('portal-tabs')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function highlightNav() {
+    tabs.forEach(t => {
+        const el = document.getElementById('tab-' + t);
+        const nav = document.getElementById('nav-' + t);
+        if (!nav) return;
+        const isActive = el && el.style.display !== 'none';
+        nav.style.background = isActive ? 'rgba(0,83,83,0.07)' : 'transparent';
+        nav.style.color = isActive ? '#005353' : '#3e4948';
+        nav.style.fontWeight = isActive ? '700' : '600';
+    });
+}
+
+// Switch tab if tab query param is provided
+window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam && tabs.includes(tabParam)) {
+        switchTab(tabParam);
+    }
+});
+</script>
+{% endblock %}

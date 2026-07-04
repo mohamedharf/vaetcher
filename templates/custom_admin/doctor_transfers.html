@@ -1,0 +1,361 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>{% trans 'تاريخ التحويلات | بوابة الطبيب - حضرموت' %}</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#005353',
+                        'primary-container': '#006d6d',
+                        'on-primary': '#ffffff',
+                        'secondary': '#466463',
+                        'secondary-container': '#c9e9e8',
+                        'tertiary': '#45617d',
+                        'error': '#ba1a1a',
+                        'surface': '#f9f9f9',
+                        'surface-container-lowest': '#ffffff',
+                        'surface-container-low': '#f3f3f3',
+                        'surface-container-high': '#e8e8e8',
+                        'on-surface': '#1a1c1c',
+                        'on-surface-variant': '#3e4948',
+                    },
+                    fontFamily: {
+                        'sans': ['IBM Plex Sans Arabic', 'Be Vietnam Pro', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer base {
+            body { font-family: 'IBM Plex Sans Arabic', sans-serif; @apply bg-stone-50 text-on-surface antialiased; }
+        }
+        @layer components {
+            .nav-link { @apply flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 text-on-surface-variant hover:bg-stone-100; }
+            .nav-link.active { @apply bg-primary text-white shadow-lg shadow-primary/20; }
+            .card-premium { @apply bg-surface-container-lowest rounded-[2.5rem] p-8 shadow-sm border border-stone-100; }
+            .num-font { font-family: 'Inter', sans-serif; }
+            .tab-btn { @apply px-8 py-3 rounded-2xl font-bold text-sm transition-all; }
+            .tab-btn.active { @apply bg-primary text-white shadow-xl; }
+            .tab-btn:not(.active) { @apply bg-stone-100 text-on-surface-variant hover:bg-stone-200; }
+        }
+
+        .mobile-bottom-nav { @apply fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-stone-100 flex items-center justify-around px-4 z-50; }
+        .modern-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+        .modern-table th { @apply text-right p-4 text-[10px] font-black text-on-surface-variant uppercase tracking-widest border-b border-stone-100; }
+        .modern-table td { @apply p-4 text-sm font-medium text-on-surface border-b border-stone-50 transition-colors; }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <!-- Desktop Sidebar -->
+    <aside class="hidden lg:flex flex-col w-72 h-screen fixed right-0 top-0 bg-white border-l border-stone-200 z-40 p-6">
+        <div class="mb-10 flex items-center gap-3 px-2">
+            <div class="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center text-white shadow-xl shadow-primary/30">
+                <span class="material-symbols-outlined text-3xl">medical_services</span>
+            </div>
+            <div>
+                <h1 class="font-black text-primary text-xl leading-none">{% trans 'حضرموت' %}</h1>
+                <p class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase mt-1">{% trans 'بوابة الطبيب' %}</p>
+            </div>
+        </div>
+
+        <nav class="flex-1 space-y-2">
+            <a href="{% url 'custom_doctor_portal' %}" class="nav-link {% if request.resolver_match.url_name == 'custom_doctor_portal' %}active{% endif %}">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-bold">{% trans 'لوحة التحكم' %}</span>
+            </a>
+            <a href="{% url 'custom_doctor_vouchers' %}" class="nav-link {% if request.resolver_match.url_name == 'custom_doctor_vouchers' %}active{% endif %}">
+                <span class="material-symbols-outlined">confirmation_number</span>
+                <span class="font-bold">{% trans 'القسائم الخاصة بي' %}</span>
+            </a>
+            <a href="{% url 'custom_doctor_transactions' %}" class="nav-link {% if request.resolver_match.url_name == 'custom_doctor_transactions' %}active{% endif %}">
+                <span class="material-symbols-outlined">history</span>
+                <span class="font-bold">{% trans 'سجل العمليات' %}</span>
+            </a>
+            <a href="{% url 'custom_doctor_transfers' %}" class="nav-link {% if request.resolver_match.url_name == 'custom_doctor_transfers' %}active{% endif %}">
+                <span class="material-symbols-outlined">payments</span>
+                <span class="font-bold">{% trans 'التحويلات' %}</span>
+            </a>
+            <a href="{% url 'custom_doctor_card' %}" class="nav-link {% if request.resolver_match.url_name == 'custom_doctor_card' %}active{% endif %}">
+                <span class="material-symbols-outlined">badge</span>
+                <span class="font-bold">{% trans 'كارت التعريف' %}</span>
+            </a>
+            <a href="{% url 'custom_doctor_settings' %}" class="nav-link {% if request.resolver_match.url_name == 'custom_doctor_settings' %}active{% endif %}">
+                <span class="material-symbols-outlined">settings</span>
+                <span class="font-bold">{% trans 'الإعدادات' %}</span>
+            </a>
+        </nav>
+
+        <div class="mt-auto bg-stone-50 p-4 rounded-3xl border border-stone-100">
+            <div class="flex items-center gap-3">
+                <img src="{{ doctor.get_avatar_url }}" class="w-10 h-10 rounded-full border-2 border-white shadow-sm object-cover">
+                <div class="flex-1 overflow-hidden text-right">
+                    <p class="text-sm font-bold text-on-surface truncate">{{ doctor.name }}</p>
+                    <p class="text-[10px] text-on-surface-variant font-bold">{{ doctor.specialty.name|default:"طبيب مسجل" }}</p>
+                </div>
+                <form action="{% url 'logout' %}" method="post" id="logout-form" class="hidden">
+                    {% csrf_token %}
+                </form>
+                <button onclick="document.getElementById('logout-form').submit();" class="text-stone-400 hover:text-error transition-colors flex items-center justify-center">
+                    <span class="material-symbols-outlined text-xl">logout</span>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Header (Responsive) -->
+    <header class="lg:pr-72 fixed top-0 left-0 right-0 h-20 bg-white/80 backdrop-blur-xl z-30 border-b border-stone-100 px-6 sm:px-10 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+            <h2 class="text-xl font-bold text-primary lg:block hidden">{% trans 'تاريخ التحويلات' %}</h2>
+            <div class="lg:hidden flex items-center gap-3">
+                <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined text-2xl">medical_services</span>
+                </div>
+                <span class="font-black text-primary text-xl">{% trans 'حضرموت' %}</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <button class="w-11 h-11 rounded-full bg-stone-50 text-stone-500 hover:bg-stone-100 flex items-center justify-center transition-colors">
+                <span class="material-symbols-outlined">notifications</span>
+            </button>
+            <div class="hidden sm:flex flex-col items-start ml-2 lg:hidden text-right">
+                <p class="text-xs font-bold text-primary leading-tight">{{ doctor.name }}</p>
+                <p class="text-[10px] text-on-surface-variant font-bold">{% trans 'الملف الشخصي' %}</p>
+            </div>
+            <img src="https://ui-avatars.com/api/?name=Dr+Kamal&background=005353&color=fff" class="w-10 h-10 rounded-full border border-stone-200 lg:hidden block">
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="lg:pr-72 pt-28 pb-32 lg:pb-12 px-6 sm:px-10">
+        <div class="max-w-7xl mx-auto">
+            
+            <!-- Overall Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <div class="bg-primary p-8 rounded-[2.5rem] text-white shadow-xl shadow-primary/20 flex justify-between items-center relative overflow-hidden">
+                    <div class="relative z-10">
+                        <p class="text-[10px] font-black uppercase tracking-widest opacity-80 mb-2">{% trans 'تحويلات صادرة' %}</p>
+                        <h3 class="text-4xl font-black num-font">{{ transfers_made.count }} <span class="text-lg font-bold">{% trans 'قسيمة' %}</span></h3>
+                    </div>
+                    <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center relative z-10 backdrop-blur-md">
+                        <span class="material-symbols-outlined text-3xl">unfold_less</span>
+                    </div>
+                    <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
+                </div>
+
+                <div class="bg-secondary p-8 rounded-[2.5rem] text-white shadow-xl shadow-secondary/20 flex justify-between items-center relative overflow-hidden">
+                    <div class="relative z-10">
+                        <p class="text-[10px] font-black uppercase tracking-widest opacity-80 mb-2">{% trans 'تحويلات مستلمة' %}</p>
+                        <h3 class="text-4xl font-black num-font">{{ transfers_received.count }} <span class="text-lg font-bold">{% trans 'قسيمة' %}</span></h3>
+                    </div>
+                    <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center relative z-10 backdrop-blur-md">
+                        <span class="material-symbols-outlined text-3xl">unfold_more</span>
+                    </div>
+                    <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex items-center gap-4 mb-8 overflow-x-auto pb-2">
+                <button onclick="switchTransferTab('sent')" id="btn-sent" class="tab-btn active whitespace-nowrap">{% trans 'التحويلات المرسلة (الصادرة)' %}</button>
+                <button onclick="switchTransferTab('received')" id="btn-received" class="tab-btn whitespace-nowrap">{% trans 'التحويلات المستلمة (الواردة)' %}</button>
+            </div>
+
+            <!-- Sent Transfers Table -->
+            <div id="sent-transfers" class="card-premium overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>{% trans 'تاريخ التحويل' %}</th>
+                                <th>{% trans 'المستلم (الطبيب)' %}</th>
+                                <th>{% trans 'تخصص المستلم' %}</th>
+                                <th>{% trans 'القسيمة / الفعالية' %}</th>
+                                <th>{% trans 'القيمة' %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for transfer in transfers_made %}
+                            <tr>
+                                <td class="num-font">{{ transfer.transfer_date|date:"Y-m-d H:i" }}</td>
+                                <td class="font-bold text-primary">د. {{ transfer.to_doctor.name }}</td>
+                                <td><span class="text-[10px] font-black text-secondary bg-secondary-container px-2 py-1 rounded-lg">{{ transfer.to_doctor.specialty.name|default:"عام" }}</span></td>
+                                <td>{{ transfer.voucher.event.name|default:"قسيمة خاصة" }}</td>
+                                <td class="font-black num-font">{{ transfer.voucher.initial_value|floatformat:0 }} </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="py-20 text-center text-stone-400 font-bold italic">{% trans 'لم تقم بإجراء أي تحويلات حتى الآن.' %}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Received Transfers Table -->
+            <div id="received-transfers" class="card-premium overflow-hidden hidden">
+                <div class="overflow-x-auto">
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>{% trans 'تاريخ الاستلام' %}</th>
+                                <th>{% trans 'المرسل (الطبيب)' %}</th>
+                                <th>{% trans 'القسيمة / الفعالية' %}</th>
+                                <th>{% trans 'القيمة الحالية' %}</th>
+                                <th>{% trans 'الحالة' %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for transfer in transfers_received %}
+                            <tr>
+                                <td class="num-font">{{ transfer.transfer_date|date:"Y-m-d H:i" }}</td>
+                                <td class="font-bold text-primary">د. {{ transfer.from_doctor.name }}</td>
+                                <td>{{ transfer.voucher.event.name|default:"قسيمة خاصة" }}</td>
+                                <td class="font-black num-font text-primary">{{ transfer.voucher.current_balance|floatformat:0 }} </td>
+                                <td>
+                                    {% if transfer.voucher.is_active %}
+                                    <span class="bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full text-[10px] font-black border border-emerald-100">{% trans 'نشطة' %}</span>
+                                    {% else %}
+                                    <span class="bg-stone-100 text-stone-400 px-3 py-1 rounded-full text-[10px] font-black">{% trans 'غير نشطة' %}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="py-20 text-center text-stone-400 font-bold italic">{% trans 'لا يوجد تحويلات واردة حالياً.' %}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Mobile Navigation -->
+    <nav class="lg:hidden mobile-bottom-nav">
+        <a href="{% url 'custom_doctor_portal' %}" class="flex flex-col items-center gap-1 {% if request.resolver_match.url_name == 'custom_doctor_portal' %}text-primary{% else %}text-on-surface-variant{% endif %}">
+            <span class="material-symbols-outlined text-2xl {% if request.resolver_match.url_name == 'custom_doctor_portal' %}font-black{% else %}font-light{% endif %}">grid_view</span>
+            <span class="text-[9px] font-black">{% trans 'الرئيسية' %}</span>
+        </a>
+        <a href="{% url 'custom_doctor_vouchers' %}" class="flex flex-col items-center gap-1 {% if request.resolver_match.url_name == 'custom_doctor_vouchers' %}text-primary{% else %}text-on-surface-variant{% endif %}">
+            <span class="material-symbols-outlined text-2xl {% if request.resolver_match.url_name == 'custom_doctor_vouchers' %}font-black{% else %}font-light{% endif %}">local_activity</span>
+            <span class="text-[9px] font-bold">{% trans 'قسائمي' %}</span>
+        </a>
+        <div class="relative -top-8 px-4 py-4 rounded-full bg-stone-50 border-white border-[10px] shadow-[0_-10px_20px_rgba(0,0,0,0.05)]">
+            <button onclick="openQRModal()" class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center shadow-2xl shadow-primary/40 active:scale-90 transition-all border-4 border-white">
+                <span class="material-symbols-outlined text-3xl font-bold">qr_code_scanner</span>
+            </button>
+        </div>
+        <a href="{% url 'custom_doctor_card' %}" class="flex flex-col items-center gap-1 {% if request.resolver_match.url_name == 'custom_doctor_card' %}text-primary{% else %}text-on-surface-variant{% endif %}">
+            <span class="material-symbols-outlined text-2xl {% if request.resolver_match.url_name == 'custom_doctor_card' %}font-black{% else %}font-light{% endif %}">badge</span>
+            <span class="text-[9px] font-bold">{% trans 'الكارت' %}</span>
+        </a>
+        <button onclick="openMoreMenu()" class="flex flex-col items-center gap-1 text-on-surface-variant">
+            <span class="material-symbols-outlined text-2xl font-light">more_horiz</span>
+            <span class="text-[9px] font-bold">{% trans 'المزيد' %}</span>
+        </button>
+    </nav>
+
+    <!-- MODAL: More Menu -->
+    <div id="moreMenuModal" class="hidden fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-md p-4" onclick="closeModals()">
+        <div class="bg-white w-full max-w-sm rounded-[2.5rem] p-6 mb-20 modal-enter" onclick="event.stopPropagation">
+            <div class="w-12 h-1.5 bg-stone-100 rounded-full mx-auto mb-6"></div>
+            <h3 class="text-xl font-black text-primary mb-6 text-center">{% trans 'القائمة الإضافية' %}</h3>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <a href="{% url 'custom_doctor_transactions' %}" class="bg-stone-50 p-4 rounded-2xl flex flex-col items-center gap-2 border border-stone-100 hover:bg-stone-100 transition-all">
+                    <span class="material-symbols-outlined text-primary">receipt_long</span>
+                    <span class="text-[10px] font-black">{% trans 'سجل العمليات' %}</span>
+                </a>
+                <a href="{% url 'custom_doctor_transfers' %}" class="bg-stone-50 p-4 rounded-2xl flex flex-col items-center gap-2 border border-stone-100 hover:bg-stone-100 transition-all">
+                    <span class="material-symbols-outlined text-primary">payments</span>
+                    <span class="text-[10px] font-black">{% trans 'التحويلات' %}</span>
+                </a>
+                <a href="{% url 'custom_doctor_settings' %}" class="bg-stone-50 p-4 rounded-2xl flex flex-col items-center gap-2 border border-stone-100 hover:bg-stone-100 transition-all">
+                    <span class="material-symbols-outlined text-primary">settings</span>
+                    <span class="text-[10px] font-black">{% trans 'الإعدادات' %}</span>
+                </a>
+                <form action="{% url 'logout' %}" method="post" class="w-full">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full bg-error/5 p-4 rounded-2xl flex flex-col items-center gap-2 border border-error/10 hover:bg-error/10 transition-all text-error">
+                        <span class="material-symbols-outlined">logout</span>
+                        <span class="text-[10px] font-black">{% trans 'خروج' %}</span>
+                    </button>
+                </form>
+            </div>
+            
+            <button onclick="closeModals()" class="w-full py-4 mt-6 rounded-2xl bg-stone-100 text-on-surface font-black hover:bg-stone-200 transition-colors">{% trans 'إغلاق' %}</button>
+        </div>
+    </div>
+
+    <!-- MODAL: QR Code (Big View) -->
+    <div id="qrModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-md p-6" onclick="closeModals()">
+        <div class="bg-white w-full max-sm rounded-[3rem] p-8 text-center modal-enter" onclick="event.stopPropagation">
+            <div class="w-16 h-1.5 bg-stone-100 rounded-full mx-auto mb-8"></div>
+            <h3 class="text-2xl font-black text-primary mb-2">{% trans 'رمز التعريف الموحد' %}</h3>
+            <p class="text-sm text-on-surface-variant mb-10 px-4">{% trans 'قم بإظهار هذا الرمز للكاشير عند إتمام عملية الشراء لإتمام الخصم من رصيدك.' %}</p>
+            
+            <div class="bg-stone-50 p-6 rounded-[2.5rem] border border-stone-100 shadow-inner mb-10 relative">
+                <div class="absolute top-0 right-0 w-10 h-10 border-r-4 border-t-4 border-primary rounded-tr-[2.5rem] -m-1"></div>
+                <div class="absolute bottom-0 left-0 w-10 h-10 border-l-4 border-b-4 border-primary rounded-bl-[2.5rem] -m-1"></div>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data={{ doctor.qr_code }}&color=005353" class="w-64 h-64 mx-auto mix-blend-multiply opacity-90">
+            </div>
+            
+            <button onclick="closeModals()" class="w-full py-4 rounded-2xl bg-stone-100 text-on-surface font-black hover:bg-stone-200 transition-colors">{% trans 'إغلاق' %}</button>
+        </div>
+    </div>
+
+    <script>
+        function switchTransferTab(tab) {
+            const sent = document.getElementById('sent-transfers');
+            const received = document.getElementById('received-transfers');
+            const btnSent = document.getElementById('btn-sent');
+            const btnReceived = document.getElementById('btn-received');
+
+            if (tab === 'sent') {
+                sent.classList.remove('hidden');
+                received.classList.add('hidden');
+                btnSent.classList.add('active');
+                btnReceived.classList.remove('active');
+            } else {
+                sent.classList.add('hidden');
+                received.classList.remove('hidden');
+                btnSent.classList.remove('active');
+                btnReceived.classList.add('active');
+            }
+        }
+
+        function openQRModal() {
+            document.getElementById('qrModal').classList.remove('hidden');
+        }
+        function openMoreMenu() {
+            document.getElementById('moreMenuModal').classList.remove('hidden');
+        }
+        function closeModals() {
+            if (document.getElementById('qrModal')) document.getElementById('qrModal').classList.add('hidden');
+            if (document.getElementById('moreMenuModal')) document.getElementById('moreMenuModal').classList.add('hidden');
+            if (document.getElementById('transferModal')) document.getElementById('transferModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

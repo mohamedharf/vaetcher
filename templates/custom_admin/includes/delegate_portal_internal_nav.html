@@ -1,0 +1,21 @@
+{% load i18n %}
+{# active_tab: events | requests | vouchers | team #}
+<div id="portal-tabs" class="portal-internal-nav">
+    <div class="portal-internal-nav-links">
+        <a href="{% url 'custom_delegate_portal' %}?tab=events" class="portal-tab-btn {% if active_tab == 'events' %}active{% endif %}">
+            <i class="fa-solid fa-flag"></i> {% trans 'الفعاليات المسندة' %}
+        </a>
+        <a href="{% url 'custom_delegate_portal' %}?tab=requests" class="portal-tab-btn {% if active_tab == 'requests' %}active{% endif %}">
+            <i class="fa-solid fa-code-pull-request"></i> {% trans 'طلبات الفعاليات' %}
+        </a>
+        <a href="{% url 'custom_delegate_portal' %}?tab=vouchers" class="portal-tab-btn {% if active_tab == 'vouchers' %}active{% endif %}">
+            <i class="fa-solid fa-address-book"></i> {% trans 'الأطباء والقسائم' %}
+        </a>
+        <a href="{% url 'delegate_doctors' %}" class="portal-tab-btn {% if active_tab == 'team' %}active{% endif %}">
+            <i class="fa-solid fa-user-doctor"></i> {% trans 'الأطباء والشركات' %}
+        </a>
+    </div>
+    <a href="{% url 'custom_event_request_create' %}" class="portal-action-btn">
+        <i class="fa-solid fa-plus"></i> {% trans 'طلب فعالية جديدة' %}
+    </a>
+</div>

@@ -1,0 +1,483 @@
+{% extends 'custom_admin/base.html' %}
+{% load i18n %}
+
+{% block body %}
+{% get_current_language as CURRENT_LANG %}
+
+<div class="pos-layout" style="height: 100vh; overflow: hidden;">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside style="
+        width: 270px;
+        min-width: 270px;
+        background: #ffffff;
+        display: flex;
+        flex-direction: column;
+        border-left: 1px solid #eef0f0;
+        box-shadow: 4px 0 24px rgba(0,83,83,0.04);
+        overflow: hidden;
+    ">
+        <!-- Logo / Identity -->
+        <div style="padding: 20px 18px; border-bottom: 1px solid #f0f4f4; display: flex; align-items: center; gap: 12px;">
+            <div style="width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #005353, #007a7a); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.1rem; flex-shrink: 0;">
+                <i class="fa-solid {% block portal_icon %}fa-building{% endblock %}"></i>
+            </div>
+            <div style="overflow: hidden;">
+                <h3 style="margin: 0; font-size: 0.9rem; font-weight: 800; color: #005353; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{% block portal_title %}بوابة الشريك{% endblock %}</h3>
+                <p style="margin: 0; font-size: 0.7rem; color: #6e7979; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{% block portal_subtitle %}{% endblock %}</p>
+            </div>
+        </div>
+
+        <!-- Nav Links -->
+        <nav style="flex: 1; overflow-y: auto; padding: 12px 0;">
+            <p style="font-size: 0.65rem; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: 0.08em; padding: 8px 20px 4px; margin: 0;">{% trans 'القائمة الرئيسية' %}</p>
+            
+            {% block sidebar_nav %}{% endblock %}
+
+            <div style="height: 1px; background: #f0f4f4; margin: 10px 16px;"></div>
+            <p style="font-size: 0.65rem; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: 0.08em; padding: 8px 20px 4px; margin: 0;">{% trans 'الأدوات' %}</p>
+
+            <!-- Notifications -->
+            <a href="javascript:void(0)" onclick="openPortalNotifModal()" style="
+                display: flex; align-items: center; justify-content: space-between;
+                padding: 10px 16px; margin: 3px 10px; border-radius: 10px;
+                color: #3e4948; text-decoration: none; font-size: 0.85rem; font-weight: 600;
+                transition: background 0.2s; cursor: pointer;
+            " onmouseover="this.style.background='#f0f8f8'" onmouseout="this.style.background='transparent'">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #fff8e1; display: flex; align-items: center; justify-content: center; color: #f57f17;">
+                        <i class="fa-solid fa-bell" style="font-size: 0.85rem;"></i>
+                    </div>
+                    {% trans 'الإشعارات' %}
+                </div>
+                {% if unread_notifications_count and unread_notifications_count > 0 %}
+                    <span style="background: #e53935; color: white; border-radius: 12px; padding: 2px 8px; font-size: 0.7rem; font-weight: 800;">{{ unread_notifications_count }}</span>
+                {% endif %}
+            </a>
+
+            <!-- Language Switcher -->
+            <div style="position: relative; margin: 3px 10px;" id="portal-lang-wrapper">
+                <button onclick="togglePortalLang()" style="
+                    width: 100%; display: flex; align-items: center; gap: 12px;
+                    padding: 10px 16px; border-radius: 10px;
+                    color: #3e4948; font-size: 0.85rem; font-weight: 600;
+                    background: transparent; border: none; cursor: pointer; font-family: inherit;
+                    transition: background 0.2s;
+                " onmouseover="this.style.background='#f0f8f8'" onmouseout="this.style.background='transparent'">
+                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #e3f2fd; display: flex; align-items: center; justify-content: center; color: #1565c0;">
+                        <i class="fa-solid fa-language" style="font-size: 0.85rem;"></i>
+                    </div>
+                    {% trans 'اللغة' %}
+                    <i class="fa-solid fa-chevron-down" style="font-size: 0.65rem; margin-right: auto; color: #aaa;"></i>
+                </button>
+                <div id="portal-lang-dropdown" style="
+                    display: none; position: absolute; bottom: calc(100% + 4px); right: 0; left: 0;
+                    background: #fff; border-radius: 12px; box-shadow: 0 -8px 30px rgba(0,0,0,0.1);
+                    border: 1px solid #eee; overflow: hidden; z-index: 200;
+                ">
+                    <form action="{% url 'set_language' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="language" value="ar">
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        <button type="submit" style="
+                            width: 100%; padding: 10px 16px; text-align: right; border: none;
+                            background: {% if CURRENT_LANG == 'ar' %}rgba(0,83,83,0.06){% else %}transparent{% endif %};
+                            cursor: pointer; font-size: 0.85rem; font-family: inherit;
+                            font-weight: {% if CURRENT_LANG == 'ar' %}800{% else %}600{% endif %};
+                            color: {% if CURRENT_LANG == 'ar' %}#005353{% else %}#3e4948{% endif %};
+                            display: flex; align-items: center; gap: 8px;
+                        ">🇸🇦 عربي {% if CURRENT_LANG == 'ar' %}<i class="fa-solid fa-check" style="margin-right: auto; color: #005353; font-size: 0.7rem;"></i>{% endif %}</button>
+                    </form>
+                    <form action="{% url 'set_language' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="language" value="en">
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        <button type="submit" style="
+                            width: 100%; padding: 10px 16px; text-align: right; border: none;
+                            background: {% if CURRENT_LANG == 'en' %}rgba(0,83,83,0.06){% else %}transparent{% endif %};
+                            cursor: pointer; font-size: 0.85rem; font-family: inherit;
+                            font-weight: {% if CURRENT_LANG == 'en' %}800{% else %}600{% endif %};
+                            color: {% if CURRENT_LANG == 'en' %}#005353{% else %}#3e4948{% endif %};
+                            display: flex; align-items: center; gap: 8px;
+                        ">🇬🇧 English {% if CURRENT_LANG == 'en' %}<i class="fa-solid fa-check" style="margin-right: auto; color: #005353; font-size: 0.7rem;"></i>{% endif %}</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Settings -->
+            <a href="{% block settings_url %}#{% endblock %}" style="
+                display: flex; align-items: center; gap: 12px;
+                padding: 10px 16px; margin: 3px 10px; border-radius: 10px;
+                color: #3e4948; text-decoration: none; font-size: 0.85rem; font-weight: 600;
+                transition: background 0.2s;
+            " onmouseover="this.style.background='#f0f8f8'" onmouseout="this.style.background='transparent'">
+                <div style="width: 32px; height: 32px; border-radius: 8px; background: #f3e5f5; display: flex; align-items: center; justify-content: center; color: #6a1b9a;">
+                    <i class="fa-solid fa-gear" style="font-size: 0.85rem;"></i>
+                </div>
+                {% trans 'الإعدادات' %}
+            </a>
+        </nav>
+
+        <!-- Footer: Logout -->
+        <div style="padding: 12px 10px; border-top: 1px solid #f0f4f4;">
+            <!-- User Info -->
+            <div style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; margin-bottom: 6px; background: #f9fbfb; border-radius: 10px;">
+                <div style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #005353, #007a7a); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem; flex-shrink: 0;">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div style="overflow: hidden; flex: 1;">
+                    <p style="margin: 0; font-size: 0.78rem; font-weight: 700; color: #1a1c1c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ request.user.get_full_name|default:request.user.username }}</p>
+                    <p style="margin: 0; font-size: 0.65rem; color: #6e7979; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{% block user_role_label %}{% trans 'شريك' %}{% endblock %}</p>
+                </div>
+            </div>
+            <!-- Logout -->
+            <form action="{% url 'logout' %}" method="post" style="margin: 0;">
+                {% csrf_token %}
+                <button type="submit" style="
+                    width: 100%; padding: 10px 16px; border-radius: 10px;
+                    background: transparent; border: none; cursor: pointer; font-family: inherit;
+                    display: flex; align-items: center; gap: 12px;
+                    color: #c62828; font-size: 0.85rem; font-weight: 700;
+                    transition: background 0.2s;
+                " onmouseover="this.style.background='#ffebee'" onmouseout="this.style.background='transparent'">
+                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #ffebee; display: flex; align-items: center; justify-content: center; color: #c62828;">
+                        <i class="fa-solid fa-right-from-bracket" style="font-size: 0.85rem;"></i>
+                    </div>
+                    {% trans 'تسجيل الخروج' %}
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay"></div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main style="flex: 1; overflow-y: auto; background: #f5f7f7; display: flex; flex-direction: column;">
+        
+        <!-- Top Header Bar -->
+        <div style="
+            background: #ffffff; border-bottom: 1px solid #eef0f0;
+            padding: 14px 28px; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 12px rgba(0,83,83,0.03); flex-shrink: 0; position: sticky; top: 0; z-index: 30;
+        ">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #005353, #007a7a); display: flex; align-items: center; justify-content: center; color: white;">
+                    <i class="fa-solid {% block header_icon %}fa-gauge-high{% endblock %}"></i>
+                </div>
+                <div>
+                    <h1 style="margin: 0; font-size: 1.05rem; font-weight: 900; color: #005353;">{% block header_title %}{% trans 'بوابة الشريك' %}{% endblock %}</h1>
+                    <p style="margin: 0; font-size: 0.7rem; color: #6e7979; font-weight: 600;">{% block header_subtitle %}{% endblock %}</p>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <!-- Notification Bell -->
+                <button onclick="openPortalNotifModal()" style="
+                    width: 38px; height: 38px; border-radius: 50%; border: 1px solid #eef0f0;
+                    background: #f9fbfb; cursor: pointer; display: flex; align-items: center; justify-content: center;
+                    color: #6e7979; position: relative; transition: all 0.2s;
+                " onmouseover="this.style.background='#e8f5f5';this.style.color='#005353'" onmouseout="this.style.background='#f9fbfb';this.style.color='#6e7979'">
+                    <i class="fa-solid fa-bell" style="font-size: 0.9rem;"></i>
+                    {% if unread_notifications_count and unread_notifications_count > 0 %}
+                        <span style="position: absolute; top: -2px; right: -2px; width: 10px; height: 10px; background: #e53935; border-radius: 50%; border: 2px solid #fff;"></span>
+                    {% endif %}
+                </button>
+                <!-- Language Quick Switch -->
+                <div style="position: relative;" id="header-lang-wrapper">
+                    <button onclick="toggleHeaderLang()" style="
+                        width: 38px; height: 38px; border-radius: 50%; border: 1px solid #eef0f0;
+                        background: #f9fbfb; cursor: pointer; display: flex; align-items: center; justify-content: center;
+                        color: #6e7979; transition: all 0.2s;
+                    " onmouseover="this.style.background='#e8f5f5';this.style.color='#005353'" onmouseout="this.style.background='#f9fbfb';this.style.color='#6e7979'">
+                        <i class="fa-solid fa-language" style="font-size: 1rem;"></i>
+                    </button>
+                    <div id="header-lang-dropdown" style="
+                        display: none; position: absolute; top: calc(100% + 8px); left: 0;
+                        background: #fff; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+                        border: 1px solid #eee; overflow: hidden; min-width: 150px; z-index: 200;
+                    ">
+                        <form action="{% url 'set_language' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="language" value="ar">
+                            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                            <button type="submit" style="width:100%; padding:10px 14px; text-align:right; border:none; background:{% if CURRENT_LANG == 'ar' %}rgba(0,83,83,0.06){% else %}transparent{% endif %}; cursor:pointer; font-size:0.85rem; font-family:inherit; font-weight:{% if CURRENT_LANG == 'ar' %}800{% else %}600{% endif %}; color:{% if CURRENT_LANG == 'ar' %}#005353{% else %}#3e4948{% endif %}; display:flex; align-items:center; gap:8px;">
+                                🇸🇦 عربي {% if CURRENT_LANG == 'ar' %}<i class="fa-solid fa-check" style="margin-right:auto;font-size:0.7rem;color:#005353;"></i>{% endif %}
+                            </button>
+                        </form>
+                        <form action="{% url 'set_language' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="language" value="en">
+                            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                            <button type="submit" style="width:100%; padding:10px 14px; text-align:right; border:none; background:{% if CURRENT_LANG == 'en' %}rgba(0,83,83,0.06){% else %}transparent{% endif %}; cursor:pointer; font-size:0.85rem; font-family:inherit; font-weight:{% if CURRENT_LANG == 'en' %}800{% else %}600{% endif %}; color:{% if CURRENT_LANG == 'en' %}#005353{% else %}#3e4948{% endif %}; display:flex; align-items:center; gap:8px;">
+                                🇬🇧 English {% if CURRENT_LANG == 'en' %}<i class="fa-solid fa-check" style="margin-right:auto;font-size:0.7rem;color:#005353;"></i>{% endif %}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% block header_actions %}{% endblock %}
+            </div>
+        </div>
+
+        <!-- Page Content -->
+        <div style="padding: 28px; flex: 1;">
+            {% block portal_content %}{% endblock %}
+        </div>
+    </main>
+</div>
+
+<!-- ===== NOTIFICATIONS MODAL ===== -->
+<div id="portalNotifModal" style="
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45); z-index: 9999;
+    align-items: center; justify-content: center;
+" onclick="if(event.target===this) closePortalNotifModal">
+    <div style="background: #fff; border-radius: 1.5rem; width: 100%; max-width: 460px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); overflow: hidden; max-height: 80vh; display: flex; flex-direction: column;">
+        <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #005353 0%, #007a7a 100%);">
+            <div style="display: flex; align-items: center; gap: 10px; color: white;">
+                <i class="fa-solid fa-bell" style="font-size: 1rem;"></i>
+                <h3 style="margin: 0; font-size: 1rem; font-weight: 700;">{% trans 'الإشعارات' %}</h3>
+                {% if unread_notifications_count and unread_notifications_count > 0 %}
+                    <span style="background: rgba(255,255,255,0.25); color: white; border-radius: 20px; padding: 2px 10px; font-size: 0.75rem; font-weight: 700;">{{ unread_notifications_count }} {% trans 'جديد' %}</span>
+                {% endif %}
+            </div>
+            <button onclick="closePortalNotifModal()" style="background: rgba(255,255,255,0.15); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-times"></i>
+            </button>
+        </div>
+        <div style="overflow-y: auto; flex: 1;">
+            {% if recent_notifications %}
+                {% for notif in recent_notifications %}
+                <div onclick="portalMarkAsRead({{ notif.id }}, '{{ notif.link }}')"
+                     style="padding: 1rem 1.5rem; border-bottom: 1px solid #f5f5f5; cursor: pointer; display: flex; gap: 12px; align-items: flex-start; background: {% if not notif.is_read %}#f0fafa{% else %}#fff{% endif %}; transition: background 0.2s;"
+                     onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='{% if not notif.is_read %}#f0fafa{% else %}#fff{% endif %}'">
+                    <div style="width: 38px; height: 38px; border-radius: 50%; background: #e8f5f5; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #005353;">
+                        <i class="fa-solid fa-info-circle"></i>
+                    </div>
+                    <div style="flex: 1; min-width: 0;">
+                        <p style="margin: 0 0 3px 0; font-size: 0.88rem; color: #1a1c1c; line-height: 1.5; {% if not notif.is_read %}font-weight: 700;{% else %}font-weight: 500;{% endif %}">{{ notif.message }}</p>
+                        <span style="font-size: 0.72rem; color: #888;">{{ notif.created_at|timesince }} {% trans 'مضت' %}</span>
+                    </div>
+                    {% if not notif.is_read %}
+                    <div style="width: 8px; height: 8px; border-radius: 50%; background: #005353; flex-shrink: 0; margin-top: 6px;"></div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div style="padding: 3rem 1.5rem; text-align: center; color: #aaa;">
+                    <i class="fa-solid fa-bell-slash" style="font-size: 2.5rem; display: block; margin-bottom: 12px;"></i>
+                    <p style="margin: 0; font-size: 0.9rem;">{% trans 'لا توجد إشعارات حالياً' %}</p>
+                </div>
+            {% endif %}
+        </div>
+        {% if recent_notifications %}
+        <div style="padding: 0.875rem 1.5rem; border-top: 1px solid #f0f0f0; text-align: center;">
+            <button onclick="portalMarkAllAsRead()" style="background: none; border: none; color: #005353; cursor: pointer; font-size: 0.85rem; font-weight: 700; font-family: inherit;">
+                {% trans 'تحديد الكل كمقروء' %}
+            </button>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+aside {
+    z-index: 50;
+}
+
+/* Mobile Responsive for Portal */
+@media (max-width: 768px) {
+    aside {
+        position: fixed;
+        right: -100%;
+        top: 0;
+        height: 100vh;
+        transition: right 0.3s ease;
+        z-index: 1001;
+    }
+    
+    aside.mobile-open {
+        right: 0;
+    }
+    
+    main {
+        padding: 0;
+    }
+    
+    main > div:first-child {
+        padding: 14px 16px;
+    }
+    
+    main > div:last-child {
+        padding: 16px;
+    }
+    
+    .mobile-menu-toggle {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 480px) {
+    main > div:first-child {
+        padding: 12px 14px;
+    }
+    
+    main > div:last-child {
+        padding: 14px;
+    }
+    
+    #portalNotifModal > div {
+        max-width: 95%;
+        margin: 0 10px;
+    }
+}
+
+.mobile-menu-toggle {
+    display: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid #eef0f0;
+    background: #f9fbfb;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    color: #6e7979;
+    margin-left: 10px;
+}
+
+.mobile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+
+.mobile-overlay.active {
+    display: block;
+}
+</style>
+
+<script>
+// --- Mobile Menu Toggle ---
+function closeMobileMenu() {
+    const sidebar = document.querySelector('aside');
+    const overlay = document.querySelector('.mobile-overlay');
+    if (!sidebar || !overlay) return;
+    sidebar.classList.remove('mobile-open');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function toggleMobileMenu() {
+    const sidebar = document.querySelector('aside');
+    const overlay = document.querySelector('.mobile-overlay');
+    sidebar.classList.toggle('mobile-open');
+    overlay.classList.toggle('active');
+    document.body.style.overflow = sidebar.classList.contains('mobile-open') ? 'hidden' : '';
+}
+
+document.querySelector('.mobile-overlay')?.addEventListener('click', closeMobileMenu);
+
+// Close mobile menu when navigating from sidebar (not lang/notifications toggles)
+document.querySelector('aside')?.addEventListener('click', function(e) {
+    const sidebar = document.querySelector('aside');
+    if (!sidebar.classList.contains('mobile-open')) return;
+    if (e.target.closest('#portal-lang-wrapper')) return;
+    if (e.target.closest('[onclick*="openPortalNotifModal"]')) return;
+
+    const link = e.target.closest('a[href]');
+    if (link) {
+        const href = link.getAttribute('href') || '';
+        if (href && href !== '#' && !href.startsWith('javascript:')) {
+            closeMobileMenu();
+        }
+    }
+});
+
+// --- Active Sidebar Link Highlighting ---
+function highlightActiveSidebarLink() {
+    const currentPath = window.location.pathname;
+    const sidebarLinks = document.querySelectorAll('aside a[href]');
+    
+    sidebarLinks.forEach(link => {
+        const linkPath = new URL(link.href).pathname;
+        if (currentPath === linkPath) {
+            link.style.background = 'rgba(0,83,83,0.07)';
+            link.style.color = '#005353';
+            link.style.fontWeight = '700';
+        } else {
+            link.style.background = 'transparent';
+            link.style.color = '#3e4948';
+            link.style.fontWeight = '600';
+        }
+    });
+}
+
+// Highlight active link on page load
+window.addEventListener('DOMContentLoaded', highlightActiveSidebarLink);
+
+// --- Notification Modal ---
+function openPortalNotifModal() {
+    const el = document.getElementById('portalNotifModal');
+    if (el) { el.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+}
+function closePortalNotifModal() {
+    const el = document.getElementById('portalNotifModal');
+    if (el) { el.style.display = 'none'; document.body.style.overflow = ''; }
+}
+function portalMarkAsRead(notifId, link) {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || '{{ csrf_token }}';
+    fetch(`/notifications/read/${notifId}/`, {
+        method: 'POST',
+        headers: {'X-CSRFToken': csrfToken, 'Content-Type': 'application/json'},
+    }).then(() => {
+        if (link && link !== 'None' && link !== '') window.location.href = link;
+    });
+}
+function portalMarkAllAsRead() {
+    {% for notif in recent_notifications %}{% if not notif.is_read %}
+    portalMarkAsRead({{ notif.id }}, null);
+    {% endif %}{% endfor %}
+    setTimeout(() => window.location.reload(), 500);
+}
+
+// --- Language Dropdown (Sidebar) ---
+function togglePortalLang() {
+    const menu = document.getElementById('portal-lang-dropdown');
+    const isOpen = menu.style.display === 'block';
+    menu.style.display = isOpen ? 'none' : 'block';
+    if (!isOpen) {
+        setTimeout(() => {
+            document.addEventListener('click', function closeLang(e) {
+                if (!document.getElementById('portal-lang-wrapper').contains(e.target)) {
+                    menu.style.display = 'none';
+                    document.removeEventListener('click', closeLang);
+                }
+            });
+        }, 10);
+    }
+}
+
+// --- Language Dropdown (Header) ---
+function toggleHeaderLang() {
+    const menu = document.getElementById('header-lang-dropdown');
+    const isOpen = menu.style.display === 'block';
+    menu.style.display = isOpen ? 'none' : 'block';
+    if (!isOpen) {
+        setTimeout(() => {
+            document.addEventListener('click', function closeLang(e) {
+                if (!document.getElementById('header-lang-wrapper').contains(e.target)) {
+                    menu.style.display = 'none';
+                    document.removeEventListener('click', closeLang);
+                }
+            });
+        }, 10);
+    }
+}
+</script>
+{% endblock %}

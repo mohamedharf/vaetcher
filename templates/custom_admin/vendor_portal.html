@@ -1,0 +1,1134 @@
+{% extends is_admin_view|yesno:"custom_admin/dashboard_base.html,custom_admin/vendor_base.html" %}
+{% load i18n %}
+
+{% block title %}بوابة المورد | {{ global_system_vendor.name|default:'النظام' }} - The Arabic Retail{% endblock %}
+
+{% block sidebar %}
+    {% if is_admin_view %}
+        {% include 'custom_admin/includes/sidebar.html' with active_page='pos' %}
+    {% endif %}
+{% endblock %}
+
+{% block extra_head %}
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style type="text/tailwindcss">
+        body { font-family: 'IBM Plex Sans Arabic', sans-serif; background-color: var(--surface); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .num-font { font-family: 'Inter', sans-serif; }
+        
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .glass-overlay { position: fixed; inset: 0; background: rgba(0, 83, 83, 0.15); backdrop-filter: blur(20px); z-index: 3000; display: none; align-items: center; justify-content: center; }
+        .glass-overlay.active { display: flex; }
+
+        #reader { width: 100%; border-radius: 1.5rem; overflow: hidden; background: #000; }
+        #reader__status_span { color: white !important; }
+        #reader video { width: 100% !important; border-radius: 1.5rem; }
+
+        #invoicePrintArea { display: none; }
+        @media print {
+            body * { visibility: hidden; }
+            #invoicePrintArea, #invoicePrintArea * { visibility: visible; }
+            #invoicePrintArea { display: block !important; position: absolute; left: 0; top: 0; width: 80mm; padding: 10px; text-align: center; }
+        }
+        
+        .search-results { position: absolute; top: 100%; right: 0; left: 0; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 1rem; margin-top: 10px; overflow: hidden; z-index: 1000; display: none; }
+        .search-item { padding: 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.2s; }
+        .search-item:hover { background: #f9f9f9; }
+        .search-item:last-child { border-bottom: none; }
+        
+        .input-premium { background-color: var(--surface-container-high); border: none; border-bottom: 2px solid transparent; border-radius: var(--radius-md); padding: 1rem 1.25rem; width: 100%; transition: all 0.3s; }
+        .input-premium:focus { background-color: var(--surface-container-lowest); border-bottom-color: var(--primary-container); outline: none; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+
+        .btn-primary { background-color: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: var(--radius-xl); font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.2s; cursor: pointer; border: none; }
+        .btn-primary:hover:not(:disabled) { background-color: var(--primary-container); transform: translateY(-2px); }
+        .btn-secondary { background-color: var(--secondary-container); color: var(--primary); padding: 0.75rem 1.5rem; border-radius: var(--radius-xl); font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.2s; cursor: pointer; border: none; }
+        .btn-secondary:hover:not(:disabled) { opacity: 0.8; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        /* Unified Card Styling */
+        .section-card { background: var(--surface-container-lowest); border-radius: var(--radius-xl); padding: var(--spacing-xl); box-shadow: var(--shadow-sm); }
+        .card-header { border-bottom: 1px solid var(--surface-container-high); padding-bottom: var(--spacing-lg); margin-bottom: var(--spacing-lg); }
+        .card-header h2 { font-size: 1.5rem; font-weight: 700; color: var(--on-surface); margin: 0; }
+        .card-header p { font-size: 0.875rem; color: var(--on-surface-variant); margin: 0.25rem 0 0 0; }
+    </style>
+{% endblock %}
+
+{% block page_title %}بوابة المورد (الخصم المباشر){% endblock %}
+{% block page_subtitle %}إدارة الفواتير وقسائم الخصم.{% endblock %}
+{% block page_icon %}fa-storefront{% endblock %}
+
+{% block search_bar %}
+<div class="header-search-bar" style="position: relative;">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" placeholder="{% trans 'بحث عام عن طبيب أو فاتورة...' %}" id="adminHeaderSearch">
+    <div id="adminHeaderSearchResults" class="search-results"></div>
+</div>
+{% endblock %}
+
+{% block content %}
+    {% if is_admin_view %}
+        <div style="padding: var(--spacing-xl);">
+    {% endif %}
+
+        <div class="w-full mx-auto space-y-8">
+            
+            {% if messages %}
+            <div class="fixed top-4 left-4 z-[6000] flex flex-col gap-3">
+                {% for message in messages %}
+                <div class="{% if message.tags == 'success' %}bg-green-600{% elif message.tags == 'error' %}bg-red-600{% else %}bg-blue-600{% endif %} text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 animate-bounce-short">
+                    <span class="material-symbols-outlined">{% if message.tags == 'success' %}check_circle{% elif message.tags == 'error' %}error{% else %}info{% endif %}</span>
+                    <span class="font-bold">{{ message }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            <style>@keyframes bounce-short { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-10px); } } .animate-bounce-short { animation: bounce-short 0.5s ease-in-out 3; }</style>
+            {% endif %}
+            
+            {% if is_admin_view %}
+            <!-- Admin View Top Navigation Bar -->
+            <div class="flex items-center justify-between bg-surface-container-lowest p-4 rounded-3xl shadow-sm border border-surface-container-high mb-8 overflow-x-auto gap-4">
+                <div class="flex items-center gap-2">
+                    <a onclick="switchTab('dashboard')" class="nav-item-top flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm bg-primary/5 text-primary cursor-pointer transition-all active-top" id="top-dashboard">
+                        <span class="material-symbols-outlined text-lg">dashboard</span> {% trans 'الإحصائيات' %}
+                    </a>
+                    <a onclick="switchTab('pos')" class="nav-item-top flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm text-on-surface-variant hover:bg-surface-container-low cursor-pointer transition-all" id="top-pos">
+                        <span class="material-symbols-outlined text-lg">point_of_sale</span> {% trans 'نقطة البيع' %}
+                    </a>
+                    <a onclick="switchTab('invoices')" class="nav-item-top flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm text-on-surface-variant hover:bg-surface-container-low cursor-pointer transition-all" id="top-invoices">
+                        <span class="material-symbols-outlined text-lg">description</span> {% trans 'الفواتير' %}
+                    </a>
+                    <a onclick="switchTab('settlements')" class="nav-item-top flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm text-on-surface-variant hover:bg-surface-container-low cursor-pointer transition-all" id="top-settlements">
+                        <span class="material-symbols-outlined text-lg">account_balance_wallet</span> {% trans 'التسويات' %}
+                    </a>
+                    <a onclick="switchTab('cashiers')" class="nav-item-top flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm text-on-surface-variant hover:bg-surface-container-low cursor-pointer transition-all" id="top-cashiers">
+                        <span class="material-symbols-outlined text-lg">badge</span> {% trans 'الموظفين' %}
+                    </a>
+                    <a href="{% url 'custom_settings' %}" class="nav-item-top flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm text-on-surface-variant hover:bg-surface-container-low cursor-pointer transition-all">
+                        <span class="material-symbols-outlined text-lg">settings</span> {% trans 'الإعدادات المركزية' %}
+                    </a>
+                </div>
+                
+                <div class="flex items-center gap-3 pl-2">
+                    <div class="text-left hidden sm:block">
+                        <p class="text-[10px] font-bold text-on-surface-variant leading-none">{% trans 'مـلف التـاجر' %}</p>
+                        <p class="text-sm font-black text-on-surface leading-tight">{{ vendor.name }}</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold shadow-sm">
+                        {{ vendor.name|slice:":1" }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- TAB: DASHBOARD -->
+            <div id="tab-dashboard" class="tab-content active text-right">
+                
+                <!-- Hero Balance Card exactly as specified -->
+                <section class="relative overflow-hidden rounded-[var(--radius-xl)] bg-primary p-12 text-on-primary" style="box-shadow: var(--shadow-ambient);">
+                    <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary-container/20 to-transparent"></div>
+                    <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+                        <div>
+                            <p class="text-primary-fixed-dim text-lg mb-2">{% trans 'الرصيد الإجمالي المتاح' %}</p>
+                            <!-- Large font rule applied -->
+                            <h3 class="text-5xl md:text-6xl font-extrabold tracking-tight mb-4 num-font">{{ total_pending|floatformat:2 }} <span class="text-2xl font-normal opacity-80"></span></h3>
+                            <div class="flex gap-4">
+                                <span class="flex items-center gap-1 bg-white/10 px-3 py-1 rounded-full text-sm num-font">
+                                    <span class="material-symbols-outlined text-sm">trending_up</span>
+                                    {% trans '+12.5% منذ الشهر الماضي' %}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            {% if vendor.role == 'ADMIN' and not is_admin_view %}
+                            <button onclick="switchTab('settlements')" class="bg-surface-container-lowest text-primary px-6 py-3 rounded-[var(--radius-xl)] font-bold flex items-center gap-2 hover:bg-opacity-90 transition-all shadow-lg">
+                                <span class="material-symbols-outlined">payments</span> {% trans 'سحب الأرباح' %}
+                            </button>
+                            {% elif vendor.role != 'ADMIN' %}
+                            <button onclick="switchTab('invoices')" class="bg-surface-container-lowest text-primary px-6 py-3 rounded-[var(--radius-xl)] font-bold flex items-center gap-2 hover:bg-opacity-90 transition-all shadow-lg">
+                                <span class="material-symbols-outlined">history</span> {% trans 'سـجل مبيعاتي' %}
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- Decorative element from instructions -->
+                    <div class="absolute -bottom-12 -left-12 w-64 h-64 bg-primary-container/30 rounded-full blur-3xl"></div>
+                </section>
+
+                <!-- Stats Grid - Top Row mapped to true data -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="section-card flex items-center justify-between group hover:bg-surface-container-low transition-colors">
+                        <div>
+                            <p class="text-on-surface-variant text-sm mb-1">{% trans 'كود التاجر' %}</p>
+                            <h4 class="text-2xl font-bold text-on-surface num-font">#VN-{{ vendor.id }}</h4>
+                        </div>
+                        <div class="w-12 h-12 bg-secondary-container rounded-[var(--radius-md)] flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined">qr_code_2</span>
+                        </div>
+                    </div>
+                    <div class="section-card flex items-center justify-between group hover:bg-surface-container-low transition-colors">
+                        <div>
+                            <p class="text-on-surface-variant text-sm mb-1">{% trans 'إجمالي العمليات' %}</p>
+                            <h4 class="text-2xl font-bold text-on-surface num-font">{{ total_transactions_count }}</h4>
+                        </div>
+                        <div class="w-12 h-12 bg-secondary-container rounded-[var(--radius-md)] flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined">receipt</span>
+                        </div>
+                    </div>
+                    <div class="section-card flex items-center justify-between group hover:bg-surface-container-low transition-colors">
+                        {% if vendor.role == 'ADMIN' %}
+                        <div>
+                            <p class="text-on-surface-variant text-sm mb-1">{% trans 'إجمالي التسويات المدفوعة' %}</p>
+                            <h4 class="text-2xl font-bold text-on-surface num-font">{{ total_paid|floatformat:2 }} </h4>
+                        </div>
+                        <div class="w-12 h-12 bg-secondary-container rounded-[var(--radius-md)] flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined">account_balance_wallet</span>
+                        </div>
+                        {% else %}
+                        <div>
+                            <p class="text-on-surface-variant text-sm mb-1">{% trans 'مبيعاتك اليوم' %}</p>
+                            <h4 class="text-2xl font-bold text-on-surface num-font">{{ cashier_sales_today|floatformat:2 }} </h4>
+                        </div>
+                        <div class="w-12 h-12 bg-secondary-container rounded-[var(--radius-md)] flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined">today</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Statistics and Analysis Section (Charts from user implementation) -->
+                <section class="space-y-6 mt-8">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-bold text-on-surface">{% trans 'الإحصائيات والتحليلات' %}</h3>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Line Chart: Sales Trends -->
+                        <div class="section-card h-96 flex flex-col relative overflow-hidden">
+                            <div class="flex justify-between items-start mb-4 relative z-10">
+                                <div>
+                                    <h4 class="text-lg font-bold text-on-surface">{% trans 'اتجاهات المبيعات' %}</h4>
+                                    <p class="text-on-surface-variant text-sm">{% trans 'آخر 7 أيام' %}</p>
+                                </div>
+                            </div>
+                            <div class="flex-1 relative min-h-0">
+                                <canvas id="salesTrendsChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Monthly Sales Card (Keeping it as a simple bar or similar) -->
+                        <div class="section-card h-96 flex flex-col relative overflow-hidden">
+                            <div class="flex justify-between items-start mb-4 relative z-10">
+                                <div>
+                                    <h4 class="text-lg font-bold text-on-surface">{% trans 'نشاط المبيعات' %}</h4>
+                                    <p class="text-on-surface-variant text-sm">{% trans 'مقارنة أداء الأسبوع' %}</p>
+                                </div>
+                            </div>
+                            <div class="flex-1 relative min-h-0">
+                                <canvas id="activityChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Metrics Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="section-card">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="material-symbols-outlined text-tertiary">shopping_bag</span>
+                            <span class="text-sm font-semibold text-on-surface-variant">{% trans 'متوسط قيمة المعاملة' %}</span>
+                        </div>
+                        <div class="flex items-baseline gap-2 text-right">
+                            <h5 class="text-3xl font-extrabold text-on-surface num-font">{{ avg_transaction_value|floatformat:2 }}</h5>
+                            <span class="text-sm text-on-surface-variant"></span>
+                        </div>
+                        <p class="text-[10px] text-on-surface-variant mt-2 border-t border-surface-container-high pt-2 font-bold flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[10px]">calculate</span>
+                            {% trans 'الاحتساب: إجمالي المبيعات ÷ مجموع المعاملات' %}
+                        </p>
+                    </div>
+                    <div class="section-card">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="material-symbols-outlined text-primary">monitoring</span>
+                            <span class="text-sm font-semibold text-on-surface-variant">{% trans 'إجمالي المبيعات والعوائد' %}</span>
+                        </div>
+                        <div class="flex items-baseline gap-2 text-right">
+                            <h5 class="text-3xl font-extrabold text-on-surface num-font">{{ total_sales|floatformat:2 }}</h5>
+                            <span class="text-sm text-on-surface-variant font-bold"></span>
+                        </div>
+                    </div>
+                    <div class="section-card">
+                        {% if vendor.role == 'ADMIN' %}
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="material-symbols-outlined text-orange-600">badge</span>
+                            <span class="text-sm font-semibold text-on-surface-variant">{% trans 'موظفي الكاشير' %}</span>
+                        </div>
+                        <div class="space-y-1 text-right">
+                            <h5 class="text-lg font-bold text-on-surface">{{ cashiers|length }} حساب</h5>
+                            <p class="text-xs text-on-surface-variant num-font">{% trans 'مسجلين وقيد العمل' %}</p>
+                        </div>
+                        {% else %}
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="material-symbols-outlined text-primary">shopping_cart_checkout</span>
+                            <span class="text-sm font-semibold text-on-surface-variant">{% trans 'آخر عملية بيع' %}</span>
+                        </div>
+                        <div class="space-y-1 text-right">
+                            <h5 class="text-lg font-bold text-on-surface num-font">{{ last_transaction_val|floatformat:2 }} </h5>
+                            <p class="text-xs text-on-surface-variant num-font">{% trans 'تم تنفيذها بنجاح' %}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Recent Transactions Mapped Realistically from DB -->
+                <section class="section-card mt-8">
+                    <div class="flex justify-between items-center mb-8 card-header">
+                        <h3 class="text-xl font-bold text-on-surface">{% trans 'أحدث المعاملات' %}</h3>
+                        <button class="text-primary font-semibold hover:underline" onclick="switchTab('invoices')">{% trans 'عرض الكل' %}</button>
+                    </div>
+                    <div class="space-y-4">
+                        {% for trx in recent_transactions|slice:':5' %}
+                        <div class="flex items-center justify-between p-4 rounded-[var(--radius-md)] hover:bg-surface-container-high transition-colors cursor-pointer border border-transparent hover:border-surface-container-high" onclick="switchTab('invoices')">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center shadow-inner">
+                                    <span class="material-symbols-outlined text-on-surface-variant">person</span>
+                                </div>
+                                <div class="text-right">
+                                    <h5 class="font-bold text-on-surface">{{ trx.doctor.name }}</h5>
+                                    <p class="text-xs text-on-surface-variant num-font flex gap-2 mt-1">
+                                        <span><span class="material-symbols-outlined text-[10px]">schedule</span> {{ trx.transaction_date|date:'d F Y • H:i' }}</span>
+                                        <span class="text-primary bg-primary/5 px-2 rounded-full font-bold flex items-center justify-center gap-0.5 border border-primary/10 shadow-sm"><span class="material-symbols-outlined text-[10px] mt-0.5">badge</span> بواسطة: {{ trx.created_by.first_name|default:trx.created_by.username }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="text-left">
+                                <p class="font-extrabold text-on-surface num-font">{{ trx.amount_spent|floatformat:2 }} </p>
+                                <span class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">{% trans 'مكتمل' %}</span>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p class="text-center py-8 text-on-surface-variant">{% trans 'لا توجد معاملات مكتملة بعد' %}</p>
+                        {% endfor %}
+                    </div>
+                </section>
+                
+            </div><!-- end dashboard tab -->
+
+            <!-- TAB: POS -->
+            <div id="tab-pos" class="tab-content text-right">
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                    <!-- Main Action Area -->
+                    <div class="lg:col-span-3 section-card">
+                        <div class="card-header">
+                            <h2 class="text-2xl font-bold text-on-surface">{% trans 'معالجة فاتورة (POS)' %}</h2>
+                            <div class="text-left mt-2">
+                                <span class="text-xs text-on-surface-variant font-bold">{% trans 'القيمة الكلية للطلب' %}</span><br>
+                                <span id="displayTotalAmt" class="text-4xl font-extrabold text-primary num-font">0.00</span>
+                                <span class="text-sm font-bold text-primary"></span>
+                            </div>
+                        </div>
+
+                        <!-- Scanner Area -->
+                        <div onclick="startQRScanner()" class="bg-surface-container-high rounded-[var(--radius-xl)] p-10 text-center cursor-pointer hover:bg-surface-container transition-colors border-2 border-dashed border-outline-variant relative overflow-hidden mb-8 group">
+                            <span class="material-symbols-outlined text-[5rem] text-primary opacity-40 group-hover:opacity-60 transition-opacity mb-4 block">qr_code_scanner</span>
+                            <h3 class="text-lg font-bold text-on-surface">{% trans 'اضغط لمسح الباركود' %}</h3>
+                            <p class="text-sm text-on-surface-variant mt-2">{% trans 'قم بمسح الباركود الخاص بالطبيب لإتمام عملية الخصم مباشرة' %}</p>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="relative">
+                                    <label class="block text-xs font-bold text-on-surface-variant mb-2">{% trans 'البحث برقم الهاتف أو الاسم' %}</label>
+                                    <input type="text" id="doctorSearchInputMain" class="input-premium shadow-inner" placeholder="{% trans 'ابحث عن العميل...' %}">
+                                    <div id="doctorSearchResultsMain" class="search-results top-full mt-2"></div>
+                                </div>
+                                <div class="relative">
+                                    <label class="block text-xs font-bold text-on-surface-variant mb-2">{% trans 'القيمة الإجمالية' %}</label>
+                                    <input type="number" id="trxAmountMain" class="input-premium num-font text-xl font-bold shadow-inner" placeholder="0.00">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-xs font-bold text-on-surface-variant mb-2">{% trans 'أضف وصف للفاتورة (خياري)' %}</label>
+                                <input type="text" id="trxNote" class="input-premium shadow-inner" placeholder="{% trans 'مثال: الباقة التجميلية أو رقم الإيصال الورقي...' %}">
+                            </div>
+
+                            <button id="btnSendOTPMain" class="w-full btn-primary py-4 text-lg mt-4 shadow-md">
+                                {% trans 'طلب الخصم وإرسال الرمز' %} <span class="material-symbols-outlined">send</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Context Column -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <!-- Selected Doctor Card -->
+                        <div class="section-card min-h-[250px] flex flex-col justify-center" id="selectedDoctorCardMain">
+                            <div id="noSelectionMsg" class="text-center opacity-50 space-y-4">
+                                <span class="material-symbols-outlined text-5xl">person_search</span>
+                                <p class="text-sm font-bold">{% trans 'يجب تعيين العميل أولاً لإتمام الخصم.' %}</p>
+                            </div>
+                            <div id="selectionData" style="display: none; transform: scale(0.7); transform-origin: top center;">
+                                <div class="flex justify-center mb-4">
+                                    <span class="text-[10px] bg-primary/10 text-primary px-3 py-1 rounded-full font-bold inline-block">{% trans 'تحقق من هوية العميل' %}</span>
+                                </div>
+                                <!-- Shared ID Card Component -->
+                                {% include 'custom_admin/includes/doctor_id_card_component.html' with pos_mini_view=True %}
+                                
+                                <div class="section-card mt-4 text-center">
+                                    <p class="text-xs font-bold text-on-surface-variant mb-1">{% trans 'الرصيد الحالي المتوفر' %}</p>
+                                    <div id="mainDocBalance" class="text-2xl font-black text-primary num-font">{% trans '0.00 ' %}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Real Recent Trx Quick List -->
+                        <div class="section-card">
+                            <h3 class="text-sm font-bold text-on-surface mb-6 card-header">{% trans 'نشاط اليوم' %}</h3>
+                            <div class="space-y-4">
+                                {% for trx in today_transactions|slice:':4' %}
+                                <div class="flex justify-between items-center bg-surface-container-high p-3 rounded-[var(--radius-md)] border border-surface-container">
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-on-surface-variant text-sm">receipt_long</span>
+                                        <span class="text-sm font-bold text-on-surface truncate max-w-[100px]" title="{{ trx.doctor.name }}">{{ trx.doctor.name }}</span>
+                                    </div>
+                                    <span class="text-sm font-bold text-primary num-font">{{ trx.amount_spent|floatformat:0 }}</span>
+                                </div>
+                                {% empty %}
+                                <p class="text-xs text-center text-on-surface-variant bg-surface-container-high p-4 rounded-[var(--radius-md)]">{% trans 'لا توجد حركات بيع اليوم' %}</p>
+                                {% endfor %}
+                            </div>
+                            
+                            <div class="mt-6 pt-4 border-t border-surface-container-high">
+                                <button onclick="switchTab('invoices')" class="w-full text-center text-xs font-bold text-primary hover:underline flex items-center justify-center gap-1">
+                                    {% trans 'عرض كافة العمليات' %} <span class="material-symbols-outlined text-sm">arrow_left</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: INVOICES -->
+            <div id="tab-invoices" class="tab-content text-right">
+                <div class="section-card">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 card-header gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-on-surface mb-1">{% trans 'السـجل العـام للعمليات' %}</h2>
+                            <p class="text-sm text-on-surface-variant">{% trans 'الاطلاع وطباعة فواتير المعاملات السابقة.' %}</p>
+                        </div>
+                        <div class="bg-surface-container-high px-6 py-3 rounded-[var(--radius-xl)]">
+                            <p class="text-xs text-on-surface-variant font-bold mb-1">{% trans 'مؤرشف' %}</p>
+                            <span class="font-extrabold text-primary num-font text-lg">{{ total_sales|floatformat:2 }} </span>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <!-- Removed hard borders. Kept rows styled using surface-container-lowest to surface-container-low per rules -->
+                        <table class="w-full text-right border-separate border-spacing-y-4">
+                            <thead>
+                                <tr>
+                                    <th class="text-xs font-bold text-on-surface-variant pb-2 px-4 whitespace-nowrap">{% trans 'رمز العملية' %}</th>
+                                    <th class="text-xs font-bold text-on-surface-variant pb-2 px-4 whitespace-nowrap">{% trans 'تاريخ الإجراء' %}</th>
+                                    <th class="text-xs font-bold text-on-surface-variant pb-2 px-4">{% trans 'الطبيب المسجل' %}</th>
+                                    <th class="text-xs font-bold text-on-surface-variant pb-2 px-4 text-center">{% trans 'بواسطة' %}</th>
+                                    <th class="text-xs font-bold text-on-surface-variant pb-2 px-4 text-center">{% trans 'المبلغ الأصلي' %}</th>
+                                    <th class="text-xs font-bold text-on-surface-variant pb-2 px-4 text-center">{% trans 'الإجمالي المطلوب' %}</th>
+                                    <th class="text-xs font-bold text-on-surface-variant pb-2 px-4">{% trans 'التفاصيل' %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for tx in all_invoices %}
+                                <tr onclick="viewInvoiceDetail('{{ tx.invoice_number }}', '{{ tx.transaction_date|date:'Y-m-d H:i' }}', '{{ tx.doctor.name }}', '{{ tx.amount_spent }}', '{{ tx.management_fee_amount }}', '{{ tx.total_deducted }}')" class="bg-surface-container-low hover:bg-surface-container-high transition-colors cursor-pointer group shadow-sm">
+                                    <td class="p-5 rounded-r-2xl num-font font-bold text-sm text-on-surface">#{{ tx.invoice_number|truncatechars:10 }}</td>
+                                    <td class="p-5 text-sm text-on-surface-variant num-font whitespace-nowrap">{{ tx.transaction_date|date:'Y-m-d H:i' }}</td>
+                                    <td class="p-5 font-bold text-sm text-on-surface">{{ tx.doctor.name }}</td>
+                                    <td class="p-5 text-center text-xs font-bold text-on-surface">
+                                        <span class="bg-secondary-container px-2 py-1 rounded-full border border-primary/10">{{ tx.created_by.first_name|default:tx.created_by.username }}</span>
+                                    </td>
+                                    <td class="p-5 text-center num-font text-sm font-bold text-on-surface-variant">{{ tx.amount_spent }}</td>
+                                    <td class="p-5 text-center num-font font-black text-primary text-lg">{{ tx.total_deducted }}</td>
+                                    <td class="p-5 rounded-l-2xl text-left">
+                                        <button class="w-10 h-10 rounded-[var(--radius-md)] bg-surface-container-low text-on-surface-variant shadow-sm flex items-center justify-center group-hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm">wysiwyg</span></button>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr><td colspan="7" class="text-center py-16 text-on-surface-variant bg-surface-container-high rounded-[var(--radius-xl)]">{% trans 'سجل الفواتير فارغ حالياً' %}</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            {% if vendor.role == 'ADMIN' %}
+            <!-- TAB: SETTLEMENTS -->
+            <div id="tab-settlements" class="tab-content text-right">
+                <div class="section-card">
+                    <h2 class="text-2xl font-bold text-on-surface mb-8 card-header">{% trans 'أرشيف التسويات والتحويلات' %}</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {% for st in all_settlements %}
+                        <div onclick="viewSettlementDetail('{{ st.settlement_date }}', '{{ st.notes|default:'لا توجد ملاحظات' }}', '{{ st.amount_settled }}')" class="bg-surface-container-low p-6 rounded-[var(--radius-xl)] cursor-pointer hover:bg-surface-container-high transition-all border border-surface-container shadow-sm hover:shadow-md">
+                            <div class="flex justify-between items-center mb-6">
+                                <span class="text-xs font-bold text-on-surface-variant num-font bg-surface-container-lowest px-3 py-1 rounded-full shadow-sm">{{ st.settlement_date }}</span>
+                                <span class="text-[10px] bg-green-100 text-green-700 px-2 flex items-center gap-1 py-1 rounded-full font-bold"><span class="material-symbols-outlined text-[10px]">done_all</span>{% trans 'مكتمل' %}</span>
+                            </div>
+                            <h4 class="text-3xl font-black text-on-surface num-font mb-4">{{ st.amount_settled }} <span class="text-sm font-normal text-on-surface-variant"></span></h4>
+                            <p class="text-xs text-on-surface-variant line-clamp-2 leading-relaxed bg-surface-container-lowest/50 p-3 rounded-[var(--radius-md)]">{{ st.notes|default:'تم إيداع الدفعة في الحساب البنكي المسجل.' }}</p>
+                        </div>
+                        {% empty %}
+                        <div class="col-span-full text-center py-16 text-on-surface-variant leading-relaxed bg-surface-container-high rounded-[var(--radius-xl)]">
+                            <span class="material-symbols-outlined text-5xl mb-4 opacity-50 block">account_balance_wallet</span>
+                            {% trans 'لم يتم إتمام أي تسوية مالية لحسابكم حتى الآن.' %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if vendor.role == 'ADMIN' %}
+            <!-- TAB: CASHIERS -->
+            <div id="tab-cashiers" class="tab-content text-right">
+                <div class="section-card">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 card-header gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-on-surface">{% trans 'حسابات الموظفين (الكاشير)' %}</h2>
+                            <p class="text-sm text-on-surface-variant mt-1">{% trans 'تحديد صلاحيات الاستخدام للأفراد والموظفين' %}</p>
+                        </div>
+                        <button onclick="openModal('addCashierModal')" class="btn-primary">
+                            <span class="material-symbols-outlined">person_add</span> {% trans 'تسجيل موظف جديد' %}
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right border-separate border-spacing-y-4">
+                            <thead>
+                                <tr>
+                                    <th class="text-xs font-bold text-on-surface-variant pb-2 px-4">{% trans 'إسم الموظف' %}</th>
+                                    <th class="text-xs font-bold text-on-surface-variant pb-2 px-4">{% trans 'المعرف (يوزر)' %}</th>
+                                    <th class="text-xs font-bold text-on-surface-variant pb-2 px-4">{% trans 'الهاتف المسجل' %}</th>
+                                    <th class="text-xs font-bold text-on-surface-variant pb-2 px-4 text-center">{% trans 'إدارة' %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cashier in cashiers %}
+                                <tr class="bg-surface-container-low hover:bg-surface-container-high transition-colors rounded-xl group shadow-sm">
+                                    <td class="p-5 rounded-r-2xl font-bold text-sm text-on-surface flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs">{{ cashier.name|slice:":1" }}</div>
+                                        {{ cashier.name }}
+                                    </td>
+                                    <td class="p-5 text-sm font-bold text-on-surface num-font">{{ cashier.user.username }}</td>
+                                    <td class="p-5 text-sm text-on-surface-variant num-font">{{ cashier.phone }}</td>
+                                    <td class="p-5 text-center rounded-l-2xl">
+                                        <div class="flex items-center justify-center gap-3">
+                                            <button onclick="openPassModal('{{ cashier.id }}', '{{ cashier.name }}')" class="w-10 h-10 rounded-[var(--radius-md)] bg-surface-container-low text-on-surface-variant shadow-sm hover:text-primary transition-colors flex items-center justify-center" title="{% trans 'تغيير كلمة السر' %}"><span class="material-symbols-outlined text-sm">key</span></button>
+                                            <form action="{% url 'cashier_delete' cashier.id %}" method="post" onsubmit="return confirm('استئصال الكاشير بشكل نهائي، هل أنت متأكد؟');" class="m-0 inline-block">
+                                                {% csrf_token %}
+                                                <button type="submit" class="w-10 h-10 rounded-[var(--radius-md)] bg-surface-container-low text-error shadow-sm hover:bg-error/10 transition-colors flex items-center justify-center" title="{% trans 'استبعاد' %}"><span class="material-symbols-outlined text-sm">person_remove</span></button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr><td colspan="4" class="text-center py-16 text-on-surface-variant bg-surface-container-high rounded-[var(--radius-xl)]">{% trans 'الرجاء إضافة كاشير ليتمكنوا من معالجة الخصومات' %}</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- TAB: SETTINGS -->
+            <div id="tab-settings" class="tab-content text-right" style="display: none;">
+                {% include 'custom_admin/includes/vendor_settings_form.html' with target_vendor=vendor form_action_url='vendor_action' %}
+            </div>
+
+
+
+        </div> <!-- Max W -->
+    </main>
+
+    <!-- Contextual FAB requested by User on Dashboard -->
+    <button onclick="switchTab('pos')" class="fixed bottom-8 left-8 w-16 h-16 bg-primary text-on-primary rounded-[1.25rem] shadow-2xl flex items-center justify-center hover:-translate-y-1 hover:shadow-primary/30 transition-all z-50 group border border-white/20 tooltip" aria-label="تنفيذ خصم مباشر">
+        <span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-300">add</span>
+    </button>
+
+
+    <!-- ==================== MODALS ==================== -->
+    
+    <!-- QR Scanner -->
+    <div class="glass-overlay" id="qrScanOverlay">
+        <div class="section-card w-11/12 max-w-lg shadow-2xl text-center flex flex-col items-center">
+            <span class="material-symbols-outlined text-5xl text-primary opacity-20 mb-2">qr_code_scanner</span>
+            <h3 class="text-xl font-bold text-on-surface mb-6">{% trans 'مسح عدسة الاستشعار' %}</h3>
+            <div id="reader" class="mb-6 w-full shadow-inner border-[4px] border-primary/10 rounded-[var(--radius-xl)]"></div>
+            <button onclick="stopQRScanner()" class="btn-secondary w-full">{% trans 'إيقاف وإلغاء' %}</button>
+        </div>
+    </div>
+
+    <!-- OTP Document Modal -->
+    <div class="glass-overlay" id="otpOverlay">
+        <div class="section-card w-11/12 max-w-md shadow-2xl text-center relative overflow-hidden">
+             <!-- Modal Background styling -->
+             <div class="absolute top-0 left-0 w-full h-32 bg-primary/5"></div>
+            
+            <div class="w-24 h-24 rounded-full bg-surface-container-lowest text-primary flex items-center justify-center mx-auto mb-6 shadow-md border border-primary/10 relative z-10">
+                <span class="material-symbols-outlined text-[3rem]">shield_lock</span>
+            </div>
+            
+            <div class="relative z-10">
+                <h3 class="text-2xl font-black text-on-surface mb-2">{% trans 'وثيقة حماية' %}</h3>
+                <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">{% trans 'أدخل رمز التأكيد المرسل للطبيب على:' %}<br><strong id="displayOtpEmail" class="text-primary mt-2 inline-block px-3 py-1 bg-primary/10 rounded-full num-font">-</strong></p>
+                
+                <!-- Transaction Breakdown -->
+                <div class="bg-surface-container-low p-4 rounded-[var(--radius-xl)] border border-surface-container shadow-sm mb-6 text-right">
+                    <div class="flex justify-between items-center text-xs mb-2">
+                        <span class="text-on-surface-variant">{% trans 'قيمة الخدمة/المنتج:' %}</span>
+                        <span id="otpBaseAmt" class="font-bold text-on-surface num-font">0.00</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs mb-2 text-orange-700">
+                        <span class="opacity-80">{% trans 'الرسوم الإدارية:' %}</span>
+                        <span id="otpFeeAmt" class="font-bold num-font">0.00</span>
+                    </div>
+                    <hr class="border-surface-container-high border-dashed my-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-bold text-on-surface">{% trans 'الإجمالي للمصادقة:' %}</span>
+                        <span id="otpTotalAmt" class="text-lg font-black text-primary num-font">0.00</span>
+                    </div>
+                </div>
+
+                <div class="bg-orange-50 border border-orange-200 text-orange-800 text-[10px] p-3 rounded-[var(--radius-md)] mb-6 font-bold flex items-start gap-2">
+                    <span class="material-symbols-outlined text-sm mt-0.5">info</span>
+                    <span>{% trans 'تنبيه: الكود صالح لمدة دقائق معدودة. ومحاولات إعادة الإرسال محدودة حسب النظام.' %}</span>
+                </div>
+                
+                <input type="text" id="otpInput" class="w-full text-center text-4xl font-extrabold tracking-[15px] num-font text-on-surface bg-surface-container-high border-none rounded-[var(--radius-xl)] py-5 mb-8 focus:ring-2 focus:ring-primary shadow-inner" maxlength="6" placeholder="000000" autocomplete="off">
+                
+                <div class="flex flex-col gap-3">
+                    <button id="btnConfirmOTP" class="w-full btn-primary h-14 text-lg rounded-[var(--radius-xl)] shadow-lg shadow-primary/20">{% trans 'تأكيد المعاملة' %}</button>
+                    <div class="flex gap-3">
+                        <button id="btnResendOTP" class="flex-1 btn-secondary text-sm rounded-[var(--radius-md)]">{% trans 'إعادة إرسال' %}</button>
+                        <button onclick="closeModal('otpOverlay')" class="flex-1 bg-surface-container-high text-on-surface-variant rounded-[var(--radius-md)] font-bold hover:bg-surface-container-highest transition-colors">{% trans 'إلغاء' %}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invoice Detail Modal -->
+    <div class="glass-overlay" id="invoiceDetailModal">
+        <div class="section-card w-11/12 max-w-lg shadow-2xl text-right">
+            <div class="flex justify-between items-start mb-8 card-header">
+                <div class="flex gap-4 items-center">
+                    <div class="w-12 h-12 bg-primary/5 rounded-[var(--radius-md)] flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined">receipt_long</span>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-on-surface">{% trans 'سجل إيصال' %}</h3>
+                        <p id="detInvNo" class="text-sm font-bold text-on-surface-variant num-font mt-1">#0000000</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('invoiceDetailModal')" class="w-10 h-10 rounded-full hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-error transition-colors"><span class="material-symbols-outlined text-xl">close</span></button>
+            </div>
+            
+            <div class="bg-surface-container-low rounded-[var(--radius-xl)] p-6 mb-8 border border-surface-container shadow-sm space-y-4">
+                <div class="flex justify-between items-center"><span class="text-sm text-on-surface-variant font-bold">{% trans 'معرف العميل (الطبيب الطبي)' %}</span><strong id="detDoctorName" class="text-base font-bold text-on-surface">-</strong></div>
+                <hr class="border-surface-container-high border-dashed">
+                <div class="flex justify-between items-center"><span class="text-sm text-on-surface-variant font-bold">{% trans 'بصمة الإصدار الزمنية' %}</span><span id="detDate" class="text-sm font-bold num-font text-on-surface-variant">-</span></div>
+                <hr class="border-surface-container-high border-dashed">
+                <div class="flex justify-between items-center"><span class="text-sm text-on-surface-variant font-bold">{% trans 'صافي سعر السلعة المباعة' %}</span><span id="detBaseAmount" class="text-sm font-black num-font text-on-surface-variant">-</span></div>
+            </div>
+            
+            <div class="bg-primary text-on-primary rounded-[var(--radius-xl)] p-8 text-center shadow-lg shadow-primary/20 relative overflow-hidden">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-xl mix-blend-overlay"></div>
+                <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-black/10 rounded-full blur-xl mix-blend-overlay"></div>
+                <p class="text-xs text-primary-fixed-dim font-bold mb-3 relative z-10 uppercase tracking-wide">{% trans 'الكتلة الخصمية المستقرة' %}</p>
+                <div id="detTotalAmount" class="text-5xl font-black num-font relative z-10 tracking-tight">0.00</div>
+            </div>
+            
+            <div class="flex gap-4 mt-8">
+                <button id="btnPrintDet" class="flex-[3] btn-primary h-14 rounded-[var(--radius-xl)]"><span class="material-symbols-outlined mr-2">print</span> {% trans 'طباعة الفاتورة للعميل' %}</button>
+                <button onclick="closeModal('invoiceDetailModal')" class="flex-1 bg-surface-container-high text-on-surface-variant rounded-[var(--radius-xl)] font-bold hover:bg-surface-container-highest transition-colors">{% trans 'إغلاق' %}</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settlement Detail Modal -->
+    <div class="glass-overlay" id="settlementDetailModal">
+        <div class="section-card w-11/12 max-w-sm shadow-2xl text-center">
+            <div class="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-6">
+                <span class="material-symbols-outlined text-3xl">account_balance</span>
+            </div>
+            <h3 class="text-xl font-bold text-on-surface mb-8 card-header">{% trans 'شهادة اعتماد وإيداع' %}</h3>
+            
+            <div class="bg-surface-container-low rounded-[var(--radius-xl)] p-6 mb-6 text-right border border-surface-container shadow-sm">
+                <p class="text-[10px] text-on-surface-variant font-bold mb-1 uppercase tracking-wide">{% trans 'النسق الزمني للإيداع' %}</p>
+                <div id="setDetDate" class="text-sm font-bold num-font mb-5 text-on-surface">-</div>
+                <hr class="border-surface-container-high border-dashed mb-5">
+                <p class="text-[10px] text-on-surface-variant font-bold mb-2 uppercase tracking-wide">{% trans 'بيان الإعتماد الصادر من المراجع' %}</p>
+                <div id="setDetNotes" class="text-sm leading-relaxed text-on-surface-variant bg-surface-container-lowest p-4 rounded-[var(--radius-md)] border border-surface-container">-</div>
+            </div>
+            
+            <div class="bg-surface-container-high rounded-[var(--radius-xl)] p-6 border border-surface-container-highest shadow-inner">
+                <p class="text-[10px] text-on-surface-variant font-bold mb-2 uppercase tracking-wide">{% trans 'مقدار العملة المحولة كلياً' %}</p>
+                <div id="setDetAmount" class="text-4xl font-black text-primary num-font tracking-tight">0.00</div>
+            </div>
+            <button onclick="closeModal('settlementDetailModal')" class="w-full btn-primary mt-8 h-12 rounded-[var(--radius-xl)]">{% trans 'تأكيد الإغلاق' %}</button>
+        </div>
+    </div>
+
+    <!-- Add Cashier Modal -->
+    <div class="glass-overlay" id="addCashierModal">
+        <div class="section-card w-11/12 max-w-md shadow-2xl text-right">
+            <h3 class="text-xl font-bold text-on-surface mb-6 flex items-center gap-2 card-header"><span class="material-symbols-outlined">badge</span> {% trans 'دمج كادر كاشير جديد' %}</h3>
+            <form action="{% url 'cashier_create' %}" method="post" class="space-y-5">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <div><label class="block text-xs font-bold text-on-surface-variant mb-2">{% trans 'اسم المستخدم للدخول للرابط (يوزر)' %}</label><input type="text" name="username" class="input-premium shadow-inner" required></div>
+                <div><label class="block text-xs font-bold text-on-surface-variant mb-2">{% trans 'المسمى الحقيقي الظاهر بالواجهة' %}</label><input type="text" name="first_name" class="input-premium shadow-inner" required></div>
+                <div><label class="block text-xs font-bold text-on-surface-variant mb-2">{% trans 'كلمة سر الدخول' %}</label><input type="password" name="password" class="input-premium shadow-inner border-b-2 focus:border-error" required autocomplete="new-password"></div>
+                <div><label class="block text-xs font-bold text-on-surface-variant mb-2">{% trans 'جوال الاتصال' %}</label><input type="tel" name="phone" class="input-premium shadow-inner num-font"></div>
+                
+                <div class="flex gap-4 mt-8 pt-6 border-t border-surface-container-high">
+                    <button type="submit" class="flex-[2] btn-primary h-12 rounded-[var(--radius-xl)]">{% trans 'اعتماد وإنشاء الهوية' %}</button>
+                    <button type="button" onclick="closeModal('addCashierModal')" class="flex-1 bg-surface-container-high text-on-surface-variant rounded-[var(--radius-xl)] font-bold hover:bg-surface-container-highest transition-colors">{% trans 'إلغاء' %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Change Cashier Pass Modal -->
+    <div class="glass-overlay" id="passModal">
+        <div class="section-card w-11/12 max-w-sm shadow-2xl text-right">
+            <div class="w-16 h-16 bg-error/10 text-error rounded-full flex items-center justify-center mb-6">
+                <span class="material-symbols-outlined text-3xl">key</span>
+            </div>
+            <h3 class="text-xl font-black text-on-surface mb-2">{% trans 'تهيئة أمان الكاشير' %}</h3>
+            <p class="text-sm text-on-surface-variant mb-8 leading-relaxed">{% trans 'تغيير الدخول السري للحساب:' %} <br><strong id="passCashierName" class="text-primary text-base inline-block mt-1"></strong></p>
+            
+            <input type="hidden" id="passCashierId">
+            <div class="relative mb-8">
+                <span class="material-symbols-outlined absolute right-4 top-4 text-on-surface-variant">password</span>
+                <input type="password" id="newPassInput" class="input-premium shadow-inner pl-4 pr-12 h-14" placeholder="••••••••">
+            </div>
+            
+            <div class="flex flex-col gap-3">
+                <button onclick="submitNewPass()" class="w-full btn-primary h-12 rounded-[var(--radius-xl)] shadow-lg shadow-primary/20">{% trans 'تغيير واعتماد' %}</button>
+                <button onclick="closeModal('passModal')" class="w-full bg-surface-container-high text-on-surface-variant rounded-[var(--radius-xl)] font-bold h-12 hover:bg-surface-container-highest transition-colors">{% trans 'رجوع للقائمة' %}</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PRINT AREA FOR RECEIPT (Unchanged Logic, Adjusted Style) ==================== -->
+    <div id="invoicePrintArea">
+        <div style="text-align: center; border-bottom: 2px dashed #000; padding-bottom: 10px; margin-bottom: 15px;">
+            {% if vendor.logo %}
+            <img src="{{ vendor.logo.url }}" style="height: 70px; margin: 0 auto 10px auto;">
+            {% endif %}
+            <h1 style="font-size: 1.2rem; margin: 0; font-family: sans-serif; font-weight: bold;">{{ vendor.name }}</h1>
+            <p style="font-size: 0.8rem; margin: 5px 0 0 0;">Q.R #VND-{{ vendor.id }}</p>
+        </div>
+        <div style="font-size: 0.9rem; text-align: right; margin-bottom: 15px; font-family: sans-serif;">
+            <p style="margin: 3px 0;">Time: <span id="printDate"></span></p>
+            <p style="margin: 3px 0;">R.No: <span id="printInvNo"></span></p>
+            <p style="margin: 3px 0;">Client: <span id="printDoctor"></span></p>
+        </div>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-family: sans-serif; font-size: 0.9rem;">
+            <tr style="border-bottom: 1px dotted #666;">
+                <td style="padding: 8px 0; text-align: right;">{% trans 'مبيعات وأصل' %}</td>
+                <td style="padding: 8px 0; text-align: left;"><span id="printAmount"></span></td>
+            </tr>
+            <tr id="printFeeRow" style="border-bottom: 1px dotted #666;">
+                <td style="padding: 8px 0; text-align: right;">{% trans 'رسوم' %}</td>
+                <td style="padding: 8px 0; text-align: left;"><span id="printFee"></span></td>
+            </tr>
+            <tr style="font-weight: bold; font-size: 1.1rem;">
+                <td style="padding: 10px 0; text-align: right;">{% trans 'إجمالي مدفوع' %}</td>
+                <td style="padding: 10px 0; text-align: left;"><span id="printTotal"></span> EGP</td>
+            </tr>
+        </table>
+        <div style="text-align: center; font-size: 0.8rem; border-top: 2px dashed #000; padding-top: 15px; font-family: sans-serif;">
+            {% trans 'إيصال رقمي مصدق' %}
+            <br><span style="font-size: 0.7rem; font-weight: bold; margin-top: 5px; display: inline-block;">Powered By HD-R System</span>
+        </div>
+    </div>
+
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    {% if is_admin_view %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script>
+        // Store globals
+        let currentToken = '';
+        let selectedDoctorId = null;
+        let html5QrCode = null;
+
+        // Routing System
+        function switchTab(tabId) {
+            $('.tab-content').hide().removeClass('active');
+            $(`#tab-${tabId}`).fadeIn().addClass('active');
+            
+            // Standard Sidebar Sync
+            $('.nav-item').removeClass('border-r-4 border-teal-700 bg-stone-200/50 active text-teal-900').addClass('text-stone-500 hover:bg-stone-200');
+            $(`#nav-${tabId}`).addClass('border-r-4 border-teal-700 bg-stone-200/50 active text-teal-900').removeClass('text-stone-500 hover:bg-stone-200');
+            
+            // Admin Top-Bar Sync
+            $('.nav-item-top').removeClass('bg-primary/5 text-primary active-top').addClass('text-on-surface-variant');
+            $(`#top-${tabId}`).addClass('bg-primary/5 text-primary active-top').removeClass('text-on-surface-variant');
+
+            if (tabId !== 'pos') stopQRScanner();
+        }
+
+        // Camera System
+        function startQRScanner() {
+            openModal('qrScanOverlay');
+            if (!html5QrCode) html5QrCode = new Html5Qrcode('reader');
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+            html5QrCode.start({ facingMode: 'environment' }, config, (decodedText) => {
+                stopQRScanner();
+                processScannedCode(decodedText);
+            }).catch(err => {
+                alert('تعذر تشغيل الكاميرا والتصريح منعدم: ' + err);
+                stopQRScanner();
+            });
+        }
+
+        function stopQRScanner() {
+            closeModal('qrScanOverlay');
+            if (html5QrCode && html5QrCode.isScanning) html5QrCode.stop();
+        }
+
+        // Search Mechanism POS
+        $('#doctorSearchInputMain').on('input', function() {
+            let q = $(this).val();
+            if (q.length < 2) { $('#doctorSearchResultsMain').hide(); return; }
+            $.get(`/api/doctor-lookup/?q=${encodeURIComponent(q)}`, function (data) {
+                let html = '';
+                const doctors = data.results ? data.results.filter(r => r.type === 'doctor' || !r.type) : [];
+                doctors.forEach(doc => {
+                    html += `<div class='search-item' onclick='selectDoctorMain(${doc.id}, "${doc.name}", "${doc.phone || ''}", ${parseFloat(doc.balance || 0)}, "${doc.specialty || ''}", "${doc.avatar_url || ''}", "${doc.qr_code || ''}")'>
+                                <strong class='block text-sm text-on-surface'>${doc.name}</strong>
+                                <span class='text-xs text-on-surface-variant num-font'>${doc.phone || ''} | الرصيد المتاح: <span class="font-bold text-primary">${parseFloat(doc.balance || 0).toFixed(2)} </span></span>
+                             </div>`;
+                });
+                if(html === '') html = "<div class='search-item text-center text-sm text-on-surface-variant'>لا توجد نتائج</div>";
+                $('#doctorSearchResultsMain').html(html).show();
+            });
+        });
+
+        function selectDoctorMain(id, name, phone, balance, specialty, avatar_url, qr_code) {
+            selectedDoctorId = id;
+            $('#doctorSearchResultsMain').hide();
+            $('#doctorSearchInputMain').val(name);
+            $('#noSelectionMsg').hide();
+            $('#selectionData').fadeIn();
+            
+            // Fill Unified ID Card Fields
+            document.getElementById('printName').innerText = name;
+            document.getElementById('printSpecialty').innerText = specialty || 'طبيب معتمد';
+            document.getElementById('printPhone').innerText = phone;
+            
+            // Handle Avatar
+            const avatarContainer = document.getElementById('printAvatarContainer');
+            if (avatar_url && avatar_url !== 'null' && avatar_url !== 'undefined') {
+                avatarContainer.innerHTML = `<img src="${avatar_url}" class="w-full h-full object-cover">`;
+            } else {
+                avatarContainer.innerHTML = `<i class="fa-solid fa-user-md text-[38px] text-[#005353]"></i>`;
+            }
+            
+            // Handle QR
+            const qrContainer = document.getElementById('printQR');
+            if (qr_code && qr_code !== 'null' && qr_code !== 'undefined') {
+                qrContainer.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qr_code}&color=005353" alt="QR" class="w-full h-full rounded-lg">`;
+            } else {
+                qrContainer.innerHTML = '';
+            }
+            
+            $('#mainDocBalance').text(parseFloat(balance || 0).toLocaleString() + ' ');
+            updateAmountDisplay();
+        }
+
+        // Processing Logic Math
+        const hasFee = {% if vendor.has_management_fee %}true{% else %} false{% endif %};
+        const feePercent = parseFloat('{{ vendor.management_fee_percentage|default:25 }}') || 25;
+
+        function updateAmountDisplay() {
+            let val = parseFloat($('#trxAmountMain').val()) || 0;
+            let total = val;
+            if (hasFee) total = val * (1 + (feePercent / 100));
+            $('#displayTotalAmt').text(total.toLocaleString(undefined, { minimumFractionDigits: 2 }));
+        }
+
+        $('#trxAmountMain').on('input', updateAmountDisplay);
+        
+        function renderHeaderSearchResult(doc) {
+            if (doc.type === 'voucher' || doc.type === 'transaction') {
+                return `
+                    <div class='search-item' onclick='window.location.href="${doc.url}"'>
+                        <strong class='block text-sm text-on-surface'>${doc.name}</strong>
+                        <span class='text-xs text-on-surface-variant num-font'>${doc.detail || ''}</span>
+                    </div>`;
+            } else {
+                return `
+                    <div class='search-item' onclick='selectFromHeader(${doc.id}, "${doc.name}", "${doc.phone || ''}", ${parseFloat(doc.balance || 0)}, "${doc.specialty || ''}", "${doc.avatar_url || ''}", "${doc.qr_code || ''}")'>
+                        <strong class='block text-sm text-on-surface'>${doc.name}</strong><span class='text-xs text-on-surface-variant num-font'>${doc.phone || ''}</span>
+                    </div>`;
+            }
+        }
+
+        // Header Global Search 
+        $(document).on('input', '#headerGlobalSearch', function() {
+            let q = $(this).val();
+            let $results = $('#headerSearchResults');
+            if (q.length < 2) { $results.hide().empty(); return; }
+            $.get(`/api/doctor-lookup/?q=${encodeURIComponent(q)}`, function (data) {
+                if (data.results && data.results.length > 0) {
+                    let html = '';
+                    data.results.forEach(doc => {
+                        html += renderHeaderSearchResult(doc);
+                    });
+                    $results.html(html).show();
+                } else { $results.hide(); }
+            });
+        });
+
+        // Hide globals auto on click-outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('.relative').length) {
+                $('.search-results').hide();
+            }
+        });
+
+        function selectFromHeader(id, name, phone, balance, specialty, avatar_url, qr_code) {
+            $('.search-results').hide(); 
+            $('#headerGlobalSearch').val('');
+            $('#adminHeaderSearch').val(''); 
+            switchTab('pos'); 
+            selectDoctorMain(id, name, phone, balance, specialty, avatar_url, qr_code);
+        }
+
+        // Admin Header Search
+        $(document).on('input', '#adminHeaderSearch', function() {
+            let q = $(this).val();
+            let $results = $('#adminHeaderSearchResults'); 
+            if (q.length < 2) { $results.hide().empty(); return; }
+            $.get(`/api/doctor-lookup/?q=${encodeURIComponent(q)}`, function (data) {
+                if (data.results && data.results.length > 0) {
+                    let html = '';
+                    data.results.forEach(doc => {
+                        html += renderHeaderSearchResult(doc);
+                    });
+                    $results.html(html).show();
+                } else { $results.hide(); }
+            });
+        });
+
+        // Transaction Process APIs
+        function sendOTP() {
+            let amount = $('#trxAmountMain').val();
+            if (!selectedDoctorId) { alert('يجب تحديد عميل (طبيب) من قاعدة البيانات.'); return; }
+            if (!amount || amount <= 0) { alert('يرجى تحديد سعر السلعة لتتم المعاملة.'); return; }
+            
+            $('#btnSendOTPMain').prop('disabled', true).html('<span class="material-symbols-outlined animate-spin">refresh</span> جاري المخاطبة...');
+            $('#btnResendOTP').prop('disabled', true).text('جاري الإرسال...');
+            
+            $.post("{% url 'send_otp' %}", {
+                doctor_id: selectedDoctorId, amount: amount, csrfmiddlewaretoken: '{{ csrf_token }}'
+            }).done(function (data) {
+                if (data.success) {
+                    currentToken = data.transaction_token;
+                    $('#displayOtpEmail').text(data.doctor_email || '-');
+                    
+                    let base = parseFloat(amount);
+                    let total = base;
+                    if (hasFee) total = base * (1 + (feePercent / 100));
+                    $('#otpBaseAmt').text(base.toLocaleString() + ' ');
+                    $('#otpFeeAmt').text((total - base).toLocaleString() + ' ');
+                    $('#otpTotalAmt').text(total.toLocaleString() + ' ');
+                    
+                    openModal('otpOverlay');
+                } else {
+                    alert('حدث خطأ بالاتصال: ' + data.error);
+                }
+            }).fail(function(xhr) {
+                const error = xhr.responseJSON ? xhr.responseJSON.error : 'خطأ غير متوقع بالخادم.';
+                alert('فشل إرسال الرمز: ' + error);
+            }).always(function() {
+                $('#btnSendOTPMain').prop('disabled', false).html('طلب الخصم وإرسال الرمز <span class="material-symbols-outlined">send</span>');
+                $('#btnResendOTP').prop('disabled', false).text('إعادة إرسال');
+            });
+        }
+
+        $('#btnSendOTPMain').click(sendOTP);
+        $('#btnResendOTP').click(sendOTP);
+
+        $('#btnConfirmOTP').click(function() {
+            let otp = $('#otpInput').val();
+            if(otp.length < 6) return;
+            let description = $('#trxNote').val() || 'مصروفات مبيعات من بوابة المورد';
+            
+            $(this).prop('disabled', true).html('<span class="material-symbols-outlined animate-spin">refresh</span> جاري التوثيق...');
+            $('#btnResendOTP').prop('disabled', true);
+            
+            $.post("{% url 'transaction_create' %}", {
+                transaction_token: currentToken, otp_code: otp, description: description, csrfmiddlewaretoken: '{{ csrf_token }}'
+            }).done(function (data) {
+                if (data.success) { 
+                    closeModal('otpOverlay'); 
+                    showInvoice(data.invoice); 
+                    $('#trxAmountMain').val(''); 
+                    $('#displayTotalAmt').text('0.00'); 
+                    $('#otpInput').val('');
+                } else {
+                    alert('فشل المطابقة الخوارزمية: ' + data.error);
+                }
+            }).fail(function(xhr) {
+                const error = xhr.responseJSON ? xhr.responseJSON.error : 'الرمز غير صحيح أو انتهت صلاحيته.';
+                alert('تحذير أمان: ' + error);
+                // Clear input on wrong OTP to help the user
+                if (error.includes('غير صحيح')) {
+                    $('#otpInput').val('').focus();
+                }
+            }).always(function() {
+                $('#btnConfirmOTP').prop('disabled', false).text('تأكيد المعاملة');
+                $('#btnResendOTP').prop('disabled', false);
+            });
+        });
+
+        // Detailed resend removed since it's now shared with sendOTP function
+
+        // Detail Viewers Callbacks
+        function viewInvoiceDetail(no, date, docName, amt, fee, total) {
+            $('#detInvNo').text('#' + no.substring(0, 12).toUpperCase());
+            $('#detDate').text(date); $('#detDoctorName').text(docName);
+            $('#detBaseAmount').text(parseFloat(amt).toLocaleString() + ' ');
+            $('#detTotalAmount').text(parseFloat(total).toLocaleString());
+            const vName = '{{ vendor.name }}';
+            $('#btnPrintDet').off('click').on('click', function() { reprintInvoice(no, date, vName, docName, amt, fee, total); });
+            openModal('invoiceDetailModal');
+        }
+
+        function viewSettlementDetail(date, notes, amount) {
+            $('#setDetDate').text(date); $('#setDetNotes').text(notes);
+            $('#setDetAmount').text(parseFloat(amount).toLocaleString() + ' ');
+            openModal('settlementDetailModal');
+        }
+
+        function showInvoice(inv) {
+            viewInvoiceDetail(inv.invoice_number, inv.date, inv.doctor_name, inv.amount_spent, inv.management_fee, inv.total_deducted);
+        }
+
+        // Print Exec
+        function reprintInvoice(no, date, vName, dName, amt, fee, total) {
+            $('#printInvNo').text(no.substring(0, 8).toUpperCase());
+            $('#printDate').text(date); $('#printVendor').text(vName);
+            $('#printDoctor').text(dName); $('#printAmount').text(parseFloat(amt).toLocaleString());
+            $('#printFee').text(parseFloat(fee).toLocaleString()); $('#printTotal').text(parseFloat(total).toLocaleString());
+            if (parseFloat(fee) > 0) $('#printFeeRow').show(); else $('#printFeeRow').hide();
+            setTimeout(() => { window.print(); }, 500);
+        }
+
+        // Modal Controls removed
+
+        // Cashier Management Overrides
+        function openPassModal(id, name) {
+            $('#passCashierId').val(id);
+            $('#passCashierName').text(name);
+            $('#newPassInput').val('');
+            openModal('passModal');
+        }
+
+        function submitNewPass() {
+            let id = $('#passCashierId').val();
+            let password = $('#newPassInput').val();
+            if(password.length < 6) { alert('النظام يتطلب كلمة مرور مكونة من 6 خانات كحد أدنى.'); return; }
+            $.post("{% url 'vendor_action' %}", {
+                action: 'change_cashier_password', cashier_id: id, new_password: password, csrfmiddlewaretoken: '{{ csrf_token }}'
+            }, function(data) {
+                if(data.success) { alert('نجاحة المهمة، تم تشفير الكلمة.'); closeModal('passModal'); }
+                else { alert('حدث خطأ'); }
+            });
+        }
+
+
+
+        // Backend Bridge for Camera Reading Strings
+        function processScannedCode(decodedText) {
+            let doctorId = decodedText.trim();
+            if (doctorId.includes('/scan/')) {
+                const parts = doctorId.split('/scan/');
+                if (parts.length > 1) doctorId = parts[1].split('/')[0];
+            }
+            $.get("{% url 'doctor_lookup' %}", { q: doctorId }, function (data) {
+                if (data.results && data.results.length > 0) {
+                    const doc = data.results[0];
+                    selectDoctorMain(doc.id, doc.name, doc.phone, doc.balance, doc.specialty, doc.avatar_url, doc.qr_code);
+                } else alert('الرمز لا يتوافق مع قاعدة بيانات الأطباء.');
+            });
+        }
+        // Charts Initialization
+        // Charts Initialization
+        const chartLabels = {{ chart_labels_json|safe|default:"[]" }};
+        const chartData = {{ chart_data_json|safe|default:"[]" }};
+
+        const ctx1 = document.getElementById('salesTrendsChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'المبيعات',
+                    data: chartData,
+                    borderColor: '#005353',
+                    backgroundColor: 'rgba(0, 83, 83, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#005353'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        const ctx2 = document.getElementById('activityChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'المبالغ',
+                    data: chartData,
+                    backgroundColor: '#005353',
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,208 @@
+{% extends 'custom_admin/portal_base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans 'إعدادات الحساب' %} | {{ global_system_vendor.name|default:'النظام' }}{% endblock %}
+
+{# -------- Sidebar Identity -------- #}
+{% block portal_icon %}fa-building{% endblock %}
+{% block portal_title %}{% trans 'بوابة الشريك التجاري' %}{% endblock %}
+{% block portal_subtitle %}{{ company_profile.clean_name }}{% endblock %}
+
+{# -------- Sidebar Nav Links -------- #}
+{% block sidebar_nav %}
+{% include 'custom_admin/includes/company_sidebar_nav_full.html' %}
+{% endblock %}
+
+{# -------- Settings URL -------- #}
+{% block settings_url %}{% url 'company_portal_settings' %}{% endblock %}
+
+{# -------- User Role -------- #}
+{% block user_role_label %}{% trans 'شريك تجاري' %}{% endblock %}
+
+{# -------- Header -------- #}
+{% block header_icon %}fa-gear{% endblock %}
+{% block header_title %}{% trans 'إعدادات الحساب' %}{% endblock %}
+{% block header_subtitle %}{% trans 'إدارة وتحديث بيانات الشريك وتغيير كلمة المرور' %}{% endblock %}
+
+{# -------- Extra Head -------- #}
+{% block extra_head %}
+{{ block.super }}
+<style>
+    .settings-card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 30px;
+        box-shadow: 0 2px 12px rgba(0,83,83,0.04);
+        border: 1px solid rgba(0,83,83,0.05);
+        margin-bottom: 24px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-label {
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #3e4948;
+        margin-bottom: 8px;
+    }
+    .form-input {
+        width: 100%;
+        padding: 12px 16px;
+        border-radius: 12px;
+        border: 1.5px solid #eef0f0;
+        background: #fcfdfd;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: #1a1c1c;
+        transition: all 0.2s;
+        font-family: inherit;
+    }
+    .form-input:focus {
+        outline: none;
+        border-color: #005353;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(0,83,83,0.08);
+    }
+    .btn-submit {
+        background: linear-gradient(135deg, #005353, #007a7a);
+        color: white;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: opacity 0.2s;
+        font-family: inherit;
+    }
+    .btn-submit:hover {
+        opacity: 0.9;
+    }
+    .alert-banner {
+        padding: 14px 20px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .alert-success {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #c8e6c9;
+    }
+    .alert-error {
+        background: #ffebee;
+        color: #c62828;
+        border: 1px solid #ffcdd2;
+    }
+</style>
+{% endblock %}
+
+{# -------- Main Content -------- #}
+{% block portal_content %}
+<div style="max-width: 760px; margin: 0 auto;">
+
+    <!-- Messages / Alerts -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert-banner {% if message.tags == 'success' %}alert-success{% else %}alert-error{% endif %}">
+                <i class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% else %}fa-circle-exclamation{% endif %}" style="font-size: 1.1rem;"></i>
+                <span>{{ message }}</span>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Personal Profile settings -->
+    <div class="settings-card">
+        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px; border-bottom: 1px solid #f5f5f5; padding-bottom: 16px;">
+            <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(0,83,83,0.07); color: #005353; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                <i class="fa-solid fa-id-card"></i>
+            </div>
+            <div>
+                <h3 style="margin: 0; font-size: 1rem; font-weight: 800; color: #005353;">{% trans 'بيانات الشريك التجاري' %}</h3>
+                <p style="margin: 0; font-size: 0.72rem; color: #6e7979; font-weight: 600;">{% trans 'تحديث معلومات التواصل والمسؤول المعتمد' %}</p>
+            </div>
+        </div>
+
+        <form method="post" action="{% url 'company_portal_settings' %}">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="update_profile">
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+                <div class="form-group" style="grid-column: span 2;">
+                    <label class="form-label">{% trans 'اسم الشركة' %}</label>
+                    <input type="text" value="{{ company_profile.clean_name }}" disabled class="form-input" style="background: #f5f7f7; color: #6e7979; cursor: not-allowed;">
+                    <span style="font-size: 0.68rem; color: #aaa; font-weight: 600; margin-top: 4px; display: block;">{% trans 'اسم الشركة غير قابل للتعديل المباشر، يرجى التواصل مع الإدارة للتغيير.' %}</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">{% trans 'الشخص المسؤول (للتواصل)' %}</label>
+                    <input type="text" name="contact_person" value="{{ company_profile.contact_person }}" required class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">{% trans 'رقم هاتف التواصل' %}</label>
+                    <input type="text" name="phone" value="{{ company_profile.phone }}" required class="form-input" style="font-family: 'Inter', sans-serif;">
+                </div>
+
+                <div class="form-group" style="grid-column: span 2;">
+                    <label class="form-label">{% trans 'البريد الإلكتروني' %}</label>
+                    <input type="email" name="email" value="{{ company_profile.email }}" required class="form-input" style="font-family: 'Inter', sans-serif;">
+                </div>
+
+                <div class="form-group" style="grid-column: span 2;">
+                    <label class="form-label">{% trans 'عنوان المقر الرئيسي' %}</label>
+                    <textarea name="address" required class="form-input" rows="3" style="resize: vertical;">{{ company_profile.address }}</textarea>
+                </div>
+            </div>
+
+            <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-floppy-disk"></i> {% trans 'حفظ البيانات' %}
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Security Settings -->
+    <div class="settings-card" style="border: 1px solid #ffcdd2; background: #fffcfc;">
+        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px; border-bottom: 1px solid #ffebee; padding-bottom: 16px;">
+            <div style="width: 44px; height: 44px; border-radius: 12px; background: #ffebee; color: #c62828; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <div>
+                <h3 style="margin: 0; font-size: 1rem; font-weight: 800; color: #c62828;">{% trans 'تغيير كلمة المرور' %}</h3>
+                <p style="margin: 0; font-size: 0.72rem; color: #888; font-weight: 600;">{% trans 'تأمين الحساب بكلمة مرور جديدة قوية' %}</p>
+            </div>
+        </div>
+
+        <form method="post" action="{% url 'company_portal_settings' %}">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="change_password">
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+                <div class="form-group">
+                    <label class="form-label">{% trans 'كلمة المرور الجديدة' %}</label>
+                    <input type="password" name="new_password" required placeholder="••••••••" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">{% trans 'تأكيد كلمة المرور الجديدة' %}</label>
+                    <input type="password" name="confirm_password" required placeholder="••••••••" class="form-input">
+                </div>
+            </div>
+
+            <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
+                <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, #c62828, #e53935);">
+                    <i class="fa-solid fa-key"></i> {% trans 'تحديث كلمة المرور' %}
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,1043 @@
+{% extends 'custom_admin/dashboard_base.html' %}
+{% load i18n %}
+
+{% block title %}دليل الأطباء والقسائم - Arabic Retail Standard{% endblock %}
+
+{% block sidebar %}
+    {% include 'custom_admin/includes/sidebar.html' with active_page='doctors' %}
+{% endblock %}
+
+{% block extra_head %}
+    <!-- QR Code Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        /* Modern Grid for Doctors */
+        .doctors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+        }
+
+        @keyframes bounce-subtle {
+            0%, 100% { transform: translate(-50%, 0); }
+            50% { transform: translate(-50%, -10px); }
+        }
+        .animate-bounce-subtle {
+            animation: bounce-subtle 3s ease-in-out infinite;
+        }
+
+        .doctor-card {
+            position: relative;
+            background-color: var(--surface-container-lowest);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            border: 1px solid transparent;
+        }
+        
+        .doctor-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 83, 83, 0.15);
+            border-color: var(--primary-container);
+        }
+
+        .doctor-check:checked + .doctor-card {
+            border-color: var(--primary);
+            background-color: var(--primary)/5;
+        }
+
+        .avatar {
+            width: 55px; 
+            height: 55px; 
+            border-radius: 50%; 
+            background: var(--surface-container);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .qr-modal {
+            background: var(--surface-container-lowest);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xxl);
+            box-shadow: var(--shadow-ambient);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .glass-overlay.active .qr-modal {
+            transform: scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--surface-container);
+            border: none;
+            width: 35px; height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: var(--on-surface-variant);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .close-btn:hover { background: var(--surface-container-high); }
+
+        #qrcode-canvas {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: var(--radius-md);
+            border: 2px dashed var(--outline-variant);
+        }
+
+        @media screen {
+            .hidden-on-screen { position: absolute; left: -9999px; top: -9999px; opacity: 0; }
+        }
+        @media print {
+            .hidden-on-screen { position: static; left: 0; top: 0; opacity: 1; }
+            body * { visibility: hidden; }
+            #doctorPrintCard, #doctorPrintCard * { visibility: visible; }
+            #doctorPrintCard { 
+                display: flex !important; 
+                flex-direction: column;
+                align-items: center;
+                gap: 20mm;
+                position: absolute; left: 0; top: 0; width: 100%; 
+                background: white;
+            }
+            .no-print { display: none !important; }
+        }
+    </style>
+{% endblock %}
+
+{% block page_title %}دليل الأطباء والقسائم النشطة{% endblock %}
+{% block page_subtitle %}إدارة الأرصدة وإصدار المعرفات (QR Codes) للاستخدام الميداني.{% endblock %}
+{% block page_icon %}fa-user-doctor{% endblock %}
+
+{% block search_bar %}
+<form action="{% url 'custom_doctors' %}" method="get" class="header-search-bar">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" name="q" value="{{ query|default:'' }}" placeholder="{% trans 'البحث باسم واسم عائلة الطبيب...' %}">
+</form>
+{% endblock %}
+
+{% block quick_actions %}
+<button class="qa-btn qa-btn-primary" onclick="openModal('addDoctorModal')">
+    <i class="fa-solid fa-user-plus"></i> {% trans 'إضافة طبيب جديد' %}
+</button>
+{% endblock %}
+
+{% block content %}
+
+            <div>
+                <!-- ═══ Advanced Filters Panel ═══ -->
+                <div class="mt-6" id="filtersPanel">
+                    <form method="get" action="{% url 'custom_doctors' %}" id="doctorsFilterForm">
+                        <input type="hidden" name="q" value="{{ query }}">
+
+                        <!-- Filter Card -->
+                        <div style="background: white; border-radius: 20px; border: 1px solid var(--outline-variant); box-shadow: 0 2px 12px rgba(0,83,83,0.06); overflow: hidden;">
+
+                            <!-- Filter Header -->
+                            <div id="filterHeader" onclick="toggleFiltersPanel()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: linear-gradient(135deg, rgba(0,83,83,0.04) 0%, rgba(0,83,83,0.01) 100%); border-bottom: 1px solid var(--outline-variant); cursor: pointer;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="width: 34px; height: 34px; background: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fa-solid fa-sliders" style="color: white; font-size: 14px;"></i>
+                                    </div>
+                                    <div>
+                                        <span style="font-weight: 900; font-size: 0.9rem; color: var(--on-surface); display: block; line-height: 1.2;">{% trans 'فلاتر متقدمة' %}</span>
+                                        <span style="font-size: 0.72rem; color: var(--on-surface-variant); font-weight: 600;">{% trans 'تصفية الأطباء حسب التخصص والحالة والرصيد والشركات' %}</span>
+                                    </div>
+                                    <i id="toggleFiltersChevron" class="fa-solid fa-chevron-down" style="font-size: 12px; color: var(--primary); transition: transform 0.3s; transform: rotate(0deg); margin-right: 8px;"></i>
+                                </div>
+                                <!-- Active Filters Badges -->
+                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end;" onclick="event.stopPropagation;">
+                                    {% if current_specialty %}
+                                    <span style="background: rgba(0,83,83,0.1); color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center; gap: 4px;">
+                                        <i class="fa-solid fa-stethoscope" style="margin-left: 4px; font-size: 10px;"></i>
+                                        {% for spec in specialties %}{% if current_specialty == spec.id|stringformat:"s" %}{{ spec.name }}{% endif %}{% endfor %}
+                                    </span>
+                                    {% endif %}
+                                    {% if current_status %}
+                                    <span style="background: {% if current_status == 'active' %}rgba(22,163,74,0.1); color: #16a34a;{% elif current_status == 'inactive' %}rgba(220,38,38,0.1); color: #dc2626;{% else %}rgba(234,179,8,0.1); color: #ca8a04;{% endif %} padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800;">
+                                        <i class="fa-solid fa-circle" style="font-size: 7px; margin-left: 4px;"></i>
+                                        {% if current_status == 'active' %}{% trans 'نشط' %}{% elif current_status == 'inactive' %}{% trans 'غير نشط' %}{% endif %}
+                                    </span>
+                                    {% endif %}
+                                    {% if current_balance %}
+                                    <span style="background: rgba(59,130,246,0.1); color: #3b82f6; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800;">
+                                        <i class="fa-solid fa-wallet" style="font-size: 10px; margin-left: 4px;"></i>
+                                        {% if current_balance == 'has_balance' %}{% trans 'له رصيد' %}{% elif current_balance == 'no_balance' %}{% trans 'بلا رصيد' %}{% endif %}
+                                    </span>
+                                    {% endif %}
+                                    {% if current_voucher %}
+                                    <span style="background: rgba(168,85,247,0.1); color: #a855f7; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800;">
+                                        <i class="fa-solid fa-ticket" style="font-size: 10px; margin-left: 4px;"></i>
+                                        {% if current_voucher == 'has_voucher' %}{% trans 'له قسائم' %}{% elif current_voucher == 'no_voucher' %}{% trans 'بلا قسائم' %}{% endif %}
+                                    </span>
+                                    {% endif %}
+                                    {% if current_company %}
+                                    <span style="background: rgba(0,83,83,0.1); color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center;">
+                                        <i class="fa-solid fa-building" style="margin-left: 4px; font-size: 10px;"></i>
+                                        {% for comp in companies_list %}{% if current_company == comp.id|stringformat:"s" %}{{ comp.name }}{% endif %}{% endfor %}
+                                    </span>
+                                    {% endif %}
+                                    {% if date_from or date_to %}
+                                    <span style="background: rgba(245,158,11,0.1); color: #d97706; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center;">
+                                        <i class="fa-solid fa-calendar-alt" style="margin-left: 4px; font-size: 10px;"></i>
+                                        {% if date_from %}{{ date_from }}{% endif %} - {% if date_to %}{{ date_to }}{% endif %}
+                                    </span>
+                                    {% endif %}
+                                    {% if query or current_specialty or current_status or current_balance or current_voucher or current_company or date_from or date_to %}
+                                    <a href="{% url 'custom_doctors' %}" title="{% trans 'مسح جميع الفلاتر' %}"
+                                       style="background: rgba(239,68,68,0.08); color: #ef4444; border: none; padding: 5px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 4px; cursor: pointer; transition: all 0.2s;"
+                                       onmouseover="this.style.background='rgba(239,68,68,0.15)'" onmouseout="this.style.background='rgba(239,68,68,0.08)'">
+                                        <i class="fa-solid fa-xmark"></i> {% trans 'مسح الكل' %}
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Filter Fields Grid -->
+                            <div id="filterFieldsContainer" style="display: none; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0; padding: 0; border-top: 1px solid var(--outline-variant);">
+
+                                <!-- 1. Specialty Filter -->
+                                <div style="padding: 16px 20px; border-left: 1px solid var(--outline-variant);">
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.7rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+                                        <i class="fa-solid fa-stethoscope" style="color: var(--primary); font-size: 11px;"></i>
+                                        {% trans 'التخصص الطبي' %}
+                                    </label>
+                                    <div style="position: relative;">
+                                        <select name="specialty" id="filterSpecialty"
+                                                onchange="document.getElementById('doctorsFilterForm').submit"
+                                                style="width: 100%; background: var(--surface-container-lowest); border: 1.5px solid {% if current_specialty %}var(--primary){% else %}var(--outline-variant){% endif %}; border-radius: 12px; padding: 9px 14px; font-size: 0.82rem; font-weight: 700; color: var(--on-surface); outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; transition: border-color 0.2s; font-family: inherit;">
+                                            <option value="">🔬 {% trans 'كل التخصصات' %}</option>
+                                            {% for spec in specialties %}
+                                            <option value="{{ spec.id }}" {% if current_specialty == spec.id|stringformat:"s" %}selected{% endif %}>
+                                                {{ spec.name }} ({{ spec.doctors_count }})
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                        <i class="fa-solid fa-chevron-down" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--on-surface-variant); font-size: 11px; pointer-events: none;"></i>
+                                    </div>
+                                </div>
+
+                                <!-- 2. Company Sponsor Filter -->
+                                <div style="padding: 16px 20px; border-left: 1px solid var(--outline-variant);">
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.7rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+                                        <i class="fa-solid fa-building" style="color: var(--primary); font-size: 11px;"></i>
+                                        {% trans 'الشركة الراعية' %}
+                                    </label>
+                                    <div style="position: relative;">
+                                        <select name="company" id="filterCompany"
+                                                onchange="document.getElementById('doctorsFilterForm').submit"
+                                                style="width: 100%; background: var(--surface-container-lowest); border: 1.5px solid {% if current_company %}var(--primary){% else %}var(--outline-variant){% endif %}; border-radius: 12px; padding: 9px 14px; font-size: 0.82rem; font-weight: 700; color: var(--on-surface); outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; transition: border-color 0.2s; font-family: inherit;">
+                                            <option value="">🏢 {% trans 'كل الشركات' %}</option>
+                                            {% for comp in companies_list %}
+                                            <option value="{{ comp.id }}" {% if current_company == comp.id|stringformat:"s" %}selected{% endif %}>
+                                                {{ comp.name }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                        <i class="fa-solid fa-chevron-down" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--on-surface-variant); font-size: 11px; pointer-events: none;"></i>
+                                    </div>
+                                </div>
+
+                                <!-- 3. Account Status Filter -->
+                                <div style="padding: 16px 20px; border-left: 1px solid var(--outline-variant);">
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.7rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+                                        <i class="fa-solid fa-user-shield" style="color: #3b82f6; font-size: 11px;"></i>
+                                        {% trans 'حالة الحساب' %}
+                                    </label>
+                                    <!-- Status Quick Buttons -->
+                                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                        <a href="?q={{ query }}{% if current_specialty %}&specialty={{ current_specialty }}{% endif %}{% if current_balance %}&balance={{ current_balance }}{% endif %}{% if current_voucher %}&voucher={{ current_voucher }}{% endif %}{% if current_company %}&company={{ current_company }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}"
+                                           style="flex: 1; min-width: 60px; text-align: center; padding: 7px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 800; text-decoration: none; transition: all 0.2s; border: 1.5px solid;
+                                           {% if not current_status %}background: var(--primary); color: white; border-color: var(--primary);{% else %}background: transparent; color: var(--on-surface-variant); border-color: var(--outline-variant);{% endif %}">
+                                           <i class="fa-solid fa-users" style="display: block; font-size: 14px; margin-bottom: 2px;"></i>{% trans 'الكل' %}
+                                        </a>
+                                        <a href="?q={{ query }}&status=active{% if current_specialty %}&specialty={{ current_specialty }}{% endif %}{% if current_balance %}&balance={{ current_balance }}{% endif %}{% if current_voucher %}&voucher={{ current_voucher }}{% endif %}{% if current_company %}&company={{ current_company }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}"
+                                           style="flex: 1; min-width: 60px; text-align: center; padding: 7px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 800; text-decoration: none; transition: all 0.2s; border: 1.5px solid;
+                                           {% if current_status == 'active' %}background: #16a34a; color: white; border-color: #16a34a;{% else %}background: rgba(22,163,74,0.07); color: #16a34a; border-color: rgba(22,163,74,0.3);{% endif %}">
+                                           <i class="fa-solid fa-circle-check" style="display: block; font-size: 14px; margin-bottom: 2px;"></i>{% trans 'نشط' %}
+                                        </a>
+                                        <a href="?q={{ query }}&status=inactive{% if current_specialty %}&specialty={{ current_specialty }}{% endif %}{% if current_balance %}&balance={{ current_balance }}{% endif %}{% if current_voucher %}&voucher={{ current_voucher }}{% endif %}{% if current_company %}&company={{ current_company }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}"
+                                           style="flex: 1; min-width: 60px; text-align: center; padding: 7px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 800; text-decoration: none; transition: all 0.2s; border: 1.5px solid;
+                                           {% if current_status == 'inactive' %}background: #dc2626; color: white; border-color: #dc2626;{% else %}background: rgba(220,38,38,0.07); color: #dc2626; border-color: rgba(220,38,38,0.3);{% endif %}">
+                                           <i class="fa-solid fa-circle-xmark" style="display: block; font-size: 14px; margin-bottom: 2px;"></i>{% trans 'موقوف' %}
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- 4. Balance Filter -->
+                                <div style="padding: 16px 20px; border-left: 1px solid var(--outline-variant);">
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.7rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+                                        <i class="fa-solid fa-wallet" style="color: #3b82f6; font-size: 11px;"></i>
+                                        {% trans 'حالة الرصيد' %}
+                                    </label>
+                                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                        <a href="?q={{ query }}{% if current_specialty %}&specialty={{ current_specialty }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_balance %}&balance={{ current_balance }}{% endif %}{% if current_voucher %}&voucher={{ current_voucher }}{% endif %}{% if current_company %}&company={{ current_company }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}"
+                                           style="flex: 1; min-width: 60px; text-align: center; padding: 7px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 800; text-decoration: none; transition: all 0.2s; border: 1.5px solid;
+                                           {% if not current_balance %}background: var(--primary); color: white; border-color: var(--primary);{% else %}background: transparent; color: var(--on-surface-variant); border-color: var(--outline-variant);{% endif %}">
+                                           <i class="fa-solid fa-wallet" style="display: block; font-size: 14px; margin-bottom: 2px;"></i>{% trans 'الكل' %}
+                                        </a>
+                                        <a href="?q={{ query }}&balance=has_balance{% if current_specialty %}&specialty={{ current_specialty }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_voucher %}&voucher={{ current_voucher }}{% endif %}{% if current_company %}&company={{ current_company }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}"
+                                           style="flex: 1; min-width: 60px; text-align: center; padding: 7px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 800; text-decoration: none; transition: all 0.2s; border: 1.5px solid;
+                                           {% if current_balance == 'has_balance' %}background: #2563eb; color: white; border-color: #2563eb;{% else %}background: rgba(37,99,235,0.07); color: #2563eb; border-color: rgba(37,99,235,0.3);{% endif %}">
+                                           <i class="fa-solid fa-arrow-trend-up" style="display: block; font-size: 14px; margin-bottom: 2px;"></i>{% trans 'له رصيد' %}
+                                        </a>
+                                        <a href="?q={{ query }}&balance=no_balance{% if current_specialty %}&specialty={{ current_specialty }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_voucher %}&voucher={{ current_voucher }}{% endif %}{% if current_company %}&company={{ current_company }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}"
+                                           style="flex: 1; min-width: 60px; text-align: center; padding: 7px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 800; text-decoration: none; transition: all 0.2s; border: 1.5px solid;
+                                           {% if current_balance == 'no_balance' %}background: #64748b; color: white; border-color: #64748b;{% else %}background: rgba(100,116,139,0.07); color: #64748b; border-color: rgba(100,116,139,0.3);{% endif %}">
+                                           <i class="fa-solid fa-arrow-trend-down" style="display: block; font-size: 14px; margin-bottom: 2px;"></i>{% trans 'بلا رصيد' %}
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- 5. Vouchers Filter -->
+                                <div style="padding: 16px 20px; border-left: 1px solid var(--outline-variant);">
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.7rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+                                        <i class="fa-solid fa-ticket" style="color: #a855f7; font-size: 11px;"></i>
+                                        {% trans 'القسائم النشطة' %}
+                                    </label>
+                                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                        <a href="?q={{ query }}{% if current_specialty %}&specialty={{ current_specialty }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_balance %}&balance={{ current_balance }}{% endif %}{% if current_company %}&company={{ current_company }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}"
+                                           style="flex: 1; min-width: 60px; text-align: center; padding: 7px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 800; text-decoration: none; transition: all 0.2s; border: 1.5px solid;
+                                           {% if not current_voucher %}background: var(--primary); color: white; border-color: var(--primary);{% else %}background: transparent; color: var(--on-surface-variant); border-color: var(--outline-variant);{% endif %}">
+                                           <i class="fa-solid fa-list" style="display: block; font-size: 14px; margin-bottom: 2px;"></i>{% trans 'الكل' %}
+                                        </a>
+                                        <a href="?q={{ query }}&voucher=has_voucher{% if current_specialty %}&specialty={{ current_specialty }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_balance %}&balance={{ current_balance }}{% endif %}{% if current_company %}&company={{ current_company }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}"
+                                           style="flex: 1; min-width: 60px; text-align: center; padding: 7px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 800; text-decoration: none; transition: all 0.2s; border: 1.5px solid;
+                                           {% if current_voucher == 'has_voucher' %}background: #a855f7; color: white; border-color: #a855f7;{% else %}background: rgba(168,85,247,0.07); color: #a855f7; border-color: rgba(168,85,247,0.3);{% endif %}">
+                                           <i class="fa-solid fa-ticket" style="display: block; font-size: 14px; margin-bottom: 2px;"></i>{% trans 'له قسائم' %}
+                                        </a>
+                                        <a href="?q={{ query }}&voucher=no_voucher{% if current_specialty %}&specialty={{ current_specialty }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_balance %}&balance={{ current_balance }}{% endif %}{% if current_company %}&company={{ current_company }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}"
+                                           style="flex: 1; min-width: 60px; text-align: center; padding: 7px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 800; text-decoration: none; transition: all 0.2s; border: 1.5px solid;
+                                           {% if current_voucher == 'no_voucher' %}background: #f59e0b; color: white; border-color: #f59e0b;{% else %}background: rgba(245,158,11,0.07); color: #d97706; border-color: rgba(245,158,11,0.3);{% endif %}">
+                                           <i class="fa-solid fa-ticket-slash" style="display: block; font-size: 14px; margin-bottom: 2px;"></i>{% trans 'بلا قسائم' %}
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- 6. Date Range Filter -->
+                                <div style="padding: 16px 20px; display: flex; gap: 12px;">
+                                    <div style="flex: 1;">
+                                        <label style="display: flex; align-items: center; gap: 6px; font-size: 0.7rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+                                            <i class="fa-solid fa-calendar-day" style="color: var(--primary); font-size: 11px;"></i>
+                                            {% trans 'من تاريخ التسجيل' %}
+                                        </label>
+                                        <input type="date" name="date_from" value="{{ date_from }}"
+                                               onchange="document.getElementById('doctorsFilterForm').submit"
+                                               style="width: 100%; background: var(--surface-container-lowest); border: 1.5px solid {% if date_from %}var(--primary){% else %}var(--outline-variant){% endif %}; border-radius: 12px; padding: 7px 14px; font-size: 0.82rem; font-weight: 700; color: var(--on-surface); outline: none; transition: border-color 0.2s; font-family: inherit; box-sizing: border-box;">
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <label style="display: flex; align-items: center; gap: 6px; font-size: 0.7rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+                                            <i class="fa-solid fa-calendar-day" style="color: var(--primary); font-size: 11px;"></i>
+                                            {% trans 'إلى تاريخ التسجيل' %}
+                                        </label>
+                                        <input type="date" name="date_to" value="{{ date_to }}"
+                                               onchange="document.getElementById('doctorsFilterForm').submit"
+                                               style="width: 100%; background: var(--surface-container-lowest); border: 1.5px solid {% if date_to %}var(--primary){% else %}var(--outline-variant){% endif %}; border-radius: 12px; padding: 7px 14px; font-size: 0.82rem; font-weight: 700; color: var(--on-surface); outline: none; transition: border-color 0.2s; font-family: inherit; box-sizing: border-box;">
+                                    </div>
+                                </div>
+
+                            </div><!-- /Filter Fields Grid -->
+
+                            <!-- Filter Footer: Results Summary -->
+                            {% if query or current_specialty or current_status or current_balance or current_voucher or current_company or date_from or date_to %}
+                            <div style="padding: 10px 20px; background: rgba(0,83,83,0.03); border-top: 1px solid var(--outline-variant); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                                <span style="font-size: 0.78rem; font-weight: 700; color: var(--primary);">
+                                    <i class="fa-solid fa-magnifying-glass" style="margin-left: 6px; opacity: 0.7;"></i>
+                                    {% trans 'نتائج الفلتر:' %} <strong>{{ page_obj.paginator.count }}</strong> {% trans 'طبيب' %}
+                                </span>
+                                <a href="{% url 'custom_doctors' %}"
+                                   style="background: rgba(239,68,68,0.08); color: #ef4444; padding: 5px 14px; border-radius: 20px; font-size: 0.72rem; font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 5px; transition: all 0.2s;"
+                                   onmouseover="this.style.background='rgba(239,68,68,0.15)'" onmouseout="this.style.background='rgba(239,68,68,0.08)'">
+                                    <i class="fa-solid fa-rotate-left"></i> {% trans 'إعادة تعيين الفلاتر' %}
+                                </a>
+                            </div>
+                            {% endif %}
+
+                            <!-- Collapsible Script -->
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const hasActiveFilters = {% if current_specialty or current_status or current_balance or current_voucher or current_company or date_from or date_to %}true{% else %}false{% endif %};
+                                    const container = document.getElementById('filterFieldsContainer');
+                                    const chevron = document.getElementById('toggleFiltersChevron');
+                                    if (hasActiveFilters) {
+                                        container.style.display = 'grid';
+                                        chevron.style.transform = 'rotate(180deg)';
+                                    }
+                                });
+
+                                function toggleFiltersPanel() {
+                                    const container = document.getElementById('filterFieldsContainer');
+                                    const chevron = document.getElementById('toggleFiltersChevron');
+                                    if (container.style.display === 'none') {
+                                        container.style.display = 'grid';
+                                        chevron.style.transform = 'rotate(180deg)';
+                                    } else {
+                                        container.style.display = 'none';
+                                        chevron.style.transform = 'rotate(0deg)';
+                                    }
+                                }
+                            </script>
+
+                        </div><!-- /Filter Card -->
+                    </form>
+                </div><!-- /Filters Panel -->
+
+                {% if messages %}
+                <div style="margin-top: 20px;">
+                    {% for message in messages %}
+                    <div class="pos-card" style="padding: 10px 20px; margin-bottom: 10px; border-right: 4px solid {% if message.tags == 'success' %}var(--success){% else %}var(--danger){% endif %}; background: white;">
+                        <p class="label-md" style="margin: 0; color: var(--on-surface);">{{ message }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Bulk Actions Bar (Sticky/Floating) -->
+                <div id="bulkActionsBar" style="display: none;" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-white/80 backdrop-blur-xl border border-primary/20 shadow-2xl rounded-full px-8 py-4 z-50 flex items-center gap-6 animate-bounce-subtle">
+                    <div class="flex items-center gap-2 border-l border-stone-200 pl-6">
+                        <span class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-xs font-black" id="selectedCount">0</span>
+                        <span class="text-xs font-bold text-on-surface-variant">{% trans 'طبيب محدد' %}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="openBulkCouponModal()" class="flex items-center gap-2 px-4 py-2 bg-primary/5 text-primary rounded-xl text-xs font-bold hover:bg-primary/10 transition-all">
+                            <i class="fa-solid fa-ticket"></i> {% trans 'إضافة كوبونات' %}
+                        </button>
+                        <button onclick="executeBulkAction('print_cards')" class="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-xl text-xs font-bold hover:bg-blue-100 transition-all">
+                            <i class="fa-solid fa-print"></i> {% trans 'طباعة الكروت' %}
+                        </button>
+                        <button onclick="executeBulkAction('activate')" class="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-xl text-xs font-bold hover:bg-emerald-100 transition-all">
+                            <i class="fa-solid fa-user-check"></i> {% trans 'تفعيل' %}
+                        </button>
+                        <button onclick="executeBulkAction('deactivate')" class="flex items-center gap-2 px-4 py-2 bg-amber-50 text-amber-600 rounded-xl text-xs font-bold hover:bg-amber-100 transition-all">
+                            <i class="fa-solid fa-user-slash"></i> {% trans 'تعطيل' %}
+                        </button>
+                        <button onclick="executeBulkAction('delete')" class="flex items-center gap-2 px-4 py-2 bg-error/5 text-error rounded-xl text-xs font-bold hover:bg-error/10 transition-all">
+                            <i class="fa-solid fa-trash-can"></i> {% trans 'حذف' %}
+                        </button>
+                    </div>
+                    <button onclick="deselectAll()" class="text-xs font-bold text-stone-400 hover:text-on-surface transition-colors pr-4">{% trans 'إلغاء' %}</button>
+                </div>
+
+                <!-- Tabs -->
+                <div class="flex gap-4 mb-6 border-b border-stone-200" style="display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--outline-variant); direction: rtl;">
+                    <button type="button" class="px-6 py-3 font-bold text-sm transition-all" style="background: transparent; border: none; border-bottom: 2px solid var(--primary); padding: 12px 24px; cursor: pointer; color: var(--primary); font-family: inherit;" id="tabActiveBtn" onclick="switchTab('active')">
+                        دليل الأطباء ({{ page_obj.paginator.count|default:doctors.count }})
+                    </button>
+                    <button type="button" class="px-6 py-3 font-bold text-sm transition-all" style="background: transparent; border: none; border-bottom: 2px solid transparent; padding: 12px 24px; cursor: pointer; color: #787878; font-family: inherit;" id="tabArchiveBtn" onclick="switchTab('archive')">
+                        الأرشيف ({{ archived_doctors.count }})
+                    </button>
+                    <button type="button" class="px-6 py-3 font-bold text-sm transition-all" style="background: transparent; border: none; border-bottom: 2px solid transparent; padding: 12px 24px; cursor: pointer; color: #787878; font-family: inherit;" id="tabSpecialtiesBtn" onclick="switchTab('specialties')">
+                        إدارة التخصصات ({{ specialties.count }})
+                    </button>
+                </div>
+
+                <div id="activeDoctorsTab">
+                    <!-- Doctors Grid Mode -->
+                    <div class="flex items-center gap-3 mb-6 bg-white p-4 rounded-2xl border border-stone-100">
+                        <input type="checkbox" id="selectAllCheck" onchange="toggleSelectAll(this)" class="w-5 h-5 rounded border-stone-300 text-primary focus:ring-primary transition-all cursor-pointer">
+                        <label for="selectAllCheck" class="text-xs font-black text-on-surface-variant cursor-pointer">{% trans 'تحديد كافة الأطباء في هذه الصفحة' %}</label>
+                    </div>
+
+                    <div class="doctors-grid">
+                        {% for doctor in doctors %}
+                        <div class="doctor-card relative group">
+                            <!-- Selection & Specialty Area -->
+                            <div class="absolute top-4 left-4 z-10 flex items-center gap-3">
+                                {% if doctor.specialty %}
+                                <span class="label-md" style="background: var(--primary-container); color: white; padding: 4px 10px; border-radius: var(--radius-sm); font-weight: 800; font-size: 10px;">{{ doctor.specialty.name }}</span>
+                                {% endif %}
+                                <input type="checkbox" name="doctor_ids" value="{{ doctor.id }}" onchange="updateSelection()" class="doctor-check w-6 h-6 rounded-lg border-stone-200 text-primary focus:ring-primary transition-all cursor-pointer shadow-sm">
+                            </div>
+
+                            <div class="flex items-center gap-4 pt-10 mb-2 cursor-pointer" onclick="window.location.href='{% url 'custom_doctor_profile' pk=doctor.pk %}';">
+                                <div class="avatar shrink-0 shadow-sm border-2 border-white">
+                                    <img src="{{ doctor.get_avatar_url }}" style="width:100%; height:100%; border-radius:50%; object-fit: cover;">
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="title-md truncate" style="margin: 0; color: var(--primary); font-weight: 800;">{{ doctor.name }}</h3>
+                                    <p class="label-md num-font" style="margin: 0;" dir="ltr">{{ doctor.phone }}</p>
+                                    {% if not doctor.user.is_active %}
+                                    <span class="bg-stone-100 text-stone-400 text-[8px] font-black px-2 py-1 rounded uppercase mt-1 inline-block">{% trans 'غير نشط' %}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div style="border-top: 1px dashed var(--surface-container); padding-top: 10px; margin-top: 5px;">
+                                <span class="label-md">{% trans 'الرصيد المتاح ' %}</span>
+                                <div class="title-md num-font" style="color: {% if doctor.total_balance > 0 %}var(--primary){% else %}var(--danger){% endif %}; font-size: 1.5rem; font-weight: 700;">
+                                    {{ doctor.total_balance|default:0|floatformat:2 }}
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="btn btn-secondary flex-1" style="border-radius: var(--radius-md);" onclick="openQRModal('{{ doctor.name|escapejs }}', '{{ doctor.id }}', '{{ doctor.specialty.name|default:''|escapejs }}', '{{ doctor.phone|escapejs }}', '{{ doctor.get_avatar_url|escapejs }}', '{{ doctor.qr_code|default:''|escapejs }}')">
+                                    <i class="fa-solid fa-qrcode text-xs"></i> {% trans 'الهوية' %}
+                                </button>
+                                <a href="{% url 'custom_doctor_profile' pk=doctor.pk %}" class="btn bg-stone-50 text-stone-600 hover:bg-stone-100 flex-1 flex items-center justify-center gap-2 text-xs font-bold rounded-xl transition-all">
+                                    <i class="fa-solid fa-user-pen"></i> {% trans 'ملف' %}
+                                </a>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-span-full text-center py-20 bg-white rounded-3xl border-2 border-dashed border-stone-200">
+                            <i class="fa-solid fa-user-doctor-slash text-4xl text-stone-300 mb-4 block"></i>
+                            <p class="text-stone-500 font-bold">{% trans 'لا يوجد أطباء مسجلين حالياً يتطابقون مع بحثك.' %}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Pagination UI -->
+                    {% if page_obj.has_other_pages %}
+                    <div class="flex-row justify-center items-center mt-xxl gap-md">
+                        {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if current_specialty %}&specialty={{ current_specialty }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}" class="btn btn-secondary"><i class="fa-solid fa-chevron-right"></i> {% trans 'السابق' %}</a>
+                        {% endif %}
+                        
+                        <span class="label-md" style="font-weight: bold;">صفحة {{ page_obj.number }} من {{ page_obj.paginator.num_pages }}</span>
+                        
+                        {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if current_specialty %}&specialty={{ current_specialty }}{% endif %}{% if current_status %}&status={{ current_status }}{% endif %}" class="btn btn-secondary">{% trans 'التالي' %} <i class="fa-solid fa-chevron-left"></i></a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div id="archiveDoctorsTab" style="display: none;">
+                    <div class="doctors-grid">
+                        {% for doctor in archived_doctors %}
+                        <div class="doctor-card relative group opacity-75 hover:opacity-100">
+                            <div class="absolute top-4 left-4 z-10 flex items-center gap-3">
+                                {% if doctor.specialty %}
+                                <span class="label-md" style="background: var(--surface-container); color: var(--on-surface-variant); padding: 4px 10px; border-radius: var(--radius-sm); font-weight: 800; font-size: 10px;">{{ doctor.specialty.name }}</span>
+                                {% endif %}
+                                <span class="bg-error/10 text-error text-[10px] font-black px-2 py-1 rounded uppercase">{% trans 'محذوف / مؤرشف' %}</span>
+                            </div>
+
+                            <div class="flex items-center gap-4 pt-10 mb-2 cursor-pointer" onclick="window.location.href='{% url 'custom_doctor_profile' pk=doctor.pk %}';">
+                                <div class="avatar shrink-0 shadow-sm border-2 border-white grayscale">
+                                    <img src="{{ doctor.get_avatar_url }}" style="width:100%; height:100%; border-radius:50%; object-fit: cover;">
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="title-md truncate" style="margin: 0; color: var(--on-surface-variant); font-weight: 800;">{{ doctor.name }}</h3>
+                                    <p class="label-md num-font text-stone-400" style="margin: 0;" dir="ltr">{{ doctor.clean_phone }}</p>
+                                </div>
+                            </div>
+                            <div style="border-top: 1px dashed var(--surface-container); padding-top: 10px; margin-top: 5px;">
+                                <span class="label-md">{% trans 'إجمالي المبالغ المؤرشفة' %}</span>
+                                <div class="title-md num-font text-stone-500" style="font-size: 1.5rem; font-weight: 700;">
+                                    {{ doctor.total_balance|default:0|floatformat:2 }} 
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="{% url 'custom_doctor_profile' pk=doctor.pk %}" class="btn bg-stone-100 text-stone-600 hover:bg-stone-200 w-full flex items-center justify-center gap-2 text-xs font-bold rounded-xl transition-all">
+                                    <i class="fa-solid fa-clock-rotate-left"></i> {% trans 'عرض السجل التاريخي' %}
+                                </a>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-span-full text-center py-20 bg-white rounded-3xl border-2 border-dashed border-stone-200">
+                            <i class="fa-solid fa-box-archive text-4xl text-stone-300 mb-4 block"></i>
+                            <p class="text-stone-500 font-bold">{% trans 'سجل الأرشيف فارغ. لا توجد حسابات محذوفة.' %}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Tab 3: Specialties Tab -->
+                <div id="specialtiesTab" style="display: none; direction: rtl;">
+                    <div class="flex-row justify-between items-center" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 class="title-lg" style="margin: 0; font-weight: 900; color: var(--primary);">{% trans 'التخصصات الطبية المتوفرة' %}</h2>
+                        <button class="btn btn-primary" onclick="openModal('addSpecialtyModal')" style="border-radius: var(--radius-full); font-weight: bold;">
+                            <i class="fa-solid fa-plus"></i> {% trans 'إضافة تخصص جديد' %}
+                        </button>
+                    </div>
+
+                    <div class="doctors-grid" style="margin-top: 20px;">
+                        {% for spec in specialties %}
+                        <div class="doctor-card" style="padding: 20px; display: flex; flex-direction: column; justify-content: space-between; min-height: 180px; border: 1px solid var(--outline-variant); border-radius: var(--radius-xl); background: var(--surface-container-lowest);">
+                            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                                <div class="avatar" style="width: 45px; height: 45px; font-size: 1.2rem; background: rgba(0, 83, 83, 0.08); color: var(--primary); display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                                    <i class="fa-solid fa-stethoscope"></i>
+                                </div>
+                                <div style="flex: 1; min-w-0;">
+                                    <h3 class="title-md truncate" style="margin: 0; font-weight: 800; color: var(--primary); font-size: 1.1rem;">{{ spec.name }}</h3>
+                                </div>
+                            </div>
+                            
+                            <div style="border-top: 1px dashed var(--outline-variant); padding-top: 12px; margin-top: auto; margin-bottom: 15px;">
+                                <span class="label-md" style="color: var(--on-surface-variant); font-size: 0.85rem; font-weight: bold; display: block; margin-bottom: 4px;">{% trans 'الأطباء المسجلين' %}</span>
+                                <div class="title-md num-font" style="color: var(--primary); font-size: 1.6rem; font-weight: 800; display: flex; align-items: baseline; gap: 6px;">
+                                    {{ spec.doctors_count|default:0 }} <span style="font-size: 0.9rem; font-weight: bold; color: #787878; font-family: inherit;">{% trans 'طبيب' %}</span>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; gap: 8px; width: 100%;">
+                                <button type="button" onclick="openEditSpecialtyModal('{{ spec.id }}', '{{ spec.name|escapejs }}')" class="btn bg-stone-100 text-stone-600 hover:bg-stone-200" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.8rem; font-weight: 800; padding: 10px; border-radius: var(--radius-md); border: none; cursor: pointer; transition: all 0.2s;" title="{% trans 'تعديل اسم التخصص' %}">
+                                    <i class="fa-solid fa-pen-to-square"></i> {% trans 'تعديل' %}
+                                </button>
+                                <button type="button" onclick="confirmDeleteSpecialty('{{ spec.id }}', '{{ spec.name|escapejs }}', '{{ spec.doctors_count|default:0 }}')" class="btn" style="background: rgba(211, 47, 47, 0.08); color: #d32f2f; border: none; cursor: pointer; flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 800; font-size: 0.8rem; padding: 10px; border-radius: var(--radius-md); transition: all 0.2s;" onmouseover="this.style.background='rgba(211, 47, 47, 0.15)'" onmouseout="this.style.background='rgba(211, 47, 47, 0.08)'" title="{% trans 'حذف التخصص' %}">
+                                    <i class="fa-solid fa-trash-can"></i> {% trans 'حذف' %}
+                                </button>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-span-full text-center py-20 bg-white rounded-3xl border-2 border-dashed border-stone-200" style="grid-column: 1 / -1; width: 100%;">
+                            <i class="fa-solid fa-folder-open text-4xl text-stone-300 mb-4 block" style="margin: 0 auto 15px auto;"></i>
+                            <p class="text-stone-500 font-bold">{% trans 'لا يوجد أي تخصص طبي مضاف حالياً.' %}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+    </div>
+
+    <!-- Add Doctor Modal -->
+    <div class="glass-overlay" id="addDoctorModal">
+        <div class="qr-modal" style="max-width: 500px; text-align: right;">
+            <button class="close-btn" onclick="closeModal('addDoctorModal')"><i class="fa-solid fa-xmark"></i></button>
+            <h2 class="headline-sm" style="margin-bottom: 20px; color: var(--primary);">{% trans 'إضافة طبيب جديد للمنظومة' %}</h2>
+            
+            <form action="{% url 'custom_doctors' %}" method="post" style="display: flex; flex-direction: column; gap: 15px;">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="add_doctor">
+                <div class="flex-row gap-md">
+                    <div style="flex: 1;">
+                        <label class="label-md">{% trans 'الاسم الكامل' %}</label>
+                        <input type="text" name="name" class="w-full bg-stone-50 border border-stone-200 text-stone-600 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" required>
+                    </div>
+                    <div style="flex: 1;">
+                        <label class="label-md">{% trans 'رقم الهاتف' %}</label>
+                        <input type="tel" name="phone" class="w-full bg-stone-50 border border-stone-200 text-stone-600 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all num-font" required dir="ltr">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="label-md">{% trans 'البريد الإلكتروني' %}</label>
+                    <input type="email" name="email" class="w-full bg-stone-50 border border-stone-200 text-stone-600 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" required dir="ltr">
+                </div>
+
+                <div class="flex-row gap-md">
+                    <div style="flex: 1;">
+                        <label class="label-md">{% trans 'التخصص' %}</label>
+                        <select name="specialty" class="w-full bg-stone-50 border border-stone-200 text-stone-600 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all cursor-pointer">
+                            <option value="">{% trans 'اختر التخصص...' %}</option>
+                            {% for spec in specialties %}
+                            <option value="{{ spec.id }}">{{ spec.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label class="label-md">{% trans 'اسم المستخدم (Login)' %}</label>
+                        <input type="text" name="username" class="w-full bg-stone-50 border border-stone-200 text-stone-600 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" required dir="ltr">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="label-md">{% trans 'كلمة المرور المؤقتة' %}</label>
+                    <input type="password" name="password" class="w-full bg-stone-50 border border-stone-200 text-stone-600 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" required dir="ltr">
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="margin-top: 10px; width: 100%;">
+                    <i class="fa-solid fa-user-plus"></i> {% trans 'اعتماد وإضافة الطبيب' %}
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="glass-overlay" id="qrOverlay">
+        <div class="qr-modal" style="max-width: 400px; background: white;">
+            <button class="close-btn" onclick="closeQRModal()"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="flex flex-col items-center">
+                <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4 text-primary text-2xl">
+                    <i class="fa-solid fa-qrcode"></i>
+                </div>
+                <h2 class="headline-sm text-primary mb-1" id="modalDoctorName">{% trans 'اسم الطبيب' %}</h2>
+                <p class="text-xs font-bold text-stone-400 mb-6 uppercase tracking-widest" id="modalDoctorId">ID-123</p>
+                
+                <div id="qrcode-canvas" class="w-full flex justify-center bg-white p-6 rounded-3xl border-2 border-dashed border-stone-200 shadow-sm mb-8">
+                    <!-- QR Code generated here -->
+                </div>
+
+                <button class="btn btn-primary w-full" style="padding: 1.25rem; border-radius: 1.5rem; font-size: 1rem;" onclick="window.print()">
+                    <i class="fa-solid fa-print"></i> {% trans 'طباعة كارت الهوية' %}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Specialty Modal -->
+    <div class="glass-overlay" id="addSpecialtyModal">
+        <div class="qr-modal" style="max-width: 450px; text-align: right; background: white;">
+            <button class="close-btn" onclick="closeModal('addSpecialtyModal')"><i class="fa-solid fa-xmark"></i></button>
+            <h2 class="headline-sm" style="margin-bottom: 20px; color: var(--primary);">{% trans 'إضافة تخصص جديد' %}</h2>
+            
+            <form action="{% url 'custom_doctors' %}" method="post" style="display: flex; flex-direction: column; gap: 15px;">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="add_specialty">
+                <div>
+                    <label class="label-md" style="font-weight: bold; margin-bottom: 8px; display: block;">{% trans 'اسم التخصص الطبي' %} <span style="color:red;">*</span></label>
+                    <input type="text" name="name" class="w-full bg-stone-50 border border-stone-200 text-stone-600 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" required placeholder="{% trans 'مثال: نساء وتوليد، قلب وأوعية دموية...' %}">
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="margin-top: 10px; width: 100%;">
+                    <i class="fa-solid fa-plus"></i> {% trans 'إضافة التخصص' %}
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Specialty Modal -->
+    <div class="glass-overlay" id="editSpecialtyModal">
+        <div class="qr-modal" style="max-width: 450px; text-align: right; background: white;">
+            <button class="close-btn" onclick="closeModal('editSpecialtyModal')"><i class="fa-solid fa-xmark"></i></button>
+            <h2 class="headline-sm" style="margin-bottom: 20px; color: var(--primary);">{% trans 'تعديل التخصص الطبي' %}</h2>
+            
+            <form action="{% url 'custom_doctors' %}" method="post" style="display: flex; flex-direction: column; gap: 15px;">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="edit_specialty">
+                <input type="hidden" name="specialty_id" id="editSpecialtyId">
+                <div>
+                    <label class="label-md" style="font-weight: bold; margin-bottom: 8px; display: block;">{% trans 'اسم التخصص الطبي' %} <span style="color:red;">*</span></label>
+                    <input type="text" name="name" id="editSpecialtyName" class="w-full bg-stone-50 border border-stone-200 text-stone-600 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="margin-top: 10px; width: 100%;">
+                    <i class="fa-solid fa-check"></i> {% trans 'حفظ التعديلات' %}
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Specialty Form -->
+    <form id="deleteSpecialtyForm" action="{% url 'custom_doctors' %}" method="post" style="display: none;">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete_specialty">
+        <input type="hidden" name="specialty_id" id="deleteSpecialtyId">
+    </form>
+
+    <!-- Bulk Coupon Modal -->
+    <div class="glass-overlay" id="bulkCouponModal">
+        <div class="qr-modal" style="max-width: 500px; text-align: right;">
+            <button class="close-btn" onclick="closeModal('bulkCouponModal')"><i class="fa-solid fa-xmark"></i></button>
+            <h2 class="headline-sm" style="margin-bottom: 10px; color: var(--primary);">{% trans 'إصدار قسائم جماعية' %}</h2>
+            <p class="label-md mb-6">{% trans 'سيتم إصدار قسيمة جديدة لكافة الأطباء المحددين (' %}<span id="modalSelectedCount">0</span> {% trans 'طبيب).' %}</p>
+            
+            <form id="bulkActionForm" action="{% url 'custom_doctors' %}" method="post" style="display: flex; flex-direction: column; gap: 15px;">
+                {% csrf_token %}
+                <input type="hidden" name="action" id="bulkFormAction" value="bulk_add_voucher">
+                <div id="hiddenDoctorIds"></div>
+
+                <div>
+                    <label class="label-md">{% trans 'قيمة القسيمة ' %}</label>
+                    <input type="number" name="initial_value" class="w-full bg-stone-50 border border-stone-200 text-stone-600 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all num-font" required placeholder="{% trans 'مثال: 500' %}" dir="ltr">
+                </div>
+                
+                <div>
+                    <label class="label-md">{% trans 'الشركة الدوائية (اختياري)' %}</label>
+                    <select name="company" class="w-full bg-stone-50 border border-stone-200 text-stone-600 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all cursor-pointer">
+                        <option value="">{% trans '-- اختر الشركة --' %}</option>
+                        {% for company in companies_list %}
+                        <option value="{{ company.id }}">{{ company.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label class="label-md">{% trans 'تاريخ الانتهاء' %}</label>
+                    <input type="date" name="expiry_date" class="w-full bg-stone-50 border border-stone-200 text-stone-600 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all num-font" required>
+                </div>
+
+                <div>
+                    <label class="label-md">{% trans 'ملاحظات' %}</label>
+                    <textarea name="notes" class="w-full bg-stone-50 border border-stone-200 text-stone-600 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none" rows="2" placeholder="{% trans 'أي ملاحظات إضافية بخصوص القسائم...' %}"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="margin-top: 10px; width: 100%;">
+                    <i class="fa-solid fa-paper-plane"></i> {% trans 'إصدار القسائم الآن' %}
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hidden Bulk Action Form -->
+    <form id="simpleBulkForm" action="{% url 'custom_doctors' %}" method="post" style="display: none;">
+        {% csrf_token %}
+        <input type="hidden" name="action" id="simpleAction">
+        <div id="simpleHiddenIds"></div>
+    </form>
+    <!-- Hidden Print Component (Visible only when printing) -->
+    <div class="hidden-on-screen">
+        <div id="doctorPrintCard" dir="rtl" style="font-family: 'IBM Plex Sans Arabic', sans-serif;">
+            {% include 'custom_admin/includes/doctor_id_card_component.html' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        let qrCodeObj = null;
+
+        function updateSelection() {
+            const checks = document.querySelectorAll('.doctor-check:checked');
+            const bar = document.getElementById('bulkActionsBar');
+            const countEl = document.getElementById('selectedCount');
+            
+            if (checks.length > 0) {
+                bar.style.display = 'flex';
+                countEl.innerText = checks.length;
+            } else {
+                bar.style.display = 'none';
+            }
+        }
+
+        function toggleSelectAll(master) {
+            const checks = document.querySelectorAll('.doctor-check');
+            checks.forEach(c => c.checked = master.checked);
+            updateSelection();
+        }
+
+        function deselectAll() {
+            document.getElementById('selectAllCheck').checked = false;
+            toggleSelectAll(document.getElementById('selectAllCheck'));
+        }
+
+        function getSelectedIds() {
+            return Array.from(document.querySelectorAll('.doctor-check:checked')).map(c => c.value);
+        }
+
+        function openBulkCouponModal() {
+            const ids = getSelectedIds();
+            const container = document.getElementById('hiddenDoctorIds');
+            container.innerHTML = '';
+            ids.forEach(id => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'doctor_ids';
+                input.value = id;
+                container.appendChild(input);
+            });
+            document.getElementById('modalSelectedCount').innerText = ids.length;
+            openModal('bulkCouponModal');
+        }
+
+        function executeBulkAction(action) {
+            const ids = getSelectedIds();
+            const actionNames = {
+                'delete': 'حذف',
+                'activate': 'تفعيل',
+                'deactivate': 'تعطيل',
+                'print_cards': 'طباعة كروت'
+            };
+            
+            if (action !== 'print_cards' && !confirm(`هل أنت متأكد من ${actionNames[action]} لعدد ${ids.length} طبيب؟`)) return;
+
+            const form = document.getElementById('simpleBulkForm');
+            const actionInput = document.getElementById('simpleAction');
+            const container = document.getElementById('simpleHiddenIds');
+            
+            if (action === 'print_cards') {
+                form.target = '_blank';
+            } else {
+                form.target = '_self';
+            }
+
+            actionInput.value = `bulk_${action}`;
+            container.innerHTML = '';
+            ids.forEach(id => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'doctor_ids';
+                input.value = id;
+                container.appendChild(input);
+            });
+            
+            form.submit();
+        }
+
+        // Modal & QR Logic
+        // Modal & QR Logic
+        function openQRModal(doctorName, qrContent, specialtyName, phone, avatarUrl, id) {
+            document.getElementById('modalDoctorName').innerText = doctorName;
+            
+            // Build the absolute URL for the QR code
+            const baseUrl = window.location.origin;
+            const finalQrContent = qrContent.startsWith('http') ? qrContent : baseUrl + qrContent;
+            
+            const qrContainer = document.getElementById("qrcode-canvas");
+            qrContainer.innerHTML = "";
+            new QRCode(qrContainer, {
+                text: finalQrContent,
+                width: 200, height: 200,
+                colorDark : "#005353", colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+
+            // Hidden Print Card
+            document.getElementById('printName').innerText = doctorName;
+            document.getElementById('printSpecialty').innerText = specialtyName || 'ممارس عام';
+            document.getElementById('printPhone').innerText = phone || '';
+            if (avatarUrl && avatarUrl !== 'None' && avatarUrl !== '') {
+                document.getElementById('printAvatarContainer').innerHTML = `<img src="${avatarUrl}" class="w-full h-full object-cover">`;
+            } else {
+                document.getElementById('printAvatarContainer').innerHTML = `<i class="fa-solid fa-user-md text-[42px] text-[#005050]"></i>`;
+            }
+
+            const printQRContainer = document.getElementById("printQR");
+            printQRContainer.innerHTML = "";
+            new QRCode(printQRContainer, {
+                text: finalQrContent,
+                width: 150, height: 150,
+                colorDark : "#005050", colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+
+            openModal('qrOverlay');
+        }
+
+        function closeQRModal() {
+            closeModal('qrOverlay');
+        }
+
+        // Close when clicking outside of modal card
+        document.querySelectorAll('.glass-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                if(e.target === this) {
+                    closeModal(this.id);
+                }
+            });
+        });
+
+        // Load SweetAlert2
+        const swalScript = document.createElement('script');
+        swalScript.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+        document.head.appendChild(swalScript);
+
+        function switchTab(tab) {
+            localStorage.setItem('activeDoctorsTab', tab);
+            
+            const activeTab = document.getElementById('activeDoctorsTab');
+            const archiveTab = document.getElementById('archiveDoctorsTab');
+            const archiveTabEl = document.getElementById('archiveDoctorsTab');
+            const specialtiesTab = document.getElementById('specialtiesTab');
+            
+            const btnActive = document.getElementById('tabActiveBtn');
+            const btnArchive = document.getElementById('tabArchiveBtn');
+            const btnSpecialties = document.getElementById('tabSpecialtiesBtn');
+            
+            if (tab === 'active') {
+                if (activeTab) activeTab.style.display = 'block';
+                if (archiveTabEl) archiveTabEl.style.display = 'none';
+                if (specialtiesTab) specialtiesTab.style.display = 'none';
+                
+                btnActive.style.borderBottom = '2px solid var(--primary)';
+                btnActive.style.color = 'var(--primary)';
+                btnArchive.style.borderBottom = '2px solid transparent';
+                btnArchive.style.color = '#787878';
+                btnSpecialties.style.borderBottom = '2px solid transparent';
+                btnSpecialties.style.color = '#787878';
+            } else if (tab === 'archive') {
+                if (activeTab) activeTab.style.display = 'none';
+                if (archiveTabEl) archiveTabEl.style.display = 'block';
+                if (specialtiesTab) specialtiesTab.style.display = 'none';
+                
+                btnActive.style.borderBottom = '2px solid transparent';
+                btnActive.style.color = '#787878';
+                btnArchive.style.borderBottom = '2px solid var(--primary)';
+                btnArchive.style.color = 'var(--primary)';
+                btnSpecialties.style.borderBottom = '2px solid transparent';
+                btnSpecialties.style.color = '#787878';
+            } else {
+                if (activeTab) activeTab.style.display = 'none';
+                if (archiveTabEl) archiveTabEl.style.display = 'none';
+                if (specialtiesTab) specialtiesTab.style.display = 'block';
+                
+                btnActive.style.borderBottom = '2px solid transparent';
+                btnActive.style.color = '#787878';
+                btnArchive.style.borderBottom = '2px solid transparent';
+                btnArchive.style.color = '#787878';
+                btnSpecialties.style.borderBottom = '2px solid var(--primary)';
+                btnSpecialties.style.color = 'var(--primary)';
+            }
+        }
+
+        // Restore active tab on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTab = localStorage.getItem('activeDoctorsTab') || 'active';
+            switchTab(savedTab);
+        });
+
+        function openEditSpecialtyModal(id, name) {
+            document.getElementById('editSpecialtyId').value = id;
+            document.getElementById('editSpecialtyName').value = name;
+            openModal('editSpecialtyModal');
+        }
+
+        function confirmDeleteSpecialty(id, name, count) {
+            let msg = `هل أنت متأكد من رغبتك في حذف تخصص '${name}'؟`;
+            if (parseInt(count) > 0) {
+                msg += `\nتنبيه: يوجد عدد (${count}) طبيب مسجلين تحت هذا التخصص. سيتم إلغاء تخصصهم (ممارس عام).`;
+            }
+            
+            Swal.fire({
+                title: 'تأكيد الحذف!',
+                text: msg,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'نعم، احذف',
+                cancelButtonText: 'إلغاء'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('deleteSpecialtyId').value = id;
+                    document.getElementById('deleteSpecialtyForm').submit();
+                }
+            });
+        }
+    </script>
+
+    {% if duplicate_doc_id %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                Swal.fire({
+                    title: 'حساب مسجل مسبقاً!',
+                    text: 'عذراً، البيانات التي أدخلتها (اسم المستخدم، أو الهاتف، أو البريد) مسجلة بالفعل باسم الطبيب: {{ duplicate_doc_name }}',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#005050',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'الانتقال لملف الطبيب',
+                    cancelButtonText: 'إلغاء'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "{% url 'custom_doctor_profile' pk=duplicate_doc_id %}";
+                    }
+                });
+            }, 500);
+        });
+    </script>
+    {% endif %}
+
+{% endblock %}

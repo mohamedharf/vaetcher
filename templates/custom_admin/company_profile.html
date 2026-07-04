@@ -1,0 +1,399 @@
+{% extends 'custom_admin/dashboard_base.html' %}
+{% load i18n %}
+
+{% block title %}إدارة الشركة | {{ company.clean_name }} | {{ global_system_vendor.name|default:'النظام' }}{% endblock %}
+
+{% block sidebar %}
+    {% include 'custom_admin/includes/sidebar.html' with active_page='companies' %}
+{% endblock %}
+
+{% block main_style %}class="main-workspace overflow-y-auto px-6 py-10 md:px-12"{% endblock %}
+
+{% block content %}
+<div class="max-w-[1400px] mx-auto">
+    
+    <!-- Back Button -->
+    <div class="mb-6">
+        <a href="{% url 'custom_companies' %}" class="inline-flex items-center gap-3 text-stone-400 hover:text-primary transition-all font-bold text-sm">
+            <i class="fa-solid fa-arrow-right"></i> {% trans 'العودة لدليل الشركات والمناديب' %}
+        </a>
+    </div>
+
+    <!-- Header Profile Card -->
+    <section class="bg-white rounded-[2.5rem] p-8 md:p-10 mb-8 flex flex-col lg:flex-row justify-between items-center gap-10 shadow-sm border border-stone-100 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-32 h-32 bg-primary/5 rounded-br-[100px]"></div>
+        
+        <div class="flex flex-col md:flex-row items-center gap-8 z-10 w-full lg:w-auto">
+            <div class="relative">
+                <div class="w-32 h-32 rounded-[2.2rem] bg-stone-50 p-1 shadow-inner border border-stone-100 overflow-hidden flex items-center justify-center">
+                    <i class="fa-solid fa-building text-6xl text-primary/30"></i>
+                </div>
+                <div class="absolute -bottom-2 -right-2 w-10 h-10 rounded-2xl bg-white shadow-lg flex items-center justify-center border border-stone-50">
+                    {% if company.user and company.user.is_active %}
+                    <i class="fa-solid fa-circle-check text-success"></i>
+                    {% else %}
+                    <i class="fa-solid fa-circle-xmark text-error"></i>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="text-center md:text-right">
+                <h1 class="text-3xl md:text-4xl font-black text-primary mb-2">
+                    {{ company.clean_name }}
+                    {% if company.is_deleted %}
+                    <span class="inline-block align-middle mr-2 bg-error/10 text-error text-xs px-3 py-1 rounded-full font-black uppercase">{% trans 'محذوف' %}</span>
+                    {% endif %}
+                </h1>
+                <div class="flex flex-wrap items-center justify-center md:justify-start gap-3">
+                    <span class="bg-primary/5 text-primary text-xs px-4 py-1.5 rounded-full font-black border border-primary/10">جهة الاتصال: {{ company.contact_person }}</span>
+                    <span class="bg-stone-100 text-stone-500 text-xs px-4 py-1.5 rounded-full font-bold">تاريخ الانضمام: {{ company.created_at|date:"Y/m/d" }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-3 w-full lg:w-72 z-10">
+            <div class="flex items-center gap-4 bg-stone-50 p-4 rounded-2xl border border-stone-100">
+                <i class="fa-solid fa-envelope text-primary opacity-50"></i>
+                <span class="text-xs font-bold text-stone-600 truncate">{{ company.clean_email }}</span>
+            </div>
+            <div class="flex items-center gap-4 bg-stone-50 p-4 rounded-2xl border border-stone-100">
+                <i class="fa-solid fa-phone text-primary opacity-50"></i>
+                <span class="text-xs font-bold text-stone-600" dir="ltr">{{ company.phone }}</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Financial Overview (Sponsorships) -->
+    <div class="grid grid-cols-1 gap-8 mb-8">
+        <div class="bg-[#004d4d] rounded-[3rem] p-10 text-white relative overflow-hidden shadow-2xl border border-white/5">
+            <div class="absolute -right-10 -top-10 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+            
+            <div class="relative z-10">
+                <div class="flex flex-col lg:flex-row justify-between items-start gap-10 mb-10">
+                    <div>
+                        <p class="text-white/40 text-[9px] font-black uppercase tracking-[0.4em] mb-4">{% trans 'إجمالي قيمة الرعايات والقسائم' %}</p>
+                        <div class="flex items-baseline gap-4">
+                            <h2 class="text-6xl md:text-7xl font-black tracking-tighter" dir="ltr">{{ total_sponsored_amount|floatformat:2 }}</h2>
+                            <span class="text-xl font-black opacity-30"></span>
+                        </div>
+                    </div>
+                    {% if not company.user %}
+                    <div class="bg-amber-500/20 border border-amber-500/50 px-6 py-4 rounded-2xl flex items-center gap-3 backdrop-blur-md">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-500 text-2xl"></i>
+                        <div>
+                            <p class="text-amber-500 font-black text-sm">{% trans 'لم يتم إنشاء حساب دخول (Login) لهذه الشركة' %}</p>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="bg-white/10 border border-white/10 px-6 py-4 rounded-2xl flex items-center gap-3 backdrop-blur-md">
+                        <i class="fa-solid fa-right-to-bracket text-white/50 text-2xl"></i>
+                        <div>
+                            <p class="text-white font-black text-sm mb-1">حساب الدخول: {{ company.user.username }}</p>
+                            {% if company.user.is_active %}
+                            <span class="bg-emerald-500/20 text-emerald-300 text-[10px] px-2 py-1 rounded font-black uppercase">{% trans 'نشط ومفعل' %}</span>
+                            {% else %}
+                            <span class="bg-error/20 text-error-light text-[10px] px-2 py-1 rounded font-black uppercase text-rose-300">{% trans 'موقوف / غير نشط' %}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% if not company.is_deleted %}
+                <div class="flex flex-wrap gap-3 mb-10">
+                    <button onclick="openModal('manageAssociationsModal')" class="bg-white text-[#004d4d] px-6 py-4 rounded-2xl font-black text-xs shadow-xl hover:-translate-y-1 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-link"></i> {% trans 'إدارة الارتباطات والتخصصات' %}
+                    </button>
+                    <button onclick="openModal('editProfileModal')" class="bg-white/10 hover:bg-white/20 border border-white/10 px-6 py-4 rounded-2xl font-black text-xs transition-all backdrop-blur-md flex items-center gap-2">
+                        <i class="fa-solid fa-pen"></i> {% trans 'تعديل البيانات' %}
+                    </button>
+                    <button onclick="openModal('passwordModal')" class="bg-white/10 hover:bg-white/20 border border-white/10 px-6 py-4 rounded-2xl font-black text-xs transition-all backdrop-blur-md flex items-center gap-2">
+                        <i class="fa-solid fa-key"></i> {% trans 'الأمان وكلمة المرور' %}
+                    </button>
+                    {% if company.user %}
+                    <form action="" method="post" class="inline m-0">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="toggle_status">
+                        <button type="submit" class="bg-white/10 hover:bg-white/20 border border-white/10 px-6 py-4 rounded-2xl font-black text-xs transition-all backdrop-blur-md flex items-center gap-2 {% if not company.user.is_active %}!text-emerald-400 !border-emerald-400/30 hover:!bg-emerald-400/10{% else %}!text-rose-400 !border-rose-400/30 hover:!bg-rose-400/10{% endif %}">
+                            {% if company.user.is_active %}
+                            <i class="fa-solid fa-user-slash"></i> إيقاف الحساب
+                            {% else %}
+                            <i class="fa-solid fa-user-check"></i> تنشيط الحساب
+                            {% endif %}
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <div class="bg-black/20 rounded-3xl p-6 border border-white/5 backdrop-blur-md">
+                    <div class="flex justify-between mt-2 flex-wrap gap-4">
+                        <div class="text-center flex-1 border-l border-white/10">
+                            <p class="text-[8px] text-white/30 font-black uppercase">{% trans 'الرصيد المتبقي للأطباء' %}</p>
+                            <p class="text-lg font-black text-emerald-400 mt-1">{{ total_current_balance|floatformat:2 }}</p>
+                        </div>
+                        <div class="text-center flex-1 border-l border-white/10">
+                            <p class="text-[8px] text-white/30 font-black uppercase">{% trans 'الرصيد المستهلك فعلياً' %}</p>
+                            <p class="text-lg font-black text-white mt-1">{{ total_spent_amount|floatformat:2 }}</p>
+                        </div>
+                        <div class="text-center flex-1 border-l border-white/10">
+                            <p class="text-[8px] text-white/30 font-black uppercase">{% trans 'إجمالي المسدد للإدارة' %}</p>
+                            <p class="text-lg font-black text-blue-400 mt-1">{{ total_settled_amount|floatformat:2 }}</p>
+                        </div>
+                        <div class="text-center flex-1 border-l border-white/10">
+                            <p class="text-[8px] text-white/30 font-black uppercase">{% trans 'المستحق على الشركة' %}</p>
+                            <p class="text-lg font-black text-amber-400 mt-1">{{ net_due_balance|floatformat:2 }}</p>
+                        </div>
+                        <div class="text-center flex-1">
+                            <p class="text-[8px] text-white/30 font-black uppercase">{% trans 'عدد القسائم المصدرة' %}</p>
+                            <p class="text-lg font-black text-white mt-1">{{ vouchers.count }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Breakdown by direct vs delegates -->
+                <div class="mt-4 bg-white/5 rounded-2xl p-4 border border-white/10">
+                    <h4 class="text-xs font-black text-white/70 mb-3"><i class="fa-solid fa-chart-pie ml-1"></i> تفصيل الاستهلاك المستحق حسب المندوب:</h4>
+                    <div class="flex flex-wrap gap-3">
+                        {% if direct_spent_amount > 0 %}
+                        <span class="bg-white/10 text-white text-[10px] px-3 py-1.5 rounded-xl font-bold border border-white/20">
+                            مباشر من الشركة: <span class="text-amber-400 font-black ml-1">{{ direct_spent_amount|floatformat:2 }}</span>
+                        </span>
+                        {% endif %}
+                        
+                        {% for breakdown in delegate_breakdowns %}
+                        <span class="bg-white/10 text-white text-[10px] px-3 py-1.5 rounded-xl font-bold border border-white/20">
+                            {{ breakdown.delegate.name }}: <span class="text-amber-400 font-black ml-1">{{ breakdown.spent_amount|floatformat:2 }}</span>
+                        </span>
+                        {% endfor %}
+                        
+                        {% if not delegate_breakdowns and direct_spent_amount == 0 %}
+                        <span class="text-white/40 text-[10px] font-bold">لا يوجد استهلاك حتى الآن.</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Sections (Delegates & Vouchers) -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- Delegates & Specialties -->
+        <div class="flex flex-col gap-8">
+            <!-- Delegates List -->
+            <div class="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-sm">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-black text-stone-800 flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center"><i class="fa-solid fa-user-tie"></i></div>
+                        {% trans 'مناديب الشركة' %}
+                    </h2>
+                    <span class="bg-stone-100 text-stone-500 px-3 py-1 rounded-full text-xs font-bold">{{ delegates.count }} مندوب</span>
+                </div>
+                
+                <div class="flex flex-col gap-4">
+                    {% for delegate in delegates %}
+                    <div class="p-4 border border-stone-100 rounded-2xl hover:border-emerald-200 hover:bg-emerald-50/50 transition-all flex items-center justify-between group">
+                        <a href="{% url 'custom_delegate_profile' delegate.id %}" class="flex-1 cursor-pointer">
+                            <h4 class="font-black text-stone-800 group-hover:text-emerald-600 transition-colors">{{ delegate.name }}</h4>
+                            <p class="text-[10px] font-bold text-stone-400 mt-1" dir="ltr"><i class="fa-solid fa-phone mr-1"></i> {{ delegate.phone }}</p>
+                        </a>
+                        <div class="flex items-center gap-2">
+                            {% if delegate.user %}
+                            <span class="bg-emerald-100 text-emerald-700 text-[10px] font-black px-2 py-1 rounded border border-emerald-200">{% trans 'حساب مفعل' %}</span>
+                            {% else %}
+                            <span class="bg-stone-100 text-stone-500 text-[10px] font-black px-2 py-1 rounded border border-stone-200">{% trans 'بدون حساب' %}</span>
+                            {% endif %}
+                            <a href="{% url 'admin_company_delegate_history' company.id delegate.id %}" class="bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors text-[10px] font-black px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-sm">
+                                <i class="fa-solid fa-clock-rotate-left"></i> {% trans 'السجل المشترك' %}
+                            </a>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-8">
+                        <p class="text-stone-400 font-bold text-sm">{% trans 'لا يوجد مناديب مسجلين باسم هذه الشركة.' %}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Specialties List -->
+            <div class="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-sm">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-black text-stone-800 flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center"><i class="fa-solid fa-stethoscope"></i></div>
+                        {% trans 'التخصصات الطبية المستهدفة' %}
+                    </h2>
+                    <span class="bg-stone-100 text-stone-500 px-3 py-1 rounded-full text-xs font-bold">{{ specialties.count }} تخصص</span>
+                </div>
+                
+                <div class="flex flex-wrap gap-3">
+                    {% for specialty in specialties %}
+                    <a href="{% url 'custom_doctors' %}?specialty={{ specialty.id }}" class="bg-sky-50/50 border border-sky-100 text-sky-700 px-4 py-2 rounded-xl font-black text-sm flex items-center gap-2 hover:bg-sky-100 hover:-translate-y-0.5 transition-all cursor-pointer">
+                        <i class="fa-solid fa-check text-sky-400"></i>
+                        {{ specialty.name }}
+                    </a>
+                    {% empty %}
+                    <div class="w-full text-center py-8 bg-stone-50 rounded-2xl border border-dashed border-stone-200">
+                        <i class="fa-solid fa-users text-stone-300 text-3xl mb-3"></i>
+                        <p class="text-stone-500 font-black text-sm">{% trans 'كافة التخصصات' %}</p>
+                        <p class="text-[10px] font-bold text-stone-400 mt-1">{% trans 'هذه الشركة تستهدف جميع الأطباء بمختلف تخصصاتهم.' %}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Vouchers List -->
+        <div class="bg-white rounded-[2rem] p-8 border border-stone-100 shadow-sm">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-lg font-black text-stone-800 flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center"><i class="fa-solid fa-ticket"></i></div>
+                    {% trans 'القسائم برعاية الشركة' %}
+                </h2>
+                <span class="bg-stone-100 text-stone-500 px-3 py-1 rounded-full text-xs font-bold">{{ vouchers.count }} قسيمة</span>
+            </div>
+            
+            <div class="flex flex-col gap-4 max-h-[400px] overflow-y-auto pr-2" style="scrollbar-width: thin;">
+                {% for voucher in vouchers %}
+                <div class="p-4 border border-stone-100 rounded-2xl hover:border-primary/20 hover:bg-primary/5 transition-all">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-user-doctor text-stone-400"></i>
+                            <span class="text-sm font-black text-stone-700">د. {{ voucher.doctor.name }}</span>
+                        </div>
+                        <span class="text-xs font-black bg-stone-100 px-2 py-1 rounded">{{ voucher.initial_value|floatformat:0 }} </span>
+                    </div>
+                    <div class="flex justify-between items-end mt-3 border-t border-stone-100 pt-3">
+                        <div>
+                            <p class="text-[10px] text-stone-400 font-bold">{% trans 'الرصيد المتبقي' %}</p>
+                            <p class="text-sm font-black {% if voucher.current_balance > 0 %}text-emerald-500{% else %}text-stone-400{% endif %}">{{ voucher.current_balance|floatformat:0 }} </p>
+                        </div>
+                        <p class="text-[10px] text-stone-400 font-bold">تاريخ الإصدار: {{ voucher.issue_date|date:"Y/m/d" }}</p>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-8">
+                    <p class="text-stone-400 font-bold text-sm">{% trans 'لم تقم الشركة برعاية أي قسائم حتى الآن.' %}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="glass-overlay" id="editProfileModal">
+    <div class="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-2xl relative overflow-hidden" style="text-align: right;">
+        <button class="absolute top-6 left-6 w-10 h-10 bg-stone-100 text-stone-400 hover:bg-stone-200 hover:text-stone-600 rounded-full transition-all flex items-center justify-center" onclick="closeModal('editProfileModal')"><i class="fa-solid fa-xmark"></i></button>
+        <h2 class="text-2xl font-black text-primary mb-6">{% trans 'تعديل بيانات الشركة' %}</h2>
+        
+        <form action="" method="post" class="flex flex-col gap-6">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="edit_profile">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-[10px] font-black text-stone-400 uppercase block mb-1">{% trans 'اسم الشركة' %}</label>
+                    <input type="text" name="name" value="{{ company.name }}" class="w-full bg-stone-50 border border-stone-200 text-stone-600 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" required>
+                </div>
+                <div>
+                    <label class="text-[10px] font-black text-stone-400 uppercase block mb-1">{% trans 'جهة الاتصال' %}</label>
+                    <input type="text" name="contact_person" value="{{ company.contact_person }}" class="w-full bg-stone-50 border border-stone-200 text-stone-600 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" required>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-[10px] font-black text-stone-400 uppercase block mb-1">{% trans 'البريد الإلكتروني' %}</label>
+                    <input type="email" name="email" value="{{ company.email }}" class="w-full bg-stone-50 border border-stone-200 text-stone-600 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" required dir="ltr">
+                </div>
+                <div>
+                    <label class="text-[10px] font-black text-stone-400 uppercase block mb-1">{% trans 'رقم الهاتف' %}</label>
+                    <input type="tel" name="phone" value="{{ company.phone }}" class="w-full bg-stone-50 border border-stone-200 text-stone-600 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all num-font" required dir="ltr">
+                </div>
+            </div>
+            
+            <div>
+                <label class="text-[10px] font-black text-stone-400 uppercase block mb-1">{% trans 'العنوان' %}</label>
+                <input type="text" name="address" value="{{ company.address }}" class="w-full bg-stone-50 border border-stone-200 text-stone-600 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" required>
+            </div>
+
+            <button type="submit" class="bg-primary text-white w-full py-4 rounded-xl font-black text-base shadow-xl hover:-translate-y-0.5 transition-all mt-4">
+                {% trans 'حفظ التعديلات' %}
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Password Modal -->
+<div class="glass-overlay" id="passwordModal">
+    <div class="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-sm relative overflow-hidden" style="text-align: right;">
+        <button class="absolute top-6 left-6 w-10 h-10 bg-stone-100 text-stone-400 hover:bg-stone-200 hover:text-stone-600 rounded-full transition-all flex items-center justify-center" onclick="closeModal('passwordModal')"><i class="fa-solid fa-xmark"></i></button>
+        <h2 class="text-xl font-black text-primary mb-6">{% trans 'تغيير كلمة المرور' %}</h2>
+        
+        <form action="" method="post" class="flex flex-col gap-6">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="change_password">
+            
+            <div>
+                <label class="text-[10px] font-black text-stone-400 uppercase block mb-1">{% trans 'كلمة المرور الجديدة' %}</label>
+                <input type="password" name="new_password" class="w-full bg-stone-50 border border-stone-200 text-stone-600 rounded-xl px-4 py-3 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" required dir="ltr" minlength="6">
+            </div>
+
+            <button type="submit" class="bg-primary text-white w-full py-4 rounded-xl font-black text-sm shadow-xl hover:-translate-y-0.5 transition-all">
+                {% trans 'تحديث كلمة المرور' %}
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Manage Associations Modal -->
+<div class="glass-overlay" id="manageAssociationsModal">
+    <div class="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-4xl relative overflow-hidden" style="text-align: right;">
+        <button class="absolute top-6 left-6 w-10 h-10 bg-stone-100 text-stone-400 hover:bg-stone-200 hover:text-stone-600 rounded-full transition-all flex items-center justify-center" onclick="closeModal('manageAssociationsModal')"><i class="fa-solid fa-xmark"></i></button>
+        <h2 class="text-2xl font-black text-primary mb-6">{% trans 'إدارة ارتباطات الشركة' %}</h2>
+        
+        <form action="" method="post" class="flex flex-col gap-8">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="manage_associations">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Delegates Selection -->
+                <div>
+                    <h3 class="font-black text-stone-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-users text-primary"></i> {% trans 'المناديب الممثلين للشركة' %}</h3>
+                    <div class="bg-stone-50 border border-stone-200 rounded-xl p-4 max-h-[300px] overflow-y-auto flex flex-col gap-2">
+                        {% for del in all_delegates %}
+                        <label class="flex items-center gap-3 p-3 bg-white border border-stone-100 rounded-lg cursor-pointer hover:border-primary/30 transition-all">
+                            <input type="checkbox" name="delegate_ids" value="{{ del.id }}" class="w-5 h-5 text-primary rounded focus:ring-primary" {% if del in delegates %}checked{% endif %}>
+                            <div class="flex flex-col">
+                                <span class="font-bold text-stone-800 text-sm">{{ del.name }}</span>
+                                <span class="text-[10px] text-stone-400">{{ del.phone }}</span>
+                            </div>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Specialties Selection -->
+                <div>
+                    <h3 class="font-black text-stone-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-stethoscope text-sky-600"></i> {% trans 'التخصصات المستهدفة' %}</h3>
+                    <div class="bg-stone-50 border border-stone-200 rounded-xl p-4 max-h-[300px] overflow-y-auto flex flex-col gap-2">
+                        {% for spec in all_specialties %}
+                        <label class="flex items-center gap-3 p-3 bg-white border border-stone-100 rounded-lg cursor-pointer hover:border-sky-300 transition-all">
+                            <input type="checkbox" name="specialty_ids" value="{{ spec.id }}" class="w-5 h-5 text-sky-600 rounded focus:ring-sky-600" {% if spec in specialties %}checked{% endif %}>
+                            <span class="font-bold text-stone-800 text-sm">{{ spec.name }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="bg-primary text-white w-full py-4 rounded-xl font-black text-base shadow-xl hover:-translate-y-0.5 transition-all mt-4">
+                {% trans 'حفظ التغييرات' %}
+            </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

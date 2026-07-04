@@ -1,0 +1,187 @@
+{% extends 'custom_admin/dashboard_base.html' %}
+{% load i18n %}
+
+{% block title %}السجل المشترك | {{ company.clean_name }} و {{ delegate.name }} | {{ global_system_vendor.name|default:'النظام' }}{% endblock %}
+
+{% block sidebar %}
+    {% include 'custom_admin/includes/sidebar.html' with active_page='companies' %}
+{% endblock %}
+
+{% block main_style %}class="main-workspace overflow-y-auto px-6 py-10 md:px-12"{% endblock %}
+
+{% block content %}
+<div class="max-w-[1400px] mx-auto">
+    
+    <!-- Back Button -->
+    <div class="mb-6 flex gap-4">
+        <a href="{% url 'custom_company_profile' company.id %}" class="inline-flex items-center gap-2 text-stone-400 hover:text-primary transition-all font-bold text-sm bg-white px-4 py-2 rounded-xl border border-stone-100 shadow-sm">
+            <i class="fa-solid fa-building"></i> {% trans 'عودة لملف الشركة' %}
+        </a>
+        <a href="{% url 'custom_delegate_profile' delegate.id %}" class="inline-flex items-center gap-2 text-stone-400 hover:text-emerald-600 transition-all font-bold text-sm bg-white px-4 py-2 rounded-xl border border-stone-100 shadow-sm">
+            <i class="fa-solid fa-user-tie"></i> {% trans 'عودة لملف المندوب' %}
+        </a>
+    </div>
+
+    <!-- Header Section -->
+    <section class="bg-gradient-to-r from-stone-900 to-[#004d4d] rounded-[2.5rem] p-10 mb-8 flex flex-col md:flex-row items-center justify-between gap-10 shadow-2xl relative overflow-hidden">
+        <div class="absolute -right-20 -top-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+        <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl"></div>
+        
+        <div class="relative z-10 flex flex-col md:flex-row items-center gap-8 text-center md:text-right">
+            <div class="flex items-center">
+                <div class="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 text-white text-3xl shadow-lg relative z-20">
+                    <i class="fa-solid fa-building"></i>
+                </div>
+                <div class="w-16 h-1 bg-white/20 relative z-10 -mx-2"></div>
+                <div class="w-20 h-20 rounded-2xl bg-emerald-500/20 backdrop-blur-md flex items-center justify-center border border-emerald-500/30 text-emerald-300 text-3xl shadow-lg relative z-20">
+                    <i class="fa-solid fa-user-tie"></i>
+                </div>
+            </div>
+            
+            <div>
+                <p class="text-white/50 text-xs font-black uppercase tracking-[0.2em] mb-2">{% trans 'السجل التاريخي المشترك' %}</p>
+                <h1 class="text-3xl md:text-4xl font-black text-white mb-2 leading-tight">
+                    {{ company.clean_name }} <span class="text-white/30 text-2xl mx-2">&times;</span> {{ delegate.name }}
+                </h1>
+                <p class="text-white/70 font-bold text-sm">{% trans 'جميع الفعاليات، القسائم، المعاملات والتسويات المشتركة.' %}</p>
+            </div>
+        </div>
+        
+        <div class="relative z-10 bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-[2rem] text-center min-w-[200px]">
+            <p class="text-white/50 text-[10px] font-black uppercase mb-1">{% trans 'إجمالي الصرف الفعلي' %}</p>
+            <p class="text-4xl font-black text-amber-400" dir="ltr">{{ total_transactions_value|floatformat:0 }}</p>
+            <p class="text-white/50 text-xs font-bold mt-1"></p>
+        </div>
+    </section>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Events Count -->
+        <div class="bg-white rounded-[2rem] p-6 border border-stone-100 shadow-sm flex items-center gap-5 relative overflow-hidden group hover:-translate-y-1 transition-all">
+            <div class="absolute -right-4 -top-4 w-16 h-16 bg-blue-50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+            <div class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-2xl relative z-10">
+                <i class="fa-solid fa-calendar-check"></i>
+            </div>
+            <div class="relative z-10">
+                <p class="text-[10px] font-black text-stone-400 uppercase mb-1">{% trans 'الفعاليات المشتركة' %}</p>
+                <h3 class="text-2xl font-black text-stone-800">{{ events.count }}</h3>
+            </div>
+        </div>
+
+        <!-- Vouchers Count -->
+        <div class="bg-white rounded-[2rem] p-6 border border-stone-100 shadow-sm flex items-center gap-5 relative overflow-hidden group hover:-translate-y-1 transition-all">
+            <div class="absolute -right-4 -top-4 w-16 h-16 bg-purple-50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+            <div class="w-14 h-14 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center text-2xl relative z-10">
+                <i class="fa-solid fa-ticket"></i>
+            </div>
+            <div class="relative z-10">
+                <p class="text-[10px] font-black text-stone-400 uppercase mb-1">{% trans 'إجمالي القسائم' %}</p>
+                <h3 class="text-2xl font-black text-stone-800">{{ vouchers.count }}</h3>
+            </div>
+        </div>
+
+        <!-- Vouchers Value -->
+        <div class="bg-white rounded-[2rem] p-6 border border-stone-100 shadow-sm flex items-center gap-5 relative overflow-hidden group hover:-translate-y-1 transition-all">
+            <div class="absolute -right-4 -top-4 w-16 h-16 bg-emerald-50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+            <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl relative z-10">
+                <i class="fa-solid fa-money-bill-wave"></i>
+            </div>
+            <div class="relative z-10">
+                <p class="text-[10px] font-black text-stone-400 uppercase mb-1">{% trans 'قيمة القسائم المصدرة' %}</p>
+                <h3 class="text-2xl font-black text-stone-800">{{ total_vouchers_value|floatformat:0 }}</h3>
+            </div>
+        </div>
+
+        <!-- Commission Paid -->
+        <div class="bg-white rounded-[2rem] p-6 border border-stone-100 shadow-sm flex items-center gap-5 relative overflow-hidden group hover:-translate-y-1 transition-all">
+            <div class="absolute -right-4 -top-4 w-16 h-16 bg-amber-50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+            <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-2xl relative z-10">
+                <i class="fa-solid fa-hand-holding-dollar"></i>
+            </div>
+            <div class="relative z-10">
+                <p class="text-[10px] font-black text-stone-400 uppercase mb-1">{% trans 'العمولات المسددة' %}</p>
+                <h3 class="text-2xl font-black text-stone-800">{{ total_commission_paid|floatformat:0 }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Tables Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- Events List -->
+        <div class="bg-white rounded-[2rem] border border-stone-100 shadow-sm flex flex-col h-[500px]">
+            <div class="p-6 border-b border-stone-100">
+                <h2 class="text-lg font-black text-stone-800 flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center"><i class="fa-solid fa-calendar"></i></div>
+                    {% trans 'سجل الفعاليات' %}
+                </h2>
+            </div>
+            <div class="p-6 overflow-y-auto flex-1" style="scrollbar-width: thin;">
+                <div class="flex flex-col gap-4">
+                    {% for event in events %}
+                    <div class="border border-stone-100 p-4 rounded-2xl hover:bg-stone-50 transition-colors">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-black text-stone-800">{{ event.name }}</h4>
+                            <span class="bg-stone-100 text-stone-500 text-[10px] px-2 py-1 rounded font-bold">{{ event.date|date:"Y/m/d" }}</span>
+                        </div>
+                        <div class="flex gap-4 mt-3 pt-3 border-t border-stone-100">
+                            <div>
+                                <p class="text-[10px] text-stone-400 font-bold uppercase">قيمة القسيمة</p>
+                                <p class="text-sm font-black text-stone-700">{{ event.voucher_value|floatformat:0 }}</p>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-stone-400 font-bold uppercase">الميزانية</p>
+                                <p class="text-sm font-black text-stone-700">{{ event.max_budget|floatformat:0 }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-10">
+                        <i class="fa-solid fa-folder-open text-4xl text-stone-200 mb-3"></i>
+                        <p class="text-stone-400 font-bold text-sm">{% trans 'لا توجد فعاليات مشتركة' %}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Transactions List -->
+        <div class="bg-white rounded-[2rem] border border-stone-100 shadow-sm flex flex-col h-[500px]">
+            <div class="p-6 border-b border-stone-100">
+                <h2 class="text-lg font-black text-stone-800 flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                    {% trans 'سجل العمليات والفواتير' %}
+                </h2>
+            </div>
+            <div class="p-6 overflow-y-auto flex-1" style="scrollbar-width: thin;">
+                <div class="flex flex-col gap-4">
+                    {% for txn in transactions %}
+                    <div class="border border-stone-100 p-4 rounded-2xl hover:bg-stone-50 transition-colors">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-store text-stone-400"></i>
+                                <h4 class="font-black text-stone-800 text-sm">{{ txn.vendor.name }}</h4>
+                            </div>
+                            <span class="bg-amber-100 text-amber-700 text-xs px-2 py-1 rounded font-black">{{ txn.amount_spent|floatformat:0 }} </span>
+                        </div>
+                        <p class="text-xs font-bold text-stone-500 mb-2">الطبيب: {{ txn.doctor.name }}</p>
+                        <div class="flex justify-between items-center mt-3 pt-3 border-t border-stone-100">
+                            <span class="text-[10px] text-stone-400 font-bold">{{ txn.transaction_date|date:"Y/m/d h:i A" }}</span>
+                            <span class="text-[10px] font-black uppercase {% if txn.payment_status == 'COMPLETED' %}text-emerald-500{% else %}text-amber-500{% endif %}">
+                                {{ txn.get_payment_status_display }}
+                            </span>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-10">
+                        <i class="fa-solid fa-receipt text-4xl text-stone-200 mb-3"></i>
+                        <p class="text-stone-400 font-bold text-sm">{% trans 'لا توجد معاملات مسجلة' %}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,1740 @@
+{
+    "settings": {
+        "INSTALLED_APPS": [
+            "unfold",
+            "unfold.contrib.filters",
+            "unfold.contrib.forms",
+            "unfold.contrib.inlines",
+            "unfold.contrib.import_export",
+            "unfold.contrib.guardian",
+            "unfold.contrib.simple_history",
+            "django.contrib.admin",
+            "django.contrib.auth",
+            "django.contrib.contenttypes",
+            "django.contrib.sessions",
+            "django.contrib.messages",
+            "django.contrib.staticfiles",
+            "accounts",
+            "core",
+            "events"
+        ],
+        "MIDDLEWARE": [
+            "django.middleware.security.SecurityMiddleware",
+            "django.contrib.sessions.middleware.SessionMiddleware",
+            "django.middleware.locale.LocaleMiddleware",
+            "django.middleware.common.CommonMiddleware",
+            "django.middleware.csrf.CsrfViewMiddleware",
+            "django.contrib.auth.middleware.AuthenticationMiddleware",
+            "django.contrib.messages.middleware.MessageMiddleware",
+            "django.middleware.clickjacking.XFrameOptionsMiddleware"
+        ],
+        "DATABASES": {
+            "default": {
+                "ENGINE": "django.db.backends.sqlite3",
+                "NAME": "C:\\Users\\PC HOME\\OneDrive\\Desktop\\hadramout_events\\hadramout_events_final\\hadramout_events\\db.sqlite3",
+                "ATOMIC_REQUESTS": false,
+                "AUTOCOMMIT": true,
+                "CONN_MAX_AGE": 0,
+                "CONN_HEALTH_CHECKS": false,
+                "OPTIONS": {},
+                "TIME_ZONE": null,
+                "USER": "",
+                "PASSWORD": "",
+                "HOST": "",
+                "PORT": "",
+                "TEST": {
+                    "CHARSET": null,
+                    "COLLATION": null,
+                    "MIGRATE": true,
+                    "MIRROR": null,
+                    "NAME": null
+                }
+            }
+        },
+        "TEMPLATES": [
+            {
+                "BACKEND": "django.template.backends.django.DjangoTemplates",
+                "DIRS": [
+                    "C:\\Users\\PC HOME\\OneDrive\\Desktop\\hadramout_events\\hadramout_events_final\\hadramout_events\\templates"
+                ],
+                "APP_DIRS": true,
+                "OPTIONS": {
+                    "context_processors": [
+                        "django.template.context_processors.request",
+                        "django.contrib.auth.context_processors.auth",
+                        "django.contrib.messages.context_processors.messages"
+                    ]
+                }
+            }
+        ],
+        "LANGUAGE_CODE": "ar",
+        "TIME_ZONE": "UTC",
+        "STATIC_URL": "/static/",
+        "STATICFILES_DIRS": [
+            "C:\\Users\\PC HOME\\OneDrive\\Desktop\\hadramout_events\\hadramout_events_final\\hadramout_events\\static"
+        ],
+        "STATIC_ROOT": "C:\\Users\\PC HOME\\OneDrive\\Desktop\\hadramout_events\\hadramout_events_final\\hadramout_events\\staticfiles",
+        "MEDIA_URL": "/media/",
+        "MEDIA_ROOT": "C:\\Users\\PC HOME\\OneDrive\\Desktop\\hadramout_events\\hadramout_events_final\\hadramout_events\\media",
+        "ROOT_URLCONF": "project.urls",
+        "WSGI_APPLICATION": "project.wsgi.application"
+    },
+    "folders": {
+        "accounts": {
+            "python_files": [
+                ".\\accounts\\admin.py",
+                ".\\accounts\\apps.py",
+                ".\\accounts\\backends.py",
+                ".\\accounts\\forms.py",
+                ".\\accounts\\models.py",
+                ".\\accounts\\tests.py",
+                ".\\accounts\\utils.py",
+                ".\\accounts\\views.py",
+                ".\\accounts\\__init__.py",
+                ".\\accounts\\migrations\\0001_initial.py",
+                ".\\accounts\\migrations\\0002_alter_doctor_options_alter_vendor_options_and_more.py",
+                ".\\accounts\\migrations\\0003_delegate_specialty_doctor_specialty_fk.py",
+                ".\\accounts\\migrations\\0004_migrate_specialty_data.py",
+                ".\\accounts\\migrations\\0005_final_specialty_cleanup.py",
+                ".\\accounts\\migrations\\0006_vendor_role.py",
+                ".\\accounts\\migrations\\0007_user_phone.py",
+                ".\\accounts\\migrations\\0008_vendor_has_management_fee.py",
+                ".\\accounts\\migrations\\0009_alter_doctor_email.py",
+                ".\\accounts\\migrations\\0010_vendor_parent_vendor_alter_doctor_email.py",
+                ".\\accounts\\migrations\\0011_delegate_companies_delegate_specialties.py",
+                ".\\accounts\\migrations\\0012_vendor_is_active.py",
+                ".\\accounts\\migrations\\0013_vendor_bank_info_vendor_other_info_and_more.py",
+                ".\\accounts\\migrations\\0014_vendor_management_fee_percentage.py",
+                ".\\accounts\\migrations\\0015_vendor_logo.py",
+                ".\\accounts\\migrations\\0016_doctor_profile_picture.py",
+                ".\\accounts\\migrations\\__init__.py"
+            ],
+            "html_files": [],
+            "css_files": [],
+            "js_files": [],
+            "all_files": [
+                ".\\accounts\\admin.py",
+                ".\\accounts\\apps.py",
+                ".\\accounts\\backends.py",
+                ".\\accounts\\forms.py",
+                ".\\accounts\\models.py",
+                ".\\accounts\\tests.py",
+                ".\\accounts\\utils.py",
+                ".\\accounts\\views.py",
+                ".\\accounts\\__init__.py",
+                ".\\accounts\\migrations\\0001_initial.py",
+                ".\\accounts\\migrations\\0002_alter_doctor_options_alter_vendor_options_and_more.py",
+                ".\\accounts\\migrations\\0003_delegate_specialty_doctor_specialty_fk.py",
+                ".\\accounts\\migrations\\0004_migrate_specialty_data.py",
+                ".\\accounts\\migrations\\0005_final_specialty_cleanup.py",
+                ".\\accounts\\migrations\\0006_vendor_role.py",
+                ".\\accounts\\migrations\\0007_user_phone.py",
+                ".\\accounts\\migrations\\0008_vendor_has_management_fee.py",
+                ".\\accounts\\migrations\\0009_alter_doctor_email.py",
+                ".\\accounts\\migrations\\0010_vendor_parent_vendor_alter_doctor_email.py",
+                ".\\accounts\\migrations\\0011_delegate_companies_delegate_specialties.py",
+                ".\\accounts\\migrations\\0012_vendor_is_active.py",
+                ".\\accounts\\migrations\\0013_vendor_bank_info_vendor_other_info_and_more.py",
+                ".\\accounts\\migrations\\0014_vendor_management_fee_percentage.py",
+                ".\\accounts\\migrations\\0015_vendor_logo.py",
+                ".\\accounts\\migrations\\0016_doctor_profile_picture.py",
+                ".\\accounts\\migrations\\__init__.py",
+                ".\\accounts\\migrations\\__pycache__\\0001_initial.cpython-310.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0001_initial.cpython-312.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0002_alter_doctor_options_alter_vendor_options_and_more.cpython-310.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0002_alter_doctor_options_alter_vendor_options_and_more.cpython-312.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0003_delegate_specialty_alter_doctor_specialty.cpython-310.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0003_delegate_specialty_doctor_specialty_fk.cpython-310.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0003_delegate_specialty_doctor_specialty_fk.cpython-312.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0004_migrate_specialty_data.cpython-310.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0004_migrate_specialty_data.cpython-312.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0005_final_specialty_cleanup.cpython-310.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0005_final_specialty_cleanup.cpython-312.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0006_vendor_role.cpython-312.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0007_user_phone.cpython-312.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0008_vendor_has_management_fee.cpython-312.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0009_alter_doctor_email.cpython-312.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0010_vendor_parent_vendor_alter_doctor_email.cpython-312.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0011_delegate_companies_delegate_specialties.cpython-312.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0012_vendor_is_active.cpython-312.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0013_vendor_bank_info_vendor_other_info_and_more.cpython-312.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0014_vendor_management_fee_percentage.cpython-312.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0015_vendor_logo.cpython-312.pyc",
+                ".\\accounts\\migrations\\__pycache__\\0016_doctor_profile_picture.cpython-312.pyc",
+                ".\\accounts\\migrations\\__pycache__\\__init__.cpython-310.pyc",
+                ".\\accounts\\migrations\\__pycache__\\__init__.cpython-312.pyc",
+                ".\\accounts\\__pycache__\\admin.cpython-310.pyc",
+                ".\\accounts\\__pycache__\\admin.cpython-312.pyc",
+                ".\\accounts\\__pycache__\\apps.cpython-310.pyc",
+                ".\\accounts\\__pycache__\\apps.cpython-312.pyc",
+                ".\\accounts\\__pycache__\\backends.cpython-312.pyc",
+                ".\\accounts\\__pycache__\\forms.cpython-312.pyc",
+                ".\\accounts\\__pycache__\\models.cpython-310.pyc",
+                ".\\accounts\\__pycache__\\models.cpython-312.pyc",
+                ".\\accounts\\__pycache__\\utils.cpython-310.pyc",
+                ".\\accounts\\__pycache__\\utils.cpython-312.pyc",
+                ".\\accounts\\__pycache__\\views.cpython-312.pyc",
+                ".\\accounts\\__pycache__\\__init__.cpython-310.pyc",
+                ".\\accounts\\__pycache__\\__init__.cpython-312.pyc"
+            ],
+            "details": {
+                ".\\accounts\\admin.py": {
+                    "classes": [
+                        "EventRelatedViewPermissionMixin",
+                        "SpecialtyAdmin",
+                        "DelegateAdmin",
+                        "DoctorProfileInline",
+                        "CustomUserAdmin",
+                        "VoucherInline",
+                        "TransactionInline",
+                        "EventInline",
+                        "VoucherTransferInline",
+                        "DoctorAdmin",
+                        "VendorAdminForm",
+                        "Meta",
+                        "CashierInlineForm",
+                        "Meta",
+                        "CashierInline",
+                        "VendorSettlementInline",
+                        "VendorTransactionInline",
+                        "VendorAdmin"
+                    ],
+                    "functions": [
+                        "has_view_permission",
+                        "get_companies_count",
+                        "get_specialties_count",
+                        "get_inline_instances",
+                        "change_password_link",
+                        "save_model",
+                        "get_search_results",
+                        "get_current_balance",
+                        "card_preview_tab",
+                        "export_doctor_cards_pdf",
+                        "add_voucher_action",
+                        "__init__",
+                        "clean",
+                        "__init__",
+                        "clean",
+                        "has_add_permission",
+                        "has_change_permission",
+                        "has_delete_permission",
+                        "get_cashier",
+                        "has_add_permission",
+                        "has_change_permission",
+                        "get_financial_summary",
+                        "get_current_balance",
+                        "get_queryset",
+                        "save_model",
+                        "save_formset"
+                    ],
+                    "imports": [
+                        "django.contrib",
+                        "django.contrib.auth.admin",
+                        "django.db.models",
+                        "django.http",
+                        "django.core.mail",
+                        "models",
+                        "utils",
+                        "forms",
+                        "events.models",
+                        "core.models",
+                        "unfold.admin",
+                        "unfold.decorators",
+                        "django.utils.translation",
+                        "django.template.response",
+                        "django.conf",
+                        "unfold.widgets",
+                        "django.urls",
+                        "django.utils.html",
+                        "django.utils.safestring",
+                        "django.template.loader",
+                        "django.contrib",
+                        "django.http",
+                        "datetime",
+                        "core.models",
+                        "events.models",
+                        "django.contrib",
+                        "django.http",
+                        "core.models",
+                        "django.shortcuts",
+                        "django",
+                        "django.contrib.auth",
+                        "django.db.models",
+                        "models",
+                        "core.models",
+                        "django.utils.html",
+                        "django.db.models",
+                        "models",
+                        "core.models"
+                    ],
+                    "lines": 549
+                },
+                ".\\accounts\\apps.py": {
+                    "classes": [
+                        "AccountsConfig"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.apps"
+                    ],
+                    "lines": 6
+                },
+                ".\\accounts\\backends.py": {
+                    "classes": [
+                        "EmailOrUsernameModelBackend"
+                    ],
+                    "functions": [
+                        "authenticate"
+                    ],
+                    "imports": [
+                        "django.contrib.auth.backends",
+                        "django.contrib.auth",
+                        "django.db.models"
+                    ],
+                    "lines": 29
+                },
+                ".\\accounts\\forms.py": {
+                    "classes": [
+                        "UserCreationForm",
+                        "Meta"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django",
+                        "django.contrib.auth.forms",
+                        "models"
+                    ],
+                    "lines": 11
+                },
+                ".\\accounts\\models.py": {
+                    "classes": [
+                        "User",
+                        "Types",
+                        "Specialty",
+                        "Meta",
+                        "Delegate",
+                        "Meta",
+                        "Doctor",
+                        "Meta",
+                        "Vendor",
+                        "VendorRoles",
+                        "Meta"
+                    ],
+                    "functions": [
+                        "__str__",
+                        "__str__",
+                        "__str__",
+                        "__str__",
+                        "get_avatar_url",
+                        "save",
+                        "get_qr_code_url",
+                        "__str__"
+                    ],
+                    "imports": [
+                        "django.contrib.auth.models",
+                        "django.db",
+                        "django.utils.translation",
+                        "uuid"
+                    ],
+                    "lines": 113
+                },
+                ".\\accounts\\tests.py": {
+                    "classes": [],
+                    "functions": [],
+                    "imports": [
+                        "django.test"
+                    ],
+                    "lines": 3
+                },
+                ".\\accounts\\utils.py": {
+                    "classes": [],
+                    "functions": [
+                        "_register_arabic_fonts",
+                        "_get_logo_path",
+                        "reshape_arabic",
+                        "generate_doctor_card_pdf"
+                    ],
+                    "imports": [
+                        "os",
+                        "io",
+                        "qrcode",
+                        "reportlab.pdfgen",
+                        "reportlab.lib.pagesizes",
+                        "reportlab.lib.units",
+                        "reportlab.lib.colors",
+                        "django.conf",
+                        "django.contrib.staticfiles",
+                        "reportlab.pdfbase",
+                        "reportlab.pdfbase.ttfonts",
+                        "reportlab.lib.utils",
+                        "arabic_reshaper",
+                        "bidi.algorithm"
+                    ],
+                    "lines": 266
+                },
+                ".\\accounts\\views.py": {
+                    "classes": [
+                        "DoctorRegistrationView",
+                        "SpecialtySearchView",
+                        "RegistrationQRView"
+                    ],
+                    "functions": [
+                        "get",
+                        "post",
+                        "get",
+                        "get"
+                    ],
+                    "imports": [
+                        "django.shortcuts",
+                        "django.views",
+                        "django.http",
+                        "django.contrib",
+                        "django.core.mail",
+                        "django.conf",
+                        "django.db",
+                        "models",
+                        "django.urls",
+                        "qrcode",
+                        "base64",
+                        "io"
+                    ],
+                    "lines": 175
+                },
+                ".\\accounts\\migrations\\0001_initial.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.contrib.auth.models",
+                        "django.contrib.auth.validators",
+                        "django.db.models.deletion",
+                        "django.utils.timezone",
+                        "django.conf",
+                        "django.db"
+                    ],
+                    "lines": 76
+                },
+                ".\\accounts\\migrations\\0002_alter_doctor_options_alter_vendor_options_and_more.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db.models.deletion",
+                        "django.conf",
+                        "django.db"
+                    ],
+                    "lines": 108
+                },
+                ".\\accounts\\migrations\\0003_delegate_specialty_doctor_specialty_fk.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db.models.deletion",
+                        "django.db"
+                    ],
+                    "lines": 42
+                },
+                ".\\accounts\\migrations\\0004_migrate_specialty_data.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [
+                        "migrate_specialties"
+                    ],
+                    "imports": [
+                        "django.db"
+                    ],
+                    "lines": 24
+                },
+                ".\\accounts\\migrations\\0005_final_specialty_cleanup.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db.models.deletion",
+                        "django.db"
+                    ],
+                    "lines": 26
+                },
+                ".\\accounts\\migrations\\0006_vendor_role.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db"
+                    ],
+                    "lines": 18
+                },
+                ".\\accounts\\migrations\\0007_user_phone.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db"
+                    ],
+                    "lines": 18
+                },
+                ".\\accounts\\migrations\\0008_vendor_has_management_fee.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db"
+                    ],
+                    "lines": 18
+                },
+                ".\\accounts\\migrations\\0009_alter_doctor_email.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db"
+                    ],
+                    "lines": 18
+                },
+                ".\\accounts\\migrations\\0010_vendor_parent_vendor_alter_doctor_email.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db.models.deletion",
+                        "django.db"
+                    ],
+                    "lines": 25
+                },
+                ".\\accounts\\migrations\\0011_delegate_companies_delegate_specialties.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db"
+                    ],
+                    "lines": 24
+                },
+                ".\\accounts\\migrations\\0012_vendor_is_active.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db"
+                    ],
+                    "lines": 18
+                },
+                ".\\accounts\\migrations\\0013_vendor_bank_info_vendor_other_info_and_more.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db.models.deletion",
+                        "django.db"
+                    ],
+                    "lines": 34
+                },
+                ".\\accounts\\migrations\\0014_vendor_management_fee_percentage.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db"
+                    ],
+                    "lines": 18
+                },
+                ".\\accounts\\migrations\\0015_vendor_logo.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db"
+                    ],
+                    "lines": 18
+                },
+                ".\\accounts\\migrations\\0016_doctor_profile_picture.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db"
+                    ],
+                    "lines": 18
+                }
+            }
+        },
+        "core": {
+            "python_files": [
+                ".\\core\\admin.py",
+                ".\\core\\admin_config.py",
+                ".\\core\\admin_site.py",
+                ".\\core\\api_views.py",
+                ".\\core\\apps.py",
+                ".\\core\\models.py",
+                ".\\core\\qr_views.py",
+                ".\\core\\services.py",
+                ".\\core\\tests.py",
+                ".\\core\\urls.py",
+                ".\\core\\views.py",
+                ".\\core\\__init__.py",
+                ".\\core\\management\\__init__.py",
+                ".\\core\\management\\commands\\seed_data.py",
+                ".\\core\\management\\commands\\__init__.py",
+                ".\\core\\migrations\\0001_initial.py",
+                ".\\core\\migrations\\0002_initial.py",
+                ".\\core\\migrations\\0003_alter_pharmaceuticalcompany_options_and_more.py",
+                ".\\core\\migrations\\0004_transaction_created_by.py",
+                ".\\core\\migrations\\0005_transactionotp.py",
+                ".\\core\\migrations\\0006_remove_transaction_voucher_transaction_vouchers_and_more.py",
+                ".\\core\\migrations\\__init__.py"
+            ],
+            "html_files": [],
+            "css_files": [],
+            "js_files": [],
+            "all_files": [
+                ".\\core\\admin.py",
+                ".\\core\\admin_config.py",
+                ".\\core\\admin_site.py",
+                ".\\core\\api_views.py",
+                ".\\core\\apps.py",
+                ".\\core\\models.py",
+                ".\\core\\qr_views.py",
+                ".\\core\\services.py",
+                ".\\core\\tests.py",
+                ".\\core\\urls.py",
+                ".\\core\\views.py",
+                ".\\core\\__init__.py",
+                ".\\core\\management\\__init__.py",
+                ".\\core\\management\\commands\\seed_data.py",
+                ".\\core\\management\\commands\\__init__.py",
+                ".\\core\\management\\commands\\__pycache__\\seed_data.cpython-310.pyc",
+                ".\\core\\management\\commands\\__pycache__\\__init__.cpython-310.pyc",
+                ".\\core\\management\\__pycache__\\__init__.cpython-310.pyc",
+                ".\\core\\management\\__pycache__\\__init__.cpython-312.pyc",
+                ".\\core\\migrations\\0001_initial.py",
+                ".\\core\\migrations\\0002_initial.py",
+                ".\\core\\migrations\\0003_alter_pharmaceuticalcompany_options_and_more.py",
+                ".\\core\\migrations\\0004_transaction_created_by.py",
+                ".\\core\\migrations\\0005_transactionotp.py",
+                ".\\core\\migrations\\0006_remove_transaction_voucher_transaction_vouchers_and_more.py",
+                ".\\core\\migrations\\__init__.py",
+                ".\\core\\migrations\\__pycache__\\0001_initial.cpython-310.pyc",
+                ".\\core\\migrations\\__pycache__\\0001_initial.cpython-312.pyc",
+                ".\\core\\migrations\\__pycache__\\0002_initial.cpython-310.pyc",
+                ".\\core\\migrations\\__pycache__\\0002_initial.cpython-312.pyc",
+                ".\\core\\migrations\\__pycache__\\0003_alter_pharmaceuticalcompany_options_and_more.cpython-310.pyc",
+                ".\\core\\migrations\\__pycache__\\0003_alter_pharmaceuticalcompany_options_and_more.cpython-312.pyc",
+                ".\\core\\migrations\\__pycache__\\0004_transaction_created_by.cpython-312.pyc",
+                ".\\core\\migrations\\__pycache__\\0005_transactionotp.cpython-312.pyc",
+                ".\\core\\migrations\\__pycache__\\0006_remove_transaction_voucher_transaction_vouchers_and_more.cpython-312.pyc",
+                ".\\core\\migrations\\__pycache__\\__init__.cpython-310.pyc",
+                ".\\core\\migrations\\__pycache__\\__init__.cpython-312.pyc",
+                ".\\core\\__pycache__\\admin.cpython-310.pyc",
+                ".\\core\\__pycache__\\admin.cpython-312.pyc",
+                ".\\core\\__pycache__\\admin_config.cpython-310.pyc",
+                ".\\core\\__pycache__\\admin_site.cpython-310.pyc",
+                ".\\core\\__pycache__\\api_views.cpython-310.pyc",
+                ".\\core\\__pycache__\\api_views.cpython-312.pyc",
+                ".\\core\\__pycache__\\apps.cpython-310.pyc",
+                ".\\core\\__pycache__\\apps.cpython-312.pyc",
+                ".\\core\\__pycache__\\models.cpython-310.pyc",
+                ".\\core\\__pycache__\\models.cpython-312.pyc",
+                ".\\core\\__pycache__\\qr_views.cpython-312.pyc",
+                ".\\core\\__pycache__\\services.cpython-310.pyc",
+                ".\\core\\__pycache__\\services.cpython-312.pyc",
+                ".\\core\\__pycache__\\urls.cpython-310.pyc",
+                ".\\core\\__pycache__\\urls.cpython-312.pyc",
+                ".\\core\\__pycache__\\views.cpython-310.pyc",
+                ".\\core\\__pycache__\\views.cpython-312.pyc",
+                ".\\core\\__pycache__\\__init__.cpython-310.pyc",
+                ".\\core\\__pycache__\\__init__.cpython-312.pyc"
+            ],
+            "details": {
+                ".\\core\\admin.py": {
+                    "classes": [
+                        "DelegateInline",
+                        "EventRelatedViewPermissionMixin",
+                        "PharmaceuticalCompanyAdmin",
+                        "TransactionAdmin",
+                        "VendorSettlementAdmin"
+                    ],
+                    "functions": [
+                        "has_view_permission"
+                    ],
+                    "imports": [
+                        "django.contrib",
+                        "models",
+                        "unfold.admin",
+                        "accounts.models",
+                        "django.utils.translation"
+                    ],
+                    "lines": 39
+                },
+                ".\\core\\admin_config.py": {
+                    "classes": [
+                        "HandramoutAdminConfig"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.contrib.admin.apps"
+                    ],
+                    "lines": 4
+                },
+                ".\\core\\admin_site.py": {
+                    "classes": [
+                        "HandramoutAdminSite"
+                    ],
+                    "functions": [
+                        "index"
+                    ],
+                    "imports": [
+                        "django.contrib.admin",
+                        "django.db.models",
+                        "django.utils.translation",
+                        "accounts.models",
+                        "events.models",
+                        "core.models"
+                    ],
+                    "lines": 32
+                },
+                ".\\core\\api_views.py": {
+                    "classes": [],
+                    "functions": [
+                        "dashboard_stats_api"
+                    ],
+                    "imports": [
+                        "django.http",
+                        "django.db.models",
+                        "django.utils",
+                        "datetime",
+                        "django.contrib.admin.views.decorators",
+                        "accounts.models",
+                        "events.models",
+                        "models"
+                    ],
+                    "lines": 72
+                },
+                ".\\core\\apps.py": {
+                    "classes": [
+                        "CoreConfig"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.apps"
+                    ],
+                    "lines": 7
+                },
+                ".\\core\\models.py": {
+                    "classes": [
+                        "PharmaceuticalCompany",
+                        "Meta",
+                        "VendorSettlement",
+                        "Meta",
+                        "Transaction",
+                        "Meta"
+                    ],
+                    "functions": [
+                        "__str__",
+                        "clean",
+                        "__str__",
+                        "__str__"
+                    ],
+                    "imports": [
+                        "django.db",
+                        "django.utils.translation",
+                        "django.db.models",
+                        "accounts.models",
+                        "core.models",
+                        "django.core.exceptions"
+                    ],
+                    "lines": 83
+                },
+                ".\\core\\qr_views.py": {
+                    "classes": [
+                        "QRCodeScanView"
+                    ],
+                    "functions": [
+                        "get"
+                    ],
+                    "imports": [
+                        "django.shortcuts",
+                        "django.views",
+                        "django.http",
+                        "django.contrib.auth.mixins",
+                        "accounts.models",
+                        "django.core.exceptions"
+                    ],
+                    "lines": 49
+                },
+                ".\\core\\services.py": {
+                    "classes": [],
+                    "functions": [
+                        "generate_otp",
+                        "send_otp_email",
+                        "send_transfer_otp_email",
+                        "verify_otp",
+                        "process_transaction"
+                    ],
+                    "imports": [
+                        "django.db",
+                        "django.core.exceptions",
+                        "django.core.mail",
+                        "django.conf",
+                        "django.core.cache",
+                        "decimal",
+                        "accounts.models",
+                        "events.models",
+                        "models",
+                        "random",
+                        "string",
+                        "uuid",
+                        "uuid",
+                        "uuid"
+                    ],
+                    "lines": 190
+                },
+                ".\\core\\tests.py": {
+                    "classes": [],
+                    "functions": [],
+                    "imports": [
+                        "django.test"
+                    ],
+                    "lines": 3
+                },
+                ".\\core\\urls.py": {
+                    "classes": [],
+                    "functions": [],
+                    "imports": [
+                        "django.urls",
+                        "views",
+                        "qr_views",
+                        "api_views",
+                        "accounts.views"
+                    ],
+                    "lines": 44
+                },
+                ".\\core\\management\\commands\\seed_data.py": {
+                    "classes": [
+                        "Command"
+                    ],
+                    "functions": [
+                        "add_arguments",
+                        "handle",
+                        "_clear_data",
+                        "_create_superuser",
+                        "_create_companies",
+                        "_create_doctors",
+                        "_create_vendors",
+                        "_create_events",
+                        "_create_transactions",
+                        "_create_settlements",
+                        "_print_summary"
+                    ],
+                    "imports": [
+                        "random",
+                        "uuid",
+                        "datetime",
+                        "decimal",
+                        "django.core.management.base",
+                        "django.utils",
+                        "django.db",
+                        "accounts.models",
+                        "core.models",
+                        "events.models",
+                        "django.db.models"
+                    ],
+                    "lines": 464
+                },
+                ".\\core\\migrations\\0001_initial.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db.models.deletion",
+                        "django.db"
+                    ],
+                    "lines": 53
+                },
+                ".\\core\\migrations\\0002_initial.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db.models.deletion",
+                        "django.db"
+                    ],
+                    "lines": 33
+                },
+                ".\\core\\migrations\\0003_alter_pharmaceuticalcompany_options_and_more.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db.models.deletion",
+                        "django.db"
+                    ],
+                    "lines": 143
+                },
+                ".\\core\\migrations\\0004_transaction_created_by.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db.models.deletion",
+                        "django.conf",
+                        "django.db"
+                    ],
+                    "lines": 21
+                },
+                ".\\core\\migrations\\0005_transactionotp.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db.models.deletion",
+                        "uuid",
+                        "django.conf",
+                        "django.db"
+                    ],
+                    "lines": 38
+                },
+                ".\\core\\migrations\\0006_remove_transaction_voucher_transaction_vouchers_and_more.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db"
+                    ],
+                    "lines": 26
+                }
+            }
+        },
+        "events": {
+            "python_files": [
+                ".\\events\\admin.py",
+                ".\\events\\apps.py",
+                ".\\events\\models.py",
+                ".\\events\\signals.py",
+                ".\\events\\tests.py",
+                ".\\events\\tests_new.py",
+                ".\\events\\views.py",
+                ".\\events\\__init__.py",
+                ".\\events\\migrations\\0001_initial.py",
+                ".\\events\\migrations\\0002_alter_event_options_alter_voucher_options_and_more.py",
+                ".\\events\\migrations\\0003_event_delegates_event_specialties_and_more.py",
+                ".\\events\\migrations\\0004_voucher_company.py",
+                ".\\events\\migrations\\0005_event_notes_event_payment_type.py",
+                ".\\events\\migrations\\0006_alter_event_payment_type.py",
+                ".\\events\\migrations\\0007_voucher_notes.py",
+                ".\\events\\migrations\\0008_vouchertransfer.py",
+                ".\\events\\migrations\\__init__.py"
+            ],
+            "html_files": [],
+            "css_files": [],
+            "js_files": [],
+            "all_files": [
+                ".\\events\\admin.py",
+                ".\\events\\apps.py",
+                ".\\events\\models.py",
+                ".\\events\\signals.py",
+                ".\\events\\tests.py",
+                ".\\events\\tests_new.py",
+                ".\\events\\views.py",
+                ".\\events\\__init__.py",
+                ".\\events\\migrations\\0001_initial.py",
+                ".\\events\\migrations\\0002_alter_event_options_alter_voucher_options_and_more.py",
+                ".\\events\\migrations\\0003_event_delegates_event_specialties_and_more.py",
+                ".\\events\\migrations\\0004_voucher_company.py",
+                ".\\events\\migrations\\0005_event_notes_event_payment_type.py",
+                ".\\events\\migrations\\0006_alter_event_payment_type.py",
+                ".\\events\\migrations\\0007_voucher_notes.py",
+                ".\\events\\migrations\\0008_vouchertransfer.py",
+                ".\\events\\migrations\\__init__.py",
+                ".\\events\\migrations\\__pycache__\\0001_initial.cpython-310.pyc",
+                ".\\events\\migrations\\__pycache__\\0001_initial.cpython-312.pyc",
+                ".\\events\\migrations\\__pycache__\\0002_alter_event_options_alter_voucher_options_and_more.cpython-310.pyc",
+                ".\\events\\migrations\\__pycache__\\0002_alter_event_options_alter_voucher_options_and_more.cpython-312.pyc",
+                ".\\events\\migrations\\__pycache__\\0003_event_delegates_event_specialties_and_more.cpython-310.pyc",
+                ".\\events\\migrations\\__pycache__\\0003_event_delegates_event_specialties_and_more.cpython-312.pyc",
+                ".\\events\\migrations\\__pycache__\\0004_voucher_company.cpython-310.pyc",
+                ".\\events\\migrations\\__pycache__\\0004_voucher_company.cpython-312.pyc",
+                ".\\events\\migrations\\__pycache__\\0005_event_notes_event_payment_type.cpython-312.pyc",
+                ".\\events\\migrations\\__pycache__\\0006_alter_event_payment_type.cpython-312.pyc",
+                ".\\events\\migrations\\__pycache__\\0007_voucher_notes.cpython-312.pyc",
+                ".\\events\\migrations\\__pycache__\\0008_vouchertransfer.cpython-312.pyc",
+                ".\\events\\migrations\\__pycache__\\__init__.cpython-310.pyc",
+                ".\\events\\migrations\\__pycache__\\__init__.cpython-312.pyc",
+                ".\\events\\__pycache__\\admin.cpython-310.pyc",
+                ".\\events\\__pycache__\\admin.cpython-312.pyc",
+                ".\\events\\__pycache__\\apps.cpython-310.pyc",
+                ".\\events\\__pycache__\\apps.cpython-312.pyc",
+                ".\\events\\__pycache__\\models.cpython-310.pyc",
+                ".\\events\\__pycache__\\models.cpython-312.pyc",
+                ".\\events\\__pycache__\\signals.cpython-310.pyc",
+                ".\\events\\__pycache__\\signals.cpython-312.pyc",
+                ".\\events\\__pycache__\\tests_new.cpython-310.pyc",
+                ".\\events\\__pycache__\\__init__.cpython-310.pyc",
+                ".\\events\\__pycache__\\__init__.cpython-312.pyc"
+            ],
+            "details": {
+                ".\\events\\admin.py": {
+                    "classes": [
+                        "NextWeekFilter",
+                        "EventAdmin",
+                        "Media",
+                        "VoucherAdmin"
+                    ],
+                    "functions": [
+                        "lookups",
+                        "queryset",
+                        "get_queryset",
+                        "doctors_count",
+                        "changelist_view"
+                    ],
+                    "imports": [
+                        "django.contrib",
+                        "django.utils",
+                        "datetime",
+                        "models",
+                        "unfold.admin",
+                        "django.db.models"
+                    ],
+                    "lines": 68
+                },
+                ".\\events\\apps.py": {
+                    "classes": [
+                        "EventsConfig"
+                    ],
+                    "functions": [
+                        "ready"
+                    ],
+                    "imports": [
+                        "django.apps",
+                        "events.signals"
+                    ],
+                    "lines": 9
+                },
+                ".\\events\\models.py": {
+                    "classes": [
+                        "Event",
+                        "PaymentTypes",
+                        "Meta",
+                        "Voucher",
+                        "Meta",
+                        "VoucherTransfer",
+                        "Meta"
+                    ],
+                    "functions": [
+                        "__str__",
+                        "__str__",
+                        "save",
+                        "consumed_amount",
+                        "__str__"
+                    ],
+                    "imports": [
+                        "django.db",
+                        "datetime",
+                        "django.utils",
+                        "django.utils.translation"
+                    ],
+                    "lines": 78
+                },
+                ".\\events\\signals.py": {
+                    "classes": [],
+                    "functions": [
+                        "create_vouchers_for_doctors",
+                        "send_voucher_notification",
+                        "send_async_email"
+                    ],
+                    "imports": [
+                        "django.db.models.signals",
+                        "django.dispatch",
+                        "django.core.mail",
+                        "django.conf",
+                        "models",
+                        "django.utils",
+                        "logging",
+                        "threading"
+                    ],
+                    "lines": 71
+                },
+                ".\\events\\tests.py": {
+                    "classes": [],
+                    "functions": [],
+                    "imports": [
+                        "django.test"
+                    ],
+                    "lines": 3
+                },
+                ".\\events\\tests_new.py": {
+                    "classes": [
+                        "EventEnhancementTest"
+                    ],
+                    "functions": [
+                        "setUp",
+                        "test_event_multi_selection",
+                        "test_automatic_voucher_creation_for_new_doctors",
+                        "test_custom_voucher_without_event"
+                    ],
+                    "imports": [
+                        "django.test",
+                        "django.utils",
+                        "datetime",
+                        "accounts.models",
+                        "core.models",
+                        "events.models"
+                    ],
+                    "lines": 65
+                },
+                ".\\events\\views.py": {
+                    "classes": [],
+                    "functions": [],
+                    "imports": [
+                        "django.shortcuts"
+                    ],
+                    "lines": 3
+                },
+                ".\\events\\migrations\\0001_initial.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db.models.deletion",
+                        "django.db"
+                    ],
+                    "lines": 46
+                },
+                ".\\events\\migrations\\0002_alter_event_options_alter_voucher_options_and_more.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db.models.deletion",
+                        "django.db"
+                    ],
+                    "lines": 109
+                },
+                ".\\events\\migrations\\0003_event_delegates_event_specialties_and_more.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db.models.deletion",
+                        "django.db"
+                    ],
+                    "lines": 30
+                },
+                ".\\events\\migrations\\0004_voucher_company.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db.models.deletion",
+                        "django.db"
+                    ],
+                    "lines": 20
+                },
+                ".\\events\\migrations\\0005_event_notes_event_payment_type.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db"
+                    ],
+                    "lines": 23
+                },
+                ".\\events\\migrations\\0006_alter_event_payment_type.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db"
+                    ],
+                    "lines": 18
+                },
+                ".\\events\\migrations\\0007_voucher_notes.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db"
+                    ],
+                    "lines": 18
+                },
+                ".\\events\\migrations\\0008_vouchertransfer.py": {
+                    "classes": [
+                        "Migration"
+                    ],
+                    "functions": [],
+                    "imports": [
+                        "django.db.models.deletion",
+                        "django.db"
+                    ],
+                    "lines": 29
+                }
+            }
+        },
+        "example": {
+            "python_files": [
+                ".\\example\\project\\asgi.py",
+                ".\\example\\project\\settings.py",
+                ".\\example\\project\\urls.py",
+                ".\\example\\project\\wsgi.py",
+                ".\\example\\project\\__init__.py"
+            ],
+            "html_files": [
+                ".\\example\\templates\\admin\\index.html"
+            ],
+            "css_files": [
+                ".\\example\\static\\admin\\css\\style.css"
+            ],
+            "js_files": [
+                ".\\example\\static\\admin\\js\\rtl-fix.js"
+            ],
+            "all_files": [
+                ".\\example\\project\\asgi.py",
+                ".\\example\\project\\settings.py",
+                ".\\example\\project\\urls.py",
+                ".\\example\\project\\wsgi.py",
+                ".\\example\\project\\__init__.py",
+                ".\\example\\project\\__pycache__\\settings.cpython-310.pyc",
+                ".\\example\\project\\__pycache__\\urls.cpython-310.pyc",
+                ".\\example\\project\\__pycache__\\wsgi.cpython-310.pyc",
+                ".\\example\\project\\__pycache__\\__init__.cpython-310.pyc",
+                ".\\example\\static\\admin\\css\\style.css",
+                ".\\example\\static\\admin\\js\\rtl-fix.js",
+                ".\\example\\templates\\admin\\index.html"
+            ],
+            "details": {
+                ".\\example\\project\\asgi.py": {
+                    "classes": [],
+                    "functions": [],
+                    "imports": [
+                        "os",
+                        "django.core.asgi"
+                    ],
+                    "lines": 16
+                },
+                ".\\example\\project\\settings.py": {
+                    "classes": [],
+                    "functions": [],
+                    "imports": [
+                        "pathlib",
+                        "os",
+                        "django.utils.translation",
+                        "django.templatetags.static",
+                        "django.urls"
+                    ],
+                    "lines": 399
+                },
+                ".\\example\\project\\urls.py": {
+                    "classes": [],
+                    "functions": [],
+                    "imports": [
+                        "django.contrib",
+                        "django.urls",
+                        "django.conf.urls.i18n",
+                        "django.conf",
+                        "django.conf.urls.static",
+                        "home.views"
+                    ],
+                    "lines": 49
+                },
+                ".\\example\\project\\wsgi.py": {
+                    "classes": [],
+                    "functions": [],
+                    "imports": [
+                        "os",
+                        "django.core.wsgi"
+                    ],
+                    "lines": 16
+                },
+                ".\\example\\static\\admin\\css\\style.css": {
+                    "lines": 3
+                },
+                ".\\example\\static\\admin\\js\\rtl-fix.js": {
+                    "lines": 16
+                },
+                ".\\example\\templates\\admin\\index.html": {
+                    "contains_blocks": true,
+                    "extends": true,
+                    "includes": false,
+                    "lines": 324
+                }
+            }
+        },
+        "locale": {
+            "python_files": [],
+            "html_files": [],
+            "css_files": [],
+            "js_files": [],
+            "all_files": [
+                ".\\locale\\ar\\LC_MESSAGES\\django.mo",
+                ".\\locale\\ar\\LC_MESSAGES\\django.po"
+            ],
+            "details": {}
+        },
+        "media": {
+            "python_files": [],
+            "html_files": [],
+            "css_files": [],
+            "js_files": [],
+            "all_files": [
+                ".\\media\\doctors\\profiles\\ChatGPT_Image_13_أكتوبر_2025_01_56_18_ص.png",
+                ".\\media\\vendor_logos\\ChatGPT_Image_13_أكتوبر_2025_01_56_18_ص.png",
+                ".\\media\\vendor_logos\\ChatGPT_Image_13_أكتوبر_2025_01_56_18_ص_VJ5w6EX.png",
+                ".\\media\\vendor_logos\\coderash_logo_v2.png"
+            ],
+            "details": {}
+        },
+        "project": {
+            "python_files": [
+                ".\\project\\asgi.py",
+                ".\\project\\settings.py",
+                ".\\project\\urls.py",
+                ".\\project\\wsgi.py",
+                ".\\project\\__init__.py"
+            ],
+            "html_files": [],
+            "css_files": [],
+            "js_files": [],
+            "all_files": [
+                ".\\project\\asgi.py",
+                ".\\project\\settings.py",
+                ".\\project\\urls.py",
+                ".\\project\\wsgi.py",
+                ".\\project\\__init__.py",
+                ".\\project\\__pycache__\\settings.cpython-310.pyc",
+                ".\\project\\__pycache__\\settings.cpython-312.pyc",
+                ".\\project\\__pycache__\\urls.cpython-310.pyc",
+                ".\\project\\__pycache__\\urls.cpython-312.pyc",
+                ".\\project\\__pycache__\\wsgi.cpython-310.pyc",
+                ".\\project\\__pycache__\\wsgi.cpython-312.pyc",
+                ".\\project\\__pycache__\\__init__.cpython-310.pyc",
+                ".\\project\\__pycache__\\__init__.cpython-312.pyc"
+            ],
+            "details": {
+                ".\\project\\asgi.py": {
+                    "classes": [],
+                    "functions": [],
+                    "imports": [
+                        "os",
+                        "django.core.asgi"
+                    ],
+                    "lines": 16
+                },
+                ".\\project\\settings.py": {
+                    "classes": [],
+                    "functions": [],
+                    "imports": [
+                        "os",
+                        "pathlib",
+                        "django.templatetags.static",
+                        "django.urls",
+                        "django.utils.translation",
+                        "dotenv"
+                    ],
+                    "lines": 337
+                },
+                ".\\project\\urls.py": {
+                    "classes": [],
+                    "functions": [],
+                    "imports": [
+                        "django.contrib",
+                        "django.urls",
+                        "django.contrib.auth",
+                        "django.conf.urls.i18n",
+                        "django.conf",
+                        "django.conf.urls.static",
+                        "django.views.generic"
+                    ],
+                    "lines": 44
+                },
+                ".\\project\\wsgi.py": {
+                    "classes": [],
+                    "functions": [],
+                    "imports": [
+                        "os",
+                        "django.core.wsgi"
+                    ],
+                    "lines": 16
+                }
+            }
+        },
+        "scripts": {
+            "python_files": [
+                ".\\scripts\\fix_specialties.py",
+                ".\\scripts\\verify_system.py"
+            ],
+            "html_files": [],
+            "css_files": [],
+            "js_files": [],
+            "all_files": [
+                ".\\scripts\\fix_specialties.py",
+                ".\\scripts\\verify_system.py"
+            ],
+            "details": {
+                ".\\scripts\\fix_specialties.py": {
+                    "classes": [],
+                    "functions": [
+                        "migrate_specialties"
+                    ],
+                    "imports": [
+                        "os",
+                        "django",
+                        "accounts.models"
+                    ],
+                    "lines": 25
+                },
+                ".\\scripts\\verify_system.py": {
+                    "classes": [],
+                    "functions": [],
+                    "imports": [
+                        "os",
+                        "django",
+                        "datetime",
+                        "accounts.models",
+                        "core.models",
+                        "core.services",
+                        "events.models"
+                    ],
+                    "lines": 84
+                }
+            }
+        },
+        "static": {
+            "python_files": [],
+            "html_files": [],
+            "css_files": [
+                ".\\static\\admin\\css\\style.css",
+                ".\\static\\css\\style.css",
+                ".\\static\\custom_admin\\css\\neumorphism.css",
+                ".\\static\\custom_admin\\css\\retail_standard.css"
+            ],
+            "js_files": [
+                ".\\static\\admin\\js\\event_filter.js",
+                ".\\static\\admin\\js\\rtl-fix.js"
+            ],
+            "all_files": [
+                ".\\static\\logo.png",
+                ".\\static\\manifest.json",
+                ".\\static\\admin\\css\\style.css",
+                ".\\static\\admin\\js\\event_filter.js",
+                ".\\static\\admin\\js\\rtl-fix.js",
+                ".\\static\\css\\style.css",
+                ".\\static\\custom_admin\\css\\neumorphism.css",
+                ".\\static\\custom_admin\\css\\retail_standard.css"
+            ],
+            "details": {
+                ".\\static\\admin\\css\\style.css": {
+                    "lines": 17
+                },
+                ".\\static\\admin\\js\\event_filter.js": {
+                    "lines": 215
+                },
+                ".\\static\\admin\\js\\rtl-fix.js": {
+                    "lines": 16
+                },
+                ".\\static\\css\\style.css": {
+                    "lines": 4
+                },
+                ".\\static\\custom_admin\\css\\neumorphism.css": {
+                    "lines": 169
+                },
+                ".\\static\\custom_admin\\css\\retail_standard.css": {
+                    "lines": 277
+                }
+            }
+        },
+        "templates": {
+            "python_files": [],
+            "html_files": [
+                ".\\templates\\403.html",
+                ".\\templates\\404.html",
+                ".\\templates\\500.html",
+                ".\\templates\\base.html",
+                ".\\templates\\accounts\\doctor_register.html",
+                ".\\templates\\accounts\\registration_qr.html",
+                ".\\templates\\admin\\base_site.html",
+                ".\\templates\\admin\\index.html",
+                ".\\templates\\admin\\accounts\\doctor\\add_voucher_action.html",
+                ".\\templates\\admin\\accounts\\doctor\\card_preview.html",
+                ".\\templates\\admin\\events\\event\\change_list.html",
+                ".\\templates\\core\\cashier_form.html",
+                ".\\templates\\core\\doctor_profile.html",
+                ".\\templates\\core\\transaction_form.html",
+                ".\\templates\\core\\vendor_dashboard.html",
+                ".\\templates\\custom_admin\\doctors_directory.html",
+                ".\\templates\\custom_admin\\doctor_card.html",
+                ".\\templates\\custom_admin\\doctor_portal.html",
+                ".\\templates\\custom_admin\\doctor_profile.html",
+                ".\\templates\\custom_admin\\doctor_settings.html",
+                ".\\templates\\custom_admin\\doctor_transactions.html",
+                ".\\templates\\custom_admin\\doctor_transfers.html",
+                ".\\templates\\custom_admin\\doctor_vouchers.html",
+                ".\\templates\\custom_admin\\events_wizard.html",
+                ".\\templates\\custom_admin\\login_gateway.html",
+                ".\\templates\\custom_admin\\manager_dashboard.html",
+                ".\\templates\\custom_admin\\register_gateway.html",
+                ".\\templates\\custom_admin\\system_settings.html",
+                ".\\templates\\custom_admin\\vendor_portal.html",
+                ".\\templates\\custom_admin\\vendor_settlements.html",
+                ".\\templates\\registration\\login.html"
+            ],
+            "css_files": [],
+            "js_files": [
+                ".\\templates\\serviceworker.js"
+            ],
+            "all_files": [
+                ".\\templates\\403.html",
+                ".\\templates\\404.html",
+                ".\\templates\\500.html",
+                ".\\templates\\base.html",
+                ".\\templates\\serviceworker.js",
+                ".\\templates\\accounts\\doctor_register.html",
+                ".\\templates\\accounts\\registration_qr.html",
+                ".\\templates\\admin\\base_site.html",
+                ".\\templates\\admin\\index.html",
+                ".\\templates\\admin\\accounts\\doctor\\add_voucher_action.html",
+                ".\\templates\\admin\\accounts\\doctor\\card_preview.html",
+                ".\\templates\\admin\\events\\event\\change_list.html",
+                ".\\templates\\core\\cashier_form.html",
+                ".\\templates\\core\\doctor_profile.html",
+                ".\\templates\\core\\transaction_form.html",
+                ".\\templates\\core\\vendor_dashboard.html",
+                ".\\templates\\custom_admin\\doctors_directory.html",
+                ".\\templates\\custom_admin\\doctor_card.html",
+                ".\\templates\\custom_admin\\doctor_portal.html",
+                ".\\templates\\custom_admin\\doctor_profile.html",
+                ".\\templates\\custom_admin\\doctor_settings.html",
+                ".\\templates\\custom_admin\\doctor_transactions.html",
+                ".\\templates\\custom_admin\\doctor_transfers.html",
+                ".\\templates\\custom_admin\\doctor_vouchers.html",
+                ".\\templates\\custom_admin\\events_wizard.html",
+                ".\\templates\\custom_admin\\login_gateway.html",
+                ".\\templates\\custom_admin\\manager_dashboard.html",
+                ".\\templates\\custom_admin\\register_gateway.html",
+                ".\\templates\\custom_admin\\system_settings.html",
+                ".\\templates\\custom_admin\\vendor_portal.html",
+                ".\\templates\\custom_admin\\vendor_settlements.html",
+                ".\\templates\\registration\\login.html"
+            ],
+            "details": {
+                ".\\templates\\403.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 47
+                },
+                ".\\templates\\404.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 45
+                },
+                ".\\templates\\500.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 44
+                },
+                ".\\templates\\base.html": {
+                    "contains_blocks": true,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 230
+                },
+                ".\\templates\\serviceworker.js": {
+                    "lines": 17
+                },
+                ".\\templates\\accounts\\doctor_register.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 280
+                },
+                ".\\templates\\accounts\\registration_qr.html": {
+                    "contains_blocks": true,
+                    "extends": true,
+                    "includes": false,
+                    "lines": 171
+                },
+                ".\\templates\\admin\\base_site.html": {
+                    "contains_blocks": true,
+                    "extends": true,
+                    "includes": false,
+                    "lines": 55
+                },
+                ".\\templates\\admin\\index.html": {
+                    "contains_blocks": true,
+                    "extends": true,
+                    "includes": false,
+                    "lines": 233
+                },
+                ".\\templates\\admin\\accounts\\doctor\\add_voucher_action.html": {
+                    "contains_blocks": true,
+                    "extends": true,
+                    "includes": false,
+                    "lines": 70
+                },
+                ".\\templates\\admin\\accounts\\doctor\\card_preview.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 67
+                },
+                ".\\templates\\admin\\events\\event\\change_list.html": {
+                    "contains_blocks": true,
+                    "extends": true,
+                    "includes": false,
+                    "lines": 56
+                },
+                ".\\templates\\core\\cashier_form.html": {
+                    "contains_blocks": true,
+                    "extends": true,
+                    "includes": false,
+                    "lines": 51
+                },
+                ".\\templates\\core\\doctor_profile.html": {
+                    "contains_blocks": true,
+                    "extends": true,
+                    "includes": false,
+                    "lines": 239
+                },
+                ".\\templates\\core\\transaction_form.html": {
+                    "contains_blocks": true,
+                    "extends": true,
+                    "includes": false,
+                    "lines": 612
+                },
+                ".\\templates\\core\\vendor_dashboard.html": {
+                    "contains_blocks": true,
+                    "extends": true,
+                    "includes": false,
+                    "lines": 260
+                },
+                ".\\templates\\custom_admin\\doctors_directory.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 480
+                },
+                ".\\templates\\custom_admin\\doctor_card.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 330
+                },
+                ".\\templates\\custom_admin\\doctor_portal.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 436
+                },
+                ".\\templates\\custom_admin\\doctor_profile.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 340
+                },
+                ".\\templates\\custom_admin\\doctor_settings.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 333
+                },
+                ".\\templates\\custom_admin\\doctor_transactions.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 308
+                },
+                ".\\templates\\custom_admin\\doctor_transfers.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 360
+                },
+                ".\\templates\\custom_admin\\doctor_vouchers.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 582
+                },
+                ".\\templates\\custom_admin\\events_wizard.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 275
+                },
+                ".\\templates\\custom_admin\\login_gateway.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 169
+                },
+                ".\\templates\\custom_admin\\manager_dashboard.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 393
+                },
+                ".\\templates\\custom_admin\\register_gateway.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 163
+                },
+                ".\\templates\\custom_admin\\system_settings.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 202
+                },
+                ".\\templates\\custom_admin\\vendor_portal.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 1370
+                },
+                ".\\templates\\custom_admin\\vendor_settlements.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 398
+                },
+                ".\\templates\\registration\\login.html": {
+                    "contains_blocks": false,
+                    "extends": false,
+                    "includes": false,
+                    "lines": 170
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,59 @@
+{% extends 'emails/base_email.html' %}
+{% load i18n %}
+
+{% block header %}
+<div class="header-icon">🔐</div>
+<div class="logo-text">{% trans 'رمز التحقق OTP' %}</div>
+<div class="logo-sub">{{ global_system_vendor.name|default:'النظام' }} — تأكيد العملية</div>
+{% endblock %}
+
+{% block body %}
+<div class="greeting">د. {{ doctor_name }}،</div>
+
+<p class="intro-text">
+    تلقّى النظام طلباً لإجراء عملية
+    {% if is_transfer %}
+        <strong>{% trans 'تحويل قسيمة' %}</strong>
+    {% else %}
+        <strong>{% trans 'خصم مبلغ' %}</strong>
+    {% endif %}
+    . لإتمام العملية، يرجى استخدام رمز التحقق التالي:
+</p>
+
+<div class="otp-box">
+    <div class="otp-code">{{ otp }}</div>
+    <div class="otp-label">{% trans '⏱️ صالح لمدة' %} <strong>{% trans '10 دقائق فقط' %}</strong> {% trans '— بحد أقصى' %} <strong>{% trans '5 محاولات' %}</strong></div>
+</div>
+
+{% if is_transfer %}
+<div class="info-card">
+    <div class="card-title">{% trans '📤 تفاصيل طلب التحويل' %}</div>
+    <div class="info-row">
+        <span class="label">{% trans 'المُرسِل' %}</span>
+        <span class="value">د. {{ from_doctor }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">{% trans 'قيمة القسيمة' %}</span>
+        <span class="value">{{ amount }} </span>
+    </div>
+</div>
+{% else %}
+<div class="info-card">
+    <div class="card-title">{% trans '🛒 تفاصيل عملية الخصم' %}</div>
+    <div class="info-row">
+        <span class="label">{% trans 'المتجر' %}</span>
+        <span class="value">{{ vendor_name }}</span>
+    </div>
+    <div class="info-row">
+        <span class="label">{% trans 'المبلغ المطلوب' %}</span>
+        <span class="value">{{ amount }} </span>
+    </div>
+</div>
+{% endif %}
+
+<hr class="divider">
+
+<div class="alert-box">
+    {% trans '🚫 إذا لم تكن أنت من طلب هذه العملية،' %} <strong>{% trans 'تجاهل هذه الرسالة فوراً' %}</strong> {% trans 'ولا تُعطِ الرمز لأحد.' %}
+</div>
+{% endblock %}

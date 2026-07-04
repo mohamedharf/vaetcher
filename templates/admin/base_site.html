@@ -1,0 +1,56 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="manifest" href="{% static 'manifest.json' %}">
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function {
+            navigator.serviceWorker.register('/serviceworker.js').then(function(registration) {
+                console.log('Admin ServiceWorker registration successful with scope: ', registration.scope);
+            }, function(err) {
+                console.log('Admin ServiceWorker registration failed: ', err);
+            });
+        });
+    }
+</script>
+
+<div id="pwa-install-banner" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #ffffff; padding: 15px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 99999; flex-direction: row; align-items: center; gap: 15px; width: 90%; max-width: 400px; border: 1px solid #eee; direction: rtl;">
+    <img src="{% static 'logo.png' %}" alt="Logo" style="width: 45px; height: 45px; border-radius: 8px; object-fit: contain; background: #fff;">
+    <div style="flex: 1;">
+        <h4 style="margin: 0; font-size: 15px; color: #333; font-weight: bold;">{{ global_system_vendor.name|default:'النظام' }}</h4>
+        <p style="margin: 0; font-size: 13px; color: #666;">{% trans 'أضف التطبيق للشاشة الرئيسية لسهولة الوصول' %}</p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 5px;">
+        <button onclick="installPWA" style="background: #800000; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-family: Cairo, sans-serif; font-size: 13px; font-weight: bold;">{% trans 'تثبيت' %}</button>
+        <button onclick="closePWABanner" style="background: #f1f1f1; color: #333; border: none; padding: 4px; border-radius: 6px; cursor: pointer; font-size: 11px;">{% trans 'لاحقاً' %}</button>
+    </div>
+</div>
+
+<script>
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault;
+        deferredPrompt = e;
+        const banner = document.getElementById('pwa-install-banner');
+        if(banner) banner.style.display = 'flex';
+    });
+    
+    function installPWA {
+        if(!deferredPrompt) return;
+        const banner = document.getElementById('pwa-install-banner');
+        if(banner) banner.style.display = 'none';
+        deferredPrompt.prompt;
+        deferredPrompt.userChoice.then((choiceResult) => {
+            deferredPrompt = null;
+        });
+    }
+    
+    function closePWABanner {
+        const banner = document.getElementById('pwa-install-banner');
+        if(banner) banner.style.display = 'none';
+    }
+</script>
+{% endblock %}

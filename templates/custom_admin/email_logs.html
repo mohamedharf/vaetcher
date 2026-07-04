@@ -1,0 +1,645 @@
+{% extends 'custom_admin/dashboard_base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}سجل الإيميلات | {{ global_system_vendor.name|default:'النظام' }}{% endblock %}
+{% block page_title %}سجل الإيميلات والمراسلات{% endblock %}
+{% block page_icon %}fa-envelope-open-text{% endblock %}
+{% block page_subtitle %}تتبع وإدارة جميع الإيميلات المرسلة من النظام{% endblock %}
+
+{% block quick_actions %}
+<button onclick="openModal('resendModal')" class="qa-btn qa-btn-outline" title="{% trans 'إعادة إرسال بيانات دخول' %}">
+    <i class="fa-solid fa-key"></i> {% trans 'إعادة إرسال بيانات' %}
+</button>
+<button onclick="openModal('composeModal')" class="qa-btn qa-btn-primary">
+    <i class="fa-solid fa-pen-to-square"></i> {% trans 'إرسال إيميل' %}
+</button>
+{% endblock %}
+
+{% block search_bar %}
+<form action="{% url 'custom_email_logs' %}" method="get" class="header-search-bar">
+    {% if current_status %}<input type="hidden" name="status" value="{{ current_status }}">{% endif %}
+    {% if current_template %}<input type="hidden" name="template" value="{{ current_template }}">{% endif %}
+    {% if date_from %}<input type="hidden" name="date_from" value="{{ date_from }}">{% endif %}
+    {% if date_to %}<input type="hidden" name="date_to" value="{{ date_to }}">{% endif %}
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" name="q" value="{{ query|default:'' }}" placeholder="{% trans 'البحث باسم المستلم أو عنوان الرسالة...' %}">
+</form>
+{% endblock %}
+
+{% block content %}
+<style>
+    .email-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem; margin-bottom: 1.75rem; }
+    .email-stat-card { background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%); border-radius: 1.25rem; padding: 1.5rem 1.75rem; box-shadow: 0 4px 20px rgba(0,83,83,0.08); border: 1px solid rgba(0,83,83,0.08); display: flex; align-items: center; gap: 1.25rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .email-stat-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,83,83,0.12); }
+    .email-stat-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .email-stat-num { font-size: 1.8rem; font-weight: 900; color: var(--on-surface); line-height: 1; letter-spacing: -0.5px; }
+    .email-stat-label { font-size: 0.8rem; color: var(--on-surface-variant); margin-top: 6px; font-weight: 600; }
+    .log-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+    .log-table th { padding: 1.1rem 1.25rem; text-align: right; font-size: 0.78rem; color: var(--on-surface-variant); font-weight: 800; border-bottom: 2px solid rgba(0,83,83,0.12); background: linear-gradient(135deg, rgba(0,83,83,0.04) 0%, rgba(0,83,83,0.02) 100%); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.05em; }
+    .log-table td { padding: 1rem 1.25rem; border-bottom: 1px solid rgba(0,83,83,0.06); vertical-align: middle; font-size: 0.85rem; }
+    .log-table tr:last-child td { border-bottom: none; }
+    .log-table tr:hover td { background: rgba(0,83,83,0.03); }
+    .status-badge { padding: 6px 14px; border-radius: 24px; font-size: 0.76rem; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.03em; }
+    .status-success { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); color: #2e7d32; box-shadow: 0 2px 8px rgba(46,125,50,0.15); }
+    .status-failed { background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); color: #c62828; box-shadow: 0 2px 8px rgba(198,40,40,0.15); }
+    .compose-modal-body { display: flex; flex-direction: column; gap: 1.25rem; }
+    .form-group label { font-size: 0.82rem; font-weight: 700; color: var(--on-surface-variant); margin-bottom: 8px; display: block; }
+    .form-input { width: 100%; padding: 0.8rem 1.1rem; border: 1.5px solid rgba(0,83,83,0.15); border-radius: 12px; font-size: 0.88rem; font-family: inherit; outline: none; transition: all 0.25s; background: #fafafa; box-sizing: border-box; color: var(--on-surface); }
+    .form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(0,83,83,0.12); background: #fff; }
+    .form-textarea { resize: vertical; min-height: 140px; }
+    .recipient-type-tabs { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .rtype-tab { padding: 0.6rem 1.1rem; border-radius: 10px; font-size: 0.82rem; font-weight: 700; cursor: pointer; border: 1.5px solid rgba(0,83,83,0.15); background: #fafafa; color: var(--on-surface-variant); transition: all 0.2s; }
+    .rtype-tab.selected { background: linear-gradient(135deg, #005353 0%, #007a7a 100%); color: white; border-color: transparent; box-shadow: 0 4px 15px rgba(0,83,83,0.25); }
+    .user-select-list { max-height: 220px; overflow-y: auto; border: 1.5px solid rgba(0,83,83,0.15); border-radius: 12px; padding: 0.75rem; background: #fafafa; }
+    .user-select-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; transition: background 0.15s; }
+    .user-select-item:hover { background: rgba(0,83,83,0.06); }
+    .user-select-item input[type="checkbox"] { accent-color: var(--primary); width: 18px; height: 18px; }
+    .empty-state { padding: 4rem; text-align: center; color: #aaa; }
+    .empty-state i { font-size: 3rem; margin-bottom: 16px; display: block; opacity: 0.6; }
+    .pagination-btn { padding: 0.6rem 1.1rem; border-radius: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; border: 1.5px solid rgba(0,83,83,0.15); background: #fff; color: var(--on-surface-variant); transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+    .email-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0,83,83,0.15); border-color: rgba(0,83,83,0.2); }
+    .pagination-btn:hover:not(:disabled) { background: linear-gradient(135deg, #005353 0%, #007a7a 100%); color: white; border-color: transparent; box-shadow: 0 4px 15px rgba(0,83,83,0.2); }
+    .pagination-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .pagination-info { padding: 0.65rem 1.25rem; background: linear-gradient(135deg, rgba(0,83,83,0.06) 0%, rgba(0,83,83,0.04) 100%); border-radius: 10px; font-weight: 800; font-size: 0.82rem; color: var(--primary); border: 1px solid rgba(0,83,83,0.1); }
+</style>
+
+<!-- Stats -->
+<div class="email-stats">
+    <div class="email-stat-card">
+        <div class="email-stat-icon" style="background: #e3f2fd; color: #1565c0;"><i class="fa-solid fa-envelope"></i></div>
+        <div>
+            <div class="email-stat-num">{{ total_sent }}</div>
+            <div class="email-stat-label">{% trans 'إجمالي المرسلة' %}</div>
+        </div>
+    </div>
+    <div class="email-stat-card">
+        <div class="email-stat-icon" style="background: #e8f5e9; color: #2e7d32;"><i class="fa-solid fa-check-circle"></i></div>
+        <div>
+            <div class="email-stat-num">{{ total_success }}</div>
+            <div class="email-stat-label">{% trans 'نجاح الإرسال' %}</div>
+        </div>
+    </div>
+    <div class="email-stat-card">
+        <div class="email-stat-icon" style="background: #ffebee; color: #c62828;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div>
+            <div class="email-stat-num">{{ total_failed }}</div>
+            <div class="email-stat-label">{% trans 'فشل الإرسال' %}</div>
+        </div>
+    </div>
+    <div class="email-stat-card">
+        <div class="email-stat-icon" style="background: #fff3e0; color: #e65100;"><i class="fa-solid fa-clock-rotate-left"></i></div>
+        <div>
+            <div class="email-stat-num">{{ recent_sent }}</div>
+            <div class="email-stat-label">{% trans 'آخر 7 أيام' %}</div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ Collapsible Advanced Filters Panel ═══ -->
+<div class="mt-6 mb-6" id="filtersPanel">
+    <form method="get" action="{% url 'custom_email_logs' %}" id="emailLogsFilterForm">
+        <input type="hidden" name="q" value="{{ query }}">
+
+        <!-- Filter Card -->
+        <div style="background: white; border-radius: 20px; border: 1px solid var(--outline-variant); box-shadow: 0 2px 12px rgba(0,83,83,0.06); overflow: hidden;">
+
+            <!-- Filter Header -->
+            <div id="filterHeader" onclick="toggleFiltersPanel()" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: linear-gradient(135deg, rgba(0,83,83,0.04) 0%, rgba(0,83,83,0.01) 100%); border-bottom: 1px solid var(--outline-variant); cursor: pointer;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 34px; height: 34px; background: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-sliders" style="color: white; font-size: 14px;"></i>
+                    </div>
+                    <div>
+                        <span style="font-weight: 900; font-size: 0.9rem; color: var(--on-surface); display: block; line-height: 1.2;">{% trans 'فلاتر متقدمة' %}</span>
+                        <span style="font-size: 0.72rem; color: var(--on-surface-variant); font-weight: 600;">{% trans 'تصفية سجلات المراسلات حسب الحالة والقالب والتاريخ' %}</span>
+                    </div>
+                    <i id="toggleFiltersChevron" class="fa-solid fa-chevron-down" style="font-size: 12px; color: var(--primary); transition: transform 0.3s; transform: rotate(0deg); margin-right: 8px;"></i>
+                </div>
+                <!-- Active Filters Badges -->
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end;" onclick="event.stopPropagation();">
+                    {% if query %}
+                    <span style="background: rgba(0,83,83,0.08); color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800;">
+                        <i class="fa-solid fa-magnifying-glass" style="margin-left: 4px; font-size: 10px;"></i>
+                        "{{ query }}"
+                    </span>
+                    {% endif %}
+                    {% if current_status %}
+                    <span style="background: {% if current_status == 'SUCCESS' %}rgba(22,163,74,0.1); color: #16a34a;{% else %}rgba(220,38,38,0.1); color: #dc2626;{% endif %} padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800;">
+                        <i class="fa-solid fa-circle" style="font-size: 7px; margin-left: 4px;"></i>
+                        {% if current_status == 'SUCCESS' %}{% trans 'نجح' %}{% else %}{% trans 'فشل' %}{% endif %}
+                    </span>
+                    {% endif %}
+                    {% if current_template %}
+                    <span style="background: rgba(59,130,246,0.1); color: #3b82f6; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800;">
+                        <i class="fa-solid fa-file-code" style="font-size: 10px; margin-left: 4px;"></i>
+                        {{ current_template }}
+                    </span>
+                    {% endif %}
+                    {% if date_from or date_to %}
+                    <span style="background: rgba(245,158,11,0.1); color: #d97706; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center;">
+                        <i class="fa-solid fa-calendar-alt" style="margin-left: 4px; font-size: 10px;"></i>
+                        {% if date_from %}{{ date_from }}{% endif %} - {% if date_to %}{{ date_to }}{% endif %}
+                    </span>
+                    {% endif %}
+                    {% if query or current_status or current_template or date_from or date_to %}
+                    <a href="{% url 'custom_email_logs' %}" title="{% trans 'مسح جميع الفلاتر' %}"
+                       style="background: rgba(239,68,68,0.08); color: #ef4444; border: none; padding: 5px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 4px; cursor: pointer; transition: all 0.2s;"
+                       onmouseover="this.style.background='rgba(239,68,68,0.15)'" onmouseout="this.style.background='rgba(239,68,68,0.08)'">
+                        <i class="fa-solid fa-xmark"></i> {% trans 'مسح الكل' %}
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Filter Fields Grid -->
+            <div id="filterFieldsContainer" style="display: none; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0; padding: 0; border-top: 1px solid var(--outline-variant);">
+
+                <!-- 1. Status Filter -->
+                <div style="padding: 16px 20px; border-left: 1px solid var(--outline-variant);">
+                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.7rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+                        <i class="fa-solid fa-circle-check" style="color: var(--primary); font-size: 11px;"></i>
+                        {% trans 'حالة الإرسال' %}
+                    </label>
+                    <div style="position: relative;">
+                        <select name="status" id="filterStatus"
+                                onchange="document.getElementById('emailLogsFilterForm').submit()"
+                                style="width: 100%; background: var(--surface-container-lowest); border: 1.5px solid {% if current_status %}var(--primary){% else %}var(--outline-variant){% endif %}; border-radius: 12px; padding: 9px 14px; font-size: 0.82rem; font-weight: 700; color: var(--on-surface); outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; transition: border-color 0.2s; font-family: inherit;">
+                            <option value="">📨 {% trans 'الكل' %}</option>
+                            <option value="SUCCESS" {% if current_status == 'SUCCESS' %}selected{% endif %}>🟢 {% trans 'نجاح الإرسال' %}</option>
+                            <option value="FAILED" {% if current_status == 'FAILED' %}selected{% endif %}>🔴 {% trans 'فشل الإرسال' %}</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--on-surface-variant); font-size: 11px; pointer-events: none;"></i>
+                    </div>
+                </div>
+
+                <!-- 2. Template Used Filter -->
+                <div style="padding: 16px 20px; border-left: 1px solid var(--outline-variant);">
+                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.7rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+                        <i class="fa-solid fa-file-code" style="color: var(--primary); font-size: 11px;"></i>
+                        {% trans 'قالب الإيميل' %}
+                    </label>
+                    <div style="position: relative;">
+                        <select name="template" id="filterTemplate"
+                                onchange="document.getElementById('emailLogsFilterForm').submit()"
+                                style="width: 100%; background: var(--surface-container-lowest); border: 1.5px solid {% if current_template %}var(--primary){% else %}var(--outline-variant){% endif %}; border-radius: 12px; padding: 9px 14px; font-size: 0.82rem; font-weight: 700; color: var(--on-surface); outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; transition: border-color 0.2s; font-family: inherit;">
+                            <option value="">📄 {% trans 'كل القوالب' %}</option>
+                            {% for t in unique_templates %}
+                            <option value="{{ t }}" {% if current_template == t %}selected{% endif %}>
+                                {{ t }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <i class="fa-solid fa-chevron-down" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--on-surface-variant); font-size: 11px; pointer-events: none;"></i>
+                    </div>
+                </div>
+
+                <!-- 3. Date Range Filter -->
+                <div style="padding: 16px 20px; display: flex; gap: 12px;">
+                    <div style="flex: 1;">
+                        <label style="display: flex; align-items: center; gap: 6px; font-size: 0.7rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+                            <i class="fa-solid fa-calendar-day" style="color: var(--primary); font-size: 11px;"></i>
+                            {% trans 'من تاريخ الإرسال' %}
+                        </label>
+                        <input type="date" name="date_from" value="{{ date_from }}"
+                               onchange="document.getElementById('emailLogsFilterForm').submit()"
+                               style="width: 100%; background: var(--surface-container-lowest); border: 1.5px solid {% if date_from %}var(--primary){% else %}var(--outline-variant){% endif %}; border-radius: 12px; padding: 7px 14px; font-size: 0.82rem; font-weight: 700; color: var(--on-surface); outline: none; transition: border-color 0.2s; font-family: inherit; box-sizing: border-box;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display: flex; align-items: center; gap: 6px; font-size: 0.7rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+                            <i class="fa-solid fa-calendar-day" style="color: var(--primary); font-size: 11px;"></i>
+                            {% trans 'إلى تاريخ الإرسال' %}
+                        </label>
+                        <input type="date" name="date_to" value="{{ date_to }}"
+                               onchange="document.getElementById('emailLogsFilterForm').submit()"
+                               style="width: 100%; background: var(--surface-container-lowest); border: 1.5px solid {% if date_to %}var(--primary){% else %}var(--outline-variant){% endif %}; border-radius: 12px; padding: 7px 14px; font-size: 0.82rem; font-weight: 700; color: var(--on-surface); outline: none; transition: border-color 0.2s; font-family: inherit; box-sizing: border-box;">
+                    </div>
+                </div>
+
+            </div><!-- /Filter Fields Grid -->
+
+            <!-- Filter Footer: Results Summary -->
+            {% if query or current_status or current_template or date_from or date_to %}
+            <div style="padding: 10px 20px; background: rgba(0,83,83,0.03); border-top: 1px solid var(--outline-variant); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                <span style="font-size: 0.78rem; font-weight: 700; color: var(--primary);">
+                    <i class="fa-solid fa-magnifying-glass" style="margin-left: 6px; opacity: 0.7;"></i>
+                    {% trans 'نتائج الفلتر:' %} <strong>{{ page_obj.paginator.count }}</strong> {% trans 'رسالة' %}
+                </span>
+                <a href="{% url 'custom_email_logs' %}"
+                   style="background: rgba(239,68,68,0.08); color: #ef4444; padding: 5px 14px; border-radius: 20px; font-size: 0.72rem; font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 5px; transition: all 0.2s;"
+                   onmouseover="this.style.background='rgba(239,68,68,0.15)'" onmouseout="this.style.background='rgba(239,68,68,0.08)'">
+                    <i class="fa-solid fa-rotate-left"></i> {% trans 'إعادة تعيين الفلاتر' %}
+                </a>
+            </div>
+            {% endif %}
+
+            <!-- Collapsible Script -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const hasActiveFilters = {% if query or current_status or current_template or date_from or date_to %}true{% else %}false{% endif %};
+                    const container = document.getElementById('filterFieldsContainer');
+                    const chevron = document.getElementById('toggleFiltersChevron');
+                    if (hasActiveFilters) {
+                        container.style.display = 'grid';
+                        chevron.style.transform = 'rotate(180deg)';
+                    }
+                });
+
+                function toggleFiltersPanel() {
+                    const container = document.getElementById('filterFieldsContainer');
+                    const chevron = document.getElementById('toggleFiltersChevron');
+                    if (container.style.display === 'none') {
+                        container.style.display = 'grid';
+                        chevron.style.transform = 'rotate(180deg)';
+                    } else {
+                        container.style.display = 'none';
+                        chevron.style.transform = 'rotate(0deg)';
+                    }
+                }
+            </script>
+
+        </div><!-- /Filter Card -->
+    </form>
+</div><!-- /Filters Panel -->
+
+<!-- Email Cards Timeline -->
+<div style="display: grid; gap: 1.25rem; margin-bottom: 2rem;">
+    {% for log in logs %}
+    <div class="email-card" 
+         style="background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%); border-radius: 1.25rem; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,83,83,0.06); border: 1px solid rgba(0,83,83,0.08); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;"
+         data-recipient="{{ log.recipient }}"
+         data-subject="{{ log.subject }}"
+         data-template="{{ log.template_used|default:"-" }}"
+         data-status="{{ log.status }}"
+         data-status-display="{{ log.get_status_display }}"
+         data-sent-at="{{ log.sent_at|date:"d/m/Y H:i" }}"
+         data-error-message="{{ log.error_message|default:"-" }}"
+         onclick="openEmailDetail(this)">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div style="width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; background: {% if log.status == 'SUCCESS' %}linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);{% else %}linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);{% endif %} box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                    <i class="fa-solid {% if log.status == 'SUCCESS' %}fa-check-circle{% else %}fa-triangle-exclamation{% endif %}" style="font-size: 1.3rem; color: {% if log.status == 'SUCCESS' %}#2e7d32{% else %}#c62828{% endif %};"></i>
+                </div>
+                <div>
+                    <div style="font-weight: 800; color: var(--on-surface); font-size: 0.95rem;">{{ log.recipient }}</div>
+                    <div style="font-size: 0.78rem; color: var(--on-surface-variant); font-weight: 600; margin-top: 2px;">
+                        <i class="fa-solid fa-at" style="opacity: 0.6; margin-left: 4px;"></i>{{ log.subject|truncatechars:50 }}
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0;">
+                {% if log.template_used %}
+                <span style="background: rgba(59,130,246,0.1); color: #3b82f6; padding: 4px 12px; border-radius: 20px; font-size: 0.72rem; font-weight: 800;">
+                    <i class="fa-solid fa-file-code" style="margin-left: 4px;"></i>{{ log.template_used }}
+                </span>
+                {% endif %}
+                <span class="status-badge {% if log.status == 'SUCCESS' %}status-success{% else %}status-failed{% endif %}">
+                    {% if log.status == 'SUCCESS' %}{% trans 'نجاح' %}{% else %}{% trans 'فشل' %}{% endif %}
+                </span>
+            </div>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 1.5rem; font-size: 0.78rem; color: var(--on-surface-variant);">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <i class="fa-solid fa-clock" style="opacity: 0.6;"></i>
+                    {{ log.sent_at|date:"d/m/Y H:i" }}
+                </div>
+                {% if log.error_message %}
+                <div style="display: flex; align-items: center; gap: 6px; color: #c62828;">
+                    <i class="fa-solid fa-circle-info"></i>
+                    {{ log.error_message|truncatechars:40 }}
+                </div>
+                {% endif %}
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-size: 0.75rem; color: var(--on-surface-variant); font-weight: 600;">{% trans 'عرض التفاصيل' %}</span>
+                <i class="fa-solid fa-arrow-left-long" style="color: var(--primary);"></i>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="empty-state" style="background: #fff; border-radius: 1.25rem; border: 1px solid rgba(0,83,83,0.08); box-shadow: 0 4px 20px rgba(0,83,83,0.06);">
+        <i class="fa-regular fa-envelope-open"></i>
+        <p style="margin: 0; font-size: 0.95rem; font-weight: 700;">{% trans 'لا توجد سجلات إيميلات حتى الآن' %}</p>
+        <p style="margin: 8px 0 0 0; font-size: 0.82rem;">{% trans 'سيتم تسجيل كل إيميل مرسل من النظام هنا تلقائياً' %}</p>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if is_paginated %}
+<div style="background: #fff; border-radius: 1.25rem; padding: 1.25rem 1.75rem; box-shadow: 0 4px 20px rgba(0,83,83,0.06); border: 1px solid rgba(0,83,83,0.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+    <div style="font-size: 0.8rem; color: var(--on-surface-variant); font-weight: 600;">
+        <i class="fa-solid fa-list" style="margin-left: 6px; opacity: 0.7;"></i>
+        {% trans 'عرض' %} <strong>{{ page_obj.start_index }}</strong> - <strong>{{ page_obj.end_index }}</strong> {% trans 'من' %} <strong>{{ page_obj.paginator.count }}</strong> {% trans 'رسالة' %}
+    </div>
+    <div style="display: flex; gap: 0.6rem; align-items: center;">
+        {% if page_obj.has_previous %}
+        <a href="?page=1{% if current_status %}&status={{ current_status }}{% endif %}{% if query %}&q={{ query }}{% endif %}{% if current_template %}&template={{ current_template }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}" class="pagination-btn"><i class="fa-solid fa-angles-right"></i></a>
+        <a href="?page={{ page_obj.previous_page_number }}{% if current_status %}&status={{ current_status }}{% endif %}{% if query %}&q={{ query }}{% endif %}{% if current_template %}&template={{ current_template }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}" class="pagination-btn"><i class="fa-solid fa-angle-right"></i> {% trans 'السابق' %}</a>
+        {% endif %}
+        <span class="pagination-info">
+            {% trans 'صفحة' %} {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+        </span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if current_status %}&status={{ current_status }}{% endif %}{% if query %}&q={{ query }}{% endif %}{% if current_template %}&template={{ current_template }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}" class="pagination-btn">{% trans 'التالي' %} <i class="fa-solid fa-angle-left"></i></a>
+        <a href="?page={{ page_obj.paginator.num_pages }}{% if current_status %}&status={{ current_status }}{% endif %}{% if query %}&q={{ query }}{% endif %}{% if current_template %}&template={{ current_template }}{% endif %}{% if date_from %}&date_from={{ date_from }}{% endif %}{% if date_to %}&date_to={{ date_to }}{% endif %}" class="pagination-btn"><i class="fa-solid fa-angles-left"></i></a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<!-- ====== Modal: تفاصيل الإيميل ====== -->
+<div class="glass-overlay" id="emailDetailModal" onclick="if(event.target===this) closeModal('emailDetailModal')">
+    <div style="background: #fff; border-radius: 1.5rem; width: 100%; max-width: 650px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); overflow: hidden;">
+        <div id="emailDetailHeader" style="padding: 1.5rem 1.75rem; background: linear-gradient(135deg, #005353 0%, #007a7a 100%); color: white; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="fa-solid fa-envelope-open-text" style="font-size: 1.3rem;"></i>
+                <h3 style="margin: 0; font-size: 1.1rem; font-weight: 800;">{% trans 'تفاصيل الإيميل' %}</h3>
+            </div>
+            <button onclick="closeModal('emailDetailModal')" style="background: rgba(255,255,255,0.15); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="emailDetailContent" style="padding: 1.75rem;">
+            <div class="skeleton" style="height: 20px; width: 60%; margin-bottom: 1rem;"></div>
+            <div class="skeleton" style="height: 16px; width: 80%; margin-bottom: 0.75rem;"></div>
+            <div class="skeleton" style="height: 16px; width: 40%;"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ====== Modal: إعادة إرسال بيانات الدخول ====== -->
+<div class="glass-overlay" id="resendModal" onclick="if(event.target===this) closeModal('resendModal')">
+    <div style="background: #fff; border-radius: 1.5rem; width: 100%; max-width: 520px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); overflow: hidden;">
+        <div style="padding: 1.5rem 1.75rem; background: linear-gradient(135deg, #005353 0%, #007a7a 100%); color: white; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-key" style="font-size: 1.2rem;"></i>
+                <h3 style="margin: 0; font-size: 1.05rem; font-weight: 700;">{% trans 'إعادة إرسال بيانات الدخول' %}</h3>
+            </div>
+            <button onclick="closeModal('resendModal')" style="background: rgba(255,255,255,0.15); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form method="post" action="{% url 'custom_email_actions' %}">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="resend_credentials">
+            <div style="padding: 1.5rem 1.75rem; display: flex; flex-direction: column; gap: 1rem;">
+                <p style="margin: 0; color: var(--on-surface-variant); font-size: 0.9rem; background: #fff3e0; padding: 0.75rem 1rem; border-radius: 8px; border-right: 3px solid #e65100;">
+                    <i class="fa-solid fa-circle-info" style="color: #e65100;"></i>
+                    {% trans 'سيتم توليد كلمة مرور جديدة تلقائياً وإرسالها مع بيانات الدخول إلى بريد المستخدم.' %}
+                </p>
+                <div class="form-group" id="resendUsersSection">
+                    <label><i class="fa-solid fa-list-check"></i> {% trans 'اختر المستخدم' %}</label>
+                    <div class="recipient-type-tabs" style="margin-bottom: 8px;">
+                        <button type="button" class="rtype-tab selected" onclick="filterResendUsersList('all', this)">{% trans 'الكل' %}</button>
+                        <button type="button" class="rtype-tab" onclick="filterResendUsersList('doctor', this)">{% trans 'أطباء' %}</button>
+                        <button type="button" class="rtype-tab" onclick="filterResendUsersList('vendor', this)">{% trans 'تجار' %}</button>
+                        <button type="button" class="rtype-tab" onclick="filterResendUsersList('company', this)">{% trans 'شركات' %}</button>
+                        <button type="button" class="rtype-tab" onclick="filterResendUsersList('delegate', this)">{% trans 'مناديب' %}</button>
+                        <button type="button" class="rtype-tab" onclick="filterResendUsersList('admin', this)">{% trans 'إدارة' %}</button>
+                    </div>
+                    <input type="text" id="resendSearchInput" class="form-input" placeholder="{% trans 'بحث بالاسم أو البريد...' %}" oninput="filterResendUsersList(null, null)" style="margin-bottom: 8px;">
+                    <div class="user-select-list" id="resendUsersList" style="max-height: 250px;">
+                        {% for u in all_users %}
+                        <label class="user-select-item resend-user-item" data-name="{{ u.get_full_name|default:u.username|lower }} {{ u.email|lower }}" data-type="{{ u.custom_type }}">
+                            <input type="radio" name="user_id" value="{{ u.id }}" required>
+                            <span>
+                                <strong>{{ u.get_full_name|default:u.username }}</strong>
+                                <span style="color: #888; font-size: 0.8rem;"> — {{ u.email }}</span>
+                            </span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div style="padding: 1rem 1.75rem; border-top: 1px solid #f0f0f0; display: flex; justify-content: flex-end; gap: 0.75rem;">
+                <button type="button" onclick="closeModal('resendModal')" class="qa-btn qa-btn-outline">{% trans 'إلغاء' %}</button>
+                <button type="submit" class="qa-btn qa-btn-primary"><i class="fa-solid fa-paper-plane"></i> {% trans 'إرسال البيانات' %}</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- ====== Modal: إنشاء وإرسال رسالة مخصصة ====== -->
+<div class="glass-overlay" id="composeModal" onclick="if(event.target===this) closeModal('composeModal')">
+    <div style="background: #fff; border-radius: 1.5rem; width: 100%; max-width: 600px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); overflow: hidden; max-height: 90vh; display: flex; flex-direction: column;">
+        <div style="padding: 1.5rem 1.75rem; background: linear-gradient(135deg, #005353 0%, #007a7a 100%); color: white; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-pen-to-square" style="font-size: 1.2rem;"></i>
+                <h3 style="margin: 0; font-size: 1.05rem; font-weight: 700;">{% trans 'إرسال إيميل مخصص' %}</h3>
+            </div>
+            <button onclick="closeModal('composeModal')" style="background: rgba(255,255,255,0.15); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div style="overflow-y: auto; flex: 1;">
+            <form method="post" action="{% url 'custom_email_actions' %}" id="composeForm">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="send_custom_email">
+                <input type="hidden" name="recipient_type" id="recipientTypeInput" value="specific">
+                
+                <div style="padding: 1.5rem 1.75rem; display: flex; flex-direction: column; gap: 1.2rem;">
+                    <!-- Recipient Type -->
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-users"></i> {% trans 'المرسل إليهم' %}</label>
+                        <div class="recipient-type-tabs">
+                            <button type="button" class="rtype-tab selected" onclick="setRecipientType('specific', this)">
+                                <i class="fa-solid fa-user-check"></i> {% trans 'محددين' %}
+                            </button>
+                            <button type="button" class="rtype-tab" onclick="setRecipientType('all_doctors', this)">
+                                <i class="fa-solid fa-user-doctor"></i> {% trans 'أطباء' %}
+                            </button>
+                            <button type="button" class="rtype-tab" onclick="setRecipientType('all_vendors', this)">
+                                <i class="fa-solid fa-store"></i> {% trans 'تجار' %}
+                            </button>
+                            <button type="button" class="rtype-tab" onclick="setRecipientType('all_companies', this)">
+                                <i class="fa-solid fa-building"></i> {% trans 'شركات' %}
+                            </button>
+                            <button type="button" class="rtype-tab" onclick="setRecipientType('all_delegates', this)">
+                                <i class="fa-solid fa-user-tie"></i> {% trans 'مناديب' %}
+                            </button>
+                            <button type="button" class="rtype-tab" onclick="setRecipientType('all_admins', this)">
+                                <i class="fa-solid fa-user-shield"></i> {% trans 'إدارة' %}
+                            </button>
+                            <button type="button" class="rtype-tab" onclick="setRecipientType('all_active', this)">
+                                <i class="fa-solid fa-globe"></i> {% trans 'الكل' %}
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Specific Users (shown when type=specific) -->
+                    <div class="form-group" id="specificUsersSection">
+                        <label><i class="fa-solid fa-list-check"></i> {% trans 'اختر المستخدمين' %}</label>
+                        <div class="recipient-type-tabs" style="margin-bottom: 8px;">
+                            <button type="button" class="rtype-tab selected" onclick="filterComposeUsersList('all', this)">{% trans 'الكل' %}</button>
+                            <button type="button" class="rtype-tab" onclick="filterComposeUsersList('doctor', this)">{% trans 'أطباء' %}</button>
+                            <button type="button" class="rtype-tab" onclick="filterComposeUsersList('vendor', this)">{% trans 'تجار' %}</button>
+                            <button type="button" class="rtype-tab" onclick="filterComposeUsersList('company', this)">{% trans 'شركات' %}</button>
+                            <button type="button" class="rtype-tab" onclick="filterComposeUsersList('delegate', this)">{% trans 'مناديب' %}</button>
+                            <button type="button" class="rtype-tab" onclick="filterComposeUsersList('admin', this)">{% trans 'إدارة' %}</button>
+                        </div>
+                        <input type="text" id="composeSearchInput" class="form-input" placeholder="{% trans 'بحث في المستخدمين...' %}" oninput="filterComposeUsersList(null, null)" style="margin-bottom: 8px;">
+                        <div class="user-select-list" id="usersSelectList">
+                            {% for u in all_users %}
+                            <label class="user-select-item compose-user-item" data-name="{{ u.get_full_name|default:u.username|lower }} {{ u.email|lower }}" data-type="{{ u.custom_type }}">
+                                <input type="checkbox" name="user_ids" value="{{ u.id }}">
+                                <span>
+                                    <strong>{{ u.get_full_name|default:u.username }}</strong>
+                                    <span style="color: #888; font-size: 0.8rem;"> — {{ u.email }}</span>
+                                </span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Subject -->
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-tag"></i> {% trans 'عنوان الإيميل' %}</label>
+                        <input type="text" name="subject" class="form-input" placeholder="{% trans 'أدخل عنوان الرسالة...' %}" required>
+                    </div>
+
+                    <!-- Message -->
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-align-right"></i> {% trans 'محتوى الرسالة' %}</label>
+                        <textarea name="message" class="form-input form-textarea" placeholder="{% trans 'اكتب محتوى رسالتك هنا...' %}" required></textarea>
+                    </div>
+                </div>
+
+                <div style="padding: 1rem 1.75rem; border-top: 1px solid #f0f0f0; display: flex; justify-content: flex-end; gap: 0.75rem;">
+                    <button type="button" onclick="closeModal('composeModal')" class="qa-btn qa-btn-outline">{% trans 'إلغاء' %}</button>
+                    <button type="submit" class="qa-btn qa-btn-primary"><i class="fa-solid fa-paper-plane"></i> {% trans 'إرسال الرسالة' %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+let currentComposeType = 'all';
+let currentResendType = 'all';
+
+function setRecipientType(type, btn) {
+    document.querySelectorAll('#composeForm > div > .form-group > .recipient-type-tabs > .rtype-tab').forEach(t => t.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('recipientTypeInput').value = type;
+    
+    const specificSection = document.getElementById('specificUsersSection');
+    specificSection.style.display = type === 'specific' ? 'block' : 'none';
+}
+
+function filterComposeUsersList(type, btn) {
+    if (type !== null) {
+        currentComposeType = type;
+        if (btn) {
+            btn.parentElement.querySelectorAll('.rtype-tab').forEach(t => t.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+    }
+    
+    const query = (document.getElementById('composeSearchInput').value || '').toLowerCase();
+    
+    document.querySelectorAll('.compose-user-item').forEach(item => {
+        const name = item.getAttribute('data-name') || '';
+        const userType = item.getAttribute('data-type') || '';
+        
+        const matchesQuery = name.includes(query);
+        const matchesType = (currentComposeType === 'all') || (userType === currentComposeType);
+        
+        item.style.display = (matchesQuery && matchesType) ? 'flex' : 'none';
+    });
+}
+
+function filterResendUsersList(type, btn) {
+    if (type !== null) {
+        currentResendType = type;
+        if (btn) {
+            btn.parentElement.querySelectorAll('.rtype-tab').forEach(t => t.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+    }
+    
+    const query = (document.getElementById('resendSearchInput').value || '').toLowerCase();
+    
+    document.querySelectorAll('.resend-user-item').forEach(item => {
+        const name = item.getAttribute('data-name') || '';
+        const userType = item.getAttribute('data-type') || '';
+        
+        const matchesQuery = name.includes(query);
+        const matchesType = (currentResendType === 'all') || (userType === currentResendType);
+        
+        item.style.display = (matchesQuery && matchesType) ? 'flex' : 'none';
+    });
+}
+
+function openEmailDetail(cardElement) {
+    const recipient = cardElement.getAttribute('data-recipient');
+    const subject = cardElement.getAttribute('data-subject');
+    const template = cardElement.getAttribute('data-template');
+    const status = cardElement.getAttribute('data-status');
+    const statusDisplay = cardElement.getAttribute('data-status-display');
+    const sentAt = cardElement.getAttribute('data-sent-at');
+    const errorMessage = cardElement.getAttribute('data-error-message');
+
+    const modal = document.getElementById('emailDetailModal');
+    const header = document.getElementById('emailDetailHeader');
+    const content = document.getElementById('emailDetailContent');
+
+    // Update header based on status
+    if (status === 'SUCCESS') {
+        header.style.background = 'linear-gradient(135deg, #005353 0%, #007a7a 100%)';
+    } else {
+        header.style.background = 'linear-gradient(135deg, #c62828 0%, #d32f2f 100%)';
+    }
+
+    // Build content HTML
+    content.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem;">
+            <div style="width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; background: ${status === 'SUCCESS' ? 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)' : 'linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%)'}; box-shadow: 0 2px 10px rgba(0,0,0,0.08);">
+                <i class="fa-solid ${status === 'SUCCESS' ? 'fa-check-circle' : 'fa-triangle-exclamation'}" style="font-size: 1.5rem; color: ${status === 'SUCCESS' ? '#2e7d32' : '#c62828'};"></i>
+            </div>
+            <div>
+                <div style="font-weight: 900; color: var(--on-surface); font-size: 1.15rem;">${subject}</div>
+                <div style="font-size: 0.85rem; color: var(--on-surface-variant); font-weight: 600; margin-top: 4px;">
+                    <i class="fa-solid fa-at" style="opacity: 0.6; margin-left: 4px;"></i>${recipient}
+                </div>
+            </div>
+        </div>
+
+        <div style="display: grid; gap: 1rem;">
+            <div style="background: var(--surface-container-lowest, #fafafa); padding: 1rem 1.25rem; border-radius: 12px; border: 1px solid rgba(0,83,83,0.08);">
+                <div style="font-size: 0.75rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">{% trans 'حالة الإرسال' %}</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="status-badge ${status === 'SUCCESS' ? 'status-success' : 'status-failed'}" style="font-size: 0.8rem;">
+                        ${statusDisplay}
+                    </span>
+                </div>
+            </div>
+
+            <div style="background: var(--surface-container-lowest, #fafafa); padding: 1rem 1.25rem; border-radius: 12px; border: 1px solid rgba(0,83,83,0.08);">
+                <div style="font-size: 0.75rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">{% trans 'قالب الإيميل' %}</div>
+                <div style="font-size: 0.9rem; font-weight: 600; color: var(--on-surface);">
+                    <i class="fa-solid fa-file-code" style="opacity: 0.6; margin-left: 6px;"></i>${template}
+                </div>
+            </div>
+
+            <div style="background: var(--surface-container-lowest, #fafafa); padding: 1rem 1.25rem; border-radius: 12px; border: 1px solid rgba(0,83,83,0.08);">
+                <div style="font-size: 0.75rem; font-weight: 900; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">{% trans 'تاريخ الإرسال' %}</div>
+                <div style="font-size: 0.9rem; font-weight: 600; color: var(--on-surface);">
+                    <i class="fa-solid fa-clock" style="opacity: 0.6; margin-left: 6px;"></i>${sentAt}
+                </div>
+            </div>
+
+            ${errorMessage !== '-' ? `
+                <div style="background: rgba(198, 40, 40, 0.05); padding: 1rem 1.25rem; border-radius: 12px; border: 1px solid rgba(198, 40, 40, 0.15);">
+                    <div style="font-size: 0.75rem; font-weight: 900; color: #c62828; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">{% trans 'رسالة الخطأ' %}</div>
+                    <div style="font-size: 0.9rem; font-weight: 600; color: #b71c1c; line-height: 1.6;">
+                        <i class="fa-solid fa-circle-exclamation" style="opacity: 0.7; margin-left: 6px;"></i>${errorMessage}
+                    </div>
+                </div>
+            ` : ''}
+        </div>
+    `;
+
+    openModal('emailDetailModal');
+}
+</script>
+
+{% endblock %}
