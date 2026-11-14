@@ -1,6 +1,7 @@
 <VirtualHost *:80>
-    ServerName hadramout.ahmedtarek.org
+    ServerName events.yourdomain.com
 
     RewriteEngine On
     RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
 </VirtualHost>
+

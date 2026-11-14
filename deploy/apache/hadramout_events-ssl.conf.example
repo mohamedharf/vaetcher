@@ -1,0 +1,37 @@
+<VirtualHost *:443>
+    ServerName events.yourdomain.com
+    ServerAdmin webmaster@yourdomain.com
+
+    # Static Assets Mapping
+    Alias /static /var/www/vaetcher/staticfiles
+    <Directory /var/www/vaetcher/staticfiles>
+        Require all granted
+    </Directory>
+
+    # Media Uploads Mapping
+    Alias /media /var/www/vaetcher/media
+    <Directory /var/www/vaetcher/media>
+        Require all granted
+    </Directory>
+
+    # WSGI Script Execution
+    <Directory /var/www/vaetcher/project>
+        <Files wsgi.py>
+            Require all granted
+        </Files>
+    </Directory>
+
+    # WSGI Daemon Configuration
+    WSGIDaemonProcess vaetcher_ssl python-path=/var/www/vaetcher:/var/www/vaetcher/venv/lib/python3.11/site-packages
+    WSGIProcessGroup vaetcher_ssl
+    WSGIScriptAlias / /var/www/vaetcher/project/wsgi.py
+
+    ErrorLog ${APACHE_LOG_DIR}/vaetcher-error.log
+    CustomLog ${APACHE_LOG_DIR}/vaetcher-access.log combined
+
+    # SSL Certificate Paths (Managed by Let's Encrypt / Certbot)
+    # SSLCertificateFile /etc/letsencrypt/live/events.yourdomain.com/fullchain.pem
+    # SSLCertificateKeyFile /etc/letsencrypt/live/events.yourdomain.com/privkey.pem
+    # Include /etc/letsencrypt/options-ssl-apache.conf
+</VirtualHost>
+
